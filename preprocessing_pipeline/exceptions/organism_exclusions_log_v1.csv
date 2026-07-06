@@ -1,0 +1,30 @@
+cohort,row_index,raw_organism_value,exclusion_reason,version,date_added
+SOAR_207965,35,No Growth,no_growth,v1,2026-07-06
+SOAR_207965,57,Bacillus sp Strain #1,environmental_contaminant,v1,2026-07-06
+SOAR_207965,376,Bacillus licheniformis,environmental_contaminant,v1,2026-07-06
+SOAR_207965,409,Bacillus licheniformis,environmental_contaminant,v1,2026-07-06
+SOAR_207965,897,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,999,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,1000,Microsporum canis,cross_domain_fungal_wrong_drug_panel,v1,2026-07-06
+SOAR_207965,1461,Bacillus cereus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,1512,Paenibacillus sp,environmental_contaminant,v1,2026-07-06
+SOAR_207965,1566,Bacillus circulans,environmental_contaminant,v1,2026-07-06
+SOAR_207965,1603,Bacillus sp,environmental_contaminant,v1,2026-07-06
+SOAR_207965,1799,Bacillus sp,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2168,Bacillus circulans,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2176,Bacillus circulans,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2177,Bacillus circulans,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2471,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2484,Paenibacillus sp,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2506,No Growth,no_growth,v1,2026-07-06
+SOAR_207965,2932,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2943,Bacillus megaterium,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2945,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2957,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2958,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2959,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2971,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,2972,Naganishia liquefaciens,cross_domain_fungal_wrong_drug_panel,v1,2026-07-06
+SOAR_207965,3080,Bacillus sp,environmental_contaminant,v1,2026-07-06
+SOAR_207965,3081,Micrococcus luteus,environmental_contaminant,v1,2026-07-06
+SOAR_207965,3093,Micrococcus luteus,environmental_contaminant,v1,2026-07-06

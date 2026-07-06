@@ -1,0 +1,72 @@
+cohort_id,raw_identifier,raw_identifier_kind,canonical_drug,resolution_status,basis,dosing_or_breakpoint_variant,exclude_from_cross_cohort_comparison,version,date_added
+SOAR_201818,AMOXICILLIN,full_drug_name,amoxicillin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,AMOXICILLIN_CLAVULANATE,full_drug_name,amoxicillin/clavulanate,resolved,baseline full name; lowercase/slash normalization only,standard,FALSE,v1,2026-07-06
+SOAR_201818,AMPICILLIN,full_drug_name,ampicillin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,AZITHROMYCIN,full_drug_name,azithromycin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,CEFACLOR,full_drug_name,cefaclor,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,CEFTRIAXONE,full_drug_name,ceftriaxone,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,CEFUROXIME,full_drug_name,cefuroxime,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,CLARITHROMYCIN,full_drug_name,clarithromycin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,ERYTHROMYCIN,full_drug_name,erythromycin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,LEVOFLOXACIN,full_drug_name,levofloxacin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,MOXIFLOXACIN,full_drug_name,moxifloxacin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,PENICILLIN,full_drug_name,penicillin,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201818,TRIMETHOPRIM_SULFA,full_drug_name,trimethoprim/sulfamethoxazole,resolved,baseline full name; lowercase/slash normalization only,,FALSE,v1,2026-07-06
+SOAR_201910,AMC,abbreviated_code,amoxicillin/clavulanate,resolved,standard CLSI/EUCAST-recognized abbreviation,standard,FALSE,v1,2026-07-06
+SOAR_201910,AMP,abbreviated_code,ampicillin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,AMX,abbreviated_code,amoxicillin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,AXO,abbreviated_code,ceftriaxone,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,AZM,abbreviated_code,azithromycin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,CEC,abbreviated_code,cefaclor,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,CLA,abbreviated_code,clarithromycin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,CXM,abbreviated_code,cefuroxime,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,ERY,abbreviated_code,erythromycin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,FIX,abbreviated_code,cefixime,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,LEV,abbreviated_code,levofloxacin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,MXF,abbreviated_code,moxifloxacin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,PEN,abbreviated_code,penicillin,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,POD,abbreviated_code,cefpodoxime,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,SXT,abbreviated_code,trimethoprim/sulfamethoxazole,resolved,standard CLSI/EUCAST-recognized abbreviation,,FALSE,v1,2026-07-06
+SOAR_201910,CDN,abbreviated_code,cefdinir,provisional,"anchor: SOAR 207965 has a column literally named ""Cefdinir""; cefdinir independently confirmed as a real drug in published SOAR-series literature; no direct GSK data-dictionary confirmation located",,FALSE,v1,2026-07-06
+SOAR_201910,DIN,abbreviated_code,UNRESOLVED,unresolved,"no public SOAR data dictionary defining DIN located; working hypothesis only (doxycycline or tetracycline, both new to SOAR 207965's panel) is not strong enough evidence to map - never dropped, never guessed",,TRUE,v1,2026-07-06
+SOAR_207965,Amoxicillin,full_drug_name,amoxicillin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Amoxicillin Clavulanate,full_drug_name,amoxicillin/clavulanate,resolved,already full name,standard,FALSE,v1,2026-07-06
+SOAR_207965,Amoxicillin Clavulanate fixed at 2,full_drug_name,amoxicillin/clavulanate,resolved,"dosing/breakpoint variant of Amoxicillin Clavulanate, not a distinct drug - preserved as a separate isolate-drug row, never averaged or collapsed",fixed_2ug,FALSE,v1,2026-07-06
+SOAR_207965,Ampicillin,full_drug_name,ampicillin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Azithromycin,full_drug_name,azithromycin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Cefaclor,full_drug_name,cefaclor,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Cefdinir,full_drug_name,cefdinir,resolved,already full name; anchor evidence for SOAR_201910's CDN,,FALSE,v1,2026-07-06
+SOAR_207965,Cefixime,full_drug_name,cefixime,resolved,already full name; anchor for SOAR_201910's FIX,,FALSE,v1,2026-07-06
+SOAR_207965,Cefotaxime,full_drug_name,cefotaxime,resolved,already full name; not tested in 201818 or 201910 - new to this cohort's panel,,FALSE,v1,2026-07-06
+SOAR_207965,Cefpodoxime,full_drug_name,cefpodoxime,resolved,already full name; anchor for SOAR_201910's POD,,FALSE,v1,2026-07-06
+SOAR_207965,Ceftibuten,full_drug_name,ceftibuten,resolved,already full name; not tested in 201818 or 201910 - new to this cohort's panel,,FALSE,v1,2026-07-06
+SOAR_207965,Ceftriaxone,full_drug_name,ceftriaxone,resolved,already full name; anchor for SOAR_201910's AXO,,FALSE,v1,2026-07-06
+SOAR_207965,Cefuroxime,full_drug_name,cefuroxime,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Clarithromycin,full_drug_name,clarithromycin,resolved,already full name; anchor for SOAR_201910's CLA,,FALSE,v1,2026-07-06
+SOAR_207965,Doxycycline,full_drug_name,doxycycline,resolved,"already full name; not tested in 201818 or 201910 - candidate hypothesis target for unresolved DIN, not confirmed",,FALSE,v1,2026-07-06
+SOAR_207965,Erythromycin,full_drug_name,erythromycin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Levofloxacin,full_drug_name,levofloxacin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Moxifloxacin,full_drug_name,moxifloxacin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Penicillin,full_drug_name,penicillin,resolved,already full name,,FALSE,v1,2026-07-06
+SOAR_207965,Tetracycline,full_drug_name,tetracycline,resolved,"already full name; not tested in 201818 or 201910 - candidate hypothesis target for unresolved DIN, not confirmed",,FALSE,v1,2026-07-06
+SOAR_207965,Trimethoprim Sulfa,full_drug_name,trimethoprim/sulfamethoxazole,resolved,already full name; anchor for SOAR_201910's SXT,,FALSE,v1,2026-07-06
+SENTRY,Anidulafungin (CLSI),mic_value_column,Anidulafungin,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Anidulafungin (CLSI)_I,category_column,Anidulafungin,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Caspofungin (CLSI),mic_value_column,Caspofungin,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Caspofungin (CLSI)_I,category_column,Caspofungin,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Micafungin (CLSI),mic_value_column,Micafungin,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Micafungin (CLSI)_I,category_column,Micafungin,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Isavuconazole (CLSI),mic_value_column,Isavuconazole,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Isavuconazole (CLSI)_I,category_column,Isavuconazole,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Fluconazole (CLSI),mic_value_column,Fluconazole,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Fluconazole (CLSI)_I,category_column,Fluconazole,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Itraconazole (CLSI),mic_value_column,Itraconazole,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Itraconazole (CLSI)_I,category_column,Itraconazole,resolved,"CLSI categorical interpretation column, ~100% null - Step 7 classification problem (ECV fallback), not a drug-identification gap",,FALSE,v1,2026-07-06
+SENTRY,Voriconazole (CLSI),mic_value_column,Voriconazole,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Voriconazole (CLSI)_I,category_column,Voriconazole,resolved,CLSI categorical interpretation column - never confuse with the plain (CLSI) MIC value column,,FALSE,v1,2026-07-06
+SENTRY,Posaconazole (CLSI),mic_value_column,Posaconazole,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Posaconazole (CLSI)_I,category_column,Posaconazole,resolved,"CLSI categorical interpretation column, ~100% null - Step 7 classification problem (ECV fallback), not a drug-identification gap",,FALSE,v1,2026-07-06
+SENTRY,Amphotericin B (CLSI),mic_value_column,Amphotericin B,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Amphotericin B (CLSI)_I,category_column,Amphotericin B,resolved,"CLSI categorical interpretation column, ~99.5% null - Step 7 classification problem (ECV fallback), not a drug-identification gap",,FALSE,v1,2026-07-06
+SENTRY,Flucytosine (CLSI),mic_value_column,Flucytosine,resolved,already full unambiguous name; disjoint antifungal drug class from SOAR panel,,FALSE,v1,2026-07-06
+SENTRY,Flucytosine (CLSI)_I,category_column,Flucytosine,resolved,"CLSI categorical interpretation column, ~100% null - Step 7 classification problem (ECV fallback), not a drug-identification gap",,FALSE,v1,2026-07-06

@@ -1,0 +1,60 @@
+raw_string,iso3,canonical_name,confidence,source_cohort,note,version,date_added
+Argentina,ARG,Argentina,high,SOAR_201910,363 rows - largest single country in that cohort.,v1,2026-07-06
+Australia,AUS,Australia,high,SENTRY,"1,441 rows, confirmed directly in SENTRY's top 5.",v1,2026-07-06
+Belgium,BEL,Belgium,high,SENTRY_INFERRED,Not named in any SOAR list; elimination-derived. Row count not captured.,v1,2026-07-06
+Brazil,BRA,Brazil,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Bulgaria,BGR,Bulgaria,high,SOAR_201818,237 rows.,v1,2026-07-06
+Cambodia,KHM,Cambodia,high,SOAR_201910,78 rows.,v1,2026-07-06
+Canada,CAN,Canada,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Chile,CHL,Chile,high,SOAR_201910,150 rows.,v1,2026-07-06
+China,CHN,China,high,SENTRY_INFERRED,"Elimination-derived. Distinct code from Hong Kong and Taiwan - do not merge. Row count not captured.",v1,2026-07-06
+Colombia,COL,Colombia,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Costa Rica,CRI,Costa Rica,high,SOAR_201910,54 rows.,v1,2026-07-06
+Croatia,HRV,Croatia,high,SOAR_201818,192 rows.,v1,2026-07-06
+Czech Republic,CZE,Czechia,high,SOAR_201818,"397 rows. Czechia is ISO's current official short name; ""Czech Republic"" is the official long name and matches the raw string exactly.",v1,2026-07-06
+Ecuador,ECU,Ecuador,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+France,FRA,France,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Germany,DEU,Germany,high,SENTRY,"2,041 rows, confirmed directly in SENTRY's top 5.",v1,2026-07-06
+Ghana,GHA,Ghana,high,SOAR_201910,"Only 2 rows - the thinnest country group in SOAR 201910 (tied with Nigeria's 4). Any Ghana- or West-Africa-specific claim built on this cohort alone rests on an extremely small base; must be labeled as such wherever used downstream.",v1,2026-07-06
+Greece,GRC,Greece,high,SOAR_201818,151 rows.,v1,2026-07-06
+Hong Kong,HKG,Hong Kong,flagged,SENTRY_INFERRED,"Not a UN member state / not sovereign - a Special Administrative Region of China. HKG is nonetheless the standard, stable ISO 3166-1 code used routinely in surveillance data; recorded as a data-harmonization fact, not a political position. Row count not captured.",v1,2026-07-06
+Hungary,HUN,Hungary,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+India,IND,India,high,SOAR_207965,Listed among the 10 countries; per-country count not individually captured.,v1,2026-07-06
+Ireland,IRL,Ireland,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Israel,ISR,Israel,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Italy,ITA,Italy,high,SOAR_207965+SENTRY,"Listed among SOAR 207965's 10 countries (no per-country count captured there); directly confirmed in SENTRY's top 5 with 2,298 rows.",v1,2026-07-06
+Japan,JPN,Japan,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Kenya,KEN,Kenya,high,SOAR_201910,"44 rows. One of the African countries in this cohort Justice's original text omitted when describing non-Latin-American countries as ""Europe, Middle East, Asia"".",v1,2026-07-06
+Korea,KOR,"Korea, Republic of (South Korea)",flagged,SENTRY_INFERRED,"""Korea"" alone is ambiguous between Republic of Korea (KOR) and DPRK (PRK). Resolved as Republic of Korea by explicit, stated contextual assumption (GSK/Vivli AMR surveillance data). Revisit if any source ever turns out to include DPRK data under this string. Row count not captured.",v1,2026-07-06
+Kuwait,KWT,Kuwait,high,SOAR_201910+SOAR_207965,Listed in both cohorts' country lists; no per-country count captured for either.,v1,2026-07-06
+Lebanon,LBN,Lebanon,high,SOAR_201910,21 rows.,v1,2026-07-06
+Mexico,MEX,Mexico,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Morocco,MAR,Morocco,high,SOAR_201910,23 rows. One of the African countries in this cohort Justice's original text omitted.,v1,2026-07-06
+New Zealand,NZL,New Zealand,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Nigeria,NGA,Nigeria,high,SOAR_201910,"Only 4 rows - thinnest country group in SOAR 201910 alongside Ghana's 2. Same small-base caveat applies.",v1,2026-07-06
+Pakistan,PAK,Pakistan,high,SOAR_201910+SOAR_207965,Listed in both cohorts' country lists; no per-country count captured for either.,v1,2026-07-06
+Panama,PAN,Panama,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Philippines,PHL,Philippines,high,SOAR_201910,76 rows.,v1,2026-07-06
+Portugal,PRT,Portugal,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Romania,ROU,Romania,high,SOAR_201818,372 rows. ROU is the current ISO3 code (the older ROM code is deprecated); no ambiguity for this dataset.,v1,2026-07-06
+Russia,RUS,Russian Federation,high,SOAR_201818,558 rows - largest single country in that cohort.,v1,2026-07-06
+Saudi Arabia,SAU,Saudi Arabia,high,SOAR_201910,91 rows.,v1,2026-07-06
+Scotland,GBR,United Kingdom,flagged,SENTRY_INFERRED,"Scotland is a constituent country of the UK, not a sovereign ISO 3166-1 entity. Deliberately collides with the separate ""UK"" raw string on the same GBR code - see Collision 2 in Appendix 2 Section 3. Row count not captured.",v1,2026-07-06
+Serbia,SRB,Serbia,high,SOAR_201818,117 rows.,v1,2026-07-06
+Singapore,SGP,Singapore,high,SOAR_201910,114 rows.,v1,2026-07-06
+Slovak Republic,SVK,Slovakia,high,SOAR_201818,"193 rows. Deliberately collides with the separate ""Slovakia"" raw string on the same SVK code - see Collision 1 in Appendix 2 Section 3.",v1,2026-07-06
+Slovakia,SVK,Slovakia,high,SENTRY_INFERRED,"Elimination-derived. See Collision 1 in Appendix 2 Section 3. Row count not captured.",v1,2026-07-06
+Slovenia,SVN,Slovenia,high,SENTRY_INFERRED,"Elimination-derived. Do not confuse with Slovakia/Slovak Republic - a different country with a similar name and a different code (SVN, not SVK). Row count not captured.",v1,2026-07-06
+South Africa,ZAF,South Africa,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Spain,ESP,Spain,high,SOAR_207965+SENTRY,"Listed among SOAR 207965's 10 countries; directly confirmed in SENTRY's top 5 with 1,253 rows.",v1,2026-07-06
+Sweden,SWE,Sweden,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Switzerland,CHE,Switzerland,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Taiwan,TWN,"Taiwan, Province of China",flagged,SENTRY_INFERRED,"Not a UN member state. TWN is nonetheless the standard, stable code used routinely in surveillance data; recorded as a data-harmonization fact, not a political position. Row count not captured.",v1,2026-07-06
+Thailand,THA,Thailand,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
+Tunisia,TUN,Tunisia,high,SOAR_201910+SOAR_207965,"153 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). One of the African countries in SOAR 201910 Justice's original text omitted.",v1,2026-07-06
+Turkey,TUR,Türkiye,high,SOAR_201910+SOAR_207965,"418 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). UN/ISO short-name update 2022; alpha-3 code unchanged at TUR. Transcontinental (Europe/Asia); treated here as a single country.",v1,2026-07-06
+UK,GBR,United Kingdom,high,SENTRY_INFERRED,"Deliberately collides with the separate ""Scotland"" raw string on the same GBR code - see Collision 2 in Appendix 2 Section 3. Row count not captured.",v1,2026-07-06
+Ukraine,UKR,Ukraine,high,SOAR_201818+SOAR_201910+SOAR_207965,"196 rows in SOAR 201818 (2014-2016 window); 177 rows in SOAR 201910 (2015-2018 window); also listed in SOAR 207965 (2018-2021 window). The only raw string confirmed present in all three SOAR cohorts.",v1,2026-07-06
+United Arab Emirates,ARE,United Arab Emirates,high,SOAR_207965,Listed; row count not captured.,v1,2026-07-06
+USA,USA,United States of America,high,SENTRY,"7,257 rows - largest single country across all 4 files, confirmed directly in SENTRY's top 5.",v1,2026-07-06
+Vietnam,VNM,Viet Nam,high,SOAR_201910+SOAR_207965,"250 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). ISO's official short name is two words (""Viet Nam""); ""Vietnam"" one word is the common raw-data spelling. This is the cohort-overlap pair Justice's Step 10 text names explicitly (Vietnam, 2018).",v1,2026-07-06
