@@ -1,7 +1,7 @@
 # Pipeline raw inputs
 
 All source files the preprocessing pipeline reads on every run.
-Place raw Vivli cohort files and EUCAST breakpoint tables here (not in `docs/`).
+Place raw Vivli cohort files and EUCAST breakpoint tables here.
 
 ## Required files (6)
 

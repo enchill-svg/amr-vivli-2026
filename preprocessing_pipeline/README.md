@@ -1,8 +1,31 @@
 # Preprocessing Pipeline
 
-Harmonizes four antimicrobial-resistance surveillance cohorts into one analysis-ready master table. Implements Justice's Section 5 preprocessing steps (1–10): country codes, dates, organisms, drugs, MIC parsing, evaluability rules, resistance classification, beta-lactamase bounds, age bands, deduplication, and long-format assembly.
+## In plain terms
 
-**Status:** Implemented.
+Hospitals and labs around the world test bacteria and fungi taken from sick patients to see which drugs still work against them — this is how doctors track antimicrobial resistance (AMR), the growing problem of infections becoming harder to treat with existing drugs. This project combines four such testing datasets (three covering bacteria, one covering fungi) into one clean, combined spreadsheet that researchers can use to study resistance trends.
+
+The problem is that the four original datasets don't agree on how to spell things. One file calls a country "Slovak Republic," another calls it "Slovakia." One file writes a lab measurement as "<=0.06," another writes the same kind of measurement as "<0.008." One file gives a drug a two-letter code, another spells out its full name. Before these files can be compared or combined, all of that has to be translated into one consistent set of labels — that's what this pipeline does. It also decides, using published medical thresholds, whether each result counts as "resistant," "susceptible," or "not enough information to tell," and it keeps a written record of every row it excludes and why, so nothing disappears unexplained.
+
+The output is one combined table where each row is "one patient sample tested against one drug," ready to be analyzed. This pipeline does not do that later analysis (e.g., trends over time, life-expectancy comparisons) — it only prepares the data.
+
+**Status:** Implemented and passing all built-in checks.
+
+---
+
+## Glossary (for non-technical readers)
+
+| Term | Meaning |
+|------|---------|
+| **Isolate** | A single bacteria or fungus sample recovered from a patient specimen. |
+| **Cohort** | One of the four source datasets (SOAR 201818, SOAR 201910, SOAR 207965, SENTRY). |
+| **MIC** (Minimum Inhibitory Concentration) | The lowest concentration of a drug that stops a microbe from growing in the lab, measured in a testing kit. Lower numbers generally mean the drug is more effective. |
+| **Breakpoint** | A published medical threshold: if a microbe's MIC is below the breakpoint it's called "susceptible" (drug works), above it "resistant" (drug likely won't work), and there's an "intermediate" zone in between. |
+| **EUCAST** | European Committee on Antimicrobial Susceptibility Testing — the organization that publishes the official breakpoint tables this pipeline uses for bacteria. |
+| **ECV** (Epidemiological Cutoff Value) | A published reference value used for fungi when no formal clinical breakpoint exists yet — classifies a result as "wild-type" (typical, drug-susceptible population) or "non-wild-type" (atypical) rather than a clinical susceptible/resistant call. |
+| **ISO3** | The standard 3-letter country code (e.g. `USA`, `GBR`) used to make country names comparable across datasets. |
+| **Resistance category** | The final S(usceptible) / I(ntermediate) / R(esistant) — or fungal WT/NWT — call assigned to a sample-drug pair. |
+| **Evaluable** | A quality flag one dataset (SOAR 207965) uses to mark whether a sample's result is considered valid; samples marked "not evaluable" are excluded from the results. |
+| **Crosswalk** | A lookup table that translates one dataset's labels (e.g. raw country spellings) into the pipeline's standard labels. |
 
 ---
 
@@ -71,7 +94,7 @@ Four Vivli datasets cannot be joined or compared as received:
 | Structural missingness | Beta-lactamase blank = untested, not negative; SENTRY CLSI categories often null |
 | Quality flags | SOAR 207965 `Evaluable=N` (~20% of isolates) |
 
-This pipeline resolves those differences, classifies resistance where standards exist, logs every exclusion, and writes a single long-format table for downstream analysis (Section 6 analytics is **not** part of this pipeline).
+This pipeline resolves those differences, classifies resistance where standards exist, logs every exclusion, and writes a single long-format table for downstream analysis. Later-stage analytics (e.g. trend/regression analysis on top of this table) are **not** part of this pipeline.
 
 ---
 
@@ -203,15 +226,14 @@ preprocessing_pipeline/
 ├── crosswalks/               ← harmonization tables
 ├── bounds/                   ← interval / classification summaries
 ├── exceptions/               ← exclusion and audit logs
-├── logs/                     ← pipeline run history
-└── docs/                     ← design plan and appendices
+└── logs/                     ← pipeline run history
 ```
 
 ---
 
 ## 6. The Ten Steps (What Each Does)
 
-Each step follows Justice's **Issue → Action → Check** pattern. Every step hard-fails (`sys.exit(1)`) if its Check does not pass.
+Each step follows the same **Issue → Action → Check** pattern: state the data problem, describe what the step does about it, then verify the fix worked. Every step hard-fails (`sys.exit(1)`) if its Check does not pass.
 
 ### Step 1 — Country harmonization (`step01_country.py`)
 
@@ -393,8 +415,8 @@ The isolate registry round-trips to raw row counts (34,787 = sum of all four sou
 
 | Out of scope | Notes |
 |--------------|-------|
-| Section 6 analytics | Life expectancy regressions, clustering, external data joins |
-| External datasets (Section 3.2) | ESAC-Net, vaccination coverage, health-system indices, R&D Hub |
+| Downstream analytics | Life expectancy regressions, clustering, and other analysis run on top of this table |
+| Joining external reference datasets | e.g. ESAC-Net, vaccination coverage, health-system indices, R&D Hub |
 | Wide-format pivot tables | Master is long format by design |
 | Auto-removal of duplicate isolates | Logged for manual review only |
 | Bacterial CLSI breakpoints | EUCAST only for bacterial classification |
@@ -426,12 +448,4 @@ When building analysis on the master table:
 
 ## 14. Further Reading
 
-| Document | Contents |
-|----------|----------|
-| [`docs/PREPROCESSING_PIPELINE_PLAN.md`](docs/PREPROCESSING_PIPELINE_PLAN.md) | Full design spec, dependency graph, acceptance criteria, gap register |
-| [`docs/appendix_1_verified_data_facts.md`](docs/appendix_1_verified_data_facts.md) | Numbers traced to raw files |
-| [`docs/appendix_2_country_iso3_crosswalk.md`](docs/appendix_2_country_iso3_crosswalk.md) | Country crosswalk rationale |
-| [`docs/appendix_3_drug_code_crosswalk.md`](docs/appendix_3_drug_code_crosswalk.md) | Drug code resolution (CDN, DIN) |
-| [`docs/appendix_4_mic_parsing_and_ecv_reference.md`](docs/appendix_4_mic_parsing_and_ecv_reference.md) | MIC parsing and fungal ECV |
-| [`docs/appendix_5_identifiability_bounds_methodology.md`](docs/appendix_5_identifiability_bounds_methodology.md) | Beta-lactamase bounds method |
-| Per-step docstrings in `src/step*.py` | Issue / Action / Check for each step |
+Every step script under [`src/`](src/) opens with a docstring describing what problem it solves, what it does about it, and how it checks its own work (Issue / Action / Check). Read the script itself for the full rationale behind any given step.
