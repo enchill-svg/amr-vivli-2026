@@ -12,17 +12,25 @@ Check: the exclusions log contains exactly the Evaluable = N isolates, all
 from SOAR 207965 (no Evaluable column exists in the other three cohorts - this
 step is a pass-through no-op for them); the Evaluable flag itself is retained
 as a passthrough field, not consumed and discarded.
+
+Open risk, not resolved by this step (carried forward honestly, not silently
+assumed): what "Evaluable = N" actually means clinically or technically -
+e.g. a QC failure, an indeterminate reading, a specimen contamination flag -
+was never confirmed against SOAR 207965's own documentation. Justice's
+original Check text expects excluding these isolates to move resistance
+rates "only in the expected direction"; that half of the Check cannot be
+executed without knowing what the flag represents, so it is not attempted
+here rather than approximated.
 """
+import datetime as dt
 import sys
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS, SOAR_207965_PATH
 EXCLUSIONS_PATH = ROOT / "exceptions" / "evaluability_exclusions_log_v1.csv"
-
-SOAR_207965_PATH = DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx"
 
 
 def main():
@@ -48,7 +56,7 @@ def main():
         "evaluable_flag": "N",
         "reason": "Evaluable = N; excluded from resistance-rate denominators per Step 6 Action",
         "version": "v1",
-        "date_added": "2026-07-06",
+        "date_added": dt.date.today().isoformat(),
     } for idx in excluded.index]
 
     EXCLUSIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -74,9 +82,9 @@ def main():
 
     # Confirm other three cohorts have no Evaluable column (pass-through no-op).
     other_cohorts = {
-        "SOAR_201818": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
-        "SOAR_201910": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
-        "SENTRY": DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx",
+        "SOAR_201818": COHORT_PATHS["SOAR_201818"],
+        "SOAR_201910": COHORT_PATHS["SOAR_201910"],
+        "SENTRY": COHORT_PATHS["SENTRY"],
     }
     for name, path in other_cohorts.items():
         cols = list(pd.read_csv(path, nrows=1).columns) if path.suffix == ".csv" else list(pd.read_excel(path, nrows=1).columns)
@@ -85,6 +93,10 @@ def main():
             failed = True
         else:
             print(f"PASS: {name} has no Evaluable column - confirmed pass-through no-op.")
+
+    print("NOTE: what 'Evaluable = N' means clinically/technically was never confirmed against SOAR 207965's "
+          "own documentation, so Justice's 'excluding these isolates should move rates only in the expected "
+          "direction' half of this Check is not attempted here (open risk, not silently resolved).")
 
     if failed:
         print("\nStep 6 Check: FAIL")

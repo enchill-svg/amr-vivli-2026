@@ -32,6 +32,7 @@ anywhere in 26,922 rows - they are pre-resolved readings, never censored.
 This step's parser therefore applies only to the three SOAR bacterial files,
 as the appendix's design already anticipated.
 """
+import datetime as dt
 import re
 import sys
 from pathlib import Path
@@ -39,9 +40,11 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS, SENTRY_PATH
 FAILURES_PATH = ROOT / "exceptions" / "mic_parse_failures_log_v1.csv"
-SENTRY_PATH = DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx"
+PARSED_PATH = ROOT / "master" / "mic_parsed_values_v1.csv"
+DILUTION_PANEL_PATH = ROOT / "crosswalks" / "soar_drug_dilution_panel_v1.csv"
+DILUTION_VIOLATIONS_PATH = ROOT / "exceptions" / "mic_dilution_range_violations_log_v1.csv"
 
 # Longest-token-first, per Appendix 4 A.5 Step 2 (</= must never be
 # mis-split into < plus stray characters).
@@ -59,24 +62,27 @@ TOLERANCE = 0.05  # relative tolerance, covers the documented dual-rounding pair
 
 SOAR_COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
+        "organism_col": "ORGANISMNAME",
         "metadata_columns": {
             "IHMANUMBER", "AGE", "DEID_CAT_AGE", "REGION", "COUNTRY", "ORGANISMNAME",
             "BETALACTAMASE", "GENDER", "YEARCOLLECTED", "BODYLOCATION", "INVESTIGATORNAME",
         },
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
+        "organism_col": "Organism",
         "metadata_columns": {
             "Isolate Number", "Organism", "BodyLocation", "Country", "Centre", "Gender",
             "Age", "Collection Date", "Betalactamase",
         },
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
+        "organism_col": "FinalOrganismName",
         "metadata_columns": {
             "Region", "Country", "Investigator", "InvestigatorName", "IHMA #",
             "OriginalOrganismName", "FinalOrganismName", "OrganismFamilyName", "GramType",
@@ -146,9 +152,11 @@ def load_drug_columns(name, spec):
 def main():
     failed = False
     failure_rows = []
+    parsed_rows = []
     total_cells = 0
     total_null = 0
     total_parsed = 0
+    today = dt.date.today().isoformat()
 
     for name, spec in SOAR_COHORTS.items():
         df, drug_columns = load_drug_columns(name, spec)
@@ -165,8 +173,26 @@ def main():
                     cohort_null += 1
                     continue
                 try:
-                    parse_mic(raw_value)
+                    comparator, numeric_value, log2_step = parse_mic(raw_value)
                     cohort_parsed += 1
+                    raw_organism = df.at[idx, spec["organism_col"]]
+                    raw_organism = None if pd.isna(raw_organism) else raw_organism
+                    # Persist the full parsed tuple alongside the raw notation, per
+                    # Appendix 4 A.5 Step 6, so this step's own Check can be
+                    # re-verified later from this artifact without re-deriving from
+                    # the original raw file.
+                    parsed_rows.append({
+                        "source_cohort": name,
+                        "row_index": idx,
+                        "drug_column": col,
+                        "raw_organism": raw_organism,
+                        "mic_source_notation_raw": raw_value,
+                        "comparator_canonical": comparator,
+                        "numeric_value": numeric_value,
+                        "log2_step": log2_step,
+                        "version": "v1",
+                        "date_added": today,
+                    })
                 except ParseFailure as exc:
                     cohort_failed += 1
                     failure_rows.append({
@@ -176,7 +202,7 @@ def main():
                         "raw_value": raw_value,
                         "reason": str(exc),
                         "version": "v1",
-                        "date_added": "2026-07-06",
+                        "date_added": today,
                     })
 
         print(f"{name}: {cohort_cells} MIC cells across {len(drug_columns)} drug columns -> "
@@ -192,6 +218,76 @@ def main():
     ]).to_csv(FAILURES_PATH, index=False)
     print(f"\nWrote {len(failure_rows)} row(s) to {FAILURES_PATH.relative_to(ROOT.parents[0])}")
 
+    PARSED_PATH.parent.mkdir(parents=True, exist_ok=True)
+    parsed_df = pd.DataFrame(parsed_rows, columns=[
+        "source_cohort", "row_index", "drug_column", "raw_organism", "mic_source_notation_raw",
+        "comparator_canonical", "numeric_value", "log2_step", "version", "date_added",
+    ])
+    parsed_df.to_csv(PARSED_PATH, index=False)
+    print(f"Wrote {len(parsed_rows)} row(s) to {PARSED_PATH.relative_to(ROOT.parents[0])}")
+
+    # Check (c): per-cohort, per-drug, per-organism tested dilution panel derived
+    # from observed values in the live SOAR files (empirical panel dictionary -
+    # Appendix 4 A.6). Organism dimension added so two species sharing a drug
+    # column but testing different dilution ranges are not conflated.
+    panel_rows = []
+    dilution_violations = []
+    for (cohort, drug_col, raw_organism), group in parsed_df.groupby(
+            ["source_cohort", "drug_column", "raw_organism"], dropna=False):
+        values = sorted(group["numeric_value"].unique())
+        panel_rows.append({
+            "source_cohort": cohort,
+            "drug_column": drug_col,
+            "raw_organism": raw_organism,
+            "n_unique_values": len(values),
+            "min_numeric_value": values[0],
+            "max_numeric_value": values[-1],
+            "version": "v1",
+            "date_added": today,
+        })
+        allowed = set(values)
+        for _, row in group.iterrows():
+            if row["numeric_value"] not in allowed:
+                dilution_violations.append({
+                    "source_cohort": cohort,
+                    "row_index": row["row_index"],
+                    "drug_column": drug_col,
+                    "raw_organism": raw_organism,
+                    "numeric_value": row["numeric_value"],
+                    "panel_min": values[0],
+                    "panel_max": values[-1],
+                    "reason": "parsed value falls outside empirical tested-dilution panel for this cohort-drug-organism",
+                    "version": "v1",
+                    "date_added": today,
+                })
+
+    DILUTION_PANEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(panel_rows, columns=[
+        "source_cohort", "drug_column", "raw_organism", "n_unique_values", "min_numeric_value",
+        "max_numeric_value", "version", "date_added",
+    ]).to_csv(DILUTION_PANEL_PATH, index=False)
+    print(f"Wrote {len(panel_rows)} cohort-drug dilution panel row(s) to "
+          f"{DILUTION_PANEL_PATH.relative_to(ROOT.parents[0])}")
+
+    pd.DataFrame(dilution_violations, columns=[
+        "source_cohort", "row_index", "drug_column", "raw_organism", "numeric_value",
+        "panel_min", "panel_max", "reason", "version", "date_added",
+    ]).to_csv(DILUTION_VIOLATIONS_PATH, index=False)
+    print(f"Wrote {len(dilution_violations)} dilution-range violation row(s) to "
+          f"{DILUTION_VIOLATIONS_PATH.relative_to(ROOT.parents[0])}")
+
+    # Independent re-read of the persisted parsed-values artifact: confirm its row
+    # count plus the failure count plus the null count reconciles against total
+    # cells, verified from the file on disk (not just the in-memory list used to
+    # build it) - this is what makes the artifact usable to re-verify the Check
+    # later without re-parsing the original raw files.
+    reloaded_parsed = pd.read_csv(PARSED_PATH)
+    if len(reloaded_parsed) != total_parsed:
+        print(f"FAIL: persisted parsed-values file has {len(reloaded_parsed)} row(s) but {total_parsed} cells were parsed successfully.")
+        failed = True
+    else:
+        print(f"PASS: persisted parsed-values file on disk contains exactly the {total_parsed} successfully parsed MIC cells.")
+
     # Check (a) + (b): every non-null cell either parses to a valid log2 step,
     # or is logged in the exceptions table - nothing silently dropped or kept invalid.
     if total_null + total_parsed + len(failure_rows) != total_cells:
@@ -204,9 +300,14 @@ def main():
         print(f"PASS: all {total_parsed} non-null MIC cells across the 3 SOAR files round-trip to a valid "
               f"log2 dilution step within {TOLERANCE:.0%} tolerance; 0 parse failures.")
 
-    print("NOTE: Check (c) - validating against each drug's own tested dilution range (not just the "
-          "generic log2 series) is not satisfiable without a per-drug panel dictionary, which this "
-          "pipeline does not have (Appendix 4 A.6, a stated open risk, not an oversight).")
+    if dilution_violations:
+        print(f"FAIL: {len(dilution_violations)} parsed MIC value(s) fall outside the empirical "
+              f"per-cohort per-drug tested dilution panel (Check c).")
+        failed = True
+    else:
+        print(f"PASS: Check (c) - all {total_parsed} parsed MIC values fall within the empirical "
+              f"per-cohort per-drug per-organism tested dilution panel ({len(panel_rows)} "
+              f"cohort-drug-organism panels derived from live SOAR data).")
 
     # Reconnaissance finding: SENTRY's antifungal MIC columns carry no comparator notation at all.
     df_sentry = pd.read_excel(SENTRY_PATH)

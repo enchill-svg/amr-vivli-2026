@@ -219,3 +219,8 @@ __marimo__/
 
 # Preprocessing pipeline docs
 preprocessing_pipeline/docs/
+
+# Pipeline raw inputs (large data files; README + sync script stay tracked)
+preprocessing_pipeline/raw_inputs/**
+!preprocessing_pipeline/raw_inputs/README.md
+!preprocessing_pipeline/raw_inputs/sync_from_docs.py

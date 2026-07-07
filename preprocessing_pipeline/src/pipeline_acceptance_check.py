@@ -12,15 +12,15 @@ re-implemented here.
 
 Item 2 (row-count reconciliation) - the plan's own text states the formula as
 raw = analysis-ready + Step 3 organism exclusions + Step 10 confirmed
-duplicates removed. Step 10's own Check (a) already found and documented a
-real 4th term the plan's text does not anticipate: isolates with zero
-non-null values across every drug column (SOAR_207965's Evaluable=N cohort)
-produce zero long-format rows by construction and cannot be folded into any
-of the plan's stated 3 buckets. This script re-verifies that extended
-4-bucket formula independently, reading each bucket from its own step's
+duplicates removed. Step 10's own Check (a) already found and documented
+additional terms the plan's text does not anticipate: isolates with zero
+non-null values across every drug column, and Evaluable=N isolates excluded
+from the master table per Step 6. This script re-verifies that extended
+5-bucket formula independently, reading each bucket from its own step's
 already-written artifact (organism_exclusions_log_v1.csv,
-zero_measurement_isolates_log_v1.csv, dedup_review_log_v1.csv, the master
-table itself) rather than recomputing Step 10's logic.
+evaluable_excluded_from_master_log_v1.csv, zero_measurement_isolates_log_v1.csv,
+dedup_review_log_v1.csv, the master table itself) rather than recomputing
+Step 10's logic.
 
 Item 3 (no orphan codes) - every ISO3, canonical_organism, and canonical_drug
 value in the master table must trace back to its crosswalk artifact.
@@ -35,10 +35,12 @@ raw_drug_identifier is Step 4's unresolved "DIN" code carries canonical_drug
 == "UNRESOLVED", and that literal sentinel never collides with any
 resolved/provisional canonical drug name; (b) every SENTRY (fungal)
 isolate-drug row's classification_basis is one of Step 7's 3 valid tier
-values, re-verified here at the master-table level as defense in depth
-(Step 7's own Check (b) already verifies this pre-assembly; this re-checks
-it post-assembly, after the master table has combined it with everything
-else).
+values, and every bacterial isolate-drug row's classification_basis is one of
+eucast_breakpoints.BACTERIAL_VALID_BASES, both re-verified here at the
+master-table level as defense in depth (Step 10's own Check (c) already
+verifies this in-process; this re-checks it independently by reading the
+same persisted master table this script already reads for items 2-3, rather
+than trusting Step 10's in-process result).
 """
 import sys
 from pathlib import Path
@@ -47,18 +49,19 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from step07_classification import VALID_BASES
+from eucast_breakpoints import BACTERIAL_VALID_BASES
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 CROSSWALK_DIR = ROOT / "crosswalks"
 EXCEPTIONS_DIR = ROOT / "exceptions"
 MASTER_PATH = ROOT / "master" / "master_table_v1.csv"
 
 RAW_FILE_SPECS = {
-    "SOAR_201818": {"path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv", "reader": "csv"},
-    "SOAR_201910": {"path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx", "reader": "excel"},
-    "SOAR_207965": {"path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx", "reader": "excel"},
-    "SENTRY": {"path": DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx", "reader": "excel"},
+    "SOAR_201818": {"path": COHORT_PATHS["SOAR_201818"], "reader": "csv"},
+    "SOAR_201910": {"path": COHORT_PATHS["SOAR_201910"], "reader": "excel"},
+    "SOAR_207965": {"path": COHORT_PATHS["SOAR_207965"], "reader": "excel"},
+    "SENTRY": {"path": COHORT_PATHS["SENTRY"], "reader": "excel"},
 }
 
 
@@ -84,31 +87,36 @@ def main():
     organism_cw = pd.read_csv(CROSSWALK_DIR / "organism_crosswalk_v1.csv", keep_default_na=False)
     drug_cw = pd.read_csv(CROSSWALK_DIR / "drug_code_crosswalk_v1.csv", keep_default_na=False)
 
-    # --- Item 2: extended 4-bucket row-count reconciliation. ---
+    # --- Item 2: extended 5-bucket row-count reconciliation. ---
     organism_exclusions = pd.read_csv(EXCEPTIONS_DIR / "organism_exclusions_log_v1.csv")
+    evaluable_excluded = pd.read_csv(EXCEPTIONS_DIR / "evaluable_excluded_from_master_log_v1.csv")
     zero_measurement = pd.read_csv(EXCEPTIONS_DIR / "zero_measurement_isolates_log_v1.csv")
     dedup_log = pd.read_csv(EXCEPTIONS_DIR / "dedup_review_log_v1.csv")
     confirmed_duplicates = (dedup_log["resolution"] == "candidate_duplicate_found_needs_manual_review").sum()
 
     print("Item 2 - row-count reconciliation (raw = analysis-ready + organism-excluded + "
-          "zero-measurement + confirmed-duplicates-removed; the last two terms extend the "
-          "plan's stated 3-bucket formula per Step 10's own documented finding):")
+          "Evaluable=N-excluded-from-master + zero-measurement + confirmed-duplicates-removed; "
+          "the last three terms extend the plan's stated 3-bucket formula per Step 10's own documented findings):")
     for cohort_name, spec in RAW_FILE_SPECS.items():
         n_raw = raw_row_count(spec)
         n_analysis_ready = master_df.loc[master_df["source_cohort"] == cohort_name, "isolate_id"].nunique()
         n_organism_excluded = int((organism_exclusions["cohort"] == cohort_name).sum())
+        n_evaluable_excluded = int((evaluable_excluded["cohort"] == cohort_name).sum())
         n_zero_measurement = int((zero_measurement["cohort"] == cohort_name).sum())
         n_duplicates_removed = 0  # candidate duplicates are logged for manual review, never auto-removed (Justice's Action) - never silently folded into "expected" as if already resolved.
-        expected = n_analysis_ready + n_organism_excluded + n_zero_measurement + n_duplicates_removed
+        expected = (
+            n_analysis_ready + n_organism_excluded + n_evaluable_excluded
+            + n_zero_measurement + n_duplicates_removed
+        )
         if n_raw != expected:
             print(f"  FAIL: {cohort_name} - raw {n_raw} != analysis-ready {n_analysis_ready} + organism-excluded "
-                  f"{n_organism_excluded} + zero-measurement {n_zero_measurement} + duplicates-removed "
-                  f"{n_duplicates_removed} (= {expected}).")
+                  f"{n_organism_excluded} + Evaluable=N {n_evaluable_excluded} + zero-measurement "
+                  f"{n_zero_measurement} + duplicates-removed {n_duplicates_removed} (= {expected}).")
             failed = True
         else:
             print(f"  PASS: {cohort_name} - raw {n_raw} == analysis-ready {n_analysis_ready} + organism-excluded "
-                  f"{n_organism_excluded} + zero-measurement {n_zero_measurement} + duplicates-removed "
-                  f"{n_duplicates_removed}.")
+                  f"{n_organism_excluded} + Evaluable=N {n_evaluable_excluded} + zero-measurement "
+                  f"{n_zero_measurement} + duplicates-removed {n_duplicates_removed}.")
     if confirmed_duplicates:
         print(f"  NOTE: {confirmed_duplicates} candidate duplicate(s) are logged for manual review and are not "
               f"subtracted from any cohort's analysis-ready count above (Justice's Action never auto-removes them).")
@@ -185,6 +193,17 @@ def main():
         print(f"PASS: all {len(fungal_master)} SENTRY (fungal) row(s) in the master table carry exactly one of "
               f"Step 7's 3 valid classification_basis tiers ({sorted(VALID_BASES)}), distinguishable from any "
               f"other tier.")
+
+    bacterial_master_basis = master_df[master_df["source_cohort"] != "SENTRY"]
+    bad_bacterial_basis = bacterial_master_basis[~bacterial_master_basis["classification_basis"].isin(BACTERIAL_VALID_BASES)]
+    if len(bad_bacterial_basis):
+        print(f"FAIL: {len(bad_bacterial_basis)} bacterial row(s) in the master table carry a classification_basis "
+              f"outside eucast_breakpoints.BACTERIAL_VALID_BASES.")
+        failed = True
+    else:
+        print(f"PASS: all {len(bacterial_master_basis)} bacterial row(s) in the master table carry exactly one of "
+              f"eucast_breakpoints's {len(BACTERIAL_VALID_BASES)} valid classification_basis values "
+              f"({sorted(BACTERIAL_VALID_BASES)}).")
 
     if failed:
         print("\nPipeline acceptance Check: FAIL")

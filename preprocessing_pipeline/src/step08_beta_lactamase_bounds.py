@@ -24,6 +24,20 @@ isolate than a truly negative one) - a term of art, never to be confused with
 is computed per organism within each cohort (Check c), never as a single
 pooled whole-file number.
 
+Caveats required alongside every reported bound (Appendix 5 SS5.7 - three
+caveats, all three restated here, none silently dropped):
+  1. Whether the underlying lab determination itself is error-free is
+     unaudited by this pipeline.
+  2. Whether "blank" genuinely means "not tested" (rather than e.g. "tested,
+     result lost") is unconfirmed against any of these files' documentation.
+  3. Testing monotonicity is fundamentally untestable from this data by
+     construction - it is a structural assumption about whether truly-positive
+     isolates are tested at least as often as truly-negative ones, and nothing
+     observable in a dataset where negatives-among-untested are unknown by
+     definition can confirm or refute it. Tier 2's upper bound must therefore
+     always be presented as conditional on this assumption, never as a
+     verified or verifiable number.
+
 Retained isolates are scoped using Step 3's organism crosswalk (excluding No
 Growth / environmental-contaminant / cross-domain-fungal rows), per this
 step's own dependency on Step 3.
@@ -34,16 +48,44 @@ verified-grounding note): the live data shows SOAR_201910 spells the same two
 categories two different ways - "NEG"/"Negative" and "POS"/"Positive" - which
 must be normalized to a single POS/NEG pair before counting T and P, or the
 breakdown would silently undercount both.
+
+Stratification (expanded this session per Section 5.5): bounds are computed
+per organism x cohort x country x year, not organism x cohort alone. Country
+uses Step 1's own reviewed crosswalk (crosswalks/country_iso3_crosswalk_v1.csv);
+year reuses Step 2's exact parse_value logic (re-implemented here rather than
+imported, matching this pipeline's convention of depending on a prior step's
+persisted crosswalk artifact, not its source module - Step 2 has no persisted
+per-row year artifact to read, only an exceptions log). Any row whose country
+or year cannot be resolved is bucketed into an explicit "unmapped"/
+"unparseable" stratum rather than silently dropped from the denominator - Step
+1 and Step 2's own Checks already guarantee this is rare-to-never for these
+three cohorts, but this step verifies it independently rather than assuming it.
+
+Judgment call (documented, not resolved by adding a threshold): the finer
+four-way stratification produces many low-N strata, some with N as low as 1.
+This table does not drop or merge those strata. Manski-style identification
+bounds are valid for any N - a small sample makes the bound wide (less
+informative), not invalid - so suppressing low-N rows would remove real,
+correctly-computed information rather than fix a defect. Every row instead
+carries its own N so a downstream consumer can judge informativeness itself;
+an explicit low_n_stratum flag (N < 10) is added for visibility, not filtering.
 """
 import sys
+import datetime as dt
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 ORGANISM_CROSSWALK_PATH = ROOT / "crosswalks" / "organism_crosswalk_v1.csv"
+COUNTRY_CROSSWALK_PATH = ROOT / "crosswalks" / "country_iso3_crosswalk_v1.csv"
 BOUNDS_PATH = ROOT / "bounds" / "beta_lactamase_bounds_v1.csv"
+
+LOW_N_THRESHOLD = 10
+UNMAPPED_COUNTRY = "UNMAPPED_COUNTRY"
+UNPARSEABLE_YEAR = "UNPARSEABLE_YEAR"
+UNMAPPED_ORGANISM = "UNMAPPED_ORGANISM"
 
 TIER2_ASSUMPTION_LABEL = "testing monotonicity (Manski & Molinari 2021)"
 
@@ -59,22 +101,28 @@ BETA_LACTAMASE_NORMALIZATION = {
 
 SOAR_COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "organism_col": "ORGANISMNAME",
         "beta_lactamase_col": "BETALACTAMASE",
+        "country_col": "COUNTRY",
+        "date_col": "YEARCOLLECTED",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "organism_col": "Organism",
         "beta_lactamase_col": "Betalactamase",
+        "country_col": "Country",
+        "date_col": "Collection Date",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "organism_col": "FinalOrganismName",
         "beta_lactamase_col": "Beta Lactamase",
+        "country_col": "Country",
+        "date_col": "YearCollected",
     },
 }
 
@@ -88,9 +136,35 @@ def load_organism_crosswalk():
     return lookup
 
 
+def load_country_crosswalk():
+    cw = pd.read_csv(COUNTRY_CROSSWALK_PATH)
+    return dict(zip(cw["raw_string"], cw["iso3"]))
+
+
+def parse_year(value):
+    """Re-implements Step 2's exact parse_value rules; returns a year or None."""
+    if isinstance(value, (dt.datetime, dt.date, pd.Timestamp)):
+        return value.year
+    if isinstance(value, str):
+        try:
+            return dt.datetime.strptime(value.strip(), "%d-%b-%y").year
+        except ValueError:
+            pass
+        try:
+            return dt.datetime.strptime(value.strip(), "%b-%y").year
+        except ValueError:
+            return None
+    if isinstance(value, (int, float)) and not pd.isna(value):
+        year = int(value)
+        if 1900 <= year <= 2100:
+            return year
+    return None
+
+
 def main():
     failed = False
     organism_lookup = load_organism_crosswalk()
+    country_lookup = load_country_crosswalk()
     bounds_rows = []
 
     for cohort_name, spec in SOAR_COHORTS.items():
@@ -100,7 +174,13 @@ def main():
             df = pd.read_excel(spec["path"])
 
         organism_raw = df[spec["organism_col"]].where(df[spec["organism_col"]].notna(), None)
-        canonical_organism = organism_raw.map(organism_lookup)
+        canonical_organism = organism_raw.map(lambda v: organism_lookup.get(v, UNMAPPED_ORGANISM))
+        n_unmapped_organism = (canonical_organism == UNMAPPED_ORGANISM).sum()
+        if n_unmapped_organism:
+            print(f"FAIL: {cohort_name} has {n_unmapped_organism} row(s) whose organism string is not in Step 3's "
+                  f"crosswalk (would silently mis-stratify if not caught): "
+                  f"{sorted(organism_raw[canonical_organism == UNMAPPED_ORGANISM].dropna().unique())}")
+            failed = True
         retained_mask = canonical_organism != "excluded"
 
         beta_raw = df[spec["beta_lactamase_col"]]
@@ -111,16 +191,34 @@ def main():
             print(f"FAIL: {cohort_name} has {len(unrecognized)} Beta Lactamase value(s) not recognized by the normalization map: {unrecognized.unique()}")
             failed = True
 
+        country_raw = df[spec["country_col"]]
+        canonical_country = country_raw.map(lambda v: country_lookup.get(v, UNMAPPED_COUNTRY) if pd.notna(v) else UNMAPPED_COUNTRY)
+        n_unmapped_country = (canonical_country == UNMAPPED_COUNTRY).sum()
+        if n_unmapped_country:
+            print(f"FAIL: {cohort_name} has {n_unmapped_country} row(s) whose country string is not in Step 1's crosswalk "
+                  f"(would silently mis-stratify if not bucketed): {sorted(country_raw[canonical_country == UNMAPPED_COUNTRY].dropna().unique())}")
+            failed = True
+
+        year_raw = df[spec["date_col"]]
+        parsed_year = year_raw.map(lambda v: parse_year(v) if pd.notna(v) else None)
+        canonical_year = parsed_year.map(lambda y: str(y) if y is not None else UNPARSEABLE_YEAR)
+        n_unparseable_year = (canonical_year == UNPARSEABLE_YEAR).sum()
+        if n_unparseable_year:
+            print(f"NOTE: {cohort_name} has {n_unparseable_year} row(s) whose year could not be parsed by Step 2's own rules "
+                  f"- bucketed into an explicit '{UNPARSEABLE_YEAR}' stratum rather than dropped (matches Step 2's own logged exception count).")
+
         n_total = len(df)
         n_retained = retained_mask.sum()
         print(f"\n{cohort_name}: {n_total} total rows, {n_retained} retained after Step 3 organism exclusions")
 
         strata = pd.DataFrame({
             "organism": canonical_organism[retained_mask],
+            "country": canonical_country[retained_mask],
+            "year": canonical_year[retained_mask],
             "beta_lactamase": beta_normalized[retained_mask],
         })
 
-        for organism, group in strata.groupby("organism"):
+        for (organism, country, year), group in strata.groupby(["organism", "country", "year"]):
             N = len(group)
             T = group["beta_lactamase"].notna().sum()
             P = (group["beta_lactamase"] == "POS").sum()
@@ -133,9 +231,12 @@ def main():
             bounds_rows.append({
                 "cohort": cohort_name,
                 "organism": organism,
+                "country": country,
+                "year": year,
                 "N": N,
                 "T": T,
                 "P": P,
+                "low_n_stratum": N < LOW_N_THRESHOLD,
                 "tier1_assumption": "assumption_free_manski",
                 "tier1_lower": round(tier1_lower, 4),
                 "tier1_upper": round(tier1_upper, 4),
@@ -143,17 +244,21 @@ def main():
                 "tier2_lower": round(tier2_lower, 4),
                 "tier2_upper": round(tier2_upper, 4) if tier2_upper is not None else "",
                 "version": "v1",
-                "date_added": "2026-07-06",
+                "date_added": dt.date.today().isoformat(),
             })
 
     BOUNDS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(bounds_rows, columns=[
-        "cohort", "organism", "N", "T", "P",
+    bounds_columns = [
+        "cohort", "organism", "country", "year", "N", "T", "P", "low_n_stratum",
         "tier1_assumption", "tier1_lower", "tier1_upper",
         "tier2_assumption", "tier2_lower", "tier2_upper",
         "version", "date_added",
-    ]).to_csv(BOUNDS_PATH, index=False)
-    print(f"\nWrote {len(bounds_rows)} organism-stratum row(s) to {BOUNDS_PATH.relative_to(ROOT.parents[0])}")
+    ]
+    pd.DataFrame(bounds_rows, columns=bounds_columns).to_csv(BOUNDS_PATH, index=False)
+    n_low_n = sum(1 for r in bounds_rows if r["low_n_stratum"])
+    print(f"\nWrote {len(bounds_rows)} organism x country x year stratum row(s) to "
+          f"{BOUNDS_PATH.relative_to(ROOT.parents[0])} ({n_low_n} flagged low_n_stratum, N < {LOW_N_THRESHOLD} - "
+          f"kept, not dropped; see docstring's judgment-call note).")
 
     # Whole-file rollup, printed for comparison against the plan's illustrative
     # arithmetic - never as a substitute for the stratified rows above (Check a/c).
@@ -190,7 +295,8 @@ def main():
     else:
         print(f"PASS: every Tier 2 bound is labeled '{TIER2_ASSUMPTION_LABEL}', distinct from Tier 1's assumption-free label.")
 
-    # Check (c): every bound is stratum-specific by organism (never a single pooled whole-file row).
+    # Check (c): every bound is stratum-specific by organism x country x year (never a single
+    # pooled whole-file row, and never merely organism-level pooling across country/year either).
     distinct_strata_per_cohort = bounds_df.groupby("cohort")["organism"].nunique()
     if (distinct_strata_per_cohort <= 1).any():
         print(f"FAIL: at least one cohort has only 1 organism stratum in the deliverable - would read as a pooled whole-file bound: {distinct_strata_per_cohort.to_dict()}")
@@ -198,11 +304,52 @@ def main():
     else:
         print(f"PASS: every cohort's bounds are broken out across multiple organism strata (counts: {distinct_strata_per_cohort.to_dict()}), never a single pooled figure.")
 
-    print("\nNOTE (open risk, not resolved here): stratification above is organism x cohort only, not the "
-          "full organism/cohort/country/year stratification Section 5.5 calls for - that finer breakdown "
-          "is not implemented in this step. Also unresolved: whether 'blank' genuinely means 'not tested' "
-          "for any of these files, and whether the underlying lab determination is error-free - both are "
-          "required audits this pipeline does not perform (Appendix 5 SS5.7).")
+    # Check (d): the finer stratification is real, not cosmetic - confirm N sums to the same
+    # retained total as before (no row silently lost to the new country/year grouping keys) and
+    # that at least one organism actually splits across more than one country or year.
+    n_from_strata = bounds_df.groupby("cohort")["N"].sum()
+    n_sum_check_failed = False
+    for cohort_name, spec in SOAR_COHORTS.items():
+        if spec["reader"] == "csv":
+            df = pd.read_csv(spec["path"], low_memory=False)
+        else:
+            df = pd.read_excel(spec["path"])
+        organism_raw = df[spec["organism_col"]].where(df[spec["organism_col"]].notna(), None)
+        canonical_organism = organism_raw.map(lambda v: organism_lookup.get(v, UNMAPPED_ORGANISM))
+        n_expected_retained = (canonical_organism != "excluded").sum()
+        if n_from_strata.get(cohort_name, 0) != n_expected_retained:
+            print(f"FAIL: {cohort_name} - stratified N sums to {n_from_strata.get(cohort_name, 0)}, "
+                  f"expected {n_expected_retained} retained rows. Some row(s) were silently lost to grouping.")
+            failed = True
+            n_sum_check_failed = True
+    if not n_sum_check_failed:
+        print(f"PASS: every cohort's organism x country x year strata sum back to the exact retained row "
+              f"count - the finer grouping keys lost zero rows (none silently bucketed out of the denominator).")
+
+    country_year_splits = bounds_df.groupby(["cohort", "organism"])[["country", "year"]].apply(
+        lambda g: g.drop_duplicates().shape[0] > 1
+    )
+    if not country_year_splits.any():
+        print("FAIL: not one organism in any cohort splits across more than one country or year stratum - "
+              "the country/year stratification would be cosmetic (identical to organism x cohort alone).")
+        failed = True
+    else:
+        print(f"PASS: {country_year_splits.sum()} of {len(country_year_splits)} (cohort, organism) group(s) "
+              f"genuinely split into more than one country/year stratum - confirms the finer stratification "
+              f"is real, not a relabeling of the old organism x cohort table.")
+
+    print(f"\nNOTE (judgment call applied, per this file's docstring): stratification is now organism x "
+          f"cohort x country x year, per Section 5.5. {n_low_n} of {len(bounds_df)} strata are flagged "
+          f"low_n_stratum (N < {LOW_N_THRESHOLD}) and kept rather than dropped or merged - Manski bounds "
+          "remain valid at any N, just wider/less informative, so suppressing them would discard real "
+          "information rather than fix a defect.")
+    print("NOTE: all 3 Appendix 5 SS5.7 caveats apply to every bound reported above and are restated here, "
+          "none silently dropped - (1) the underlying lab determination's error rate is unaudited; (2) whether "
+          "'blank' genuinely means 'not tested' is unconfirmed against any of these files' documentation; "
+          "(3) testing monotonicity (the Tier 2 assumption) is fundamentally untestable from this data by "
+          "construction - nothing observable in data where negatives-among-untested are unknown by definition "
+          "can confirm or refute it, so Tier 2's upper bound must always be presented as conditional on this "
+          "assumption, never as a verified number.")
 
     if failed:
         print("\nStep 8 Check: FAIL")

@@ -16,13 +16,14 @@ Check: every retained isolate maps to a named species or an explicit
 "unidentified pathogen" category; excluded isolates are counted and logged,
 not silently dropped.
 """
+import datetime as dt
 import sys
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 CROSSWALK_PATH = ROOT / "crosswalks" / "organism_crosswalk_v1.csv"
 EXCLUSIONS_PATH = ROOT / "exceptions" / "organism_exclusions_log_v1.csv"
 
@@ -55,19 +56,32 @@ CROSS_DOMAIN_FUNGAL = {
 # sentinel, per Justice's Check text treating it as distinct from exclusion.
 SENTINEL_STRINGS = {"Unknown"}
 
+# Spelling/transliteration variants confirmed (by direct inspection of the raw
+# SOAR 207965 FinalOrganismName column) to refer to the same species as
+# another retained raw string - without this map, both strings would each be
+# kept as their own "canonical" species, splitting one organism's isolates
+# across two rows downstream. Every entry here maps a raw string onto another
+# raw string that is ALSO independently retained (never introduces a name not
+# already present in the data), so this is a merge of duplicates, not a guess.
+SPECIES_ALIASES = {
+    # American-English spelling variant missing the "ae" digraph; both forms
+    # are attested in the raw data (9 rows "haemolyticus", 4 rows "hemolyticus").
+    "Haemophilus hemolyticus": "Haemophilus haemolyticus",
+}
+
 COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "organism_col": "ORGANISMNAME",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "organism_col": "Organism",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "organism_col": "FinalOrganismName",
     },
@@ -97,7 +111,8 @@ def classify(raw_string):
     if raw_string in SENTINEL_STRINGS:
         return "unidentified_pathogen", "bacterial", None, "explicit_unknown_string"
 
-    return raw_string, "bacterial", None, None
+    canonical = SPECIES_ALIASES.get(raw_string, raw_string)
+    return canonical, "bacterial", None, None
 
 
 def load_cohort(name, spec):
@@ -135,7 +150,7 @@ def main():
                     "cohorts_observed": set(),
                     "row_count": 0,
                     "version": "v1",
-                    "date_added": "2026-07-06",
+                    "date_added": dt.date.today().isoformat(),
                 }
             crosswalk_rows[key]["cohorts_observed"].add(name)
             crosswalk_rows[key]["row_count"] += 1
@@ -148,7 +163,7 @@ def main():
                     "raw_organism_value": raw_value,
                     "exclusion_reason": exclusion_reason,
                     "version": "v1",
-                    "date_added": "2026-07-06",
+                    "date_added": dt.date.today().isoformat(),
                 })
             else:
                 n_retained += 1
@@ -156,11 +171,30 @@ def main():
         per_cohort_counts[name] = (n_total, n_retained, n_excluded)
         print(f"{name}: {n_total} rows -> {n_retained} retained, {n_excluded} excluded")
 
-    # Check (a): every distinct raw string resolves to exactly one bucket (guaranteed by
-    # construction - classify() is a total function - but verify no raw string was
-    # classified inconsistently across cohorts, i.e. same raw string mapped two ways).
+    # Check (a): every distinct raw string resolves to exactly one bucket. classify()
+    # is a total function called fresh here (independent of the crosswalk_rows dict
+    # built above) and its result is asserted equal to what got stored - this catches
+    # a bug where crosswalk_rows was mutated or populated inconsistently, which a bare
+    # "guaranteed by construction" comment would not.
     print(f"\n{len(crosswalk_rows)} distinct raw organism strings across all 3 bacterial cohorts.")
-    print("PASS: every distinct raw string resolves to exactly one of {canonical species, unidentified_pathogen, excluded} by construction.")
+    inconsistent = []
+    for key, stored in crosswalk_rows.items():
+        raw_value = None if key == "<null>" else key
+        canonical, pathogen_type, exclusion_reason, note = classify(raw_value)
+        expected_canonical = canonical if canonical else "excluded"
+        expected_pathogen_type = pathogen_type if pathogen_type else ""
+        expected_exclusion_reason = exclusion_reason if exclusion_reason else ""
+        if (stored["canonical_organism"], stored["pathogen_type"], stored["exclusion_reason"]) != (
+                expected_canonical, expected_pathogen_type, expected_exclusion_reason):
+            inconsistent.append(key)
+        if not stored["canonical_organism"]:
+            inconsistent.append(key)
+    if inconsistent:
+        print(f"FAIL: {len(inconsistent)} raw string(s) resolve inconsistently on re-classification: {inconsistent}")
+        failed = True
+    else:
+        print("PASS: every distinct raw string resolves to exactly one of {canonical species, unidentified_pathogen, excluded}, "
+              "confirmed by re-running classify() independently for all distinct raw strings.")
 
     # Check (b): exclusions log row count reconciles exactly per cohort.
     for name, (n_total, n_retained, n_excluded) in per_cohort_counts.items():

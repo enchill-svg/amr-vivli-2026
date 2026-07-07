@@ -19,27 +19,27 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 CROSSWALK_PATH = ROOT / "crosswalks" / "country_iso3_crosswalk_v1.csv"
 
 COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "country_col": "COUNTRY",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "country_col": "Country",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "country_col": "Country",
     },
     "SENTRY": {
-        "path": DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx",
+        "path": COHORT_PATHS["SENTRY"],
         "reader": "excel",
         "country_col": "Country",
     },
@@ -110,6 +110,42 @@ def main():
         failed = True
     else:
         print(f"PASS: only the {len(KNOWN_COLLISIONS)} reviewed collisions found ({collisions}).")
+
+    # Both known collisions must actually be PRESENT, not merely "no unexpected ones
+    # found" - a typo'd ISO3 on one of the two collision rows would silently vanish
+    # from `collisions` above (each string would land in its own singleton bucket)
+    # and the check above would still print PASS.
+    missing_collisions = {code: strs for code, strs in KNOWN_COLLISIONS.items() if collisions.get(code) != strs}
+    if missing_collisions:
+        print(f"FAIL: expected collision(s) not found in the crosswalk (a row may have been mis-coded): {missing_collisions}")
+        failed = True
+    else:
+        print(f"PASS: both reviewed collisions ({list(KNOWN_COLLISIONS)}) are present exactly as expected.")
+
+    # Distinct ISO3 code count must be exactly 57 (59 raw strings minus the 2
+    # many-to-one collisions), per Appendix 2 Check (c).
+    n_distinct_iso3 = len(code_to_strings)
+    if n_distinct_iso3 != 57:
+        print(f"FAIL: expected exactly 57 distinct ISO3 codes (59 raw strings - 2 collisions), found {n_distinct_iso3}.")
+        failed = True
+    else:
+        print(f"PASS: exactly 57 distinct ISO3 codes across {len(crosswalk_strings)} raw strings, matching Appendix 2 Check (c).")
+
+    # Confidence/note discipline, per Appendix 2 Check (b): exactly the 4 named rows
+    # (Hong Kong, Korea, Scotland, Taiwan) are non-"high" confidence, and every
+    # non-"high" row carries a populated reason; every other row is "high" with no
+    # reason required.
+    EXPECTED_FLAGGED = {"Hong Kong", "Korea", "Scotland", "Taiwan"}
+    flagged_rows = crosswalk[crosswalk["confidence"] != "high"]
+    actual_flagged = set(flagged_rows["raw_string"])
+    unnoted_flagged = flagged_rows[flagged_rows["note"].isna() | (flagged_rows["note"].astype(str).str.strip() == "")]
+    if actual_flagged != EXPECTED_FLAGGED or len(unnoted_flagged):
+        print(f"FAIL: expected exactly {EXPECTED_FLAGGED} to be flagged with a populated note; "
+              f"found {actual_flagged} flagged, {len(unnoted_flagged)} missing a note.")
+        failed = True
+    else:
+        print(f"PASS: exactly the 4 expected rows ({sorted(actual_flagged)}) are flagged, each with a populated note; "
+              f"remaining {len(crosswalk) - len(flagged_rows)} rows are 'high' confidence.")
 
     if failed:
         print("\nStep 1 Check: FAIL")

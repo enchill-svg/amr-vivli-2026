@@ -21,7 +21,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 CROSSWALK_PATH = ROOT / "crosswalks" / "drug_code_crosswalk_v1.csv"
 
 # Non-drug (metadata) columns per cohort, established by direct inspection of
@@ -50,19 +50,19 @@ METADATA_COLUMNS = {
 
 COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
     },
     "SENTRY": {
-        "path": DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx",
+        "path": COHORT_PATHS["SENTRY"],
         "reader": "excel",
     },
 }
@@ -99,15 +99,30 @@ def main():
         if not missing_from_crosswalk and not extra_in_crosswalk:
             print(f"PASS: {cohort_id} - every drug column has exactly one crosswalk row, no extras.")
 
-    # Check (a): all 17 SOAR_201910 codes appear with a valid resolution_status.
+    # Check (a): all 17 SOAR_201910 codes appear with a valid resolution_status,
+    # and CDN specifically is pinned to "provisional" / "cefdinir" - per this
+    # file's own docstring, CDN "most likely maps to cefdinir but should be
+    # confirmed against the original data dictionary rather than assumed", so
+    # a bare "status is one of the 3 valid values" check would silently pass
+    # even if CDN were mis-recorded as "resolved" (overstating confidence) or
+    # "unresolved" (losing the anchor evidence already found).
     soar_201910 = crosswalk[crosswalk["cohort_id"] == "SOAR_201910"]
     valid_statuses = {"resolved", "provisional", "unresolved"}
     bad_status = soar_201910[~soar_201910["resolution_status"].isin(valid_statuses)]
-    if len(soar_201910) != 17 or len(bad_status):
-        print(f"FAIL: SOAR_201910 crosswalk rows = {len(soar_201910)} (expected 17); {len(bad_status)} with an invalid resolution_status.")
+    cdn_row = soar_201910[soar_201910["raw_identifier"] == "CDN"]
+    cdn_pinned_correctly = (
+        len(cdn_row) == 1
+        and cdn_row.iloc[0]["resolution_status"] == "provisional"
+        and cdn_row.iloc[0]["canonical_drug"] == "cefdinir"
+    )
+    if len(soar_201910) != 17 or len(bad_status) or not cdn_pinned_correctly:
+        print(f"FAIL: SOAR_201910 crosswalk rows = {len(soar_201910)} (expected 17); {len(bad_status)} with an "
+              f"invalid resolution_status; CDN pinned correctly to provisional/cefdinir = {cdn_pinned_correctly}.")
         failed = True
     else:
-        print(f"PASS: all 17 SOAR_201910 codes carry a valid resolution_status ({soar_201910['resolution_status'].value_counts().to_dict()}).")
+        print(f"PASS: all 17 SOAR_201910 codes carry a valid resolution_status "
+              f"({soar_201910['resolution_status'].value_counts().to_dict()}); CDN specifically confirmed "
+              f"pinned to resolution_status='provisional', canonical_drug='cefdinir'.")
 
     # Check (b): DIN carries exclude_from_cross_cohort_comparison = TRUE and is absent
     # from both the shared-drug and cohort-exclusive canonical_drug sets.

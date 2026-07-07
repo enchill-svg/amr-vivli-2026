@@ -31,14 +31,17 @@ Ukraine/2016 boundary (SOAR_201818's 2014-2016 window vs SOAR_201910's
 2016-2018 window vs SOAR_207965's 2018-2021 window) Justice's text names
 directly.
 
-Bacterial resistance classification: Step 7 could not classify any bacterial
-isolate-drug pair (no EUCAST/CLSI organism-drug breakpoint table available in
-this plan's docs/). Per the master schema's own requirement that
-`classification_basis` never be null, bacterial rows here carry the explicit
-value `unclassified_no_breakpoint_table` - a fourth, honest non-result value
-alongside Step 7's three fungal tiers (CLSI_breakpoint / ECV_WT_NWT /
-unclassifiable_no_standard), never a fabricated S/I/R category.
+Bacterial resistance classification: applied per isolate-drug row via
+eucast_breakpoints.classify_bacterial(), using the EUCAST version mapped to
+each source cohort (see crosswalks/eucast_cohort_version_map_v1.csv). Every
+bacterial row's classification_basis is one of
+eucast_breakpoints.BACTERIAL_VALID_BASES - either a real applied S/I/R call
+(EUCAST_v{version}_breakpoint / EUCAST_v{version}_ecoff_bracketed) or one of
+four documented non-result reasons (no organism match, no drug match, no
+numeric EUCAST value published, or a censored MIC reading that straddles the
+breakpoint) - never a fabricated category.
 """
+import datetime as dt
 import sys
 from pathlib import Path
 
@@ -46,19 +49,18 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from step02_date import parse_value
+from step03_organism import classify
 from step09_age import bin_age, SENTRY_BAND_NORMALIZATION
 from step05_mic import parse_mic, ParseFailure
 from step07_classification import classify_one, FUNGAL_DRUGS, BASIS_CLSI, BASIS_ECV, BASIS_UNCLASSIFIABLE
 from step08_beta_lactamase_bounds import BETA_LACTAMASE_NORMALIZATION
+from eucast_breakpoints import classify_bacterial, BACTERIAL_VALID_BASES
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS, SENTRY_PATH
 CROSSWALK_DIR = ROOT / "crosswalks"
 EXCEPTIONS_DIR = ROOT / "exceptions"
 MASTER_DIR = ROOT / "master"
-
-BASIS_NO_BREAKPOINT_TABLE = "unclassified_no_breakpoint_table"
-NO_BREAKPOINT_CATEGORY = "unclassified - no breakpoint table available"
 
 # 13 canonical drugs common to all 3 SOAR bacterial cohorts (Step 4 crosswalk),
 # used as the MIC-fingerprint basis for both boundary-year dedup checks.
@@ -92,7 +94,7 @@ def normalize_isolate_id(raw_id):
 
 COHORT_SPECS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "isolate_id_col": "IHMANUMBER",
         "country_col": "COUNTRY",
@@ -108,7 +110,7 @@ COHORT_SPECS = {
         },
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "isolate_id_col": "Isolate Number",
         "country_col": "Country",
@@ -124,7 +126,7 @@ COHORT_SPECS = {
         },
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "isolate_id_col": "IHMA #",
         "country_col": "Country",
@@ -142,8 +144,6 @@ COHORT_SPECS = {
         },
     },
 }
-
-SENTRY_PATH = DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx"
 
 BOUNDARY_CHECKS = [
     {"name": "Vietnam_2018", "country": "Vietnam", "year": 2018, "cohorts": ("SOAR_201910", "SOAR_207965")},
@@ -175,13 +175,75 @@ def load_drug_crosswalk():
     return lookup
 
 
+def resolve_organism(raw_organism, organism_map):
+    """Map a raw organism string to (canonical_organism, pathogen_type, exclusion_reason).
+
+    Uses the persisted Step 3 crosswalk first; on a miss, falls back to
+    step03_organism.classify() so a crosswalk gap never silently yields a null
+    canonical_organism in the master table.
+    """
+    if raw_organism in organism_map:
+        canonical_organism, pathogen_type = organism_map[raw_organism]
+        if canonical_organism == "excluded":
+            return None, None, "crosswalk_excluded"
+        return canonical_organism, pathogen_type, None
+
+    canonical_organism, pathogen_type, exclusion_reason, _ = classify(raw_organism)
+    if exclusion_reason:
+        return None, None, exclusion_reason
+    return canonical_organism, pathogen_type, None
+
+
+def build_isolate_metadata(row, spec, country_map):
+    """Extract isolate-level metadata shared by retained and excluded rows."""
+    raw_country = row[spec["country_col"]]
+    iso3 = country_map.get(raw_country)
+
+    raw_year = row[spec["year_col"]]
+    parsed_year, date_parse_status, used_fallback_pattern = parse_value(raw_year)
+
+    raw_beta = row[spec["beta_lactamase_col"]]
+    beta_lactamase_raw = BETA_LACTAMASE_NORMALIZATION.get(raw_beta) if pd.notna(raw_beta) else None
+
+    raw_age = row[spec["age_col"]]
+    age_continuous = raw_age if pd.notna(raw_age) and raw_age >= 0 else None
+    age_band = bin_age(raw_age) if pd.notna(raw_age) else None
+
+    evaluable_flag = None
+    if spec["evaluable_col"] is not None:
+        raw_eval = row[spec["evaluable_col"]]
+        evaluable_flag = None if pd.isna(raw_eval) else raw_eval
+
+    original_organism_name = None
+    if spec["original_organism_col"] is not None:
+        raw_orig = row[spec["original_organism_col"]]
+        original_organism_name = None if pd.isna(raw_orig) else raw_orig
+
+    return {
+        "raw_country_original": raw_country,
+        "iso3_country": iso3,
+        "parsed_year": parsed_year,
+        "date_parse_status": date_parse_status,
+        "used_fallback_pattern": used_fallback_pattern,
+        "original_organism_name": original_organism_name,
+        "evaluable_flag": evaluable_flag,
+        "beta_lactamase_raw": beta_lactamase_raw,
+        "age_band": age_band,
+        "age_continuous": age_continuous,
+    }
+
+
 def build_soar_isolates(cohort_name, spec, country_map, organism_map):
-    """Return (isolate_records, raw_row_count) for one SOAR cohort.
+    """Return (isolate_records, organism_excluded_registry_rows, raw_row_count, n_organism_excluded).
 
     isolate_records is a list of dicts, one per RETAINED isolate (Step 3
     organism-excluded rows are dropped here, per Step 10's own row-count
     reconciliation formula), each carrying isolate-level metadata plus a
     `drug_values` dict of {raw_drug_column: raw_mic_cell}.
+
+    organism_excluded_registry_rows carries one registry row per Step-3
+    excluded isolate so isolate_registry_v1.csv round-trips to each cohort's
+    raw row count.
     """
     if spec["reader"] == "csv":
         df = pd.read_csv(spec["path"], low_memory=False)
@@ -191,63 +253,45 @@ def build_soar_isolates(cohort_name, spec, country_map, organism_map):
     drug_columns = [c for c in df.columns if c not in spec["metadata_columns"]]
     n_raw = len(df)
     records = []
+    organism_excluded_registry_rows = []
     n_organism_excluded = 0
+    today = dt.date.today().isoformat()
 
     for _, row in df.iterrows():
         raw_organism = row[spec["organism_col"]]
         raw_organism = None if pd.isna(raw_organism) else raw_organism
-        canonical_organism, pathogen_type = organism_map.get(raw_organism, (None, None))
+        canonical_organism, pathogen_type, exclusion_reason = resolve_organism(
+            raw_organism, organism_map)
 
-        if canonical_organism == "excluded":
+        metadata = build_isolate_metadata(row, spec, country_map)
+        isolate_id = normalize_isolate_id(row[spec["isolate_id_col"]])
+
+        if exclusion_reason:
             n_organism_excluded += 1
+            organism_excluded_registry_rows.append({
+                "isolate_id": isolate_id,
+                "source_cohort": cohort_name,
+                "canonical_organism": None,
+                "pathogen_type": None,
+                **metadata,
+                "has_drug_measurement": False,
+                "in_master_table": False,
+                "exclusion_reason": f"Step 3 organism exclusion: {exclusion_reason}",
+                "version": "v1",
+                "date_added": today,
+            })
             continue
-
-        raw_country = row[spec["country_col"]]
-        iso3 = country_map.get(raw_country)
-
-        raw_year = row[spec["year_col"]]
-        parsed_year, date_parse_status = parse_value(raw_year)
-
-        raw_beta = row[spec["beta_lactamase_col"]]
-        beta_lactamase_raw = BETA_LACTAMASE_NORMALIZATION.get(raw_beta) if pd.notna(raw_beta) else None
-
-        # age_continuous is coerced to None for the negative-age sentinel, same
-        # as age_band: -1 is a confirmed data-entry sentinel (Step 9's own
-        # reconnaissance), not a real age, so a field literally named
-        # "age_continuous" must not carry it - the raw sentinel value remains
-        # fully recoverable via Step 9's age_sentinel_exclusions_log_v1.csv.
-        raw_age = row[spec["age_col"]]
-        age_continuous = raw_age if pd.notna(raw_age) and raw_age >= 0 else None
-        age_band = bin_age(raw_age) if pd.notna(raw_age) else None
-
-        evaluable_flag = None
-        if spec["evaluable_col"] is not None:
-            raw_eval = row[spec["evaluable_col"]]
-            evaluable_flag = None if pd.isna(raw_eval) else raw_eval
-
-        original_organism_name = None
-        if spec["original_organism_col"] is not None:
-            raw_orig = row[spec["original_organism_col"]]
-            original_organism_name = None if pd.isna(raw_orig) else raw_orig
 
         records.append({
             "source_cohort": cohort_name,
-            "isolate_id": normalize_isolate_id(row[spec["isolate_id_col"]]),
-            "raw_country_original": raw_country,
-            "iso3_country": iso3,
-            "parsed_year": parsed_year,
-            "date_parse_status": date_parse_status,
+            "isolate_id": isolate_id,
+            **metadata,
             "canonical_organism": canonical_organism,
-            "original_organism_name": original_organism_name,
             "pathogen_type": pathogen_type,
-            "evaluable_flag": evaluable_flag,
-            "beta_lactamase_raw": beta_lactamase_raw,
-            "age_band": age_band,
-            "age_continuous": age_continuous,
             "drug_values": {col: row[col] for col in drug_columns},
         })
 
-    return records, n_raw, n_organism_excluded
+    return records, organism_excluded_registry_rows, n_raw, n_organism_excluded
 
 
 def build_sentry_isolates(country_map):
@@ -258,7 +302,7 @@ def build_sentry_isolates(country_map):
         iso3 = country_map.get(raw_country)
 
         raw_year = row["Year"]
-        parsed_year, date_parse_status = parse_value(raw_year)
+        parsed_year, date_parse_status, used_fallback_pattern = parse_value(raw_year)
 
         raw_age_band = row["Age Group"]
         age_band = SENTRY_BAND_NORMALIZATION.get(raw_age_band) if pd.notna(raw_age_band) else None
@@ -274,6 +318,7 @@ def build_sentry_isolates(country_map):
             "iso3_country": iso3,
             "parsed_year": parsed_year,
             "date_parse_status": date_parse_status,
+            "used_fallback_pattern": used_fallback_pattern,
             "canonical_organism": row["Species"],
             "original_organism_name": None,
             "pathogen_type": "fungal",
@@ -344,14 +389,15 @@ def build_fingerprints(records, cohort_name, drug_crosswalk):
     return fingerprints
 
 
-def run_dedup_checks(all_records_by_cohort, drug_crosswalk):
+def run_dedup_checks(all_records_by_cohort, drug_crosswalk, country_map):
     dedup_rows = []
     for check in BOUNDARY_CHECKS:
         cohort_a, cohort_b = check["cohorts"]
+        boundary_iso3 = country_map.get(check["country"])
         candidates_a = [r for r in all_records_by_cohort[cohort_a]
-                        if r["raw_country_original"] == check["country"] and r["parsed_year"] == check["year"]]
+                        if r["iso3_country"] == boundary_iso3 and r["parsed_year"] == check["year"]]
         candidates_b = [r for r in all_records_by_cohort[cohort_b]
-                        if r["raw_country_original"] == check["country"] and r["parsed_year"] == check["year"]]
+                        if r["iso3_country"] == boundary_iso3 and r["parsed_year"] == check["year"]]
 
         subset_a = [r for r in candidates_a if has_shared_drug_data(r, cohort_a, drug_crosswalk)]
         subset_b = [r for r in candidates_b if has_shared_drug_data(r, cohort_b, drug_crosswalk)]
@@ -373,7 +419,7 @@ def run_dedup_checks(all_records_by_cohort, drug_crosswalk):
                 "country": check["country"], "year": check["year"],
                 "fingerprint": f"{cohort_a}:{excluded_a}_excluded,{cohort_b}:{excluded_b}_excluded",
                 "resolution": "excluded_no_shared_mic_data",
-                "version": "v1", "date_added": "2026-07-06",
+                "version": "v1", "date_added": dt.date.today().isoformat(),
             })
 
         if collisions:
@@ -383,7 +429,7 @@ def run_dedup_checks(all_records_by_cohort, drug_crosswalk):
                     "boundary_check": check["name"], "cohort_a": cohort_a, "cohort_b": cohort_b,
                     "country": check["country"], "year": check["year"],
                     "fingerprint": str(fp), "resolution": "candidate_duplicate_found_needs_manual_review",
-                    "version": "v1", "date_added": "2026-07-06",
+                    "version": "v1", "date_added": dt.date.today().isoformat(),
                 })
         else:
             print(f"  PASS: zero candidate duplicate fingerprints between {cohort_a} and {cohort_b} - confirmed no overlap.")
@@ -391,7 +437,7 @@ def run_dedup_checks(all_records_by_cohort, drug_crosswalk):
                 "boundary_check": check["name"], "cohort_a": cohort_a, "cohort_b": cohort_b,
                 "country": check["country"], "year": check["year"],
                 "fingerprint": "", "resolution": "no_duplicates_found",
-                "version": "v1", "date_added": "2026-07-06",
+                "version": "v1", "date_added": dt.date.today().isoformat(),
             })
     return dedup_rows
 
@@ -408,12 +454,15 @@ def main():
     all_records_by_cohort = {}
     raw_counts = {}
     organism_excluded_counts = {}
+    organism_excluded_registry_rows = []
 
     for cohort_name, spec in COHORT_SPECS.items():
-        records, n_raw, n_excluded = build_soar_isolates(cohort_name, spec, country_map, organism_map)
+        records, excluded_registry, n_raw, n_excluded = build_soar_isolates(
+            cohort_name, spec, country_map, organism_map)
         all_records_by_cohort[cohort_name] = records
         raw_counts[cohort_name] = n_raw
         organism_excluded_counts[cohort_name] = n_excluded
+        organism_excluded_registry_rows.extend(excluded_registry)
         print(f"{cohort_name}: {n_raw} raw rows, {n_excluded} Step-3 organism exclusions, {len(records)} retained isolates")
 
     sentry_records, n_sentry_raw = build_sentry_isolates(country_map)
@@ -423,7 +472,7 @@ def main():
     print(f"SENTRY: {n_sentry_raw} raw rows, 0 Step-3 organism exclusions (Step 3 scope is bacterial-only), {len(sentry_records)} retained isolates")
 
     # --- Part (A): Vietnam/2018 and Ukraine/2016 boundary dedup checks ---
-    dedup_rows = run_dedup_checks(all_records_by_cohort, drug_crosswalk)
+    dedup_rows = run_dedup_checks(all_records_by_cohort, drug_crosswalk, country_map)
     dedup_path = EXCEPTIONS_DIR / "dedup_review_log_v1.csv"
     pd.DataFrame(dedup_rows, columns=[
         "boundary_check", "cohort_a", "cohort_b", "country", "year", "fingerprint", "resolution",
@@ -457,8 +506,20 @@ def main():
     # written artifact rather than recomputing this script's logic.
     zero_measurement_rows = []
     zero_measurement_counts = {name: 0 for name in all_records_by_cohort}
+    evaluable_excluded_rows = []
+    evaluable_excluded_counts = {name: 0 for name in all_records_by_cohort}
+    unknown_drug_crosswalk_rows = []
+
+    # Defense-in-depth: Step 5's own Check already hard-fails the pipeline if
+    # any MIC cell fails to parse, so parse_mic() should never raise here in
+    # practice. But silently `continue`-ing past a ParseFailure in this loop
+    # would drop the isolate-drug row with zero trace if that invariant were
+    # ever violated (e.g. a future data refresh). Logged explicitly instead,
+    # so a swallowed failure is visible rather than a silent row miscount.
+    swallowed_parse_failures = []
 
     master_rows = []
+    isolate_registry_rows = []
     for cohort_name, records in all_records_by_cohort.items():
         for record in records:
             drug_values = record.pop("drug_values")
@@ -468,6 +529,40 @@ def main():
                 has_measurement = any(pd.notna(mic) or pd.notna(cat) for mic, cat in drug_values.values())
             else:
                 has_measurement = any(pd.notna(v) for v in drug_values.values())
+
+            evaluable_n = record.get("evaluable_flag") == "N"
+
+            registry_row = {
+                **{k: v for k, v in record.items()},
+                "has_drug_measurement": has_measurement,
+                "in_master_table": has_measurement and not evaluable_n,
+                "exclusion_reason": None,
+                "version": "v1",
+                "date_added": dt.date.today().isoformat(),
+            }
+            if evaluable_n:
+                registry_row["in_master_table"] = False
+                registry_row["exclusion_reason"] = (
+                    "Evaluable=N per Step 6 - excluded from master table and resistance-rate denominators"
+                )
+            elif not has_measurement:
+                registry_row["in_master_table"] = False
+                registry_row["exclusion_reason"] = (
+                    "zero non-null drug measurements - cannot appear in long-format master without fabricating"
+                )
+            isolate_registry_rows.append(registry_row)
+
+            if evaluable_n:
+                evaluable_excluded_counts[cohort_name] += 1
+                evaluable_excluded_rows.append({
+                    "cohort": cohort_name,
+                    "isolate_id": record["isolate_id"],
+                    "reason": "Evaluable=N per Step 6 - excluded from master table and resistance-rate denominators",
+                    "version": "v1",
+                    "date_added": dt.date.today().isoformat(),
+                })
+                continue
+
             if not has_measurement:
                 zero_measurement_counts[cohort_name] += 1
                 zero_measurement_rows.append({
@@ -476,7 +571,7 @@ def main():
                     "reason": "isolate has zero non-null values across every drug column - cannot appear "
                               "in a long-format isolate-drug table without fabricating a measurement",
                     "version": "v1",
-                    "date_added": "2026-07-06",
+                    "date_added": dt.date.today().isoformat(),
                 })
                 continue
 
@@ -494,7 +589,9 @@ def main():
                         "dosing_variant": None,
                         "mic_comparator": "=" if pd.notna(mic_value) else None,
                         "mic_value": mic_value if pd.notna(mic_value) else None,
-                        "mic_source_notation_raw": str(mic_value) if pd.notna(mic_value) else None,
+                        "mic_source_notation_raw": (
+                            str(mic_value) if pd.notna(mic_value) else "CLSI_category_only"
+                        ),
                         "resistance_category": category,
                         "classification_basis": basis,
                     })
@@ -503,10 +600,33 @@ def main():
                     if pd.isna(raw_value):
                         continue
                     canonical_drug, dosing_variant = drug_crosswalk.get((cohort_name, raw_col), (None, None))
+                    if canonical_drug is None:
+                        unknown_drug_crosswalk_rows.append({
+                            "cohort": cohort_name,
+                            "isolate_id": record["isolate_id"],
+                            "raw_drug_identifier": raw_col,
+                            "raw_value": raw_value,
+                            "reason": "no drug_code_crosswalk_v1.csv entry for this cohort-raw_identifier pair",
+                            "version": "v1",
+                            "date_added": dt.date.today().isoformat(),
+                        })
+                        continue
                     try:
                         comparator, numeric_value, _ = parse_mic(raw_value)
-                    except ParseFailure:
+                    except ParseFailure as exc:
+                        swallowed_parse_failures.append({
+                            "cohort": cohort_name,
+                            "isolate_id": record["isolate_id"],
+                            "raw_drug_identifier": raw_col,
+                            "raw_value": raw_value,
+                            "reason": str(exc),
+                            "version": "v1",
+                            "date_added": dt.date.today().isoformat(),
+                        })
                         continue
+                    basis, category = classify_bacterial(
+                        record["canonical_organism"], canonical_drug, comparator, numeric_value,
+                        source_cohort=cohort_name)
                     master_rows.append({
                         **record,
                         "raw_drug_identifier": raw_col,
@@ -515,13 +635,13 @@ def main():
                         "mic_comparator": comparator,
                         "mic_value": numeric_value,
                         "mic_source_notation_raw": raw_value,
-                        "resistance_category": NO_BREAKPOINT_CATEGORY,
-                        "classification_basis": BASIS_NO_BREAKPOINT_TABLE,
+                        "resistance_category": category,
+                        "classification_basis": basis,
                     })
 
     master_columns = [
         "isolate_id", "source_cohort", "iso3_country", "raw_country_original", "parsed_year",
-        "date_parse_status", "canonical_organism", "original_organism_name", "pathogen_type",
+        "date_parse_status", "used_fallback_pattern", "canonical_organism", "original_organism_name", "pathogen_type",
         "canonical_drug", "raw_drug_identifier", "dosing_variant", "mic_comparator", "mic_value",
         "mic_source_notation_raw", "evaluable_flag", "resistance_category", "classification_basis",
         "beta_lactamase_raw", "age_band", "age_continuous",
@@ -530,6 +650,19 @@ def main():
     master_path = MASTER_DIR / "master_table_v1.csv"
     master_df.to_csv(master_path, index=False)
     print(f"\nWrote {len(master_df)} isolate-drug row(s) to {master_path.relative_to(ROOT.parents[0])}")
+
+    registry_columns = [
+        "isolate_id", "source_cohort", "iso3_country", "raw_country_original", "parsed_year",
+        "date_parse_status", "used_fallback_pattern", "canonical_organism", "original_organism_name",
+        "pathogen_type", "evaluable_flag", "beta_lactamase_raw", "age_band", "age_continuous",
+        "has_drug_measurement", "in_master_table", "exclusion_reason", "version", "date_added",
+    ]
+    registry_path = MASTER_DIR / "isolate_registry_v1.csv"
+    registry_df = pd.DataFrame(isolate_registry_rows + organism_excluded_registry_rows, columns=registry_columns)
+    registry_df.to_csv(registry_path, index=False)
+    print(f"Wrote {len(registry_df)} isolate-level row(s) to "
+          f"{registry_path.relative_to(ROOT.parents[0])} "
+          f"({len(isolate_registry_rows)} retained + {len(organism_excluded_registry_rows)} Step-3 organism-excluded)")
     # NOTE for any future reader of this CSV: isolate_id mixes purely-numeric-
     # looking values (SOAR_201818/207965, SENTRY) with genuinely alphanumeric
     # ones (SOAR_201910's "LGC..." IDs) - normalize_isolate_id() above already
@@ -547,38 +680,99 @@ def main():
     print(f"Wrote {len(zero_measurement_rows)} zero-measurement isolate row(s) to "
           f"{zero_measurement_path.relative_to(ROOT.parents[0])}")
 
+    evaluable_excluded_path = EXCEPTIONS_DIR / "evaluable_excluded_from_master_log_v1.csv"
+    pd.DataFrame(evaluable_excluded_rows, columns=[
+        "cohort", "isolate_id", "reason", "version", "date_added",
+    ]).to_csv(evaluable_excluded_path, index=False)
+    print(f"Wrote {len(evaluable_excluded_rows)} Evaluable=N isolate row(s) to "
+          f"{evaluable_excluded_path.relative_to(ROOT.parents[0])}")
+
+    unknown_drug_path = EXCEPTIONS_DIR / "step10_unknown_drug_crosswalk_log_v1.csv"
+    pd.DataFrame(unknown_drug_crosswalk_rows, columns=[
+        "cohort", "isolate_id", "raw_drug_identifier", "raw_value", "reason", "version", "date_added",
+    ]).to_csv(unknown_drug_path, index=False)
+    print(f"Wrote {len(unknown_drug_crosswalk_rows)} unknown-drug-crosswalk row(s) to "
+          f"{unknown_drug_path.relative_to(ROOT.parents[0])}")
+
+    swallowed_parse_failures_path = EXCEPTIONS_DIR / "step10_swallowed_mic_parse_failures_log_v1.csv"
+    pd.DataFrame(swallowed_parse_failures, columns=[
+        "cohort", "isolate_id", "raw_drug_identifier", "raw_value", "reason", "version", "date_added",
+    ]).to_csv(swallowed_parse_failures_path, index=False)
+    print(f"Wrote {len(swallowed_parse_failures)} swallowed-MIC-parse-failure row(s) to "
+          f"{swallowed_parse_failures_path.relative_to(ROOT.parents[0])}")
+
     # Check (a): isolate-level row-count round-trip per source cohort. An
     # isolate with zero non-null drug measurements across every column cannot
     # appear in a long-format table (there is no drug to hang the row on), so
     # it is its own explicit, logged reconciling term - never silently folded
     # into "expected" without a citation, and never silently absent either.
+    # Evaluable=N isolates are a separate 5th bucket: Step 6 excludes them
+    # from resistance-rate denominators and Step 10 must not emit master rows
+    # for them even if future data refreshes add MIC readings to those isolates.
     for cohort_name in COHORT_SPECS.keys() | {"SENTRY"}:
         distinct_isolates_in_master = master_df.loc[master_df["source_cohort"] == cohort_name, "isolate_id"].nunique()
-        expected = raw_counts[cohort_name] - organism_excluded_counts[cohort_name] - zero_measurement_counts[cohort_name]
+        expected = (
+            raw_counts[cohort_name]
+            - organism_excluded_counts[cohort_name]
+            - evaluable_excluded_counts[cohort_name]
+            - zero_measurement_counts[cohort_name]
+        )
         if distinct_isolates_in_master != expected:
             print(f"FAIL: {cohort_name} - {distinct_isolates_in_master} distinct isolate(s) in master table, "
                   f"expected {expected} ({raw_counts[cohort_name]} raw - {organism_excluded_counts[cohort_name]} "
-                  f"organism-excluded - {zero_measurement_counts[cohort_name]} zero-measurement).")
+                  f"organism-excluded - {evaluable_excluded_counts[cohort_name]} Evaluable=N "
+                  f"- {zero_measurement_counts[cohort_name]} zero-measurement).")
             failed = True
         else:
             print(f"PASS: {cohort_name} - {distinct_isolates_in_master} distinct isolates in master table "
                   f"== {raw_counts[cohort_name]} raw - {organism_excluded_counts[cohort_name]} Step-3 exclusions "
-                  f"- {zero_measurement_counts[cohort_name]} zero-measurement isolates (logged separately).")
+                  f"- {evaluable_excluded_counts[cohort_name]} Evaluable=N "
+                  f"- {zero_measurement_counts[cohort_name]} zero-measurement isolates (each logged separately).")
 
-    # Check (b): zero nulls in the 7 conceptual / ~8 physical required fields.
-    required_columns = [
+    # Check (b): zero nulls in required fields. SENTRY CLSI-category-only rows
+    # (no numeric MIC) are exempt from mic_comparator/mic_value non-null.
+    always_required_columns = [
         "source_cohort", "iso3_country", "parsed_year", "canonical_organism", "pathogen_type",
-        "canonical_drug", "mic_comparator", "mic_value", "resistance_category", "classification_basis",
+        "canonical_drug", "resistance_category", "classification_basis",
     ]
-    null_counts = master_df[required_columns].isna().sum()
-    if null_counts.any():
-        print(f"FAIL: null value(s) found in required field(s): {null_counts[null_counts > 0].to_dict()}")
+    null_always = master_df[always_required_columns].isna().sum()
+    mic_required_mask = ~(
+        (master_df["source_cohort"] == "SENTRY")
+        & (master_df["classification_basis"] == BASIS_CLSI)
+        & master_df["mic_value"].isna()
+    )
+    null_mic = master_df.loc[mic_required_mask, ["mic_comparator", "mic_value"]].isna().sum()
+    if null_always.any() or null_mic.any():
+        bad = {}
+        if null_always.any():
+            bad.update(null_always[null_always > 0].to_dict())
+        if null_mic.any():
+            bad.update({f"{k} (mic-required rows)": v for k, v in null_mic[null_mic > 0].to_dict().items()})
+        print(f"FAIL: null value(s) found in required field(s): {bad}")
         failed = True
     else:
-        print(f"PASS: zero nulls across all {len(required_columns)} required physical columns "
-              f"({len(master_df)} rows checked).")
+        print(f"PASS: zero nulls across all always-required columns and all MIC-required rows "
+              f"({len(master_df)} rows checked; SENTRY CLSI-category-only rows exempt from MIC non-null).")
 
-    # Check (c): both boundary dedup checks recorded a real outcome (found-and-
+    # Check (c): every classification_basis value is one of the documented
+    # valid values for its pathogen_type - fungal rows against Step 7's 3
+    # tiers, bacterial rows against eucast_breakpoints.BACTERIAL_VALID_BASES -
+    # never a stray/typo'd basis string silently accepted.
+    fungal_valid_bases = {BASIS_CLSI, BASIS_ECV, BASIS_UNCLASSIFIABLE}
+    bacterial_rows = master_df[master_df["source_cohort"] != "SENTRY"]
+    fungal_rows = master_df[master_df["source_cohort"] == "SENTRY"]
+    bad_bacterial_basis = bacterial_rows[~bacterial_rows["classification_basis"].isin(BACTERIAL_VALID_BASES)]
+    bad_fungal_basis = fungal_rows[~fungal_rows["classification_basis"].isin(fungal_valid_bases)]
+    if len(bad_bacterial_basis) or len(bad_fungal_basis):
+        print(f"FAIL: {len(bad_bacterial_basis)} bacterial row(s) and {len(bad_fungal_basis)} fungal row(s) "
+              f"carry an unrecognized classification_basis value.")
+        failed = True
+    else:
+        print(f"PASS: all {len(bacterial_rows)} bacterial rows carry a basis in "
+              f"{sorted(BACTERIAL_VALID_BASES)}; all {len(fungal_rows)} fungal rows carry a basis in "
+              f"{sorted(fungal_valid_bases)}.")
+
+    # Check (d): both boundary dedup checks recorded a real outcome (found-and-
     # logged, or confirmed none). "excluded_no_shared_mic_data" rows are an
     # audit-trail addendum documenting isolates left out of the comparison
     # pool (see has_shared_drug_data) - not themselves an outcome, so they are
@@ -591,6 +785,37 @@ def main():
     else:
         print(f"PASS: both boundary checks ({sorted(boundary_names_covered)}) have a recorded outcome in the "
               f"dedup review log ({len(dedup_rows)} total row(s), including any shared-MIC-data exclusion audit rows).")
+
+    # Check (e): zero MIC cells were swallowed by this step's own bacterial
+    # parse_mic() call without a trace. Step 5's own Check already hard-fails
+    # the whole pipeline on any parse failure, so this count should always be
+    # 0 here - re-verified independently rather than assumed, since a future
+    # change to either step's parsing logic could silently violate it.
+    if swallowed_parse_failures:
+        print(f"FAIL: {len(swallowed_parse_failures)} MIC cell(s) failed to parse during master-table assembly "
+              f"and were logged to {swallowed_parse_failures_path.name} - Step 5's own Check should have already "
+              f"caught these; this is a real, previously-unlogged discrepancy, not a false alarm.")
+        failed = True
+    else:
+        print(f"PASS: 0 MIC cells were swallowed by a ParseFailure during master-table assembly "
+              f"(consistent with Step 5's own Check having already caught every parse failure upstream).")
+
+    if unknown_drug_crosswalk_rows:
+        print(f"FAIL: {len(unknown_drug_crosswalk_rows)} bacterial isolate-drug cell(s) had no "
+              f"drug_code_crosswalk_v1.csv entry and were logged to {unknown_drug_path.name}.")
+        failed = True
+    else:
+        print("PASS: 0 bacterial isolate-drug cells were skipped for a missing drug crosswalk entry.")
+
+    # Check (f): isolate_registry round-trips to each cohort's raw row count.
+    for cohort_name in COHORT_SPECS.keys() | {"SENTRY"}:
+        n_registry = int((registry_df["source_cohort"] == cohort_name).sum())
+        if n_registry != raw_counts[cohort_name]:
+            print(f"FAIL: {cohort_name} - isolate_registry has {n_registry} row(s), expected "
+                  f"{raw_counts[cohort_name]} (one per raw input row).")
+            failed = True
+        else:
+            print(f"PASS: {cohort_name} - isolate_registry row count {n_registry} == raw row count.")
 
     if failed:
         print("\nStep 10 Check: FAIL")

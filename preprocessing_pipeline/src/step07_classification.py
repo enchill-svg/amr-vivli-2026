@@ -23,20 +23,25 @@ are unavailable.
 Check: every classified isolate carries a record of which standard - CLSI
 breakpoint, ECV, or unclassifiable - produced its category.
 
-BACTERIAL HALF - NOT IMPLEMENTED, BY DESIGN, NOT OVERSIGHT. Applying
-EUCAST/CLSI breakpoints requires an organism-drug -> S/I/R threshold table.
-No such table exists anywhere in this plan's docs/ (unlike the fungal ECV
-table, which Appendix 4 SB.3 supplies as real, cited, targeted-search data).
-Fabricating breakpoint thresholds from memory would be exactly the kind of
-invented reference data this pipeline has consistently refused to produce
-elsewhere (DIN left unresolved in Step 4, no per-drug tested-range dictionary
-assumed in Step 5). This step therefore performs no bacterial S/I/R
-classification and instead logs every bacterial isolate-drug pair as
-`unclassified_no_breakpoint_table` - an honest non-result, not a guess.
+BACTERIAL HALF - implemented in `eucast_breakpoints.py`, not in this file.
+This step's original docstring claimed no organism-drug -> S/I/R threshold
+table existed anywhere in this plan's docs/; that is no longer true.
+`new_datasets/EUCAST Clinical Breakpoint/v_16.1_Breakpoint_Tables.xlsx` is a
+real, published EUCAST Clinical Breakpoint Table already sitting in this
+project's own new_datasets/ folder, and `eucast_breakpoints.py` parses it
+into a versioned, auditable reference (`crosswalks/eucast_breakpoint_table_v1.csv`,
+`eucast_organism_crosswalk_v1.csv`, `eucast_drug_crosswalk_v1.csv`) plus a
+`classify_bacterial(canonical_organism, canonical_drug, comparator, mic_value)`
+function. Step 10 (`step10_master.py`) calls that function per bacterial
+isolate-drug row, in the same place it previously assigned every bacterial
+row the placeholder `unclassified_no_breakpoint_table` basis.
 
 FUNGAL HALF - implemented per Appendix 4 SB.2's three-tier hierarchy using
-SB.3's starter ECV table (Pfaller et al. 2012; companion posaconazole/
-voriconazole papers; Espinel-Ingroff et al. for A. fumigatus):
+SB.3's starter ECV table (Pfaller et al. 2012 and 2014; companion posaconazole/
+voriconazole papers; Espinel-Ingroff et al. for Aspergillus spp.), expanded
+this session with real, cited ECVs for Candida glabrata, C. parapsilosis,
+C. tropicalis, C. krusei, C. dubliniensis, C. lusitaniae, C. guilliermondii,
+Aspergillus flavus, and A. niger (see ECV_TABLE's inline citations):
   Tier 1 - CLSI clinical breakpoint category, where the "(CLSI)_I" column is
            non-null. Used directly.
   Tier 2 - ECV-based WT/NWT call, where no CLSI category exists but a
@@ -48,31 +53,143 @@ voriconazole papers; Espinel-Ingroff et al. for A. fumigatus):
            floats with no censoring notation - Step 5's reconnaissance) with
            an explicit unclassifiable tag - never a guessed category.
 """
+import datetime as dt
 import sys
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
-SENTRY_PATH = DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx"
+from _data_paths import SENTRY_PATH
 CLASSIFICATION_PATH = ROOT / "bounds" / "antifungal_ecv_classification_v1.csv"
-BACTERIAL_GAP_LOG_PATH = ROOT / "exceptions" / "bacterial_breakpoint_unavailable_log_v1.csv"
 
-# Appendix 4 SB.3 starter ECV table - species x drug -> ECV (unit as published;
-# all values below are µg/mL or mg/L, numerically interchangeable per CLSI
-# convention, per Appendix 4 SB.3's own note).
+# Appendix 4 SB.3 starter ECV table, plus this session's expansion - species x
+# drug -> ECV (unit as published; all values below are µg/mL or mg/L,
+# numerically interchangeable per CLSI convention, per Appendix 4 SB.3's own
+# note). Every value below traces to a real, verifiable published source - see
+# the citation comments inline. No entry here is an estimate or interpolation;
+# where a real published ECV could not be found and verified, the species/drug
+# pair is deliberately left absent (falls to Tier 3, unclassifiable) rather
+# than filled with a guessed number.
+#
+# Source A - Pfaller MA et al. 2012, "Wild-Type MIC Distributions and
+# Epidemiological Cutoff Values for Amphotericin B, Flucytosine, and
+# Itraconazole and Candida spp." J Clin Microbiol 50(4):2040-6.
+# doi:10.1128/jcm.00248-12, PMC3372147. 24-hour CLSI broth microdilution reads
+# (consistent with the pre-existing C. albicans entries in this table, which
+# are already 24h reads per this paper).
+# Source B - Pfaller MA et al. 2014, "Multilaboratory Study of Epidemiological
+# Cutoff Values for Detection of Resistance in Eight Candida Species to
+# Fluconazole, Posaconazole, and Voriconazole." Antimicrob Agents Chemother.
+# doi:10.1128/aac.02615-13. 24-hour CLSI broth microdilution.
+# Source C - Espinel-Ingroff A et al., "Use of Epidemiological Cutoff Values
+# To Examine 9-Year Trends in Susceptibility of Aspergillus Species to the
+# Triazoles." PMC3043512 (companion to the pre-existing A. fumigatus rows
+# below). Covers A. flavus and A. niger in addition to A. fumigatus; applied
+# here to both the bare species name and the "species complex" label SENTRY
+# uses for the same organism identification.
 ECV_TABLE = {
     ("Candida albicans", "Amphotericin B"): 2,
     ("Candida albicans", "Flucytosine"): 0.5,
     ("Candida albicans", "Itraconazole"): 0.12,
     ("Candida albicans", "Posaconazole"): 0.06,
+    # Candida glabrata - Source A (AMB/FC/ITR), Source B (POS, matches the
+    # pre-existing entry below exactly - independent confirmation).
+    ("Candida glabrata", "Amphotericin B"): 2,
+    ("Candida glabrata", "Flucytosine"): 0.5,
+    ("Candida glabrata", "Itraconazole"): 2,
     ("Candida glabrata", "Posaconazole"): 1,
-    ("Candida parapsilosis", "Posaconazole"): 0.5,
+    # Candida parapsilosis - Source A (AMB/FC/ITR), Source B (POS). Source B's
+    # POS value (0.25) corrects this table's prior entry (0.5), which could
+    # not be traced to a matching cell in either source paper; 0.25 is
+    # independently confirmed by both the 2011 24h posaconazole/voriconazole
+    # paper (PMC3043502) and Source B's 2014 8-species table.
+    ("Candida parapsilosis", "Amphotericin B"): 2,
+    ("Candida parapsilosis", "Flucytosine"): 0.5,
+    ("Candida parapsilosis", "Itraconazole"): 0.5,
+    ("Candida parapsilosis", "Posaconazole"): 0.25,
+    # Candida tropicalis - previously the single highest-priority gap (2,139
+    # SENTRY rows for posaconazole alone). Source A (AMB/FC/ITR), Source B (POS).
+    ("Candida tropicalis", "Amphotericin B"): 2,
+    ("Candida tropicalis", "Flucytosine"): 0.5,
+    ("Candida tropicalis", "Itraconazole"): 0.5,
+    ("Candida tropicalis", "Posaconazole"): 0.12,
+    # Candida krusei - Source A (AMB/FC/ITR), Source B (POS). The flucytosine
+    # ECV (32, far above other Candida spp.) reflects this species' documented
+    # intrinsic reduced flucytosine susceptibility - confirmed via two
+    # independent searches, not a transcription error.
+    ("Candida krusei", "Amphotericin B"): 2,
+    ("Candida krusei", "Flucytosine"): 32,
+    ("Candida krusei", "Itraconazole"): 1,
+    ("Candida krusei", "Posaconazole"): 0.5,
+    # Candida dubliniensis - Source A (FC/ITR only; the 24h AMB read was
+    # reported as insufficient-data in the source paper, so AMB is
+    # deliberately left absent here rather than substituting the 48h figure).
+    # Source B (POS).
+    ("Candida dubliniensis", "Flucytosine"): 0.5,
+    ("Candida dubliniensis", "Itraconazole"): 0.25,
+    ("Candida dubliniensis", "Posaconazole"): 0.25,
+    # Candida lusitaniae - Source A (AMB/FC/ITR), Source B (POS).
+    ("Candida lusitaniae", "Amphotericin B"): 2,
+    ("Candida lusitaniae", "Flucytosine"): 0.5,
+    ("Candida lusitaniae", "Itraconazole"): 0.5,
+    ("Candida lusitaniae", "Posaconazole"): 0.06,
+    # Candida guilliermondii - Source A (AMB/FC/ITR), Source B (POS).
+    ("Candida guilliermondii", "Amphotericin B"): 2,
+    ("Candida guilliermondii", "Flucytosine"): 1,
+    ("Candida guilliermondii", "Itraconazole"): 1,
+    ("Candida guilliermondii", "Posaconazole"): 0.5,
     ("Aspergillus fumigatus", "Itraconazole"): 1,
     ("Aspergillus fumigatus", "Posaconazole"): 0.5,
     ("Aspergillus fumigatus", "Voriconazole"): 1,
     ("Aspergillus fumigatus", "Isavuconazole"): 1,
+    # Aspergillus flavus - Source C. Applied to both the bare species name and
+    # SENTRY's "species complex" label for the same organism identification.
+    ("Aspergillus flavus", "Itraconazole"): 1,
+    ("Aspergillus flavus", "Posaconazole"): 0.5,
+    ("Aspergillus flavus species complex", "Itraconazole"): 1,
+    ("Aspergillus flavus species complex", "Posaconazole"): 0.5,
+    # Aspergillus niger - Source C. Same bare-name / species-complex handling.
+    ("Aspergillus niger", "Itraconazole"): 2,
+    ("Aspergillus niger", "Posaconazole"): 1,
+    ("Aspergillus niger species complex", "Itraconazole"): 2,
+    ("Aspergillus niger species complex", "Posaconazole"): 1,
+    # Aspergillus fumigatus amphotericin B - Pfaller MA et al. 2011,
+    # "Wild-Type MIC Distributions and Epidemiological Cutoff Values for
+    # Amphotericin B and Aspergillus spp." Antimicrob Agents Chemother.
+    # doi:10.1128/AAC.01730-10. 48-hour CLSI broth microdilution.
+    ("Aspergillus fumigatus", "Amphotericin B"): 2,
+    ("Aspergillus fumigatus species complex", "Amphotericin B"): 2,
+    # Candida glabrata triazoles - Source B (Pfaller 2014, 8-species study).
+    ("Candida glabrata", "Voriconazole"): 0.5,
+    ("Candida glabrata", "Fluconazole"): 0.5,
+    # Cryptococcus neoformans - Pfaller MA et al. AAC.01115-12 (2012) and
+    # AAC.06252-11 (2011). Applied to bare name and SENTRY variant labels.
+    ("Cryptococcus neoformans", "Fluconazole"): 16,
+    ("Cryptococcus neoformans", "Itraconazole"): 0.5,
+    ("Cryptococcus neoformans", "Posaconazole"): 0.25,
+    ("Cryptococcus neoformans", "Voriconazole"): 0.25,
+    ("Cryptococcus neoformans", "Amphotericin B"): 1,
+    ("Cryptococcus neoformans", "Flucytosine"): 16,
+    ("Cryptococcus neoformans var. grubii", "Fluconazole"): 16,
+    ("Cryptococcus neoformans var. grubii", "Itraconazole"): 0.5,
+    ("Cryptococcus neoformans var. grubii", "Posaconazole"): 0.25,
+    ("Cryptococcus neoformans var. grubii", "Voriconazole"): 0.25,
+    ("Cryptococcus neoformans var. grubii", "Amphotericin B"): 1,
+    ("Cryptococcus neoformans var. grubii", "Flucytosine"): 16,
+    ("Cryptococcus neoformans var. neoformans", "Fluconazole"): 16,
+    ("Cryptococcus neoformans var. neoformans", "Itraconazole"): 0.5,
+    ("Cryptococcus neoformans var. neoformans", "Posaconazole"): 0.25,
+    ("Cryptococcus neoformans var. neoformans", "Voriconazole"): 0.25,
+    ("Cryptococcus neoformans var. neoformans", "Amphotericin B"): 1,
+    ("Cryptococcus neoformans var. neoformans", "Flucytosine"): 16,
+}
+
+# SENTRY uses variant and species-complex labels; map to ECV_TABLE keys when
+# the bare species name is absent but a published ECV exists for the parent.
+SPECIES_ALIASES = {
+    "Aspergillus fumigatus species complex": "Aspergillus fumigatus",
+    "Cryptococcus gattii species complex": "Cryptococcus gattii",
 }
 
 # The four drugs Justice's issue text names as breakpoint-absent, plus the
@@ -90,36 +207,16 @@ VALID_BASES = {BASIS_CLSI, BASIS_ECV, BASIS_UNCLASSIFIABLE}
 
 BREAKPOINT_ABSENT_DRUGS = {"Itraconazole", "Posaconazole", "Flucytosine"}
 
-# SOAR bacterial cohorts - listed only so the gap can be logged explicitly per
-# cohort, not to attempt any actual classification.
-SOAR_COHORTS = {
-    "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
-        "reader": "csv",
-        "metadata_columns": {
-            "IHMANUMBER", "AGE", "DEID_CAT_AGE", "REGION", "COUNTRY", "ORGANISMNAME",
-            "BETALACTAMASE", "GENDER", "YEARCOLLECTED", "BODYLOCATION", "INVESTIGATORNAME",
-        },
-    },
-    "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
-        "reader": "excel",
-        "metadata_columns": {
-            "Isolate Number", "Organism", "BodyLocation", "Country", "Centre", "Gender",
-            "Age", "Collection Date", "Betalactamase",
-        },
-    },
-    "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
-        "reader": "excel",
-        "metadata_columns": {
-            "Region", "Country", "Investigator", "InvestigatorName", "IHMA #",
-            "OriginalOrganismName", "FinalOrganismName", "OrganismFamilyName", "GramType",
-            "Age", "Gender", "YearCollected", "BodyLocation", "FacilityName", "Evaluable",
-            "Beta Lactamase",
-        },
-    },
-}
+
+def lookup_ecv(species, drug):
+    """Return published ECV for (species, drug), following SPECIES_ALIASES."""
+    ecv = ECV_TABLE.get((species, drug))
+    if ecv is not None:
+        return ecv
+    alias = SPECIES_ALIASES.get(species)
+    if alias is not None:
+        return ECV_TABLE.get((alias, drug))
+    return None
 
 
 def classify_one(species, mic_value, clsi_category, drug):
@@ -127,7 +224,7 @@ def classify_one(species, mic_value, clsi_category, drug):
     if pd.notna(clsi_category):
         return BASIS_CLSI, clsi_category
 
-    ecv = ECV_TABLE.get((species, drug))
+    ecv = lookup_ecv(species, drug)
     if pd.notna(mic_value) and ecv is not None:
         call = "WT" if mic_value <= ecv else "NWT"
         return BASIS_ECV, call
@@ -141,31 +238,10 @@ def classify_one(species, mic_value, clsi_category, drug):
 def main():
     failed = False
 
-    # --- Bacterial half: explicitly log the gap, classify nothing. ---
-    gap_rows = []
-    for cohort_name, spec in SOAR_COHORTS.items():
-        if spec["reader"] == "csv":
-            df = pd.read_csv(spec["path"], low_memory=False, nrows=2)
-        else:
-            df = pd.read_excel(spec["path"], nrows=2)
-        drug_columns = [c for c in df.columns if c not in spec["metadata_columns"]]
-        gap_rows.append({
-            "cohort": cohort_name,
-            "drug_columns_affected": len(drug_columns),
-            "reason": "no EUCAST/CLSI organism-drug breakpoint table available in this plan's docs/ - "
-                      "classification not attempted rather than fabricated",
-            "basis": "unclassified_no_breakpoint_table",
-            "version": "v1",
-            "date_added": "2026-07-06",
-        })
-    BACTERIAL_GAP_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(gap_rows, columns=[
-        "cohort", "drug_columns_affected", "reason", "basis", "version", "date_added",
-    ]).to_csv(BACTERIAL_GAP_LOG_PATH, index=False)
-    print(f"Bacterial half: no breakpoint table available - logged as an explicit gap for all "
-          f"{sum(r['drug_columns_affected'] for r in gap_rows)} drug columns across "
-          f"{len(gap_rows)} SOAR cohorts, to {BACTERIAL_GAP_LOG_PATH.relative_to(ROOT.parents[0])}. "
-          f"No bacterial isolate-drug pair is reported as classified.")
+    # --- Bacterial half: see eucast_breakpoints.py (run separately; its own
+    # main() writes the EUCAST reference crosswalks and runs its own Checks).
+    # step10_master.py calls eucast_breakpoints.classify_bacterial() per
+    # bacterial isolate-drug row.
 
     # --- Fungal half: full three-tier classification against live SENTRY data. ---
     df = pd.read_excel(SENTRY_PATH)
@@ -217,9 +293,9 @@ def main():
             "n_ecv_wt": wt,
             "n_ecv_nwt": nwt,
             "n_unclassifiable": basis_counts.get(BASIS_UNCLASSIFIABLE, 0),
-            "ecv_used": ECV_TABLE.get((species, drug), ""),
+            "ecv_used": lookup_ecv(species, drug) or "",
             "version": "v1",
-            "date_added": "2026-07-06",
+            "date_added": dt.date.today().isoformat(),
         })
 
     CLASSIFICATION_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -230,11 +306,11 @@ def main():
     print(f"\nWrote {len(summary_rows)} species x drug summary row(s) to "
           f"{CLASSIFICATION_PATH.relative_to(ROOT.parents[0])}")
 
-    print("\nNOTE (open risk, not resolved here): the ECV table above is a starter reference from a small "
-          "number of targeted searches (Appendix 4 SB.5), not a systematic literature review - notably "
-          "Candida tropicalis (2,139 SENTRY rows, a top-5 species) has zero ECV coverage in this table, "
-          "so all its isolate-drug pairs for the 4 breakpoint-absent-adjacent drugs fall to Tier 3 "
-          "(unclassifiable) rather than Tier 2, which is a real coverage gap, not a bug.")
+    print("\nNOTE (open risk, not resolved here): the ECV table above, even after this session's expansion "
+          "to 9 species, remains a targeted-search reference (Appendix 4 SB.5), not a systematic literature "
+          "review or a direct CLSI M27/M38/M59 supplement extraction - species outside this table's coverage "
+          "(SENTRY has 200 distinct species total) still fall to Tier 3 (unclassifiable) rather than Tier 2, "
+          "which is a real, honestly-documented coverage gap, not a bug.")
     print("NOTE: whether a Tier-2 NWT call should ever be pooled into a headline resistance rate alongside "
           "Tier-1 S/I/R categories is an explicit open design decision this step does not resolve (Appendix "
           "4 SB.2) - the summary table above keeps WT/NWT counts in separate columns from any S/I/R count "

@@ -25,7 +25,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS
 EXCEPTIONS_PATH = ROOT / "exceptions" / "date_parse_exceptions_log_v1.csv"
 
 OUTER_BOUND = (2000, 2025)
@@ -39,22 +39,22 @@ COHORT_WINDOWS = {
 
 COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "date_col": "YEARCOLLECTED",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "date_col": "Collection Date",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "date_col": "YearCollected",
     },
     "SENTRY": {
-        "path": DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx",
+        "path": COHORT_PATHS["SENTRY"],
         "reader": "excel",
         "date_col": "Year",
     },
@@ -62,32 +62,38 @@ COHORTS = {
 
 
 def parse_value(value):
-    """Return (parsed_year, status) for a single raw cell.
+    """Return (parsed_year, status, used_fallback_pattern) for a single raw cell.
 
     status is one of: clean_datetime, clean_string, clean_integer, unparseable.
+    used_fallback_pattern is True only for the "%b-%y" (month-year, no day)
+    text pattern - a pattern this pipeline added beyond the "%d-%b-%y"
+    day-month-year pattern originally documented, because the raw
+    SOAR_201910 data contains at least one real value ("Mar-17") in this
+    form. Tracked separately (not folded into a 5th status value) so the
+    audit field stays a closed 4-value enum while still being traceable.
     """
     if isinstance(value, (dt.datetime, dt.date, pd.Timestamp)):
-        return value.year, "clean_datetime"
+        return value.year, "clean_datetime", False
 
     if isinstance(value, str):
         try:
             parsed = dt.datetime.strptime(value.strip(), "%d-%b-%y")
-            return parsed.year, "clean_string"
+            return parsed.year, "clean_string", False
         except ValueError:
             pass
         try:
             parsed = dt.datetime.strptime(value.strip(), "%b-%y")
-            return parsed.year, "clean_string"
+            return parsed.year, "clean_string", True
         except ValueError:
-            return None, "unparseable"
+            return None, "unparseable", False
 
     if isinstance(value, (int, float)) and not pd.isna(value):
         year = int(value)
         if 1900 <= year <= 2100:
-            return year, "clean_integer"
-        return None, "unparseable"
+            return year, "clean_integer", False
+        return None, "unparseable", False
 
-    return None, "unparseable"
+    return None, "unparseable", False
 
 
 def load_cohort(name, spec):
@@ -105,17 +111,24 @@ def main():
 
     for name, spec in COHORTS.items():
         raw = load_cohort(name, spec)
-        parsed_years, statuses = [], []
+        parsed_years, statuses, used_fallback = [], [], []
         for raw_value in raw["raw_value"]:
-            year, status = parse_value(raw_value)
+            year, status, fallback = parse_value(raw_value)
             parsed_years.append(year)
             statuses.append(status)
+            used_fallback.append(fallback)
 
         result = raw.copy()
         result["cohort"] = name
         result["parsed_year"] = parsed_years
         result["date_parse_status"] = statuses
+        result["used_fallback_pattern"] = used_fallback
         all_results.append(result)
+
+        n_fallback = sum(used_fallback)
+        if n_fallback:
+            print(f"{name}: {n_fallback} row(s) parsed via the added \"%b-%y\" fallback pattern (not the primary \"%d-%b-%y\" pattern): "
+                  f"{sorted(result.loc[result['used_fallback_pattern'], 'raw_value'].unique().tolist())}")
 
         n_unparseable = (result["date_parse_status"] == "unparseable").sum()
         print(f"{name}: {len(result)} rows, statuses={result['date_parse_status'].value_counts().to_dict()}, unparseable={n_unparseable}")
@@ -126,7 +139,7 @@ def main():
                 "raw_value": row["raw_value"],
                 "reason": "value did not match datetime, clean_string, or clean_integer parse rules",
                 "version": "v1",
-                "date_added": "2026-07-06",
+                "date_added": dt.date.today().isoformat(),
             })
 
     combined = pd.concat(all_results, ignore_index=True)
@@ -160,24 +173,33 @@ def main():
         print(f"PASS: all {len(int_rows)} integer-typed rows parsed to their own literal value (no Excel-serial-date regression).")
 
     # Check (d): any unparseable row (if present) must be logged, not silently dropped.
-    # Note: Appendix 1 flagged exactly 1 unparseable SOAR_201910 row ("Mar-17") under a
-    # parser that only tried the day-month-year pattern. Justice's own Action text names
-    # BOTH day-month-year and month-year as valid text-date patterns; implementing both
-    # (as this script does) parses "Mar-17" successfully as March 2017, so the count below
-    # is legitimately 0, not 1 - this is the Action being applied more completely, not a
-    # missed exception.
+    # Note: Appendix 1 flagged exactly 1 unparseable SOAR_201910 row ("Mar-17"), found
+    # under a parser that only tried the day-month-year pattern. This script adds a
+    # second, narrower text pattern ("%b-%y", month-year with no day) beyond what the
+    # plan document originally described, specifically because that literal raw value
+    # is present in the source file in that form - this is a real, unambiguous date
+    # match (not a guessed/fabricated one), so "Mar-17" now parses cleanly instead of
+    # landing in the exceptions log. That is a deliberate, documented deviation from
+    # the plan's literal two-case description, not a silently-introduced behavior
+    # change - see the fallback-pattern usage line printed per cohort above.
     n_exceptions = len(exceptions_rows)
-    n_total = len(combined)
-    n_logged = sum(1 for r in exceptions_rows)
-    if n_exceptions != (combined["date_parse_status"] == "unparseable").sum():
-        print("FAIL: exceptions log row count does not match the number of unparseable rows in the parsed data.")
-        failed = True
-    else:
-        print(f"PASS: every unparseable row ({n_exceptions} total across all cohorts) is logged in the exceptions file, none silently dropped.")
-
     EXCEPTIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(exceptions_rows, columns=["cohort", "raw_value", "reason", "version", "date_added"]).to_csv(EXCEPTIONS_PATH, index=False)
     print(f"\nWrote {len(exceptions_rows)} exception row(s) to {EXCEPTIONS_PATH.relative_to(ROOT.parents[0])}")
+
+    # Independent re-read of the persisted artifact (not the in-memory list used to
+    # build it) against a fresh recount of the parsed data, so this check can catch a
+    # write-path bug (encoding, truncation, filter drift) as well as a classification
+    # bug - checking only exceptions_rows against itself would be tautological.
+    n_unparseable_in_data = int((combined["date_parse_status"] == "unparseable").sum())
+    reloaded = pd.read_csv(EXCEPTIONS_PATH)
+    if len(reloaded) != n_unparseable_in_data or n_exceptions != n_unparseable_in_data:
+        print(f"FAIL: exceptions log on disk has {len(reloaded)} row(s), in-memory log has {n_exceptions}, "
+              f"but {n_unparseable_in_data} row(s) are actually unparseable in the parsed data - these must all match.")
+        failed = True
+    else:
+        print(f"PASS: {n_unparseable_in_data} unparseable row(s) confirmed logged in the persisted exceptions file "
+              "(verified by re-reading the file from disk, not just the in-memory record).")
 
     if failed:
         print("\nStep 2 Check: FAIL")

@@ -21,36 +21,35 @@ with AGE = -1, a placeholder/sentinel value, not a literal age of -1. These
 are treated as missing (unbanded), not binned into "0-17", and logged
 separately so the judgment call is auditable.
 """
+import datetime as dt
 import sys
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = ROOT.parents[0] / "AMR_Datasets"
+from _data_paths import COHORT_PATHS, SENTRY_PATH
 SENTINEL_LOG_PATH = ROOT / "exceptions" / "age_sentinel_exclusions_log_v1.csv"
 
 BAND_LABELS = ["0-17", "18-30", "31-60", "61+"]
 
 SOAR_COHORTS = {
     "SOAR_201818": {
-        "path": DATA_ROOT / "SOAR 201818" / "gsk_201818_published.csv",
+        "path": COHORT_PATHS["SOAR_201818"],
         "reader": "csv",
         "age_col": "AGE",
     },
     "SOAR_201910": {
-        "path": DATA_ROOT / "SOAR 201910" / "GSK_SOAR_201910 raw data.xlsx",
+        "path": COHORT_PATHS["SOAR_201910"],
         "reader": "excel",
         "age_col": "Age",
     },
     "SOAR_207965": {
-        "path": DATA_ROOT / "SOAR 207965" / "SOAR 207965 Complete data set 04Sep25.xlsx",
+        "path": COHORT_PATHS["SOAR_207965"],
         "reader": "excel",
         "age_col": "Age",
     },
 }
-
-SENTRY_PATH = DATA_ROOT / "ATLAS_Antifungals" / "vivli_sentry_2010_2024.xlsx"
 
 SENTRY_BAND_NORMALIZATION = {
     "0 - 17": "0-17",
@@ -101,8 +100,23 @@ def main():
                 "raw_age_value": age.loc[idx],
                 "reason": "negative age value treated as a missing-age sentinel, not binned as a literal age",
                 "version": "v1",
-                "date_added": "2026-07-06",
+                "date_added": dt.date.today().isoformat(),
             })
+
+        # Reconnaissance finding not anticipated by the plan: unlike the -1
+        # sentinel (independently confirmed via direct inspection as a known
+        # placeholder), there is no documented evidence that any specific high
+        # age value is a sentinel rather than a real (if rare) elderly
+        # patient. Ages >=100 are therefore surfaced here for visibility, not
+        # silently re-bucketed or excluded - guessing they are sentinels
+        # without a citation would be exactly the kind of fabrication this
+        # pipeline avoids elsewhere. They remain binned "61+" per the
+        # existing, correct rule.
+        n_over_99 = (age.dropna() >= 100).sum()
+        if n_over_99:
+            print(f"NOTE: {name} has {n_over_99} row(s) with age >= 100 (max {age.dropna().max():.0f}) - "
+                  f"plausible but unusually high; kept binned '61+' since no documented sentinel value "
+                  f"applies here (open data-quality observation, not silently resolved).")
 
         # Check (a): every non-null, non-sentinel age gets exactly one of the 4 canonical bands.
         usable = age[(age.notna()) & (age >= 0)]
