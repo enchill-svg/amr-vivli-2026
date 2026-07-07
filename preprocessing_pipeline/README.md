@@ -4,8 +4,6 @@ Harmonizes four antimicrobial-resistance surveillance cohorts into one analysis-
 
 **Status:** Implemented.
 
-**Design specification:** [`docs/PREPROCESSING_PIPELINE_PLAN.md`](docs/PREPROCESSING_PIPELINE_PLAN.md) (detailed plan and appendices).
-
 ---
 
 ## How to Run (full pipeline at once)
