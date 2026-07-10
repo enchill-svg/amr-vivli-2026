@@ -1,0 +1,5 @@
+iso3,country,latitude,longitude,pathogen_type,latest_year,risk_score,early_warning_score,resistance_rate,trend_label,life_exp,dominant_organism,dominant_drug,funding_mismatch,predicted_life_gain,recommended_intervention
+TUR,Turkey,38.9637,35.2433,bacterial,2021,91,88,0.54,surging,77.7,Streptococcus pneumoniae,Penicillin,0.62,0.42,Stewardship + diagnostics
+ITA,Italy,41.8719,12.5674,fungal,2024,86,82,0.46,rising,82.8,Candida glabrata,Fluconazole,0.29,0.28,Antifungal stewardship
+IND,India,20.5937,78.9629,fungal,2024,90,87,0.53,surging,67.2,Candida auris,Fluconazole,0.84,0.72,Diagnostics + IPC + antifungal stewardship
+GHA,Ghana,7.9465,-1.0232,bacterial,2021,74,69,0.35,stable,63.8,Haemophilus influenzae,Ampicillin,0.71,0.53,Sentinel expansion + diagnostics

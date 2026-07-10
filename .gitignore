@@ -16,6 +16,7 @@ eggs/
 .eggs/
 lib/
 lib64/
+!dashboard/src/lib/
 parts/
 sdist/
 var/
@@ -217,10 +218,39 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Preprocessing pipeline docs
-preprocessing_pipeline/docs/
+# --- AMR Vivli repo layout (Cande + Leclerc hybrid) ---
 
-# Pipeline raw inputs (large data files; README + sync script stay tracked)
-preprocessing_pipeline/raw_inputs/**
-!preprocessing_pipeline/raw_inputs/README.md
-!preprocessing_pipeline/raw_inputs/sync_from_docs.py
+# Team-only
+internal/
+
+# Raw Vivli / external data (never commit)
+data/raw/**
+!data/raw/README.md
+analysis/docs/**
+analysis/raw_inputs/**
+!analysis/raw_inputs/README.md
+!analysis/raw_inputs/sync_from_docs.py
+
+# Regenerable pipeline intermediates (keep local; publish via data/published/)
+analysis/master/**
+analysis/bounds/**
+analysis/deliverables/**
+!analysis/deliverables/README.md
+analysis/exceptions/**
+analysis/cleaned/**
+analysis/logs/**
+analysis/runs/**
+!analysis/runs/README.md
+
+# Duplicate scaffold (active app is dashboard/)
+amr-life-intelligence/
+
+# Dashboard
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.output/
+dashboard/.tanstack/
+dashboard/.wrangler/
+dashboard/.env
+dashboard/.env.*
+dashboard/.dev.vars

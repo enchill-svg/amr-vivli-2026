@@ -1,4 +1,0 @@
-cohort,drug_columns_affected,reason,basis,version,date_added
-SOAR_201818,13,no EUCAST/CLSI organism-drug breakpoint table available in this plan's docs/ - classification not attempted rather than fabricated,unclassified_no_breakpoint_table,v1,2026-07-06
-SOAR_201910,17,no EUCAST/CLSI organism-drug breakpoint table available in this plan's docs/ - classification not attempted rather than fabricated,unclassified_no_breakpoint_table,v1,2026-07-06
-SOAR_207965,21,no EUCAST/CLSI organism-drug breakpoint table available in this plan's docs/ - classification not attempted rather than fabricated,unclassified_no_breakpoint_table,v1,2026-07-06

@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-07-10",
+  "wired_count": 4,
+  "gap_count": 0,
+  "published_count": 20,
+  "dashboard_source": "data/published/dashboard_bundle_v1.json",
+  "datasets": [
+    {
+      "id": "esac_consumption",
+      "name": "ECDC ESAC-Net antimicrobial consumption",
+      "pipeline_wired": "yes",
+      "published_output": "dashboard_bundle_v1.json",
+      "on_disk": true
+    },
+    {
+      "id": "hospital_beds",
+      "name": "World Bank hospital beds per capita",
+      "pipeline_wired": "yes",
+      "on_disk": true
+    },
+    {
+      "id": "gbd_sdi",
+      "name": "GBD 2023 SDI",
+      "pipeline_wired": "yes",
+      "on_disk": true
+    },
+    {
+      "id": "gbd_lri",
+      "name": "GBD LRI pathogen burden comparator",
+      "pipeline_wired": "yes",
+      "on_disk": true
+    }
+  ]
+}

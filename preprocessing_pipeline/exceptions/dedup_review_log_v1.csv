@@ -1,4 +1,0 @@
-boundary_check,cohort_a,cohort_b,country,year,fingerprint,resolution,version,date_added
-Vietnam_2018,SOAR_201910,SOAR_207965,Vietnam,2018,"SOAR_201910:0_excluded,SOAR_207965:1_excluded",excluded_no_shared_mic_data,v1,2026-07-07
-Vietnam_2018,SOAR_201910,SOAR_207965,Vietnam,2018,,no_duplicates_found,v1,2026-07-07
-Ukraine_2016,SOAR_201818,SOAR_201910,Ukraine,2016,,no_duplicates_found,v1,2026-07-07
