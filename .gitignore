@@ -222,6 +222,7 @@ __marimo__/
 
 # Team-only
 internal/
+REPO_STRUCTURE.md
 
 # Raw Vivli / external data (never commit)
 data/raw/**
