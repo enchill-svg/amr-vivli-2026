@@ -6,7 +6,7 @@ Integrated bacterial and fungal surveillance linked to national life expectancy,
 
 ## Team
 
-AMR-Vivli 2026 team (5 members). See project brief in [`docs/brief/`](docs/brief/).
+AMR-Vivli 2026 team (5 members).
 
 ## Live dashboard
 
@@ -23,7 +23,7 @@ The dashboard reads **published pipeline outputs** from `dashboard/public/data/p
 | [`analysis/`](analysis/) | Researchers | One-pipeline Python engine (`run_all.py`) |
 | [`data/published/`](data/published/) | Everyone | Justice §7 CSVs + JSON bundle for GitHub and dashboard |
 | [`data/raw/`](data/raw/) | Team only (gitignored) | Vivli Register files — not on GitHub |
-| [`docs/brief/`](docs/brief/) | Everyone | Project brief and public methodology |
+| [`docs/brief/`](docs/brief/) | Everyone | Brief pointer (full brief is team-local) |
 | `internal/` | Team only (gitignored) | Submission planning |
 
 ## Reproduce the science (one command)
