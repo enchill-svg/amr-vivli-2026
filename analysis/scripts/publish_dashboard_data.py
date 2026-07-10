@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import math
 import shutil
 import sys
 from pathlib import Path
+from numbers import Real
 
 import pandas as pd
+import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
 ANALYSIS = REPO / "analysis"
@@ -31,7 +34,34 @@ def _copy_csvs(src_dir: Path, dst_dir: Path, pattern: str) -> list[str]:
 def _read_csv(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    return pd.read_csv(path).where(pd.notna, None).to_dict(orient="records")
+    # to_json emits null for NaN — valid RFC 8259 JSON (browser-safe)
+    return json.loads(pd.read_csv(path).to_json(orient="records"))
+
+
+def _sanitize_for_json(value: object) -> object:
+    if isinstance(value, dict):
+        return {str(k): _sanitize_for_json(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_sanitize_for_json(v) for v in value]
+    if value is None or value is pd.NA:
+        return None
+    if isinstance(value, (np.floating, float)):
+        f = float(value)
+        return None if math.isnan(f) or math.isinf(f) else f
+    if isinstance(value, (np.integer, int)) and not isinstance(value, bool):
+        return int(value)
+    if isinstance(value, Real) and not isinstance(value, bool):
+        f = float(value)
+        return None if math.isnan(f) or math.isinf(f) else f
+    return value
+
+
+def _write_json(path: Path, payload: dict) -> None:
+    safe = _sanitize_for_json(payload)
+    path.write_text(
+        json.dumps(safe, indent=2, allow_nan=False) + "\n",
+        encoding="utf-8",
+    )
 
 
 def _manifest_run() -> dict:
@@ -143,13 +173,10 @@ def main() -> int:
 
     bundle = build_dashboard_bundle()
     bundle_path = PUBLISHED / "dashboard_bundle_v1.json"
-    bundle_path.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+    _write_json(bundle_path, bundle)
 
     status = build_dataset_status(copied_files=copied)
-    (PUBLISHED / "dataset_status_v1.json").write_text(
-        json.dumps(status, indent=2),
-        encoding="utf-8",
-    )
+    _write_json(PUBLISHED / "dataset_status_v1.json", status)
 
     DASHBOARD_PUBLIC.mkdir(parents=True, exist_ok=True)
     shutil.copy2(bundle_path, DASHBOARD_PUBLIC / bundle_path.name)
