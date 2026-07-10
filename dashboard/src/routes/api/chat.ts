@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, tool, stepCountIs, type UIMessage } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { getLiveCountryTrends, getPathogenSignals } from "@/lib/amr-data.functions";
 
 const SYSTEM = `You are the AI assistant inside the AMR Life Expectancy Intelligence Platform.
 You are an expert AMR epidemiologist, clinical microbiologist, bioinformatician, biostatistician, and health-policy analyst.
@@ -25,34 +25,38 @@ export const Route = createFileRoute("/api/chat")({
 
         const tools = {
           getLiveCountryTrends: tool({
-            description: "Fetch live country-level AMR risk, resistance, trajectory, life expectancy and intervention fields from v_live_country_trends.",
-            inputSchema: z.object({ country: z.string().optional(), pathogen_type: z.enum(["bacterial", "fungal"]).optional() }),
+            description: "Fetch country-level AMR risk, resistance, trajectory and intervention fields from the published dashboard bundle.",
+            inputSchema: z.object({ country: z.string().optional(), pathogen_type: z.enum(["bacterial", "fungal", "all"]).optional() }),
             execute: async ({ country, pathogen_type }) => {
               try {
-                let q = supabaseAdmin.from("v_live_country_trends").select("*").limit(50);
-                if (country) q = q.ilike("country", `%${country}%`);
-                if (pathogen_type) q = q.eq("pathogen_type", pathogen_type);
-                const { data, error } = await q;
-                if (error) return { error: error.message, rows: [] };
-                return { rows: data ?? [] };
+                let rows = await getLiveCountryTrends(pathogen_type ?? "all");
+                if (country) {
+                  const needle = country.toLowerCase();
+                  rows = rows.filter((r) => r.country.toLowerCase().includes(needle));
+                }
+                return { rows: rows.slice(0, 50) };
               } catch (err) {
-                return { error: err instanceof Error ? err.message : "Supabase not configured", rows: [] };
+                return { error: err instanceof Error ? err.message : "Failed to load country trends", rows: [] };
               }
             },
           }),
           getPathogenSignals: tool({
-            description: "Fetch organism-drug AMR signals from v_live_pathogen_signals, including resistance, MIC drift, evolutionary fitness and distance-to-failure.",
+            description: "Fetch organism-drug AMR signals from the published bundle, including resistance, MIC drift, and evolutionary fitness.",
             inputSchema: z.object({ organism: z.string().optional(), country: z.string().optional() }),
             execute: async ({ organism, country }) => {
               try {
-                let q = supabaseAdmin.from("v_live_pathogen_signals").select("*").limit(50);
-                if (organism) q = q.ilike("organism", `%${organism}%`);
-                if (country) q = q.ilike("country", `%${country}%`);
-                const { data, error } = await q;
-                if (error) return { error: error.message, rows: [] };
-                return { rows: data ?? [] };
+                let rows = await getPathogenSignals("all");
+                if (organism) {
+                  const needle = organism.toLowerCase();
+                  rows = rows.filter((r) => r.organism.toLowerCase().includes(needle));
+                }
+                if (country) {
+                  const needle = country.toLowerCase();
+                  rows = rows.filter((r) => r.country.toLowerCase().includes(needle));
+                }
+                return { rows: rows.slice(0, 50) };
               } catch (err) {
-                return { error: err instanceof Error ? err.message : "Supabase not configured", rows: [] };
+                return { error: err instanceof Error ? err.message : "Failed to load pathogen signals", rows: [] };
               }
             },
           }),

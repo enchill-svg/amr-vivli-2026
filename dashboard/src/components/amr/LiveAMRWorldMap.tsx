@@ -68,7 +68,9 @@ function HeatLayer({ points }: { points: Array<[number, number, number]> }) {
         0.9: "#ff3d6e",
       },
     }).addTo(map);
-    return () => map.removeLayer(layer);
+    return () => {
+      map.removeLayer(layer);
+    };
   }, [map, points]);
   return null;
 }

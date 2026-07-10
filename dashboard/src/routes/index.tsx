@@ -7,7 +7,7 @@ import { AMRHeroBanner } from "@/components/amr/AMRHeroBanner";
 import { ClientAMRWorldMap } from "@/components/amr/ClientAMRWorldMap";
 import { RiskPill, StatCard, TinyBar } from "@/components/amr/AMRDataCards";
 import { getExecutiveKpis, getLiveCountryTrends, getPathogenSignals, getResistanceSeries } from "@/lib/amr-data.functions";
-import { fundingRows } from "@/lib/amr-demo-data";
+import { getFundingGapRows } from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -22,6 +22,7 @@ function Index() {
   const { data: countries = [] } = useQuery({ queryKey: ["home-countries"], queryFn: () => getLiveCountryTrends("all"), refetchInterval: 60_000 });
   const { data: signals = [] } = useQuery({ queryKey: ["home-signals"], queryFn: () => getPathogenSignals("all"), refetchInterval: 60_000 });
   const { data: series = [] } = useQuery({ queryKey: ["home-series"], queryFn: getResistanceSeries });
+  const { data: fundingRows = [] } = useQuery({ queryKey: ["home-funding"], queryFn: getFundingGapRows });
 
   const highRisk = [...countries].sort((a, b) => b.riskScore - a.riskScore).slice(0, 6);
   const topSignals = [...signals].sort((a, b) => b.evolutionaryFitness - a.evolutionaryFitness).slice(0, 5);
@@ -111,10 +112,10 @@ function Index() {
         <Panel title="Funding mismatch" subtitle="High burden but lower R&D allocation">
           <div className="h-80">
             <ResponsiveContainer>
-              <BarChart data={fundingRows} layout="vertical" margin={{ left: 12 }}>
+              <BarChart data={fundingRows.slice(0, 8)} layout="vertical" margin={{ left: 12 }}>
                 <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.25)" />
                 <XAxis type="number" stroke="#94a3b8" fontSize={10} />
-                <YAxis dataKey="country" type="category" stroke="#94a3b8" fontSize={10} width={78} />
+                <YAxis dataKey="organism" type="category" stroke="#94a3b8" fontSize={10} width={110} />
                 <Tooltip contentStyle={{ background: "oklch(0.22 0.04 250)", border: "1px solid oklch(0.3 0.05 250)", fontSize: 11 }} />
                 <Bar dataKey="gap" fill="oklch(0.68 0.24 25)" radius={[0, 6, 6, 0]} />
               </BarChart>

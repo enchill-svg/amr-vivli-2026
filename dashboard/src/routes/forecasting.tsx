@@ -3,13 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Brain } from "lucide-react";
 import { CartesianGrid, Scatter, ScatterChart, ResponsiveContainer, Tooltip, XAxis, YAxis, ZAxis } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { getLiveCountryTrends } from "@/lib/amr-data.functions";
-import { clusterRows } from "@/lib/amr-demo-data";
+import { getLiveCountryTrends, getClusterTypology } from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/forecasting")({ component: MLInsightsPage, head: () => ({ meta: [{ title: "Machine Learning Insights — AMR LifeIntel" }] }) });
 
 function MLInsightsPage() {
   const { data = [] } = useQuery({ queryKey: ["ml-countries"], queryFn: () => getLiveCountryTrends("all") });
+  const { data: clusterRows = [] } = useQuery({ queryKey: ["cluster-typology"], queryFn: getClusterTypology });
   const scatter = data.map((r) => ({ country: r.country, x: r.resistanceRate * 100, y: r.earlyWarningScore, z: r.riskScore, cluster: r.trendLabel }));
   return (
     <CommandPage icon={Brain} eyebrow="Machine Learning Insights" title="Explainable AMR risk modeling" subtitle="Clustering, country risk scoring, future resistance prediction, funding mismatch prediction, and intervention-impact estimation." kpis={[
