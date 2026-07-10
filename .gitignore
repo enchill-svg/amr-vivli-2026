@@ -224,6 +224,7 @@ __marimo__/
 internal/
 REPO_STRUCTURE.md
 docs/brief/AMR_LIFE_EXPECTANCY_UNIFIED_PROJECT_BRIEF.md
+analysis/ONE_PIPELINE.md
 
 # Raw Vivli / external data (never commit)
 data/raw/**

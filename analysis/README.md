@@ -8,7 +8,7 @@ The problem is that the four original datasets don't agree on how to spell thing
 
 The output is one combined table where each row is "one patient sample tested against one drug," ready to be analyzed. This pipeline does not do that later analysis (e.g., trends over time, life-expectancy comparisons) — it only prepares the data.
 
-**Status:** Implemented and passing all built-in checks. **Run the full platform with `python run_all.py`** from this folder — see [ONE_PIPELINE.md](ONE_PIPELINE.md). Parent repo map: [../README.md](../README.md#repository-map).
+**Status:** Implemented and passing all built-in checks. **Run the full platform with `python run_all.py`** from this folder. Parent repo map: [../README.md](../README.md#repository-map).
 
 ---
 

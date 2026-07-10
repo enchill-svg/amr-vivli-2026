@@ -72,7 +72,7 @@ Surveillance data from the **Vivli AMR Register** (SOAR, SENTRY, ATLAS, PLEA, et
 **Dashboard JSON bundle:** `dashboard_bundle_v1.json` (aggregates gated CSVs for the web app).  
 **Dataset wiring status:** `dataset_status_v1.json`.
 
-See [`data/published/README.md`](data/published/README.md) and [`analysis/ONE_PIPELINE.md`](analysis/ONE_PIPELINE.md) for publish details.
+See [`data/published/README.md`](data/published/README.md) for publish details.
 
 ## License
 
