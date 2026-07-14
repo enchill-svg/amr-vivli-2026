@@ -1,5 +1,5 @@
 -- AMR Life Expectancy Intelligence Platform core analytical schema
--- This migration adds AMR-specific tables and live dashboard views on top of the ViralTrackAfrika template.
+-- AMR-specific tables and live dashboard views for the competition platform.
 
 create extension if not exists "pgcrypto";
 

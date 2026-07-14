@@ -30,7 +30,7 @@ export const importNcbiHit = createServerFn({ method: "POST" })
     const url = withKey(
       `${NCBI_BASE}/efetch.fcgi?db=nuccore&id=${encodeURIComponent(data.uid)}&rettype=fasta&retmode=text`,
     );
-    const res = await fetch(url, { headers: { "User-Agent": "ViralTrack-Afrika/1.0" } });
+    const res = await fetch(url, { headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" } });
     let fasta = "";
     if (res.ok) fasta = await res.text();
 

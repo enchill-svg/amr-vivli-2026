@@ -100,5 +100,5 @@
     "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1"
   },
-  "description": "AMR Life Expectancy Intelligence Platform rebuilt on the ViralTrackAfrika command-center template."
+  "description": "AMR Life Expectancy Intelligence Platform for Vivli AMR Surveillance Data Challenge 2026."
 }

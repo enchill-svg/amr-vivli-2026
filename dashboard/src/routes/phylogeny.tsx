@@ -38,7 +38,7 @@ export const Route = createFileRoute("/phylogeny")({
   component: PhylogenyPage,
   head: () => ({
     meta: [
-      { title: "Phylogenomic Intelligence Workspace — ViralTrack-Afrika" },
+      { title: "Phylogenomic Intelligence Workspace — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

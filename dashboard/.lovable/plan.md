@@ -1,6 +1,6 @@
 # AMR Life Expectancy Intelligence Platform
 
-This rebuild uses the ViralTrackAfrika project as the product and UI template, then replaces the core intelligence layer with AMR, life expectancy, intervention-impact, funding-gap and policy-decision modules.
+AMR Life Expectancy Intelligence is the product UI for AMR, life expectancy, intervention-impact, funding-gap and policy-decision modules.
 
 ## Priority modules
 

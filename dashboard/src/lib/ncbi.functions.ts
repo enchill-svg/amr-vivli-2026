@@ -27,7 +27,7 @@ export const ncbiSearch = createServerFn({ method: "POST" })
     );
 
     const esearchRes = await fetch(esearchUrl, {
-      headers: { "User-Agent": "ViralTrack-Afrika/1.0" },
+      headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" },
     });
     if (!esearchRes.ok) {
       return { ids: [], summaries: [], error: `NCBI esearch failed (${esearchRes.status})` };
@@ -42,7 +42,7 @@ export const ncbiSearch = createServerFn({ method: "POST" })
       `${NCBI_BASE}/esummary.fcgi?db=${data.db}&id=${ids.join(",")}&retmode=json`,
     );
     const esumRes = await fetch(esummaryUrl, {
-      headers: { "User-Agent": "ViralTrack-Afrika/1.0" },
+      headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" },
     });
     if (!esumRes.ok) {
       return { ids, summaries: [], error: `NCBI esummary failed (${esumRes.status})` };
@@ -85,7 +85,7 @@ export const ncbiFetchFasta = createServerFn({ method: "POST" })
         data.id,
       )}&rettype=fasta&retmode=text`,
     );
-    const res = await fetch(url, { headers: { "User-Agent": "ViralTrack-Afrika/1.0" } });
+    const res = await fetch(url, { headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" } });
     if (!res.ok) {
       return { fasta: "", error: `NCBI efetch failed (${res.status})` };
     }
@@ -117,7 +117,7 @@ export const weeklyOutbreakSummary = createServerFn({ method: "POST" })
           `${NCBI_BASE}/esearch.fcgi?db=nuccore&term=${encodeURIComponent(term)}&retmode=json&retmax=0`,
         );
         try {
-          const r = await fetch(url, { headers: { "User-Agent": "ViralTrack-Afrika/1.0" } });
+          const r = await fetch(url, { headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" } });
           if (!r.ok) return { pathogen: p, count: 0, error: `HTTP ${r.status}` };
           const j = (await r.json()) as { esearchresult?: { count?: string } };
           return { pathogen: p, count: Number(j.esearchresult?.count ?? 0) };

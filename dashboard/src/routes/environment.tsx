@@ -32,7 +32,7 @@ export const Route = createFileRoute("/environment")({
   component: EnvironmentPage,
   head: () => ({
     meta: [
-      { title: "Environmental Surveillance — ViralTrack-Afrika" },
+      { title: "Environmental Surveillance — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

@@ -5,11 +5,11 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About — ViralTrack-Afrika" },
+      { title: "About — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:
-          "ViralTrack-Afrika is the operational dashboard of the ViGOR genomic surveillance consortium.",
+          "AMR Life Expectancy Intelligence is the operational dashboard of the ViGOR genomic surveillance consortium.",
       },
     ],
   }),
@@ -29,7 +29,7 @@ function AboutPage() {
             <span className="text-[color:var(--accent)]">so outbreaks stop being surprises.</span>
           </h1>
           <p className="text-sm text-foreground/80 mt-5 max-w-2xl leading-relaxed">
-            ViralTrack-Afrika is the operational platform of the{" "}
+            AMR Life Expectancy Intelligence is the operational platform of the{" "}
             <strong>ViGOR Genomic Research Fellowship</strong> — an integrated wastewater genomics
             and epidemiological intelligence network covering 47 countries. We sequence what
             communities shed, in near real-time, so ministries of health get a 14-to-21 day head

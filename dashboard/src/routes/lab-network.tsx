@@ -8,7 +8,7 @@ export const Route = createFileRoute("/lab-network")({
   component: LabPage,
   head: () => ({
     meta: [
-      { title: "Laboratory Network — ViralTrack-Afrika" },
+      { title: "Laboratory Network — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content: "Active sentinel & sequencing laboratories across the continent.",

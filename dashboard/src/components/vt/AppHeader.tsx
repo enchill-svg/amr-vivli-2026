@@ -17,10 +17,10 @@ export function AppHeader() {
         </div>
         <div className="leading-tight">
           <h1 className="text-[17px] font-semibold tracking-tight">
-            AMR<span className="text-[color:var(--accent)]">·LifeIntel</span>
+            AMR Life Expectancy Intelligence
           </h1>
           <p className="text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground">
-            Resistance · Life Expectancy Intelligence
+            Resistance · Life expectancy · Intervention
           </p>
         </div>
       </Link>

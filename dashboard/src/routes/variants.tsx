@@ -28,7 +28,7 @@ export const Route = createFileRoute("/variants")({
   component: VariantsPage,
   head: () => ({
     meta: [
-      { title: "Variants — ViralTrack-Afrika" },
+      { title: "Variants — AMR Life Expectancy Intelligence" },
       { name: "description", content: "Tracked viral variants and mutations of concern." },
     ],
   }),

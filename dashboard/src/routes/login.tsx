@@ -8,7 +8,7 @@ import { Activity, Globe2, Dna, Radio } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
-  head: () => ({ meta: [{ title: "Sign in — ViralTrack-Afrika" }] }),
+  head: () => ({ meta: [{ title: "Sign in — AMR Life Expectancy Intelligence" }] }),
 });
 
 function LoginPage() {
@@ -109,9 +109,9 @@ function LoginPage() {
         <div className="relative">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-white">
             <div className="w-8 h-8 rounded-md bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-black font-bold">
-              V
+              A
             </div>
-            ViralTrack·Afrika
+            AMR Life Expectancy Intelligence
           </Link>
         </div>
 

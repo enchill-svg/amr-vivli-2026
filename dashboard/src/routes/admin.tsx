@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
-  head: () => ({ meta: [{ title: "Admin — ViralTrack-Afrika" }] }),
+  head: () => ({ meta: [{ title: "Admin — AMR Life Expectancy Intelligence" }] }),
 });
 
 function AdminLayout() {
@@ -43,7 +43,7 @@ function AdminLayout() {
           <Shield className="w-8 h-8 text-rose-400 mx-auto mb-3" />
           <h1 className="text-lg font-medium">Restricted area</h1>
           <p className="text-sm text-white/60 mt-2">
-            You need administrator privileges to access the ViralTrack Afrika command center.
+            You need administrator privileges to access the AMR Life Expectancy Intelligence command center.
           </p>
           <Link to="/" className="inline-block mt-5 text-cyan-300 text-sm hover:underline">
             ← Back to platform
@@ -81,10 +81,10 @@ function AdminLayout() {
           className="p-5 flex items-center gap-2.5 border-b border-white/10"
         >
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-400 text-black font-bold flex items-center justify-center">
-            V
+            A
           </div>
           <div>
-            <div className="text-sm font-medium leading-none">ViralTrack</div>
+            <div className="text-sm font-medium leading-none">AMR Life Expectancy Intelligence</div>
             <div className="text-[10px] uppercase tracking-widest text-cyan-300 mt-1">
               Admin Console
             </div>
@@ -137,7 +137,7 @@ function AdminLayout() {
         <div className="sticky top-0 z-10 flex items-center gap-3 px-6 py-3.5 border-b border-white/10 bg-[#05070A]/70 backdrop-blur-xl">
           <Activity className="w-4 h-4 text-cyan-300" />
           <div className="text-xs uppercase tracking-widest text-white/50">
-            ViralTrack·Afrika · Administration
+            AMR Life Expectancy Intelligence · Administration
           </div>
           <span className="ml-auto inline-flex items-center gap-1.5 text-[10px] text-emerald-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live systems

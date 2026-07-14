@@ -12,7 +12,7 @@ export const Route = createFileRoute("/uploads")({
   component: UploadsPage,
   head: () => ({
     meta: [
-      { title: "My Data — ViralTrack-Afrika" },
+      { title: "My Data — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content: "Securely upload and manage your private genomic datasets, trees, and metadata.",

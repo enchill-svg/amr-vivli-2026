@@ -6,7 +6,7 @@ export const Route = createFileRoute("/biosecurity")({
   component: BioPage,
   head: () => ({
     meta: [
-      { title: "Biosecurity Threat Monitoring — ViralTrack-Afrika" },
+      { title: "Biosecurity Threat Monitoring — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

@@ -5,7 +5,7 @@ export const Route = createFileRoute("/team")({
   component: TeamPage,
   head: () => ({
     meta: [
-      { title: "Team — ViralTrack-Afrika" },
+      { title: "Team — AMR Life Expectancy Intelligence" },
       { name: "description", content: "The researchers and partners behind the ViGOR consortium." },
     ],
   }),

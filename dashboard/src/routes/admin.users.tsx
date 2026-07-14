@@ -93,7 +93,7 @@ function UsersPage() {
     const url = URL.createObjectURL(new Blob([rows.join("\n")], { type: "text/csv" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = `viraltrack-users-${Date.now()}.csv`;
+    a.download = `amr-life-intelligence-users-${Date.now()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

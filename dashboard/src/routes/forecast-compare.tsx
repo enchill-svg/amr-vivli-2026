@@ -18,7 +18,7 @@ export const Route = createFileRoute("/forecast-compare")({
   component: ForecastComparePage,
   head: () => ({
     meta: [
-      { title: "Country-to-Country Forecast Comparison — ViralTrack-Afrika" },
+      { title: "Country-to-Country Forecast Comparison — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

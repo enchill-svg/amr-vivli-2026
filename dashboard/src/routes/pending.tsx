@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/pending")({
   component: PendingPage,
-  head: () => ({ meta: [{ title: "Approval pending — ViralTrack-Afrika" }] }),
+  head: () => ({ meta: [{ title: "Approval pending — AMR Life Expectancy Intelligence" }] }),
 });
 
 function PendingPage() {
@@ -49,7 +49,7 @@ function PendingPage() {
         </h1>
         <p className="text-sm text-white/60 leading-relaxed mb-6">
           {rejected
-            ? "Your ViralTrack Afrika research access request was declined. Contact the ViGOR Consortium administrators if you believe this is an error."
+            ? "Your AMR Life Expectancy Intelligence research access request was declined. Contact the ViGOR Consortium administrators if you believe this is an error."
             : suspended
               ? "Your account has been suspended. Please reach out to your administrator for reinstatement."
               : "Thanks for signing up. A super administrator will review your credentials shortly. You'll receive an email as soon as your account is approved."}

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/structural-biology")({
   component: StructuralBiologyPage,
   head: () => ({
     meta: [
-      { title: "Structural Biology — ViralTrack-Afrika" },
+      { title: "Structural Biology — AMR Life Expectancy Intelligence" },
       { name: "description", content: "3D protein structure viewer for variants of concern." },
     ],
   }),

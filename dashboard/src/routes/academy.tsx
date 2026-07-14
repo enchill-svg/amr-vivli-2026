@@ -6,7 +6,7 @@ export const Route = createFileRoute("/academy")({
   component: AcademyPage,
   head: () => ({
     meta: [
-      { title: "Bioinformatics Academy — ViralTrack-Afrika" },
+      { title: "Bioinformatics Academy — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

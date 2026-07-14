@@ -6,7 +6,7 @@ export const Route = createFileRoute("/emergency")({
   component: EmergencyPage,
   head: () => ({
     meta: [
-      { title: "Emergency Response Center — ViralTrack-Afrika" },
+      { title: "Emergency Response Center — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

@@ -22,7 +22,7 @@ export const Route = createFileRoute("/news")({
   component: NewsPage,
   head: () => ({
     meta: [
-      { title: "Intelligence Operations Center — ViralTrack-Afrika" },
+      { title: "Intelligence Operations Center — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content:

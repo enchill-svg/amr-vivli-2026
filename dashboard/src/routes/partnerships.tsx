@@ -6,7 +6,7 @@ export const Route = createFileRoute("/partnerships")({
   component: PartnersPage,
   head: () => ({
     meta: [
-      { title: "Funding & Partnerships — ViralTrack-Afrika" },
+      { title: "Funding & Partnerships — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content: "Institutional partners, funders, and consortia powering the network.",

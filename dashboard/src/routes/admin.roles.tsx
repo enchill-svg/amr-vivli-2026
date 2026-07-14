@@ -92,7 +92,7 @@ function RolesPage() {
           <KeyRound className="w-6 h-6 text-cyan-300" /> Roles & Permissions
         </h1>
         <p className="text-sm text-white/50 mt-1">
-          Granular access control across the ViralTrack platform.
+          Granular access control across the AMR Life Expectancy Intelligence platform.
         </p>
       </header>
 

@@ -28,7 +28,7 @@ export const Route = createFileRoute("/genomics")({
   component: GenomicsPage,
   head: () => ({
     meta: [
-      { title: "Genomics — ViralTrack-Afrika" },
+      { title: "Genomics — AMR Life Expectancy Intelligence" },
       {
         name: "description",
         content: "Whole-genome viral sequencing across African sentinel sites.",

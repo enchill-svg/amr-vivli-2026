@@ -12,7 +12,7 @@ const searchSchema = z.object({ q: z.string().optional() });
 export const Route = createFileRoute("/search")({
   validateSearch: (s) => searchSchema.parse(s),
   component: SearchPage,
-  head: () => ({ meta: [{ title: "Search — ViralTrack-Afrika" }] }),
+  head: () => ({ meta: [{ title: "Search — AMR Life Expectancy Intelligence" }] }),
 });
 
 function SearchPage() {

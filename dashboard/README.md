@@ -1,6 +1,6 @@
 # AMR Life Expectancy Intelligence Platform
 
-Scientific decision-support UI built on the ViralTrack-Afrika command-center template. Core AMR views are wired to **published pipeline outputs**; some legacy template routes still use Supabase or demo data.
+Scientific decision-support UI for **AMR Life Expectancy Intelligence**. Core AMR views are wired to **published pipeline outputs**; some legacy routes still use Supabase or demo data.
 
 ## Primary data source (competition path)
 
@@ -39,7 +39,7 @@ The app loads the bundle at runtime via `src/lib/published-data.ts` → `src/lib
 
 ## Legacy / optional routes (not pipeline-backed)
 
-These remain from the ViralTrack template and use **Supabase** and/or static demo content:
+These optional routes use **Supabase** and/or static demo content:
 
 `/genomics`, `/lab-network`, `/environment`, `/search`, `/alerts` (viral), admin pages, `/assistant`, etc.
 

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/notifications")({
   component: NotificationPrefsPage,
   head: () => ({
     meta: [
-      { title: "Notification Preferences — ViralTrack-Afrika" },
+      { title: "Notification Preferences — AMR Life Expectancy Intelligence" },
       { name: "description", content: "Channels, quiet hours, and subscriptions." },
     ],
   }),
@@ -148,7 +148,7 @@ function NotificationPrefsPage() {
               <ChannelRow
                 icon={Smartphone}
                 label="Push (mobile)"
-                desc="ViralTrack mobile app push notifications"
+                desc="AMR Life Expectancy Intelligence mobile app push notifications"
                 checked={prefs.channels.push}
                 onChange={(v) => setPrefs((p) => ({ ...p, channels: { ...p.channels, push: v } }))}
               />
