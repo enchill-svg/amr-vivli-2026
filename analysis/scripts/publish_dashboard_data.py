@@ -208,6 +208,7 @@ def build_dashboard_bundle() -> dict:
         "clusterTypologyFungal": _read_csv(PUBLISHED / "cluster_typology_fungal_gated_v1.csv"),
         "interventions": _read_csv(PUBLISHED / "intervention_recommendations_ranked_gated_v1.csv"),
         "fundingGap": _read_csv(PUBLISHED / "funding_gap_summary_v1.csv"),
+        "hubFundingComposition": _read_csv(PUBLISHED / "hub_funding_composition_summary_v1.csv"),
         "gatingComparison": _read_csv(PUBLISHED / "gating_comparison_v1.csv"),
         "identifiabilityLedger": _read_csv(PUBLISHED / "identifiability_ledger_v1.csv"),
         "q2DriverSummary": _read_csv(PUBLISHED / "q2_driver_evidence_summary_v1.csv"),

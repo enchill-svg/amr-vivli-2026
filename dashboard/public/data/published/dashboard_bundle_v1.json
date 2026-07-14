@@ -1,6 +1,6 @@
 {
   "bundle_version": "v1",
-  "generated_at": "2026-07-14T10:15:52",
+  "generated_at": "2026-07-14T21:42:16",
   "pipeline_run": {
     "run_id": "20260714T042315",
     "status": "passed"
@@ -50615,6 +50615,120 @@
       "total_rd_funding_usd_prorated": 901054983.576,
       "methodology": "Stage 6 organism-level burden_share vs funding_share; Hub Amount USD pro-rated per agent tag then split across matched surveillance organisms. organism_gap_rank is assigned separately within each pathogen_type.",
       "prorata_caveat": "Amount USD divided by infectious-agent tag count per Hub methodology when multiple agents appear in one Categories cell. Organism-level totals further split each matched agent label equally across surveillance organisms in this project. Whether the export's single Amount USD is already internally pro-rated could not be verified locally.",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    }
+  ],
+  "hubFundingComposition": [
+    {
+      "composition_dimension": "geography",
+      "bucket": "non_ssa",
+      "amount_usd": 18276244225.7,
+      "share_of_hub_total": 0.970190211,
+      "n_projects": 18435,
+      "classification_rule": "institution_or_funder_country_to_ssa_iso3",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "geography",
+      "bucket": "ssa",
+      "amount_usd": 398099569.76,
+      "share_of_hub_total": 0.0211330239,
+      "n_projects": 342,
+      "classification_rule": "institution_or_funder_country_to_ssa_iso3",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "geography",
+      "bucket": "geography_unknown",
+      "amount_usd": 163451121.88,
+      "share_of_hub_total": 0.0086767651,
+      "n_projects": 12,
+      "classification_rule": "institution_or_funder_country_to_ssa_iso3",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "modality",
+      "bucket": "other_or_unclassified",
+      "amount_usd": 10930336196.72,
+      "share_of_hub_total": 0.5802343769,
+      "n_projects": 14318,
+      "classification_rule": "exclusive_research_area_product_tokens",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "modality",
+      "bucket": "therapeutics_drugs",
+      "amount_usd": 4383805335.14,
+      "share_of_hub_total": 0.2327132955,
+      "n_projects": 2219,
+      "classification_rule": "exclusive_research_area_product_tokens",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "modality",
+      "bucket": "diagnostics",
+      "amount_usd": 1584859931.4,
+      "share_of_hub_total": 0.0841319241,
+      "n_projects": 1366,
+      "classification_rule": "exclusive_research_area_product_tokens",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "modality",
+      "bucket": "vaccines",
+      "amount_usd": 1552389710.54,
+      "share_of_hub_total": 0.0824082499,
+      "n_projects": 746,
+      "classification_rule": "exclusive_research_area_product_tokens",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
+      "version": "v1",
+      "date_added": "2026-07-14"
+    },
+    {
+      "composition_dimension": "modality",
+      "bucket": "product_mixed",
+      "amount_usd": 386403743.54,
+      "share_of_hub_total": 0.0205121536,
+      "n_projects": 140,
+      "classification_rule": "exclusive_research_area_product_tokens",
+      "data_status": "measured",
+      "hub_total_amount_usd": 18837794917.34,
+      "source_file": "Projects.xlsx",
+      "methodology": "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). Modality is an exclusive partition of project Amount USD using Research Area comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) \u2192 diagnostics; Therapeutics-only \u2192 therapeutics_drugs; Vaccines-only \u2192 vaccines; two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/Preventives Other/Promotants \u2192 product_mixed; solitary Other Products/Preventives Other/Promotants (or no product tokens) \u2192 other_or_unclassified. SSA geography: map Institution Country and Funder Country via a locked Hub-label\u2192ISO3 table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if both fields are empty or only unmapped non-country labels remain (e.g. European Union, Global Partnership, multi-country strings). data_status for geography is measured when \u226595% of dollars are ssa or non_ssa, else partial_coverage. Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8).",
       "version": "v1",
       "date_added": "2026-07-14"
     }

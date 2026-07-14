@@ -16,6 +16,7 @@ export type DashboardBundle = {
   clusterTypologyFungal: Record<string, unknown>[];
   interventions: Record<string, unknown>[];
   fundingGap: Record<string, unknown>[];
+  hubFundingComposition: Record<string, unknown>[];
   gatingComparison: Record<string, unknown>[];
   identifiabilityLedger: Record<string, unknown>[];
   q2DriverSummary: Record<string, unknown>[];
