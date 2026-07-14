@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GraduationCap, BookOpen, Beaker, Cpu } from "lucide-react";
+import { useState } from "react";
+import { GraduationCap, BookOpen, Beaker, Cpu, Check } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/academy")({
   component: AcademyPage,
@@ -62,6 +64,17 @@ const tracks = [
 ];
 
 function AcademyPage() {
+  const [enrolled, setEnrolled] = useState<Set<string>>(new Set());
+
+  const handleEnrol = (title: string) => {
+    setEnrolled((prev) => {
+      const next = new Set(prev);
+      next.add(title);
+      return next;
+    });
+    toast.success(`Enrolled in "${title}". This records your interest locally in this session.`);
+  };
+
   return (
     <CommandPage
       icon={GraduationCap}
@@ -92,8 +105,18 @@ function AcademyPage() {
                 </p>
               </div>
             </div>
-            <button className="mt-3 w-full text-xs px-3 py-2 rounded border border-border/60 hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]">
-              Enrol
+            <button
+              onClick={() => handleEnrol(t.title)}
+              disabled={enrolled.has(t.title)}
+              className="mt-3 w-full text-xs px-3 py-2 rounded border border-border/60 hover:border-[color:var(--accent)] hover:text-[color:var(--accent)] disabled:opacity-70 disabled:hover:border-border/60 disabled:hover:text-inherit flex items-center justify-center gap-1.5"
+            >
+              {enrolled.has(t.title) ? (
+                <>
+                  <Check className="w-3.5 h-3.5" /> Enrolled
+                </>
+              ) : (
+                "Enrol"
+              )}
             </button>
           </GlassCard>
         ))}

@@ -65,6 +65,7 @@ const NEWS_SOURCES = [
     time: "2m",
     title: "Mpox Clade Ib detected in new DRC province",
     desc: "Genomic sequencing confirms expansion of Clade Ib lineage; cross-border surveillance heightened.",
+    topics: ["Outbreaks", "Variants", "Genomics", "Africa Focus"],
   },
   {
     name: "Africa CDC",
@@ -72,6 +73,7 @@ const NEWS_SOURCES = [
     time: "11m",
     title: "Marburg containment update — Rwanda response phase 3",
     desc: "Contact tracing closes 412 chains; ring vaccination scaled to 6 districts.",
+    topics: ["Outbreaks", "Africa Focus"],
   },
   {
     name: "Reuters Health",
@@ -79,6 +81,7 @@ const NEWS_SOURCES = [
     time: "27m",
     title: "Cholera outbreak intensifies in Sudan IDP camps",
     desc: "WHO estimates 1.2M at risk; AI early warning flagged signal 9 days prior.",
+    topics: ["Outbreaks", "Climate & Health", "Africa Focus"],
   },
   {
     name: "BBC Africa",
@@ -86,6 +89,7 @@ const NEWS_SOURCES = [
     time: "44m",
     title: "Rift Valley fever cluster reported in southern Kenya",
     desc: "Wastewater anomaly +2.1σ; livestock surveillance ramping up.",
+    topics: ["Outbreaks", "Climate & Health", "Africa Focus"],
   },
   {
     name: "WHO Emergencies",
@@ -93,6 +97,7 @@ const NEWS_SOURCES = [
     time: "1h",
     title: "Polio vaccination drive launched in 8 Sahel countries",
     desc: "Cross-border coordination; AI logistics model optimizes cold chain.",
+    topics: ["Africa Focus"],
   },
   {
     name: "AU Health",
@@ -100,6 +105,7 @@ const NEWS_SOURCES = [
     time: "1h",
     title: "Continental Genomic Surveillance Compact signed",
     desc: "32 nations agree to real-time sequence sharing under ViGOR framework.",
+    topics: ["Genomics", "Africa Focus", "Global"],
   },
 ];
 
@@ -112,6 +118,7 @@ const AI_ALERTS = [
       "Mutation cluster N321K associated with increased transmissibility detected across 4 new sampling sites.",
     source: "WHO Africa · AI Anomaly Engine",
     time: "2 min ago",
+    topics: ["Variants", "Outbreaks", "Africa Focus"],
   },
   {
     sev: "high" as const,
@@ -121,6 +128,7 @@ const AI_ALERTS = [
       "Wastewater positivity rate +38% in Kigali district 7. Trajectory exceeds Bayesian SEIR baseline.",
     source: "Africa CDC · Sentinel Network",
     time: "14 min ago",
+    topics: ["Emerging Threats", "Outbreaks", "Africa Focus"],
   },
   {
     sev: "moderate" as const,
@@ -130,6 +138,7 @@ const AI_ALERTS = [
       "Rainfall anomaly +1.8σ combined with displacement flux raises 14-day risk index to 0.78.",
     source: "ViGOR Co-Pilot",
     time: "31 min ago",
+    topics: ["Climate & Health", "Outbreaks", "Africa Focus"],
   },
   {
     sev: "high" as const,
@@ -138,6 +147,7 @@ const AI_ALERTS = [
     summary: "New reassortment event in poultry sector; cross-species jump probability now 0.22.",
     source: "AI Anomaly Engine",
     time: "1 h ago",
+    topics: ["Variants", "Emerging Threats", "Africa Focus"],
   },
   {
     sev: "low" as const,
@@ -146,8 +156,96 @@ const AI_ALERTS = [
     summary: "Sentinel reporting cadence improved; signal stable, no anomaly detected.",
     source: "Sentinel Network",
     time: "2 h ago",
+    topics: ["Africa Focus"],
   },
 ];
+
+const AFRICAN_COUNTRIES = new Set(
+  [
+    "algeria",
+    "angola",
+    "benin",
+    "botswana",
+    "burkina faso",
+    "burundi",
+    "cabo verde",
+    "cameroon",
+    "central african republic",
+    "chad",
+    "comoros",
+    "congo",
+    "democratic republic of congo",
+    "drc",
+    "djibouti",
+    "egypt",
+    "equatorial guinea",
+    "eritrea",
+    "eswatini",
+    "ethiopia",
+    "gabon",
+    "gambia",
+    "ghana",
+    "guinea",
+    "guinea-bissau",
+    "ivory coast",
+    "cote d'ivoire",
+    "kenya",
+    "lesotho",
+    "liberia",
+    "libya",
+    "madagascar",
+    "malawi",
+    "mali",
+    "mauritania",
+    "mauritius",
+    "morocco",
+    "mozambique",
+    "namibia",
+    "niger",
+    "nigeria",
+    "rwanda",
+    "sao tome and principe",
+    "senegal",
+    "seychelles",
+    "sierra leone",
+    "somalia",
+    "south africa",
+    "south sudan",
+    "sudan",
+    "tanzania",
+    "togo",
+    "tunisia",
+    "uganda",
+    "zambia",
+    "zimbabwe",
+  ].map((c) => c.toLowerCase()),
+);
+
+const TOPIC_KEYWORDS: Record<string, string[]> = {
+  Variants: ["variant", "mutation", "lineage", "clade", "reassortment", "strain"],
+  Genomics: ["genomic", "sequenc", "phylogen"],
+  "Climate & Health": ["rain", "climate", "flood", "wastewater", "drought", "temperature"],
+  Outbreaks: ["outbreak", "cluster", "case", "spread", "contact tracing", "containment"],
+  "Emerging Threats": ["emerging", "novel", "anomaly", "reassortment"],
+};
+
+function inferAlertTopics(alert: {
+  title?: string | null;
+  description?: string | null;
+  pathogen?: string | null;
+  country?: string | null;
+}): string[] {
+  const haystack =
+    `${alert.title ?? ""} ${alert.description ?? ""} ${alert.pathogen ?? ""}`.toLowerCase();
+  const topics = Object.entries(TOPIC_KEYWORDS)
+    .filter(([, keywords]) => keywords.some((k) => haystack.includes(k)))
+    .map(([topic]) => topic);
+  if (alert.country && AFRICAN_COUNTRIES.has(alert.country.trim().toLowerCase())) {
+    topics.push("Africa Focus");
+  }
+  if (topics.length === 0) topics.push("Global");
+  return topics;
+}
 
 function NewsPage() {
   const [topic, setTopic] = useState("All");
@@ -170,6 +268,20 @@ function NewsPage() {
   const active24h = dbAlerts.filter(
     (a) => Date.now() - new Date(a.detected_at).getTime() < 86_400_000,
   ).length;
+
+  const filteredAiAlerts = useMemo(
+    () => (topic === "All" ? AI_ALERTS : AI_ALERTS.filter((a) => a.topics.includes(topic))),
+    [topic],
+  );
+  const filteredNewsSources = useMemo(
+    () => (topic === "All" ? NEWS_SOURCES : NEWS_SOURCES.filter((n) => n.topics.includes(topic))),
+    [topic],
+  );
+  const filteredDbAlerts = useMemo(
+    () =>
+      topic === "All" ? dbAlerts : dbAlerts.filter((a) => inferAlertTopics(a).includes(topic)),
+    [dbAlerts, topic],
+  );
 
   return (
     <PageShell>
@@ -272,7 +384,12 @@ function NewsPage() {
               </span>
             </div>
             <div className="divide-y divide-border/50 overflow-y-auto max-h-[720px]">
-              {AI_ALERTS.map((a, idx) => {
+              {filteredAiAlerts.length === 0 && filteredDbAlerts.length === 0 && (
+                <div className="p-4 text-xs text-muted-foreground">
+                  No signals tagged "{topic}" right now.
+                </div>
+              )}
+              {filteredAiAlerts.map((a, idx) => {
                 const s = SEV[a.sev];
                 return (
                   <article
@@ -304,7 +421,7 @@ function NewsPage() {
                   </article>
                 );
               })}
-              {dbAlerts.slice(0, 30).map((a) => {
+              {filteredDbAlerts.slice(0, 30).map((a) => {
                 const s = SEV[a.severity as keyof typeof SEV] ?? SEV.moderate;
                 return (
                   <article key={a.id} className="p-4 hover:bg-white/[0.03] transition">
@@ -375,7 +492,12 @@ function NewsPage() {
             </div>
 
             <div className="divide-y divide-border/50 overflow-y-auto max-h-[640px]">
-              {NEWS_SOURCES.map((n, idx) => (
+              {filteredNewsSources.length === 0 && (
+                <div className="p-4 text-xs text-muted-foreground">
+                  No stories tagged "{topic}" right now.
+                </div>
+              )}
+              {filteredNewsSources.map((n, idx) => (
                 <article
                   key={idx}
                   className="p-4 hover:bg-white/[0.03] transition cursor-pointer flex gap-3"

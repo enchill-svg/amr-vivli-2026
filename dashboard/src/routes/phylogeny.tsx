@@ -27,6 +27,8 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { PageShell } from "@/components/vt/PageShell";
 import { AuthGate } from "@/components/vt/AuthGate";
 import { Button } from "@/components/ui/button";
@@ -302,7 +304,14 @@ function PhylogenyPage() {
   >([]);
   const [noteDraft, setNoteDraft] = useState("");
   const [copilotInput, setCopilotInput] = useState("");
-  const [copilotLog, setCopilotLog] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
+  const {
+    messages: copilotMessages,
+    sendMessage: sendCopilotMessage,
+    status: copilotStatus,
+  } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+  });
+  const copilotBusy = copilotStatus === "submitted" || copilotStatus === "streaming";
   const [pubStyle, setPubStyle] = useState<
     "default" | "Nature" | "Science" | "Cell" | "WHO" | "CDC"
   >("default");
@@ -517,30 +526,10 @@ function PhylogenyPage() {
   }
 
   function askCopilot(q: string) {
-    if (!q.trim()) return;
-    setCopilotLog((l) => [...l, { role: "user", text: q }]);
-    setTimeout(() => {
-      const c = clusters[0];
-      const reply = (() => {
-        if (/cluster/i.test(q) && c) {
-          return `Cluster ${c.id} (${c.lineage}) groups ${c.size} taxa with tight branch lengths (≤0.15 subs/site). It is the largest clade in the loaded tree and most likely represents a recent transmission chain. Suggest reviewing geographic metadata for spatial clustering.`;
-        }
-        if (/fast|grow/i.test(q))
-          return `The fastest-growing lineage in the loaded subset is ${clusters[0]?.lineage ?? "n/a"}; relative branch shortening suggests rapid recent diversification.`;
-        if (/unusual|odd/i.test(q))
-          return `Branch lengths above 0.15 subs/site flagged: ${
-            leaves
-              .filter((l) => (l.depth ?? 0) > maxDepth * 0.85)
-              .slice(0, 3)
-              .map((l) => l.name)
-              .join(", ") || "none"
-          }. Recommend Bayesian dating to verify.`;
-        if (/publication|summary/i.test(q))
-          return `Manuscript draft: The phylogeny (${leaves.length} taxa, ${clusters.length} clusters) reveals dominant ${clusters[0]?.lineage} clade with evidence of regional spread. Bootstrap support and clade calibration recommended before submission.`;
-        return `Tree summary: ${leaves.length} taxa across ${clusters.length} clusters, max depth ${maxDepth.toFixed(3)} subs/site. Dominant lineage: ${clusters[0]?.lineage ?? "n/a"}.`;
-      })();
-      setCopilotLog((l) => [...l, { role: "ai", text: reply }]);
-    }, 350);
+    if (!q.trim() || copilotBusy) return;
+    const c = clusters[0];
+    const context = `Context: the currently loaded phylogenetic tree has ${leaves.length} taxa across ${clusters.length} clusters, max branch depth ${maxDepth.toFixed(3)} subs/site. Largest cluster: ${c ? `${c.lineage} (${c.size} taxa)` : "n/a"}.`;
+    sendCopilotMessage({ text: `${context}\n\n${q.trim()}` });
     setCopilotInput("");
   }
 
@@ -680,25 +669,32 @@ function PhylogenyPage() {
 
               <Panel title="AI Phylogeny Copilot" icon={Sparkles}>
                 <div className="space-y-1.5 max-h-44 overflow-y-auto mb-2">
-                  {copilotLog.length === 0 && (
+                  {copilotMessages.length === 0 && (
                     <div className="text-[11px] text-muted-foreground">
                       Ask: "Explain Cluster 1", "Find unusual branches", "Generate publication
                       summary".
                     </div>
                   )}
-                  {copilotLog.map((m, i) => (
+                  {copilotMessages.map((m) => (
                     <div
-                      key={i}
-                      className={`text-[11px] rounded-md p-1.5 ${
+                      key={m.id}
+                      className={`text-[11px] rounded-md p-1.5 whitespace-pre-wrap ${
                         m.role === "user"
                           ? "bg-secondary/40 text-foreground"
                           : "bg-[color:var(--accent)]/10 text-foreground/90 border border-[color:var(--accent)]/30"
                       }`}
                     >
-                      <div className="text-[9px] uppercase opacity-60 mb-0.5">{m.role}</div>
-                      {m.text}
+                      <div className="text-[9px] uppercase opacity-60 mb-0.5">
+                        {m.role === "user" ? "user" : "ai"}
+                      </div>
+                      {m.parts.map((p, i) =>
+                        p.type === "text" ? <span key={i}>{p.text}</span> : null,
+                      )}
                     </div>
                   ))}
+                  {copilotBusy && (
+                    <div className="text-[11px] text-muted-foreground animate-pulse">Thinking…</div>
+                  )}
                 </div>
                 <div className="flex gap-1">
                   <Input
@@ -706,9 +702,15 @@ function PhylogenyPage() {
                     value={copilotInput}
                     onChange={(e) => setCopilotInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && askCopilot(copilotInput)}
+                    disabled={copilotBusy}
                     className="h-7 text-[11px]"
                   />
-                  <Button size="sm" className="h-7 px-2" onClick={() => askCopilot(copilotInput)}>
+                  <Button
+                    size="sm"
+                    className="h-7 px-2"
+                    disabled={copilotBusy || !copilotInput.trim()}
+                    onClick={() => askCopilot(copilotInput)}
+                  >
                     <Zap className="w-3 h-3" />
                   </Button>
                 </div>

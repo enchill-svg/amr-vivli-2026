@@ -1,13 +1,77 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRef, useState } from "react";
 import { Upload, Database, FileSpreadsheet, Microscope, ShieldCheck } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/ingest")({
   component: IngestPage,
   head: () => ({ meta: [{ title: "Data Ingestion — AMR LifeIntel" }] }),
 });
 
+const FIELD_KEYWORDS: Record<string, string[]> = {
+  "Country/date": ["country", "iso3", "date", "year", "program"],
+  "MIC/resistance": ["mic", "comparator", "log2", "s/i/r", "sir", "breakpoint", "resistance"],
+  Crosswalk: ["drug", "organism", "pathogen", "age", "crosswalk", "mapping"],
+};
+
+function classifyColumns(headers: string[]) {
+  const counts: Record<string, number> = { "Country/date": 0, "MIC/resistance": 0, Crosswalk: 0 };
+  for (const h of headers) {
+    const lower = h.trim().toLowerCase();
+    for (const [group, keywords] of Object.entries(FIELD_KEYWORDS)) {
+      if (keywords.some((k) => lower.includes(k))) counts[group] += 1;
+    }
+  }
+  return counts;
+}
+
+async function previewFile(file: File) {
+  const isCsv = /\.csv$/i.test(file.name);
+  if (!isCsv) {
+    toast.info(
+      `Selected "${file.name}" (${(file.size / 1024).toFixed(1)} KB) — in-browser preview only supports CSV right now; no processing pipeline is wired up yet.`,
+    );
+    return;
+  }
+  const text = await file.text();
+  const lines = text.split(/\r?\n/).filter((l) => l.length > 0);
+  if (lines.length === 0) {
+    toast.error(`"${file.name}" appears to be empty.`);
+    return;
+  }
+  const headers = lines[0].split(",");
+  const rowCount = lines.length - 1;
+  const detected = classifyColumns(headers);
+  const detectedSummary = Object.entries(detected)
+    .filter(([, n]) => n > 0)
+    .map(([group, n]) => `${group} (${n})`)
+    .join(", ");
+  toast.success(
+    `Parsed "${file.name}" locally — ${rowCount} rows × ${headers.length} columns.` +
+      (detectedSummary ? ` Detected fields: ${detectedSummary}.` : "") +
+      " This is a client-side preview only; no backend upload pipeline is wired up yet.",
+  );
+}
+
 function IngestPage() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isParsing, setIsParsing] = useState(false);
+
+  const handleFilesSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setIsParsing(true);
+    try {
+      for (const file of Array.from(files)) {
+        await previewFile(file);
+      }
+    } finally {
+      setIsParsing(false);
+      e.target.value = "";
+    }
+  };
+
   return (
     <CommandPage
       icon={Upload}
@@ -35,8 +99,20 @@ function IngestPage() {
               organism crosswalks and breakpoint tables. Every upload creates a versioned processing
               run.
             </p>
-            <button className="mt-5 rounded-full bg-[color:var(--accent)] px-5 py-2 text-sm font-medium text-[color:var(--accent-foreground)]">
-              Select files
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              multiple
+              className="hidden"
+              onChange={handleFilesSelected}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isParsing}
+              className="mt-5 rounded-full bg-[color:var(--accent)] px-5 py-2 text-sm font-medium text-[color:var(--accent-foreground)] disabled:opacity-60"
+            >
+              {isParsing ? "Parsing…" : "Select files"}
             </button>
           </div>
         </GlassCard>
