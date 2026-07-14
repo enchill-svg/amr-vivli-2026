@@ -19,7 +19,7 @@ function PendingPage() {
   }
 
   if (status === "approved" || isAdmin) {
-    router.navigate({ to: "/genomics" });
+    router.navigate({ to: "/" });
   }
 
   const rejected = status === "rejected";

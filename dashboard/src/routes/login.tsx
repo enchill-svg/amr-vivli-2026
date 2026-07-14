@@ -70,7 +70,7 @@ function LoginPage() {
           }
         }
       }
-      router.navigate({ to: "/genomics" });
+      router.navigate({ to: "/" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
