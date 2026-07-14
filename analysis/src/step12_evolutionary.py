@@ -290,14 +290,26 @@ def main():
 
     bact_fitness = build_fitness_scores(bact_cells, bact_group_keys)
 
-    # --- Check (c): every bacterial fitness-score row rests on >=2 distinct years. ---
-    bad_fitness = bact_fitness[bact_fitness["n_years"] < 2]
-    if len(bad_fitness):
-        print(f"FAIL: {len(bad_fitness)} bacterial fitness-score row(s) rest on fewer than 2 distinct years.")
+    # --- Check (c): fitness-score table's combinations match the source cells'
+    # own >=2-distinct-year qualification, computed independently from bact_cells
+    # rather than re-reading bact_fitness's own (derived-by-construction) n_years
+    # column against itself. ---
+    cell_year_counts = bact_cells.groupby(bact_group_keys, dropna=False)["parsed_year"].nunique()
+    expected_keys = set(cell_year_counts[cell_year_counts >= 2].index)
+    actual_keys = set(
+        bact_fitness[bact_group_keys].itertuples(index=False, name=None)
+    ) if len(bact_fitness) else set()
+    missing_keys = expected_keys - actual_keys
+    extra_keys = actual_keys - expected_keys
+    if missing_keys or extra_keys:
+        print(f"FAIL: bacterial fitness-score table disagrees with source distance cells on which combinations "
+              f"qualify for >=2 distinct years ({len(missing_keys)} qualifying combination(s) missing, "
+              f"{len(extra_keys)} present that shouldn't be).")
         failed = True
     else:
         print(f"PASS: all {len(bact_fitness)} bacterial (country, organism, drug, dosing_variant) fitness-score "
-              f"row(s) rest on >=2 distinct qualifying years.")
+              f"row(s) match the source cells' >=2-distinct-year qualification exactly "
+              f"({len(expected_keys)} qualifying combination(s)).")
 
     bact_fitness["version"] = "v1"
     bact_fitness["date_added"] = TODAY
@@ -361,14 +373,24 @@ def main():
 
     fung_fitness = build_fitness_scores(fung_cells, fung_group_keys)
 
-    # --- Check (f): every fungal fitness-score row rests on >=2 distinct years. ---
-    bad_fung_fitness = fung_fitness[fung_fitness["n_years"] < 2]
-    if len(bad_fung_fitness):
-        print(f"FAIL: {len(bad_fung_fitness)} fungal fitness-score row(s) rest on fewer than 2 distinct years.")
+    # --- Check (f): fitness-score table's combinations match the source cells'
+    # own >=2-distinct-year qualification, computed independently (see Check c). ---
+    fung_cell_year_counts = fung_cells.groupby(fung_group_keys, dropna=False)["parsed_year"].nunique()
+    fung_expected_keys = set(fung_cell_year_counts[fung_cell_year_counts >= 2].index)
+    fung_actual_keys = set(
+        fung_fitness[fung_group_keys].itertuples(index=False, name=None)
+    ) if len(fung_fitness) else set()
+    fung_missing_keys = fung_expected_keys - fung_actual_keys
+    fung_extra_keys = fung_actual_keys - fung_expected_keys
+    if fung_missing_keys or fung_extra_keys:
+        print(f"FAIL: fungal fitness-score table disagrees with source distance cells on which combinations "
+              f"qualify for >=2 distinct years ({len(fung_missing_keys)} qualifying combination(s) missing, "
+              f"{len(fung_extra_keys)} present that shouldn't be).")
         failed = True
     else:
-        print(f"PASS: all {len(fung_fitness)} fungal (country, organism, drug) fitness-score row(s) rest on "
-              f">=2 distinct qualifying years.")
+        print(f"PASS: all {len(fung_fitness)} fungal (country, organism, drug) fitness-score row(s) match the "
+              f"source cells' >=2-distinct-year qualification exactly ({len(fung_expected_keys)} qualifying "
+              f"combination(s)).")
 
     fung_fitness["version"] = "v1"
     fung_fitness["date_added"] = TODAY

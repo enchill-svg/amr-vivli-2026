@@ -165,7 +165,15 @@ def gate_intervention_recommendations(df: pd.DataFrame) -> pd.DataFrame:
     out["quality_gate"] = "pass"
     out["gate_reason"] = "measured_association"
 
-    mask_gap = out["data_status"].isin(["data_gap", "not_estimable", "not_applicable", "funding_only_no_le_elasticity"])
+    mask_gap = out["data_status"].isin(
+        [
+            "data_gap",
+            "not_estimable",
+            "not_applicable",
+            "funding_only_no_le_elasticity",
+            "excluded_by_design",
+        ]
+    )
     out.loc[mask_gap, "quality_gate"] = "withhold"
     out.loc[mask_gap, "gate_reason"] = out.loc[mask_gap, "data_status"].astype(str)
 

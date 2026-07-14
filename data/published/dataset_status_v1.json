@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-10",
+  "generated_at": "2026-07-14",
   "wired_count": 4,
   "gap_count": 0,
-  "published_count": 20,
+  "published_count": 15,
   "dashboard_source": "data/published/dashboard_bundle_v1.json",
   "datasets": [
     {
@@ -27,7 +27,7 @@
     {
       "id": "gbd_lri",
       "name": "GBD LRI pathogen burden comparator",
-      "pipeline_wired": "yes",
+      "pipeline_wired": "joined_unused",
       "on_disk": true
     }
   ]

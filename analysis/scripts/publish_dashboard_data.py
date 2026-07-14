@@ -21,14 +21,65 @@ RUNS_LATEST = ANALYSIS / "runs" / "latest"
 PUBLISHED = REPO / "data" / "published"
 DASHBOARD_PUBLIC = REPO / "dashboard" / "public" / "data" / "published"
 
+# Public-safe deliverable patterns (never copy ungated ranking tables).
+PUBLIC_DELIVERABLE_GLOBS = [
+    "*_gated_v1.csv",
+    "funding_gap_summary_v1.csv",
+    "gating_comparison_v1.csv",
+    "identifiability_ledger_v1.csv",
+    "q2_driver_evidence_summary_v1.csv",
+    "section7_deliverables_index_v1.csv",
+    "organism_drug_quality_gate_v1.csv",
+    "dataset_manifest_v1.csv",
+]
 
-def _copy_csvs(src_dir: Path, dst_dir: Path, pattern: str) -> list[str]:
+# Internal-only ranking tables that must never remain in data/published/.
+UNSAFE_PUBLISHED_CSVS = frozenset(
+    {
+        "country_risk_ranking_bacterial_v1.csv",
+        "country_risk_ranking_fungal_v1.csv",
+        "cluster_typology_bacterial_v1.csv",
+        "cluster_typology_fungal_v1.csv",
+        "intervention_recommendations_ranked_v1.csv",
+    }
+)
+
+
+def _copy_public_deliverables(src_dir: Path, dst_dir: Path) -> list[str]:
     copied: list[str] = []
     dst_dir.mkdir(parents=True, exist_ok=True)
-    for path in sorted(src_dir.glob(pattern)):
-        shutil.copy2(path, dst_dir / path.name)
-        copied.append(path.name)
+    seen: set[str] = set()
+    for pattern in PUBLIC_DELIVERABLE_GLOBS:
+        for path in sorted(src_dir.glob(pattern)):
+            if path.name in seen:
+                continue
+            shutil.copy2(path, dst_dir / path.name)
+            copied.append(path.name)
+            seen.add(path.name)
     return copied
+
+
+def _purge_unsafe_published() -> list[str]:
+    removed: list[str] = []
+    for name in sorted(UNSAFE_PUBLISHED_CSVS):
+        path = PUBLISHED / name
+        if path.exists():
+            path.unlink()
+            removed.append(name)
+    return removed
+
+
+def _assert_publish_policy() -> None:
+    unsafe = sorted(
+        p.name
+        for p in PUBLISHED.glob("*.csv")
+        if p.name in UNSAFE_PUBLISHED_CSVS
+    )
+    if unsafe:
+        raise RuntimeError(
+            "Unsafe ungated ranking table(s) in data/published/: "
+            + ", ".join(unsafe)
+        )
 
 
 def _read_csv(path: Path) -> list[dict]:
@@ -107,14 +158,14 @@ def build_dataset_status(*, copied_files: list[str]) -> dict:
         {
             "id": "gbd_lri",
             "name": "GBD LRI pathogen burden comparator",
-            "pipeline_wired": "yes" if GBD_LRI_INCLUDED else "no",
+            "pipeline_wired": "joined_unused" if GBD_LRI_INCLUDED else "no",
             "on_disk": on_disk(
                 "analysis/docs/Global Burden of Disease Study 2021 (GBD 2021) "
                 "Lower Respiratory Infections and Aetiologies Incidence and Mortality Estimates 1990-2021"
             ),
         },
     ]
-    wired = sum(1 for d in datasets if d.get("pipeline_wired") == "yes")
+    wired = sum(1 for d in datasets if d.get("pipeline_wired") in ("yes", "joined_unused"))
     return {
         "generated_at": today,
         "wired_count": wired,
@@ -123,6 +174,21 @@ def build_dataset_status(*, copied_files: list[str]) -> dict:
         "dashboard_source": "data/published/dashboard_bundle_v1.json",
         "datasets": datasets,
     }
+
+
+def build_pipeline_summary() -> dict:
+    summary: dict[str, int | str | None] = {}
+    registry = ANALYSIS / "master" / "isolate_registry_v1.csv"
+    master = ANALYSIS / "master" / "master_table_v1.csv"
+    if registry.exists():
+        summary["raw_isolate_count"] = int(len(pd.read_csv(registry, low_memory=False)))
+    if master.exists():
+        master_df = pd.read_csv(master, usecols=["isolate_id"], low_memory=False)
+        summary["master_isolate_count"] = int(master_df["isolate_id"].nunique())
+        summary["master_row_count"] = int(len(master_df))
+    manifest = _manifest_run()
+    summary["pipeline_run_id"] = manifest.get("run_id")
+    return summary
 
 
 def build_dashboard_bundle() -> dict:
@@ -134,6 +200,7 @@ def build_dashboard_bundle() -> dict:
             "run_id": manifest.get("run_id"),
             "status": manifest.get("status"),
         },
+        "pipelineSummary": build_pipeline_summary(),
         "countryRiskBacterial": _read_csv(PUBLISHED / "country_risk_ranking_bacterial_gated_v1.csv"),
         "countryRiskFungal": _read_csv(PUBLISHED / "country_risk_ranking_fungal_gated_v1.csv"),
         "clusterTypologyBacterial": _read_csv(PUBLISHED / "cluster_typology_bacterial_gated_v1.csv"),
@@ -155,7 +222,10 @@ def main() -> int:
         return 1
 
     copied: list[str] = []
-    copied += _copy_csvs(DELIVERABLES, PUBLISHED, "*.csv")
+    copied += _copy_public_deliverables(DELIVERABLES, PUBLISHED)
+    removed = _purge_unsafe_published()
+    if removed:
+        print(f"Removed {len(removed)} unsafe ungated file(s) from {PUBLISHED.relative_to(REPO)}")
 
     sens = BOUNDS / "association_sensitivity_manifest_v1.csv"
     if sens.exists():
@@ -181,6 +251,8 @@ def main() -> int:
     DASHBOARD_PUBLIC.mkdir(parents=True, exist_ok=True)
     shutil.copy2(bundle_path, DASHBOARD_PUBLIC / bundle_path.name)
     shutil.copy2(PUBLISHED / "dataset_status_v1.json", DASHBOARD_PUBLIC / "dataset_status_v1.json")
+
+    _assert_publish_policy()
 
     print(f"Wrote {len(copied)} artifact(s) to {PUBLISHED.relative_to(REPO)}")
     print(f"Wrote dashboard_bundle_v1.json ({len(bundle['countryRiskBacterial'])} bacterial risk rows)")

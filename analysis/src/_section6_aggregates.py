@@ -191,20 +191,29 @@ def organism_burden_global(
     df["midpoint"] = (df["tier1_bound_lower"] + df["tier1_bound_upper"]) / 2.0
     if invert:
         df["midpoint"] = 1.0 - df["midpoint"]
+
+    def _agg(g: pd.DataFrame) -> pd.Series:
+        weights = g[weight_col]
+        total_w = weights.sum()
+        if total_w > 0:
+            # zero-coverage strata (n_tested == 0) carry the fully uninformative
+            # [0%, 100%] Tier 1 bound (midpoint 0.5) by design (step11) — giving
+            # them a fabricated weight of 1 would blend that non-observation
+            # into the real ones, so they get their true weight of zero instead.
+            burden = np.average(g["midpoint"], weights=weights)
+        else:
+            burden = g["midpoint"].mean()
+        return pd.Series(
+            {
+                "burden_midpoint_weighted": burden,
+                "n_tested_total": total_w,
+                "n_country_years": g[["iso3_country", "parsed_year"]].drop_duplicates().shape[0],
+            }
+        )
+
     return (
         df.groupby("canonical_organism", dropna=False)
-        .apply(
-            lambda g: pd.Series(
-                {
-                    "burden_midpoint_weighted": np.average(
-                        g["midpoint"], weights=g[weight_col].clip(lower=1)
-                    ),
-                    "n_tested_total": g[weight_col].sum(),
-                    "n_country_years": g[["iso3_country", "parsed_year"]].drop_duplicates().shape[0],
-                }
-            ),
-            include_groups=False,
-        )
+        .apply(_agg, include_groups=False)
         .reset_index()
     )
 

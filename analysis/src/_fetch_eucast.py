@@ -1,8 +1,12 @@
 """Download historical EUCAST breakpoint Excel files."""
+import sys
 import urllib.request
 from pathlib import Path
 
-DEST = Path(__file__).resolve().parents[2] / "new_datasets" / "EUCAST Clinical Breakpoint"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _data_paths import EUCAST_DIR  # noqa: E402
+
+DEST = EUCAST_DIR
 DEST.mkdir(parents=True, exist_ok=True)
 UA = {"User-Agent": "Mozilla/5.0 (compatible; amr-vivli-pipeline/1.0)"}
 BASE = "https://www.eucast.org"

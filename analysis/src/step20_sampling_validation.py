@@ -30,10 +30,12 @@ def load_soar_hib_complete() -> pd.DataFrame:
         )
         sub = sub[beta.notna()].copy()
         sub["beta_lactamase_positive"] = beta[beta.notna()] == "POS"
-        # ampicillin MIC column names differ
+        # ampicillin MIC column names differ: 201818/207965 spell it out
+        # ("AMPICILLIN"/"Ampicillin"), 201910 uses the short code "AMP"
+        # (verified directly against each cohort's raw column headers).
         amp_col = None
         for c in sub.columns:
-            if str(c).upper().replace(" ", "") in ("AMPICILLIN",):
+            if str(c).upper().replace(" ", "") in ("AMPICILLIN", "AMP"):
                 amp_col = c
                 break
         if amp_col is None:

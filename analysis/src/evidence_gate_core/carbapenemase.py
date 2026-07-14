@@ -1,6 +1,8 @@
 """Carbapenemase allele rules for ATLAS Klebsiella pneumoniae."""
 from __future__ import annotations
 
+import re
+
 import pandas as pd
 
 from .estimands import CARBAPENEMASE_GES_ALLELES, OXA48_FAMILY_MARKERS
@@ -17,9 +19,14 @@ def _non_blank(value) -> bool:
 def is_oxa48_family(oxa_value) -> bool:
     if not _non_blank(oxa_value):
         return False
-    upper = str(oxa_value).upper().replace(" ", "")
+    # Match each marker only when not immediately followed by another digit,
+    # so "OXA-48" matches variant-suffixed values ("OXA-48-TYPE") but not a
+    # distinct, longer allele number that happens to share the prefix
+    # ("OXA-484" is a different allele from OXA-48, not a variant of it).
+    upper = str(oxa_value).upper().replace(" ", "").replace("-", "")
     for marker in OXA48_FAMILY_MARKERS:
-        if marker.replace("-", "") in upper.replace("-", "") or marker in upper:
+        marker_nodash = marker.replace("-", "")
+        if re.search(rf"{re.escape(marker_nodash)}(?!\d)", upper):
             return True
     return False
 
@@ -27,8 +34,13 @@ def is_oxa48_family(oxa_value) -> bool:
 def is_carbapenemase_ges(ges_value) -> bool:
     if not _non_blank(ges_value):
         return False
-    upper = str(ges_value).upper()
-    return any(allele in upper for allele in CARBAPENEMASE_GES_ALLELES)
+    # CARBAPENEMASE_GES_ALLELES is a locked, discrete list of specific
+    # confirmed-carbapenemase GES alleles (e.g. GES-1 is excluded on purpose:
+    # it's an ESBL, not a carbapenemase). Match exact tokens (cells can carry
+    # multiple alleles separated by ";" or ",") rather than substrings, so a
+    # qualified/uncertain call like "GES-20-NV" isn't mistaken for GES-20.
+    tokens = {token.strip() for token in re.split(r"[;,]", str(ges_value).upper())}
+    return bool(tokens & set(CARBAPENEMASE_GES_ALLELES))
 
 
 def is_carbapenemase_positive_allele_restricted(row: pd.Series) -> bool:

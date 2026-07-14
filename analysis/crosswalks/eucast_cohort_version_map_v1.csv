@@ -1,4 +1,4 @@
 source_cohort,eucast_version,version_note,version,date_added
-SOAR_201818,8.1,ideal EUCAST v6.0 (valid through 2016) xlsx unavailable from EUCAST archive; v8.1 used as nearest downloadable successor,v1,2026-07-07
-SOAR_201910,8.1,collection window 2015-2018; EUCAST v8.1 valid through 2018-12-31,v1,2026-07-07
-SOAR_207965,10.0,collection window 2018-2021; EUCAST v10.0 (valid 2020) used as midpoint table for this cohort,v1,2026-07-07
+SOAR_201818,8.1,ideal EUCAST v6.0 (valid through 2016) xlsx unavailable from EUCAST archive; v8.1 used as nearest downloadable successor,v1,2026-07-14
+SOAR_201910,8.1,collection window 2015-2018; EUCAST v8.1 valid through 2018-12-31,v1,2026-07-14
+SOAR_207965,10.0,collection window 2018-2021; EUCAST v10.0 (valid 2020) used as midpoint table for this cohort,v1,2026-07-14

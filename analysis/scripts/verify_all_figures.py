@@ -104,8 +104,8 @@ def main() -> int:
     if gated_int.exists():
         gi = pd.read_csv(gated_int)
         hib = gi[(gi["sub_measure"] == "hib3_coverage") & (gi["pathogen_type"] == "bacterial")]
-        hib_ok = len(hib) == 0 or pd.isna(hib.iloc[0]["priority_rank"])
-        all_ok &= check("J-03 Hib excluded from gated rank", hib_ok)
+        hib_ok = hib["priority_rank"].isna().all()
+        all_ok &= check("J-03 Hib excluded from gated rank", hib_ok, f"n_hib_rows={len(hib)}")
         ranked = gi[gi["priority_rank"].notna()]
         j04_ok = len(ranked) == 0
         all_ok &= check(
@@ -118,6 +118,16 @@ def main() -> int:
 
     comp = DELIVERABLES / "gating_comparison_v1.csv"
     all_ok &= check("J-05 gating comparison table", comp.exists())
+    if comp.exists():
+        comp_df = pd.read_csv(comp)
+        int_row = comp_df[comp_df["deliverable"] == "intervention_recommendations"]
+        if len(int_row):
+            n_pass = int(int_row.iloc[0]["n_pass"])
+            all_ok &= check(
+                "J-06 zero intervention quality_gate=pass rows",
+                n_pass == 0,
+                f"n_pass={n_pass}",
+            )
 
     print()
     if all_ok:

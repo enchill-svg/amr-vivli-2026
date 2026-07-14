@@ -401,13 +401,17 @@ def species_bucket_match(canonical_organism, organism_note):
     staphylococci"), or False (a different named species - must not be
     used as a fallback for this organism).
     """
-    species_word = canonical_organism.lower().split()[-1]
-    if species_word in organism_note:
+    species_word = canonical_organism.lower().replace(".", "").split()
+    if len(species_word) >= 2 and species_word[-1] == "group":
+        token = species_word[-2]
+    else:
+        token = species_word[-1] if species_word else ""
+    if token in organism_note:
         return True
     if "groups a, c and g" in organism_note:
         # Streptococcus A,B,C,G sheet's group-based (not species-based) split;
         # among this pipeline's canonical organisms only S. pyogenes = Group A.
-        return True if species_word == "pyogenes" else False
+        return True if token == "pyogenes" else False
     if "coagulase-negative" in organism_note or "other staphylococci" in organism_note:
         return "generic"
     return False

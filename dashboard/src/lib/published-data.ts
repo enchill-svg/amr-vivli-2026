@@ -21,6 +21,12 @@ export type DashboardBundle = {
   q2DriverSummary: Record<string, unknown>[];
   associationSensitivity: Record<string, unknown>[];
   deliverablesIndex: Record<string, unknown>[];
+  pipelineSummary?: {
+    raw_isolate_count?: number;
+    master_isolate_count?: number;
+    master_row_count?: number;
+    pipeline_run_id?: string | null;
+  };
 };
 
 let cachedBundle: DashboardBundle | null = null;
@@ -112,7 +118,7 @@ export async function mapCountryTrends(
         earlyWarningScore: trajectory,
         resistanceRate: Math.min(1, Math.max(0, burden)),
         trendLabel,
-        lifeExpectancy: 0,
+        lifeExpectancy: num(row.life_expectancy),
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch: 0,

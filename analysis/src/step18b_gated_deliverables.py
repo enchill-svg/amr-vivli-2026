@@ -56,7 +56,7 @@ def gate_country_risk_ranking(pathogen_type: str, country_gates: pd.DataFrame) -
     merged["quality_gate"] = merged["quality_gate"].fillna("withhold")
     merged["gate_reason"] = merged["gate_reason"].fillna("missing_country_gate")
     merged["risk_rank_ungated"] = merged["risk_rank"]
-    rankable = merged[merged["quality_gate"] != "withhold"].sort_values(
+    rankable = merged[merged["quality_gate"] == "pass"].sort_values(
         ["composite_risk_score_core", "composite_risk_score", "iso3_country"],
         ascending=[False, False, True],
     )

@@ -73,12 +73,14 @@ def resample_validate(
                     lo, hi = _wilson_ci(int(sample[outcome_col].sum()), len(sample))
                 else:
                     sample = work.sample(n=min(budget, n_pop), replace=False, random_state=rng.integers(1e9))
-                    # HT weights: inverse of inclusion prob
+                    # HT weights: inverse of inclusion probability. Uniform under
+                    # this SRS design, so the weighted estimate reduces to the
+                    # plain sample mean — computed via the weights themselves
+                    # (not a separate .mean() call) so the estimator stays
+                    # correct if a non-uniform design is ever substituted here.
                     pi = len(sample) / n_pop
-                    weights = np.ones(len(sample)) / pi
-                    est = float(np.average(sample[outcome_col].astype(float), weights=weights) / (1 / pi))
-                    # Design-based: weighted mean simplifies to sample mean for SRS
-                    est = float(sample[outcome_col].mean())
+                    weights = np.full(len(sample), 1.0 / pi) if pi > 0 else np.ones(len(sample))
+                    est = float(np.average(sample[outcome_col].astype(float), weights=weights))
                     lo, hi = _wilson_ci(int(sample[outcome_col].sum()), len(sample))
 
                 bias_pp = (est - true_prev) * 100

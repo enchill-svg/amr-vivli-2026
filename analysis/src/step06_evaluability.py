@@ -72,13 +72,36 @@ def main():
     else:
         print(f"PASS: exclusions log contains exactly the {n_excluded} Evaluable=N row(s), all tagged SOAR_207965.")
 
-    # Confirm no isolate is unaccounted for: retained + excluded == total.
-    n_retained = n_total - n_excluded
-    if n_retained + n_excluded != n_total:
-        print("FAIL: retained + excluded does not reconcile against total row count.")
+    # Confirm Evaluable is restricted to Y/N and every row is accounted for independently.
+    evaluable_values = set(df["Evaluable"].dropna().astype(str).unique())
+    allowed_evaluable = {"Y", "N"}
+    unexpected = evaluable_values - allowed_evaluable
+    if unexpected:
+        print(f"FAIL: Evaluable column contains unexpected values: {sorted(unexpected)}")
         failed = True
     else:
-        print(f"PASS: {n_retained} retained + {n_excluded} excluded = {n_total} total - no isolate unaccounted for.")
+        print(f"PASS: Evaluable column restricted to {sorted(allowed_evaluable)}.")
+
+    n_retained_direct = int((df["Evaluable"] == "Y").sum())
+    n_excluded_direct = int((df["Evaluable"] == "N").sum())
+    n_missing_evaluable = n_total - n_retained_direct - n_excluded_direct
+    if n_missing_evaluable:
+        print(
+            f"FAIL: {n_missing_evaluable} row(s) have missing Evaluable values "
+            f"({n_retained_direct} Y + {n_excluded_direct} N != {n_total} total)."
+        )
+        failed = True
+    elif n_excluded_direct != n_excluded:
+        print(
+            f"FAIL: direct Evaluable=N count ({n_excluded_direct}) "
+            f"does not match exclusion filter count ({n_excluded})."
+        )
+        failed = True
+    else:
+        print(
+            f"PASS: {n_retained_direct} retained (Y) + {n_excluded_direct} excluded (N) "
+            f"= {n_total} total - no isolate unaccounted for."
+        )
 
     # Confirm other three cohorts have no Evaluable column (pass-through no-op).
     other_cohorts = {

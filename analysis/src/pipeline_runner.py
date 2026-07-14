@@ -138,7 +138,9 @@ def _load_documented_data_gaps() -> list[dict]:
     if "gap_category" not in ledger.columns:
         return []
     gap_mask = ledger["gap_category"].astype(str).str.contains(
-        "external_data_gap|data_gap", case=False, na=False
+        r"external_data_gap|data_gap|partial_coverage|breakpoint_absent|breakpoint_or_standard_absent|breakpoint_and_ecv_absent|unresolved",
+        case=False,
+        na=False,
     )
     rows = ledger[gap_mask]
     return [
@@ -192,19 +194,30 @@ def write_run_manifest(
             }
         )
 
+    justice_deliverables = _artifact_presence(JUSTICE_DELIVERABLE_FILES)
+    gated_deliverables = _artifact_presence(GATED_DELIVERABLE_FILES)
+    # "status" reflects only whether every stage exited 0; a stage can exit 0
+    # while silently failing to write an expected deliverable (empty result,
+    # wrong path, etc.), so surface deliverable presence as its own signal
+    # rather than folding it into "status" and changing existing semantics.
+    deliverables_complete = all(row["present"] for row in justice_deliverables) and all(
+        row["present"] for row in gated_deliverables
+    )
+
     manifest = {
         "run_id": run_id,
         "pipeline_version": "v1",
         "entrypoint": "run_all.py",
         "status": status,
+        "deliverables_complete": deliverables_complete,
         "started_at": started_at,
         "finished_at": finished_at,
         "duration_seconds": _run_duration_seconds(started_at, finished_at),
         "halted_at_stage": halted_at_stage,
         "stage_count": len(stage_results),
         "phases": phases,
-        "justice_deliverables": _artifact_presence(JUSTICE_DELIVERABLE_FILES),
-        "gated_deliverables": _artifact_presence(GATED_DELIVERABLE_FILES),
+        "justice_deliverables": justice_deliverables,
+        "gated_deliverables": gated_deliverables,
         "section7_index": {
             "path": "deliverables/section7_deliverables_index_v1.csv",
             "present": (ROOT / "deliverables" / "section7_deliverables_index_v1.csv").exists(),
@@ -239,6 +252,22 @@ def run_pipeline_stages(
     for stage in stages:
         phase = PHASE_BY_ID[stage.phase_id]
         print(f"\n{'=' * 70}\n[{phase.label}]\n{stage.label} ({stage.target})\n{'=' * 70}")
+
+        if stage.stage_id == "publish_dashboard_data":
+            # publish_dashboard_data snapshots analysis/runs/latest/ into
+            # data/published/ and the dashboard bundle. Refresh that snapshot
+            # with this run's id right before it runs (every prior stage in
+            # this loop already passed, or we would have returned above),
+            # otherwise it publishes whatever a previous run left behind.
+            write_run_manifest(
+                run_id=run_id,
+                started_at=started_at,
+                finished_at=_now(),
+                status="passed",
+                stage_results=stage_results,
+                halted_at_stage=None,
+            )
+
         result, output = run_stage(stage)
         if output.strip():
             print(output, end="" if output.endswith("\n") else "\n")
@@ -325,6 +354,14 @@ def run_preprocessing_only() -> int:
         print("Preflight: all required raw input files are present under raw_inputs/.")
     except FileNotFoundError as exc:
         print(exc)
+        write_run_manifest(
+            run_id=run_id,
+            started_at=started_at,
+            finished_at=_now(),
+            status="failed",
+            stage_results=[],
+            halted_at_stage="preflight",
+        )
         return 1
 
     return run_pipeline_stages(

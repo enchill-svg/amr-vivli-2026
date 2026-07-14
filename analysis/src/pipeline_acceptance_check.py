@@ -205,6 +205,25 @@ def main():
               f"eucast_breakpoints's {len(BACTERIAL_VALID_BASES)} valid classification_basis values "
               f"({sorted(BACTERIAL_VALID_BASES)}).")
 
+    mic_parsed_path = ROOT / "master" / "mic_parsed_values_v1.csv"
+    if mic_parsed_path.exists():
+        n_step5_parsed = len(pd.read_csv(mic_parsed_path))
+        soar_master = master_df[master_df["source_cohort"].astype(str).str.startswith("SOAR")]
+        n_step10_mic = int(soar_master["mic_value"].notna().sum())
+        if n_step5_parsed != n_step10_mic:
+            print(
+                f"FAIL: Step 5 parsed MIC rows ({n_step5_parsed}) do not reconcile with "
+                f"Step 10 SOAR mic_value rows ({n_step10_mic})."
+            )
+            failed = True
+        else:
+            print(
+                f"PASS: Step 5 parsed MIC count reconciles with Step 10 master table "
+                f"({n_step5_parsed} SOAR MIC cells)."
+            )
+    else:
+        print("NOTE: mic_parsed_values_v1.csv missing — skipping Step 5 vs Step 10 MIC reconciliation.")
+
     if failed:
         print("\nPipeline acceptance Check: FAIL")
         sys.exit(1)

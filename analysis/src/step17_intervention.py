@@ -336,11 +336,17 @@ def main():
   else:
     print("PASS: Hib scenario recorded for ungated illustrative ranking only.")
 
-  if event_study["resistance_window_status"].eq("computable").any():
-    print(f"PASS: {event_study['resistance_window_status'].eq('computable').sum()} event-study row(s) "
-          f"have AMR data in both pre and post windows.")
+  computable = event_study["resistance_window_status"].eq("computable")
+  change_present = event_study["resistance_rate_change_post_minus_pre"].notna()
+  inconsistent = (computable & ~change_present) | (~computable & change_present)
+  if inconsistent.any():
+    print(f"FAIL: {int(inconsistent.sum())} event-study row(s) have resistance_window_status inconsistent "
+          f"with whether resistance_rate_change_post_minus_pre is populated.")
+    failed = True
   else:
-    print("PASS: no event-study rows claim resistance change without AMR window overlap (all flagged).")
+    print(f"PASS: {int(computable.sum())} event-study row(s) have AMR data in both pre and post windows, "
+          f"and only those rows carry a computed resistance_rate_change_post_minus_pre "
+          f"(all other rows flagged, none claim resistance change without window overlap).")
 
   fungal_vax = summary[
     (summary["pathogen_type"] == "fungal") & (summary["intervention_category"] == "vaccination")

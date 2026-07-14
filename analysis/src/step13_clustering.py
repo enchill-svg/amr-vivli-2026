@@ -71,20 +71,31 @@ def weighted_midpoint(
   df["midpoint"] = (df["tier1_bound_lower"] + df["tier1_bound_upper"]) / 2.0
   if invert:
     df["midpoint"] = 1.0 - df["midpoint"]
+  def _agg(g: pd.DataFrame) -> pd.Series:
+    weights = g[weight_col]
+    total_w = weights.sum()
+    if total_w > 0:
+      # zero-coverage strata (n_tested == 0) carry the fully uninformative
+      # [0%, 100%] Tier 1 bound (midpoint 0.5) by design (step11) — giving
+      # them a fabricated weight of 1 would blend that non-observation into
+      # the real ones, so they get their true weight of zero instead.
+      burden = np.average(g["midpoint"], weights=weights)
+    else:
+      # every stratum in this combination has zero tested isolates: there is
+      # no real observation to weight, so fall back to the plain mean of the
+      # uninformative bound rather than dividing by a zero weight sum.
+      burden = g["midpoint"].mean()
+    return pd.Series(
+      {
+        "static_burden_midpoint": burden,
+        "n_tested_total": total_w,
+        "low_n_flag": bool((weights < 30).any()),
+      }
+    )
+
   grouped = (
     df.groupby(["iso3_country", "canonical_organism", "canonical_drug"], dropna=False)
-    .apply(
-      lambda g: pd.Series(
-        {
-          "static_burden_midpoint": np.average(
-            g["midpoint"], weights=g[weight_col].clip(lower=1)
-          ),
-          "n_tested_total": g[weight_col].sum(),
-          "low_n_flag": bool((g[weight_col] < 30).any()),
-        }
-      ),
-      include_groups=False,
-    )
+    .apply(_agg, include_groups=False)
     .reset_index()
   )
   return grouped

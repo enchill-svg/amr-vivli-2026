@@ -231,7 +231,6 @@ def main():
     # Appendix 4 A.6). Organism dimension added so two species sharing a drug
     # column but testing different dilution ranges are not conflated.
     panel_rows = []
-    dilution_violations = []
     for (cohort, drug_col, raw_organism), group in parsed_df.groupby(
             ["source_cohort", "drug_column", "raw_organism"], dropna=False):
         values = sorted(group["numeric_value"].unique())
@@ -245,21 +244,6 @@ def main():
             "version": "v1",
             "date_added": today,
         })
-        allowed = set(values)
-        for _, row in group.iterrows():
-            if row["numeric_value"] not in allowed:
-                dilution_violations.append({
-                    "source_cohort": cohort,
-                    "row_index": row["row_index"],
-                    "drug_column": drug_col,
-                    "raw_organism": raw_organism,
-                    "numeric_value": row["numeric_value"],
-                    "panel_min": values[0],
-                    "panel_max": values[-1],
-                    "reason": "parsed value falls outside empirical tested-dilution panel for this cohort-drug-organism",
-                    "version": "v1",
-                    "date_added": today,
-                })
 
     DILUTION_PANEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(panel_rows, columns=[
@@ -269,12 +253,15 @@ def main():
     print(f"Wrote {len(panel_rows)} cohort-drug dilution panel row(s) to "
           f"{DILUTION_PANEL_PATH.relative_to(ROOT.parents[0])}")
 
-    pd.DataFrame(dilution_violations, columns=[
+    pd.DataFrame(columns=[
         "source_cohort", "row_index", "drug_column", "raw_organism", "numeric_value",
         "panel_min", "panel_max", "reason", "version", "date_added",
     ]).to_csv(DILUTION_VIOLATIONS_PATH, index=False)
-    print(f"Wrote {len(dilution_violations)} dilution-range violation row(s) to "
-          f"{DILUTION_VIOLATIONS_PATH.relative_to(ROOT.parents[0])}")
+    print(
+        f"Wrote empty dilution-range violations log to "
+        f"{DILUTION_VIOLATIONS_PATH.relative_to(ROOT.parents[0])} "
+        f"(Check c not run — no independent reference panel)."
+    )
 
     # Independent re-read of the persisted parsed-values artifact: confirm its row
     # count plus the failure count plus the null count reconciles against total
@@ -300,14 +287,11 @@ def main():
         print(f"PASS: all {total_parsed} non-null MIC cells across the 3 SOAR files round-trip to a valid "
               f"log2 dilution step within {TOLERANCE:.0%} tolerance; 0 parse failures.")
 
-    if dilution_violations:
-        print(f"FAIL: {len(dilution_violations)} parsed MIC value(s) fall outside the empirical "
-              f"per-cohort per-drug tested dilution panel (Check c).")
-        failed = True
-    else:
-        print(f"PASS: Check (c) - all {total_parsed} parsed MIC values fall within the empirical "
-              f"per-cohort per-drug per-organism tested dilution panel ({len(panel_rows)} "
-              f"cohort-drug-organism panels derived from live SOAR data).")
+    print(
+        "NOTE: Check (c) not applicable — no independent reference dilution panel exists for "
+        f"SOAR MIC notation. Derived {len(panel_rows)} empirical cohort-drug-organism panels "
+        f"to {DILUTION_PANEL_PATH.relative_to(ROOT.parents[0])} for audit only."
+    )
 
     # Reconnaissance finding: SENTRY's antifungal MIC columns carry no comparator notation at all.
     df_sentry = pd.read_excel(SENTRY_PATH)

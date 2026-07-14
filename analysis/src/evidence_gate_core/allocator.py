@@ -107,8 +107,12 @@ def allocate_budget(
         pi = n_core / total_pilot if total_pilot else 0
         ht_w = 1.0 / pi if pi > 0 else 0.0
         band_prev = float(df.loc[df["_band"] == band, outcome_col].mean()) if outcome_col in df.columns else 0.0
-        weighted_pos += ht_w * band_prev * pi
-        weight_sum += ht_w * pi
+        # ht_w (1/pi) is the per-band inverse-probability weight for the planned
+        # core allocation; pairing it with pi in the pooled sum cancels it out
+        # exactly (ht_w * pi == 1), silently collapsing "weighted" back to an
+        # unweighted mean. Pool by each band's pilot population share instead.
+        weighted_pos += n_pilot * band_prev
+        weight_sum += n_pilot
         results.append(
             AllocatorResult(
                 mic_band=float(df.loc[df["_band"] == band, mic_col].median()),

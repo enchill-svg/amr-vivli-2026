@@ -72,6 +72,7 @@ def build_deliverables_index() -> pd.DataFrame:
         "Harmonized multi-cohort dual-pathogen AMR dataset with versioned crosswalks"
       ),
       "deliverable_file": "dataset_manifest_v1.csv",
+      "internal_audit_file": "",
       "source_stage": "Section 5 (preprocessing Steps 1-10)",
       "version": VERSION,
       "date_added": TODAY,
@@ -80,6 +81,7 @@ def build_deliverables_index() -> pd.DataFrame:
       "justice_output_number": 2,
       "justice_output_text": "Documented identifiability ledger for detection-only and breakpoint-absent gaps",
       "deliverable_file": "identifiability_ledger_v1.csv",
+      "internal_audit_file": "",
       "source_stage": "Section 5 Steps 7-8 + master classification_basis",
       "version": VERSION,
       "date_added": TODAY,
@@ -89,7 +91,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "justice_output_text": (
         "Cluster typology of high-risk and high-trajectory organism-drug-country combinations"
       ),
-      "deliverable_file": "cluster_typology_bacterial_v1.csv; cluster_typology_fungal_v1.csv",
+      "deliverable_file": "cluster_typology_bacterial_gated_v1.csv; cluster_typology_fungal_gated_v1.csv",
+      "internal_audit_file": "cluster_typology_bacterial_v1.csv; cluster_typology_fungal_v1.csv",
       "source_stage": "Section 6 Stage 3 (step13_clustering.py)",
       "version": VERSION,
       "date_added": TODAY,
@@ -99,7 +102,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "justice_output_text": (
         "Country risk ranking: burden, trajectory, consumption, health-system capacity"
       ),
-      "deliverable_file": "country_risk_ranking_bacterial_v1.csv; country_risk_ranking_fungal_v1.csv",
+      "deliverable_file": "country_risk_ranking_bacterial_gated_v1.csv; country_risk_ranking_fungal_gated_v1.csv",
+      "internal_audit_file": "country_risk_ranking_bacterial_v1.csv; country_risk_ranking_fungal_v1.csv",
       "source_stage": "Section 6 Stage 4 join panels (step14_external_join.py)",
       "version": VERSION,
       "date_added": TODAY,
@@ -108,6 +112,7 @@ def build_deliverables_index() -> pd.DataFrame:
       "justice_output_number": 5,
       "justice_output_text": "Funding-gap summary: R&D Hub investment vs observed burden by pathogen type",
       "deliverable_file": "funding_gap_summary_v1.csv",
+      "internal_audit_file": "",
       "source_stage": "Section 6 Stage 6 (step16_rd_alignment.py)",
       "version": VERSION,
       "date_added": TODAY,
@@ -117,7 +122,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "justice_output_text": (
         "Ranked intervention recommendations with estimated life-expectancy impact"
       ),
-      "deliverable_file": "intervention_recommendations_ranked_v1.csv",
+      "deliverable_file": "intervention_recommendations_ranked_gated_v1.csv",
+      "internal_audit_file": "intervention_recommendations_ranked_v1.csv",
       "source_stage": "Section 6 Stage 7 (step17_intervention.py)",
       "version": VERSION,
       "date_added": TODAY,
@@ -435,6 +441,14 @@ def build_cluster_typology(pathogen_type: str) -> pd.DataFrame:
   return df
 
 
+def _latest_life_expectancy_by_country(panel: pd.DataFrame) -> pd.Series:
+  subset = panel.dropna(subset=["life_expectancy", "parsed_year"])
+  if subset.empty:
+    return pd.Series(dtype=float)
+  idx = subset.groupby("iso3_country")["parsed_year"].idxmax()
+  return subset.loc[idx].set_index("iso3_country")["life_expectancy"]
+
+
 def pool_country_risk_inputs(panel: pd.DataFrame) -> pd.DataFrame:
   def _agg(g: pd.DataFrame) -> pd.Series:
     w = g["n_tested"].clip(lower=1)
@@ -490,6 +504,8 @@ def _health_capacity_risk_percentile(cy: pd.DataFrame) -> pd.Series:
 def build_country_risk_ranking(pathogen_type: str) -> pd.DataFrame:
   panel = pd.read_csv(BOUNDS_DIR / f"external_join_{pathogen_type}_country_year_v1.csv")
   cy = pool_country_risk_inputs(panel)
+  le_by_country = _latest_life_expectancy_by_country(panel)
+  cy["life_expectancy"] = cy["iso3_country"].map(le_by_country)
   cy["burden_risk_percentile"] = percentile_rank(cy["burden_midpoint_weighted"])
   cy["trajectory_risk_percentile"] = percentile_rank(-cy["mean_evolutionary_fitness_slope"])
   cy["health_capacity_risk_percentile"] = _health_capacity_risk_percentile(cy)
@@ -547,14 +563,20 @@ def build_funding_gap_summary() -> pd.DataFrame:
       "aligned",
     ),
   )
-  organism_rows = organism_rows.sort_values(
-    "funding_minus_burden_share", key=lambda s: s.abs(), ascending=False
-  )
-  organism_rows["organism_gap_rank"] = range(1, len(organism_rows) + 1)
+  organism_rows["organism_gap_rank"] = np.nan
+  for pathogen_type in sorted(organism_rows["pathogen_type"].dropna().unique()):
+    mask = organism_rows["pathogen_type"] == pathogen_type
+    ordered = organism_rows[mask].sort_values(
+      "funding_minus_burden_share",
+      key=lambda s: s.abs(),
+      ascending=False,
+    )
+    organism_rows.loc[ordered.index, "organism_gap_rank"] = range(1, len(ordered) + 1)
   organism_rows["deliverable_level"] = "organism"
   organism_rows["methodology"] = (
     "Stage 6 organism-level burden_share vs funding_share; Hub Amount USD pro-rated "
-    "per agent tag then split across matched surveillance organisms."
+    "per agent tag then split across matched surveillance organisms. "
+    "organism_gap_rank is assigned separately within each pathogen_type."
   )
   organism_rows["version"] = VERSION
   organism_rows["date_added"] = TODAY

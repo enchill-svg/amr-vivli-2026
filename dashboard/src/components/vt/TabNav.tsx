@@ -26,7 +26,10 @@ export function TabNav() {
             to={t.to}
             activeOptions={{ exact: true }}
             className="flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium text-muted-foreground transition-all hover:bg-secondary/40 hover:text-foreground"
-            activeProps={{ className: "flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium bg-[color:var(--accent)]/15 text-[color:var(--accent)] shadow-[0_0_18px_-8px_var(--accent)]" }}
+            activeProps={{
+              className:
+                "flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium bg-[color:var(--accent)]/15 text-[color:var(--accent)] shadow-[0_0_18px_-8px_var(--accent)]",
+            }}
           >
             <t.icon className="h-4 w-4" strokeWidth={1.75} />
             <span className="hidden md:inline">{t.label}</span>
