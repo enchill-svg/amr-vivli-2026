@@ -245,6 +245,13 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
         <LegendItem color="#ff8a3d" label="High" />
         <LegendItem color="#f5c451" label="Moderate" />
         <LegendItem color="#3ee6a8" label="Lower risk" />
+        <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
+          <span
+            className="h-2.5 w-2.5 rounded-full border border-dashed"
+            style={{ borderColor: "var(--status-warn)" }}
+          />
+          Dashed = gated (bounds only / withheld)
+        </div>
         <div className="mt-2 border-t border-border/60 pt-2 text-[10px] text-muted-foreground">
           Refresh: {isFetching ? "syncing…" : "60s"}
         </div>
@@ -269,6 +276,10 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
           const value = metricValue(row, metric);
           const color = severityColor(value);
           const radius = Math.max(8, Math.min(28, 8 + value / 4));
+          const withheld = row.qualityGate === "withhold";
+          const gated = withheld || row.qualityGate === "bounds_only";
+          const gateColor = withheld ? "var(--status-alert)" : "var(--status-warn)";
+          const gateLabel = withheld ? "Withheld" : "Bounds only";
           return (
             <CircleMarker
               key={`${row.iso3}-${row.pathogenType}-${metric}`}
@@ -277,9 +288,10 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
               pathOptions={{
                 color,
                 fillColor: color,
-                fillOpacity: 0.45,
+                fillOpacity: withheld ? 0.18 : gated ? 0.28 : 0.45,
                 opacity: 0.95,
                 weight: selected?.iso3 === row.iso3 ? 3 : 1.5,
+                dashArray: gated ? "4 3" : undefined,
               }}
               eventHandlers={{ click: () => setSelected(row) }}
               className={row.trendLabel === "surging" ? "vt-pulse" : undefined}
@@ -291,11 +303,29 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                   </div>
                   <div>Risk score: {row.riskScore}</div>
                   <div>Resistance: {formatPercent(row.resistanceRate)}</div>
+                  {gated && (
+                    <div
+                      className="mt-1 text-[10px] font-medium uppercase tracking-wide"
+                      style={{ color: gateColor }}
+                    >
+                      {gateLabel} — reduced confidence
+                    </div>
+                  )}
                 </div>
               </Tooltip>
               <Popup>
                 <div className="min-w-[230px] text-xs">
-                  <div className="text-sm font-semibold">{row.country}</div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="text-sm font-semibold">{row.country}</div>
+                    {gated && (
+                      <span
+                        className="rounded-full border px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide"
+                        style={{ borderColor: `${gateColor}80`, color: gateColor }}
+                      >
+                        {gateLabel}
+                      </span>
+                    )}
+                  </div>
                   <div className="mt-1 opacity-75">
                     {row.dominantOrganism} · {row.dominantDrug}
                   </div>
@@ -312,6 +342,11 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                       Predicted gain: +{row.predictedLifeGain.toFixed(2)} years
                     </div>
                   </div>
+                  {gated && row.gateReason && (
+                    <div className="mt-2 text-[10px] italic opacity-60">
+                      Gate reason: {row.gateReason.replace(/_/g, " ")}
+                    </div>
+                  )}
                 </div>
               </Popup>
             </CircleMarker>
