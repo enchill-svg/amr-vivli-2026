@@ -27,3 +27,4 @@ step17_intervention,Stage 7 — intervention impact,analytics,pass,2026-07-14T04
 step18_section7_deliverables,Section 7 deliverables (ungated),deliverables,pass,2026-07-14T04:36:57,2026-07-14T04:37:05,0,n/a,step18_section7_deliverables.py
 step18b_gated_deliverables,Section 7 deliverables (gated),deliverables,pass,2026-07-14T04:37:05,2026-07-14T04:37:13,0,n/a,step18b_gated_deliverables.py
 verify_all_figures,Figure and output verification,verification,pass,2026-07-14T04:37:13,2026-07-14T04:37:15,0,n/a,scripts/verify_all_figures.py
+publish_dashboard_data,Publish to data/published/,verification,pass,2026-07-14T04:37:16,2026-07-14T04:37:21,0,Wrote 15 artifact(s) to data\published,scripts/publish_dashboard_data.py

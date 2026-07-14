@@ -25,6 +25,7 @@ DASHBOARD_PUBLIC = REPO / "dashboard" / "public" / "data" / "published"
 PUBLIC_DELIVERABLE_GLOBS = [
     "*_gated_v1.csv",
     "funding_gap_summary_v1.csv",
+    "hub_funding_composition_summary_v1.csv",
     "gating_comparison_v1.csv",
     "identifiability_ledger_v1.csv",
     "q2_driver_evidence_summary_v1.csv",

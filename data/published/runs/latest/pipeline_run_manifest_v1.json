@@ -5,10 +5,10 @@
   "status": "passed",
   "deliverables_complete": true,
   "started_at": "2026-07-14T04:23:15",
-  "finished_at": "2026-07-14T04:37:15",
-  "duration_seconds": 840.0,
+  "finished_at": "2026-07-14T04:37:21",
+  "duration_seconds": 846.0,
   "halted_at_stage": null,
-  "stage_count": 28,
+  "stage_count": 29,
   "phases": [
     {
       "phase_id": "preprocessing",
@@ -355,6 +355,17 @@
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "scripts/verify_all_figures.py"
+        },
+        {
+          "stage_id": "publish_dashboard_data",
+          "label": "Publish to data/published/",
+          "phase_id": "verification",
+          "status": "pass",
+          "started_at": "2026-07-14T04:37:16",
+          "finished_at": "2026-07-14T04:37:21",
+          "exit_code": 0,
+          "artifact_summary": "Wrote 15 artifact(s) to data\\published",
+          "target": "scripts/publish_dashboard_data.py"
         }
       ]
     }

@@ -46,6 +46,10 @@ dashboard/public/data/published/
 
 Intervention ranks in the gated public layer may be empty when integrity gates withhold measured vaccination evidence. See `gating_comparison_v1.csv`.
 
+## Hub funding composition (S6)
+
+`hub_funding_composition_summary_v1.csv` summarizes Global AMR R&D Hub project dollars by modality (diagnostics / therapeutics_drugs / vaccines / product_mixed / other_or_unclassified) and by geography (ssa / non_ssa / geography_unknown). Shares use exclusive project-level `Amount USD` partitions from `Research Area` and Institution/Funder country → ISO3 (SSA via the same `SSA_ISO3` set as the pipeline; unmapped non-country labels stay `geography_unknown`). The Hub export excludes private/VC funding; see Justice Section 8. Pitch numbers for diagnostics % vs drugs and SSA share come from this file alongside `funding_gap_summary_v1.csv`. Denominator is all Hub project dollars, not the agent-tag subset used for organism RD alignment.
+
 ## External datasets reflected in pipeline
 
 Tracked in `dataset_status_v1.json`:
@@ -54,6 +58,8 @@ Tracked in `dataset_status_v1.json`:
 - World Bank hospital beds
 - GBD 2023 SDI
 - GBD LRI pathogen burden comparator
+
+Hub Projects.xlsx also drives Step 16 organism alignment and `hub_funding_composition_summary_v1.csv` (not listed in `dataset_status_v1.json`).
 
 ## Working from GitHub only
 

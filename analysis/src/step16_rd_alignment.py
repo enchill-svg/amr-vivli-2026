@@ -22,9 +22,14 @@ from scipy.stats import spearmanr
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _section6_aggregates import allocate_agent_funding_to_organisms, organism_burden_global
-from _section6_external import load_rd_projects_prorated
+from _section6_external import (
+  build_hub_funding_composition,
+  load_rd_projects_prorated,
+  resolve_rd_projects_path,
+)
 
 BOUNDS_DIR = ROOT / "bounds"
+DELIVERABLES_DIR = ROOT / "deliverables"
 TODAY = dt.date.today().isoformat()
 
 PRORATA_CAVEAT = (
@@ -87,10 +92,9 @@ def align_funding_to_organisms(
 def main():
   failed = False
   funding_long = load_rd_projects_prorated()
+  projects_path = resolve_rd_projects_path()
 
-  rd_raw = pd.read_excel(
-    ROOT / "docs" / "AMR_Datasets" / "Global AMR R&D" / "Projects.xlsx", sheet_name="data"
-  )
+  rd_raw = pd.read_excel(projects_path, sheet_name="data")
   rd_raw["amount_usd"] = pd.to_numeric(rd_raw["Amount USD"], errors="coerce").fillna(0.0)
   summed = funding_long.groupby("project_id")["amount_usd_prorated"].sum()
   original = rd_raw.set_index("Id")["amount_usd"]
@@ -101,6 +105,38 @@ def main():
     failed = True
   else:
     print(f"PASS: pro-rated funding shares sum to original Amount USD per project (max diff {max_diff:.6f}).")
+
+  # S6: Hub modality + SSA geography composition (project Amount USD, exclusive buckets).
+  DELIVERABLES_DIR.mkdir(parents=True, exist_ok=True)
+  hub_summary, hub_detail = build_hub_funding_composition(rd_raw)
+  hub_summary_path = DELIVERABLES_DIR / "hub_funding_composition_summary_v1.csv"
+  hub_detail_path = BOUNDS_DIR / "hub_funding_composition_by_project_v1.csv"
+  hub_summary.to_csv(hub_summary_path, index=False)
+  hub_detail.to_csv(hub_detail_path, index=False)
+  for dim, grp in hub_summary.groupby("composition_dimension"):
+    share_sum = float(grp["share_of_hub_total"].sum())
+    if abs(share_sum - 1.0) > 1e-6:
+      print(f"FAIL: Hub composition shares for {dim} sum to {share_sum}, expected 1.0")
+      failed = True
+    else:
+      print(f"PASS: Hub composition shares for {dim} sum to 1.0.")
+  expected_modality = {"diagnostics", "therapeutics_drugs", "vaccines", "product_mixed", "other_or_unclassified"}
+  expected_geo = {"ssa", "non_ssa", "geography_unknown"}
+  mod_buckets = set(hub_summary.loc[hub_summary["composition_dimension"] == "modality", "bucket"])
+  geo_buckets = set(hub_summary.loc[hub_summary["composition_dimension"] == "geography", "bucket"])
+  if mod_buckets != expected_modality:
+    print(f"FAIL: modality buckets {sorted(mod_buckets)} != {sorted(expected_modality)}")
+    failed = True
+  else:
+    print("PASS: modality emits all expected buckets.")
+  if geo_buckets != expected_geo:
+    print(f"FAIL: geography buckets {sorted(geo_buckets)} != {sorted(expected_geo)}")
+    failed = True
+  else:
+    print("PASS: geography emits all expected buckets.")
+  print(f"Wrote Hub composition summary ({len(hub_summary)} rows) to {hub_summary_path.name}")
+  print(f"Wrote Hub composition project detail to {hub_detail_path.name}")
+  print(f"Hub Projects.xlsx path: {projects_path}")
 
   bact_desc = pd.read_csv(BOUNDS_DIR / "descriptive_bacterial_resistance_v1.csv")
   fung_desc = pd.read_csv(BOUNDS_DIR / "descriptive_fungal_ecv_wt_rate_v1.csv")

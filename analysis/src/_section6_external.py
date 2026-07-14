@@ -65,6 +65,11 @@ PCV_INTRO_PATH = (
     / "Introduction of PCV (Pneumococcal conjugate vaccine) 2026-25-06 13-59 UTC.xlsx"
 )
 RD_PROJECTS_PATH = DOCS_DIR / "AMR_Datasets" / "Global AMR R&D" / "Projects.xlsx"
+# Prefer the verified docs copy; use repo-root Projects.xlsx only as fallback.
+RD_PROJECTS_CANDIDATES = (
+    RD_PROJECTS_PATH,
+    ROOT.parent / "Projects.xlsx",
+)
 
 ESAC_EXPORT_GLOB = "esac_*_j01_subgroup_trend.xlsx"
 ESAC_NET_COMBINED_PATH = NEW_DATASETS / "esac_net_ddd_country_year.csv"
@@ -521,6 +526,15 @@ def load_esac_consumption_long() -> pd.DataFrame:
     return build_esac_consumption_long()
 
 
+def resolve_rd_projects_path() -> Path:
+    """Return the first existing Hub Projects.xlsx among known candidates."""
+    for path in RD_PROJECTS_CANDIDATES:
+        if path.exists():
+            return path
+    tried = "\n".join(f"  - {p}" for p in RD_PROJECTS_CANDIDATES)
+    raise FileNotFoundError(f"Missing Hub Projects.xlsx. Tried:\n{tried}")
+
+
 def load_rd_projects_prorated() -> pd.DataFrame:
     """Load R&D Hub projects with Amount USD pro-rated across infectious-agent tags.
 
@@ -528,7 +542,7 @@ def load_rd_projects_prorated() -> pd.DataFrame:
     multiple infectious-agent tags in one Categories cell, divide its single
     Amount USD by the tag count before summing — conservative, avoids double-count.
     """
-    rd = pd.read_excel(_require(RD_PROJECTS_PATH), sheet_name="data")
+    rd = pd.read_excel(_require(resolve_rd_projects_path()), sheet_name="data")
     rd["agents"] = rd["Categories"].apply(parse_rd_infectious_agents)
     rd["n_agent_tags"] = rd["agents"].apply(len)
     rd["amount_usd"] = pd.to_numeric(rd["Amount USD"], errors="coerce").fillna(0.0)
@@ -552,3 +566,322 @@ def load_rd_projects_prorated() -> pd.DataFrame:
                 }
             )
     return pd.DataFrame(rows)
+
+
+# Hub Research Area product tokens used for exclusive modality partitioning (S6).
+_HUB_PRODUCT_TOKENS = frozenset(
+    {"Diagnostics", "Therapeutics", "Vaccines", "Other Products", "Preventives Other", "Promotants"}
+)
+
+HUB_MODALITY_BUCKETS = (
+    "diagnostics",
+    "therapeutics_drugs",
+    "vaccines",
+    "product_mixed",
+    "other_or_unclassified",
+)
+HUB_GEOGRAPHY_BUCKETS = ("ssa", "non_ssa", "geography_unknown")
+
+# English Hub Institution/Funder Country labels → ISO3 (locked to observed Hub labels).
+# Non-country labels (e.g. European Union, Global Partnership) stay unmapped → geography_unknown.
+HUB_COUNTRY_NAME_TO_ISO3 = {
+    "Angola": "AGO",
+    "Argentina": "ARG",
+    "Australia": "AUS",
+    "Austria": "AUT",
+    "Bangladesh": "BGD",
+    "Belgium": "BEL",
+    "Benin": "BEN",
+    "Bhutan": "BTN",
+    "Bolivia": "BOL",
+    "Botswana": "BWA",
+    "Brazil": "BRA",
+    "Bulgaria": "BGR",
+    "Burkina Faso": "BFA",
+    "Burundi": "BDI",
+    "Cabo Verde": "CPV",
+    "Cambodia": "KHM",
+    "Cameroon": "CMR",
+    "Canada": "CAN",
+    "Central African Republic": "CAF",
+    "Chad": "TCD",
+    "Chile": "CHL",
+    "China": "CHN",
+    "Colombia": "COL",
+    "Comoros": "COM",
+    "Congo": "COG",
+    "Congo, Democratic Republic of the": "COD",
+    "Democratic Republic of the Congo": "COD",
+    "Croatia": "HRV",
+    "Cyprus": "CYP",
+    "Czech Republic": "CZE",
+    "Côte d'Ivoire": "CIV",
+    "Cote d'Ivoire": "CIV",
+    "Denmark": "DNK",
+    "Djibouti": "DJI",
+    "Dominica": "DMA",
+    "Egypt": "EGY",
+    "Equatorial Guinea": "GNQ",
+    "Eritrea": "ERI",
+    "Estonia": "EST",
+    "Eswatini": "SWZ",
+    "Ethiopia": "ETH",
+    "Finland": "FIN",
+    "France": "FRA",
+    "Gabon": "GAB",
+    "Gambia": "GMB",
+    "Georgia": "GEO",
+    "Germany": "DEU",
+    "Ghana": "GHA",
+    "Greece": "GRC",
+    "Guinea": "GIN",
+    "Guinea-Bissau": "GNB",
+    "Guyana": "GUY",
+    "Hong Kong": "HKG",
+    "Hungary": "HUN",
+    "Iceland": "ISL",
+    "India": "IND",
+    "Indonesia": "IDN",
+    "Ireland": "IRL",
+    "Israel": "ISR",
+    "Italy": "ITA",
+    "Japan": "JPN",
+    "Jordan": "JOR",
+    "Kenya": "KEN",
+    "Korea, Republic of": "KOR",
+    "Kosovo": "XKX",
+    "Kyrgyzstan": "KGZ",
+    "Lao People's Democratic Republic": "LAO",
+    "Latvia": "LVA",
+    "Lesotho": "LSO",
+    "Liberia": "LBR",
+    "Lithuania": "LTU",
+    "Luxembourg": "LUX",
+    "Madagascar": "MDG",
+    "Malawi": "MWI",
+    "Malaysia": "MYS",
+    "Mali": "MLI",
+    "Malta": "MLT",
+    "Mauritania": "MRT",
+    "Mauritius": "MUS",
+    "Mexico": "MEX",
+    "Moldova, Republic of": "MDA",
+    "Morocco": "MAR",
+    "Mozambique": "MOZ",
+    "Namibia": "NAM",
+    "Nepal": "NPL",
+    "Netherlands": "NLD",
+    "New Zealand": "NZL",
+    "Niger": "NER",
+    "Nigeria": "NGA",
+    "Norway": "NOR",
+    "Pakistan": "PAK",
+    "Palestinian Territory, Occupied": "PSE",
+    "Papua New Guinea": "PNG",
+    "Peru": "PER",
+    "Philippines": "PHL",
+    "Poland": "POL",
+    "Portugal": "PRT",
+    "Qatar": "QAT",
+    "Reunion": "REU",
+    "Romania": "ROU",
+    "Russian Federation": "RUS",
+    "Rwanda": "RWA",
+    "Sao Tome and Principe": "STP",
+    "Senegal": "SEN",
+    "Seychelles": "SYC",
+    "Sierra Leone": "SLE",
+    "Singapore": "SGP",
+    "Slovakia": "SVK",
+    "Slovenia": "SVN",
+    "Somalia": "SOM",
+    "South Africa": "ZAF",
+    "South Sudan": "SSD",
+    "Spain": "ESP",
+    "St. Vincent and the Grenadines": "VCT",
+    "Sudan": "SDN",
+    "Sweden": "SWE",
+    "Switzerland": "CHE",
+    "Tanzania, United Republic of": "TZA",
+    "Thailand": "THA",
+    "Togo": "TGO",
+    "Tunisia": "TUN",
+    "Turkey": "TUR",
+    "Uganda": "UGA",
+    "Ukraine": "UKR",
+    "United Kingdom": "GBR",
+    "United States": "USA",
+    "Uruguay": "URY",
+    "Uzbekistan": "UZB",
+    "Viet Nam": "VNM",
+    "Zambia": "ZMB",
+    "Zimbabwe": "ZWE",
+}
+
+HUB_COMPOSITION_METHODOLOGY = (
+    "S6 Hub funding composition from Global AMR R&D Hub Projects.xlsx (sheet data). "
+    "Modality is an exclusive partition of project Amount USD using Research Area "
+    "comma-separated tokens: Diagnostics-only (optionally plus non-product tokens) → "
+    "diagnostics; Therapeutics-only → therapeutics_drugs; Vaccines-only → vaccines; "
+    "two or more product tokens among Diagnostics/Therapeutics/Vaccines/Other Products/"
+    "Preventives Other/Promotants → product_mixed; solitary Other Products/Preventives "
+    "Other/Promotants (or no product tokens) → other_or_unclassified. "
+    "SSA geography: map Institution Country and Funder Country via a locked Hub-label→ISO3 "
+    "table; ssa if any mapped ISO3 is in evidence_gate_core.estimands.SSA_ISO3; non_ssa if "
+    "at least one label maps to a non-SSA ISO3 and none map to SSA; geography_unknown if "
+    "both fields are empty or only unmapped non-country labels remain (e.g. European Union, "
+    "Global Partnership, multi-country strings). data_status for geography is measured when "
+    "≥95% of dollars are ssa or non_ssa, else partial_coverage. "
+    "Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated "
+    "subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8)."
+)
+
+
+def _research_area_tokens(research_area: object) -> set[str]:
+    if not isinstance(research_area, str) or not research_area.strip():
+        return set()
+    return {part.strip() for part in research_area.split(",") if part.strip()}
+
+
+def classify_hub_modality(research_area: object) -> str:
+    """Exclusive modality bucket for one Hub project (no double-count)."""
+    tokens = _research_area_tokens(research_area)
+    product = tokens & _HUB_PRODUCT_TOKENS
+    if len(product) > 1:
+        return "product_mixed"
+    if product == {"Diagnostics"}:
+        return "diagnostics"
+    if product == {"Therapeutics"}:
+        return "therapeutics_drugs"
+    if product == {"Vaccines"}:
+        return "vaccines"
+    # Solitary Other Products / Preventives Other / Promotants, or no product tokens.
+    return "other_or_unclassified"
+
+
+def hub_country_to_iso3(country: object) -> str | None:
+    if not isinstance(country, str) or not country.strip():
+        return None
+    return HUB_COUNTRY_NAME_TO_ISO3.get(country.strip())
+
+
+def classify_hub_geography(
+    institution_country: object,
+    funder_country: object,
+    ssa_iso3: frozenset[str],
+) -> str:
+    """Map Hub countries to ssa / non_ssa / geography_unknown."""
+    mapped_iso3: list[str] = []
+    saw_label = False
+    for raw in (institution_country, funder_country):
+        if not isinstance(raw, str) or not raw.strip():
+            continue
+        saw_label = True
+        iso = hub_country_to_iso3(raw)
+        if iso is not None:
+            mapped_iso3.append(iso)
+    if any(iso in ssa_iso3 for iso in mapped_iso3):
+        return "ssa"
+    if mapped_iso3:
+        return "non_ssa"
+    if saw_label:
+        return "geography_unknown"
+    return "geography_unknown"
+
+
+def build_hub_funding_composition(
+    rd: pd.DataFrame | None = None,
+    *,
+    ssa_iso3: frozenset[str] | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Return (summary, project_detail) tables for Hub modality + SSA composition."""
+    from evidence_gate_core.estimands import SSA_ISO3
+
+    if ssa_iso3 is None:
+        ssa_iso3 = SSA_ISO3
+    if rd is None:
+        rd = pd.read_excel(resolve_rd_projects_path(), sheet_name="data")
+
+    work = rd.copy()
+    work["amount_usd"] = pd.to_numeric(work["Amount USD"], errors="coerce").fillna(0.0)
+    work["modality_bucket"] = work["Research Area"].apply(classify_hub_modality)
+    work["geography_bucket"] = [
+        classify_hub_geography(inst, fund, ssa_iso3)
+        for inst, fund in zip(work["Institution Country"], work["Funder Country"])
+    ]
+    total = float(work["amount_usd"].sum())
+    if total <= 0:
+        raise ValueError("Hub Amount USD total is zero; cannot compute composition shares.")
+
+    detail = work[
+        [
+            "Id",
+            "Title",
+            "Research Area",
+            "Institution Country",
+            "Funder Country",
+            "amount_usd",
+            "modality_bucket",
+            "geography_bucket",
+        ]
+    ].rename(columns={"Id": "project_id"})
+    detail["version"] = "v1"
+    detail["date_added"] = pd.Timestamp.today().date().isoformat()
+
+    rows: list[dict] = []
+    source_name = resolve_rd_projects_path().name
+    stamped = pd.Timestamp.today().date().isoformat()
+
+    def _append(dimension: str, bucket_col: str, expected: tuple[str, ...], rule: str, status: str) -> None:
+        grouped = (
+            work.groupby(bucket_col, dropna=False)
+            .agg(amount_usd=("amount_usd", "sum"), n_projects=("Id", "nunique"))
+            .reset_index()
+            .rename(columns={bucket_col: "bucket"})
+        )
+        by_bucket = {str(r["bucket"]): r for _, r in grouped.iterrows()}
+        for bucket in expected:
+            row = by_bucket.get(bucket)
+            amount = float(row["amount_usd"]) if row is not None else 0.0
+            n_projects = int(row["n_projects"]) if row is not None else 0
+            rows.append(
+                {
+                    "composition_dimension": dimension,
+                    "bucket": bucket,
+                    "amount_usd": amount,
+                    "share_of_hub_total": amount / total,
+                    "n_projects": n_projects,
+                    "classification_rule": rule,
+                    "data_status": status,
+                    "hub_total_amount_usd": total,
+                    "source_file": source_name,
+                    "methodology": HUB_COMPOSITION_METHODOLOGY,
+                    "version": "v1",
+                    "date_added": stamped,
+                }
+            )
+
+    _append(
+        "modality",
+        "modality_bucket",
+        HUB_MODALITY_BUCKETS,
+        "exclusive_research_area_product_tokens",
+        "measured",
+    )
+    geo_known = float(
+        work.loc[work["geography_bucket"].isin(["ssa", "non_ssa"]), "amount_usd"].sum()
+    )
+    geo_status = "measured" if geo_known / total >= 0.95 else "partial_coverage"
+    _append(
+        "geography",
+        "geography_bucket",
+        HUB_GEOGRAPHY_BUCKETS,
+        "institution_or_funder_country_to_ssa_iso3",
+        geo_status,
+    )
+
+    summary = pd.DataFrame(rows).sort_values(
+        ["composition_dimension", "share_of_hub_total"],
+        ascending=[True, False],
+    )
+    return summary, detail

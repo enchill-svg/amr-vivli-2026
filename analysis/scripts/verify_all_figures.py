@@ -129,6 +129,54 @@ def main() -> int:
                 f"n_pass={n_pass}",
             )
 
+    # S6 Hub funding composition (modality + SSA geography)
+    hub_path = DELIVERABLES / "hub_funding_composition_summary_v1.csv"
+    if hub_path.exists():
+        hub = pd.read_csv(hub_path)
+        for dim in ("modality", "geography"):
+            sub = hub[hub["composition_dimension"] == dim]
+            share_sum = float(sub["share_of_hub_total"].sum()) if len(sub) else float("nan")
+            all_ok &= check(
+                f"S6 Hub {dim} shares sum ~1",
+                abs(share_sum - 1.0) <= 1e-6,
+                f"sum={share_sum}",
+            )
+        mod = set(hub.loc[hub["composition_dimension"] == "modality", "bucket"])
+        geo = set(hub.loc[hub["composition_dimension"] == "geography", "bucket"])
+        all_ok &= check(
+            "S6 Hub modality buckets complete",
+            mod == {"diagnostics", "therapeutics_drugs", "vaccines", "product_mixed", "other_or_unclassified"},
+            f"buckets={sorted(mod)}",
+        )
+        all_ok &= check(
+            "S6 Hub geography buckets complete",
+            geo == {"ssa", "non_ssa", "geography_unknown"},
+            f"buckets={sorted(geo)}",
+        )
+        from _section6_external import classify_hub_modality, classify_hub_geography
+        from evidence_gate_core.estimands import SSA_ISO3
+
+        all_ok &= check(
+            "S6 solo Other Products -> other_or_unclassified",
+            classify_hub_modality("Other Products") == "other_or_unclassified",
+        )
+        all_ok &= check(
+            "S6 Therapeutics+Vaccines -> product_mixed",
+            classify_hub_modality("Therapeutics, Vaccines") == "product_mixed",
+        )
+        all_ok &= check(
+            "S6 Global Partnership -> geography_unknown",
+            classify_hub_geography("Global Partnership", "Global Partnership", SSA_ISO3)
+            == "geography_unknown",
+        )
+        all_ok &= check(
+            "S6 Angola institution -> ssa",
+            classify_hub_geography("Angola", "United States", SSA_ISO3) == "ssa",
+        )
+        all_ok &= check("S6 Hub composition rows present", len(hub) == 8, f"n={len(hub)}")
+    else:
+        all_ok &= check("S6 Hub composition summary", False, "run step16 first")
+
     print()
     if all_ok:
         print("verify_all_figures: ALL CHECKS PASSED")

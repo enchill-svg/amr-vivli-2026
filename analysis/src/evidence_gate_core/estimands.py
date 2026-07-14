@@ -26,7 +26,7 @@ TIER2_ASSUMPTION_LABEL = "testing monotonicity (Manski & Molinari 2021)"
 
 # Sub-Saharan Africa ISO3 (representative set for descriptive SSA stratum)
 SSA_ISO3 = frozenset({
-    "BEN", "BWA", "BFA", "BDI", "CMR", "CPV", "CAF", "TCD", "COM", "COG", "CIV", "COD",
+    "AGO", "BEN", "BWA", "BFA", "BDI", "CMR", "CPV", "CAF", "TCD", "COM", "COG", "CIV", "COD",
     "DJI", "GNQ", "ERI", "SWZ", "ETH", "GAB", "GMB", "GHA", "GIN", "GNB", "KEN", "LSO",
     "LBR", "MDG", "MWI", "MLI", "MRT", "MUS", "MOZ", "NAM", "NER", "NGA", "RWA", "STP",
     "SEN", "SYC", "SLE", "SOM", "ZAF", "SSD", "SDN", "TZA", "TGO", "UGA", "ZMB", "ZWE",
