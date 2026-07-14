@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Moon, Sun, Globe2 } from "lucide-react";
+import { Moon, Sun, Globe2, Code2, Sparkles } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { SearchBar } from "./SearchBar";
 
@@ -28,6 +28,18 @@ export function AppHeader() {
       <SearchBar />
 
       <div className="ml-auto flex items-center gap-2">
+        <Link
+          to="/api-docs"
+          className="hidden items-center gap-1.5 rounded-md border border-border/60 bg-card/40 px-2.5 py-1.5 text-xs text-muted-foreground hover:text-foreground md:inline-flex"
+        >
+          <Code2 className="h-3.5 w-3.5" /> API Docs
+        </Link>
+        <Link
+          to="/assistant"
+          className="hidden items-center gap-1.5 rounded-md border border-[color:var(--accent)]/30 bg-[color:var(--accent)]/10 px-2.5 py-1.5 text-xs font-medium text-[color:var(--accent)] hover:bg-[color:var(--accent)]/20 md:inline-flex"
+        >
+          <Sparkles className="h-3.5 w-3.5" /> Assistant
+        </Link>
         <button
           onClick={toggle}
           className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary/40 hover:text-foreground"
