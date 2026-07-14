@@ -4,12 +4,23 @@ import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 
 export const Route = createFileRoute("/emergency")({
   component: EmergencyPage,
-  head: () => ({ meta: [{ title: "Emergency Response Center — ViralTrack-Afrika" }, { name: "description", content: "Activation status, deployable assets, and incident command for outbreak response." }] }),
+  head: () => ({
+    meta: [
+      { title: "Emergency Response Center — ViralTrack-Afrika" },
+      {
+        name: "description",
+        content:
+          "Activation status, deployable assets, and incident command for outbreak response.",
+      },
+    ],
+  }),
 });
 
 function EmergencyPage() {
   return (
-    <CommandPage icon={Siren} eyebrow="Activation"
+    <CommandPage
+      icon={Siren}
+      eyebrow="Activation"
       title="Emergency Response Center"
       subtitle="Coordinated activation surface for rapid response teams, lab deployment, and stockpile logistics."
       kpis={[
@@ -27,10 +38,18 @@ function EmergencyPage() {
               { c: "Sudan — Cholera surge, Khartoum", s: "Level 3", color: "var(--status-alert)" },
               { c: "Madagascar — Plague monitoring", s: "Level 1", color: "var(--status-info)" },
             ].map((x) => (
-              <li key={x.c} className="flex items-center gap-3 rounded-lg border border-border/40 bg-secondary/20 px-3 py-2.5">
+              <li
+                key={x.c}
+                className="flex items-center gap-3 rounded-lg border border-border/40 bg-secondary/20 px-3 py-2.5"
+              >
                 <Siren className="w-4 h-4" style={{ color: x.color }} />
                 <span className="text-sm flex-1">{x.c}</span>
-                <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded" style={{ background: `${x.color}22`, color: x.color }}>{x.s}</span>
+                <span
+                  className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded"
+                  style={{ background: `${x.color}22`, color: x.color }}
+                >
+                  {x.s}
+                </span>
               </li>
             ))}
           </ul>
@@ -42,7 +61,10 @@ function EmergencyPage() {
             { icon: PhoneCall, l: "24/7 EOC hotline", v: "Online" },
             { icon: Truck, l: "Cold-chain stockpile — Addis", v: "92%" },
           ].map((r) => (
-            <div key={r.l} className="flex items-center gap-3 py-2 border-b border-border/30 last:border-0">
+            <div
+              key={r.l}
+              className="flex items-center gap-3 py-2 border-b border-border/30 last:border-0"
+            >
               <r.icon className="w-4 h-4 text-[color:var(--accent)]" />
               <span className="text-sm flex-1">{r.l}</span>
               <span className="text-xs text-[color:var(--status-ok)]">{r.v}</span>

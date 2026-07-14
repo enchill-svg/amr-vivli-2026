@@ -27,13 +27,18 @@ export const importNcbiHit = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
 
     // Fetch FASTA so we can store length / use as preview later.
-    const url = withKey(`${NCBI_BASE}/efetch.fcgi?db=nuccore&id=${encodeURIComponent(data.uid)}&rettype=fasta&retmode=text`);
+    const url = withKey(
+      `${NCBI_BASE}/efetch.fcgi?db=nuccore&id=${encodeURIComponent(data.uid)}&rettype=fasta&retmode=text`,
+    );
     const res = await fetch(url, { headers: { "User-Agent": "ViralTrack-Afrika/1.0" } });
     let fasta = "";
     if (res.ok) fasta = await res.text();
 
     const seqBp = fasta
-      ? fasta.split("\n").filter((l) => l && !l.startsWith(">")).join("").length
+      ? fasta
+          .split("\n")
+          .filter((l) => l && !l.startsWith(">"))
+          .join("").length
       : data.length;
 
     const { data: row, error } = await supabase

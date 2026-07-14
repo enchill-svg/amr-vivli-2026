@@ -1,8 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  GitBranch, Upload, Download, RotateCw, Save, Search, Play, Pause, Sparkles,
-  Layers, MessageSquare, Pin, FileText, Image as ImageIcon, Filter, Zap,
-  Network as NetIcon, CircleDot, Trees, Radio, ZoomIn, ZoomOut, Maximize2, Flame, AlertTriangle,
+  GitBranch,
+  Upload,
+  Download,
+  RotateCw,
+  Save,
+  Search,
+  Play,
+  Pause,
+  Sparkles,
+  Layers,
+  MessageSquare,
+  Pin,
+  FileText,
+  Image as ImageIcon,
+  Filter,
+  Zap,
+  Network as NetIcon,
+  CircleDot,
+  Trees,
+  Radio,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Flame,
+  AlertTriangle,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell } from "@/components/vt/PageShell";
@@ -17,7 +39,11 @@ export const Route = createFileRoute("/phylogeny")({
   head: () => ({
     meta: [
       { title: "Phylogenomic Intelligence Workspace — ViralTrack-Afrika" },
-      { name: "description", content: "Research-grade phylogenomic analysis: multi-view trees, metadata rings, AI copilot, publication export." },
+      {
+        name: "description",
+        content:
+          "Research-grade phylogenomic analysis: multi-view trees, metadata rings, AI copilot, publication export.",
+      },
     ],
   }),
 });
@@ -101,7 +127,10 @@ function layoutTree(root: Node, width: number, height: number) {
   return { leafCount, maxDepth };
 }
 
-function collectEdges(n: Node, edges: Array<{ x1: number; y1: number; x2: number; y2: number }> = []) {
+function collectEdges(
+  n: Node,
+  edges: Array<{ x1: number; y1: number; x2: number; y2: number }> = [],
+) {
   for (const c of n.children) {
     // vertical link
     edges.push({ x1: n.x!, y1: n.y!, x2: n.x!, y2: c.y! });
@@ -137,20 +166,21 @@ const LINEAGE_PREFIXES = [
 ];
 
 const LINEAGE_GRADIENTS: Record<string, [string, string]> = {
-  sars:    ["#c389ff", "#7c3aed"],
-  mpox:    ["#ffb27a", "#ff6b35"],
-  ebola:   ["#ff7a8a", "#dc2626"],
+  sars: ["#c389ff", "#7c3aed"],
+  mpox: ["#ffb27a", "#ff6b35"],
+  ebola: ["#ff7a8a", "#dc2626"],
   marburg: ["#fde68a", "#c9a84c"],
   cholera: ["#7dd3fc", "#0284c7"],
-  lassa:   ["#86efac", "#16a34a"],
-  flu:     ["#a5f3fc", "#06b6d4"],
-  ev:      ["#ddd6fe", "#8b5cf6"],
+  lassa: ["#86efac", "#16a34a"],
+  flu: ["#a5f3fc", "#06b6d4"],
+  ev: ["#ddd6fe", "#8b5cf6"],
   default: ["#5cb8ff", "#3b82f6"],
 };
 
 function familyOf(name?: string): keyof typeof LINEAGE_GRADIENTS {
   if (!name) return "default";
-  for (const p of LINEAGE_PREFIXES) if (p.match.test(name)) return p.family as keyof typeof LINEAGE_GRADIENTS;
+  for (const p of LINEAGE_PREFIXES)
+    if (p.match.test(name)) return p.family as keyof typeof LINEAGE_GRADIENTS;
   return "default";
 }
 
@@ -267,11 +297,15 @@ function PhylogenyPage() {
   const [showRings, setShowRings] = useState(true);
   const [timeIdx, setTimeIdx] = useState(100);
   const [playing, setPlaying] = useState(false);
-  const [annotations, setAnnotations] = useState<Array<{ id: string; target: string; text: string; author: string; at: string }>>([]);
+  const [annotations, setAnnotations] = useState<
+    Array<{ id: string; target: string; text: string; author: string; at: string }>
+  >([]);
   const [noteDraft, setNoteDraft] = useState("");
   const [copilotInput, setCopilotInput] = useState("");
   const [copilotLog, setCopilotLog] = useState<Array<{ role: "user" | "ai"; text: string }>>([]);
-  const [pubStyle, setPubStyle] = useState<"default" | "Nature" | "Science" | "Cell" | "WHO" | "CDC">("default");
+  const [pubStyle, setPubStyle] = useState<
+    "default" | "Nature" | "Science" | "Cell" | "WHO" | "CDC"
+  >("default");
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [hover, setHover] = useState<{ x: number; y: number; node: Node } | null>(null);
@@ -305,20 +339,32 @@ function PhylogenyPage() {
     const sorted = [...clusters].sort((a, b) => b.size - a.size);
     if (sorted[0] && sorted[0].size >= 3) map.set(sorted[0].id, { kind: "expanding", conf: 92 });
     if (sorted[1] && sorted[1].size >= 3) map.set(sorted[1].id, { kind: "expanding", conf: 81 });
-    sorted.filter((c) => c.size === 1).slice(0, 2).forEach((c) => map.set(c.id, { kind: "isolated", conf: 74 }));
-    sorted.filter((c) => c.size === 2).slice(0, 1).forEach((c) => map.set(c.id, { kind: "founder", conf: 68 }));
+    sorted
+      .filter((c) => c.size === 1)
+      .slice(0, 2)
+      .forEach((c) => map.set(c.id, { kind: "isolated", conf: 74 }));
+    sorted
+      .filter((c) => c.size === 2)
+      .slice(0, 1)
+      .forEach((c) => map.set(c.id, { kind: "founder", conf: 68 }));
     return map;
   }, [clusters]);
 
   // Publication preset → rendering knobs
   const preset = useMemo(() => {
     switch (pubStyle) {
-      case "Nature": return { font: 11, label: true, stroke: 1.8, leaf: 4.5, palette: "vivid" };
-      case "Science": return { font: 10, label: true, stroke: 1.6, leaf: 4, palette: "cool" };
-      case "Cell": return { font: 11, label: true, stroke: 2, leaf: 5, palette: "warm" };
-      case "WHO": return { font: 12, label: true, stroke: 2.2, leaf: 5, palette: "alert" };
-      case "CDC": return { font: 11, label: true, stroke: 1.8, leaf: 4.5, palette: "alert" };
-      default: return { font: 11, label: true, stroke: 1.6, leaf: 4.5, palette: "default" };
+      case "Nature":
+        return { font: 11, label: true, stroke: 1.8, leaf: 4.5, palette: "vivid" };
+      case "Science":
+        return { font: 10, label: true, stroke: 1.6, leaf: 4, palette: "cool" };
+      case "Cell":
+        return { font: 11, label: true, stroke: 2, leaf: 5, palette: "warm" };
+      case "WHO":
+        return { font: 12, label: true, stroke: 2.2, leaf: 5, palette: "alert" };
+      case "CDC":
+        return { font: 11, label: true, stroke: 1.8, leaf: 4.5, palette: "alert" };
+      default:
+        return { font: 11, label: true, stroke: 1.6, leaf: 4.5, palette: "default" };
     }
   }, [pubStyle]);
   const maxDepth = useMemo(() => {
@@ -335,7 +381,13 @@ function PhylogenyPage() {
   const matchedSet = useMemo(() => {
     if (!search.trim()) return null;
     const s = search.toLowerCase();
-    return new Set(leaves.filter((l) => l.name.toLowerCase().includes(s) || (l.lineage ?? "").toLowerCase().includes(s)).map((l) => l.name));
+    return new Set(
+      leaves
+        .filter(
+          (l) => l.name.toLowerCase().includes(s) || (l.lineage ?? "").toLowerCase().includes(s),
+        )
+        .map((l) => l.name),
+    );
   }, [search, leaves]);
 
   // Time playback
@@ -473,9 +525,18 @@ function PhylogenyPage() {
         if (/cluster/i.test(q) && c) {
           return `Cluster ${c.id} (${c.lineage}) groups ${c.size} taxa with tight branch lengths (≤0.15 subs/site). It is the largest clade in the loaded tree and most likely represents a recent transmission chain. Suggest reviewing geographic metadata for spatial clustering.`;
         }
-        if (/fast|grow/i.test(q)) return `The fastest-growing lineage in the loaded subset is ${clusters[0]?.lineage ?? "n/a"}; relative branch shortening suggests rapid recent diversification.`;
-        if (/unusual|odd/i.test(q)) return `Branch lengths above 0.15 subs/site flagged: ${leaves.filter((l) => (l.depth ?? 0) > maxDepth * 0.85).slice(0, 3).map((l) => l.name).join(", ") || "none"}. Recommend Bayesian dating to verify.`;
-        if (/publication|summary/i.test(q)) return `Manuscript draft: The phylogeny (${leaves.length} taxa, ${clusters.length} clusters) reveals dominant ${clusters[0]?.lineage} clade with evidence of regional spread. Bootstrap support and clade calibration recommended before submission.`;
+        if (/fast|grow/i.test(q))
+          return `The fastest-growing lineage in the loaded subset is ${clusters[0]?.lineage ?? "n/a"}; relative branch shortening suggests rapid recent diversification.`;
+        if (/unusual|odd/i.test(q))
+          return `Branch lengths above 0.15 subs/site flagged: ${
+            leaves
+              .filter((l) => (l.depth ?? 0) > maxDepth * 0.85)
+              .slice(0, 3)
+              .map((l) => l.name)
+              .join(", ") || "none"
+          }. Recommend Bayesian dating to verify.`;
+        if (/publication|summary/i.test(q))
+          return `Manuscript draft: The phylogeny (${leaves.length} taxa, ${clusters.length} clusters) reveals dominant ${clusters[0]?.lineage} clade with evidence of regional spread. Bootstrap support and clade calibration recommended before submission.`;
         return `Tree summary: ${leaves.length} taxa across ${clusters.length} clusters, max depth ${maxDepth.toFixed(3)} subs/site. Dominant lineage: ${clusters[0]?.lineage ?? "n/a"}.`;
       })();
       setCopilotLog((l) => [...l, { role: "ai", text: reply }]);
@@ -492,15 +553,30 @@ function PhylogenyPage() {
               <GitBranch className="w-6 h-6 text-[color:var(--accent)]" />
             </div>
             <div>
-              <h1 className="text-2xl font-light tracking-tight">Phylogenomic Intelligence Workspace</h1>
+              <h1 className="text-2xl font-light tracking-tight">
+                Phylogenomic Intelligence Workspace
+              </h1>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {leaves.length} taxa · {clusters.length} clusters · max depth {maxDepth.toFixed(3)} subs/site · {Object.keys(metadata).length} metadata rows
+                {leaves.length} taxa · {clusters.length} clusters · max depth {maxDepth.toFixed(3)}{" "}
+                subs/site · {Object.keys(metadata).length} metadata rows
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <input ref={fileRef} type="file" accept=".nwk,.tree,.newick,.txt" className="hidden" onChange={onFile} />
-            <input ref={metaFileRef} type="file" accept=".csv,.tsv,.txt,.json" className="hidden" onChange={onMetaFile} />
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".nwk,.tree,.newick,.txt"
+              className="hidden"
+              onChange={onFile}
+            />
+            <input
+              ref={metaFileRef}
+              type="file"
+              accept=".csv,.tsv,.txt,.json"
+              className="hidden"
+              onChange={onMetaFile}
+            />
             <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
               <Upload className="w-4 h-4" /> Tree
             </Button>
@@ -516,7 +592,18 @@ function PhylogenyPage() {
             <Button variant="outline" size="sm" onClick={exportPng}>
               <ImageIcon className="w-4 h-4" /> PNG
             </Button>
-            <Button size="sm" onClick={() => { savePhyloSnapshot({ newick, leaf_count: leaves.length, max_depth: maxDepth, clusters }); toast.success("Saved for next report"); }}>
+            <Button
+              size="sm"
+              onClick={() => {
+                savePhyloSnapshot({
+                  newick,
+                  leaf_count: leaves.length,
+                  max_depth: maxDepth,
+                  clusters,
+                });
+                toast.success("Saved for next report");
+              }}
+            >
               <Save className="w-4 h-4" /> Report
             </Button>
           </div>
@@ -528,12 +615,14 @@ function PhylogenyPage() {
             <aside className="col-span-12 lg:col-span-3 space-y-3">
               <Panel title="Tree Controls" icon={Trees}>
                 <div className="grid grid-cols-2 gap-1">
-                  {([
-                    { v: "rectangular", l: "Rectangular", I: GitBranch },
-                    { v: "circular", l: "Circular", I: CircleDot },
-                    { v: "radial", l: "Radial", I: Radio },
-                    { v: "unrooted", l: "Unrooted", I: NetIcon },
-                  ] as const).map(({ v, l, I }) => (
+                  {(
+                    [
+                      { v: "rectangular", l: "Rectangular", I: GitBranch },
+                      { v: "circular", l: "Circular", I: CircleDot },
+                      { v: "radial", l: "Radial", I: Radio },
+                      { v: "unrooted", l: "Unrooted", I: NetIcon },
+                    ] as const
+                  ).map(({ v, l, I }) => (
                     <button
                       key={v}
                       onClick={() => setView(v)}
@@ -556,7 +645,11 @@ function PhylogenyPage() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="h-8 text-xs"
                 />
-                {matchedSet && <div className="text-[10px] text-muted-foreground mt-1.5">{matchedSet.size} matches</div>}
+                {matchedSet && (
+                  <div className="text-[10px] text-muted-foreground mt-1.5">
+                    {matchedSet.size} matches
+                  </div>
+                )}
               </Panel>
 
               <Panel title="Color by" icon={Filter}>
@@ -589,7 +682,8 @@ function PhylogenyPage() {
                 <div className="space-y-1.5 max-h-44 overflow-y-auto mb-2">
                   {copilotLog.length === 0 && (
                     <div className="text-[11px] text-muted-foreground">
-                      Ask: "Explain Cluster 1", "Find unusual branches", "Generate publication summary".
+                      Ask: "Explain Cluster 1", "Find unusual branches", "Generate publication
+                      summary".
                     </div>
                   )}
                   {copilotLog.map((m, i) => (
@@ -629,35 +723,67 @@ function PhylogenyPage() {
                     <span className="w-2 h-2 rounded-full bg-[color:var(--accent)] animate-pulse" />
                     {view} view
                   </div>
-                  <div className="text-muted-foreground">
-                    Timeline: day {timeIdx} / 100
-                  </div>
+                  <div className="text-muted-foreground">Timeline: day {timeIdx} / 100</div>
                 </div>
                 <div className="flex-1 overflow-auto bg-gradient-to-br from-background/40 to-background/10 relative">
                   {/* Zoom controls */}
                   {tree && (
                     <div className="absolute top-2 right-2 z-10 flex flex-col gap-1 rounded-lg border border-border/60 bg-background/70 backdrop-blur p-1">
-                      <button onClick={() => setZoom((z) => Math.min(z * 1.25, 6))} className="p-1 hover:bg-secondary/60 rounded" title="Zoom in"><ZoomIn className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => setZoom((z) => Math.max(z / 1.25, 0.4))} className="p-1 hover:bg-secondary/60 rounded" title="Zoom out"><ZoomOut className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); }} className="p-1 hover:bg-secondary/60 rounded" title="Fit"><Maximize2 className="w-3.5 h-3.5" /></button>
-                      <div className="text-[9px] text-center tabular-nums text-muted-foreground border-t border-border/40 pt-0.5">{Math.round(zoom * 100)}%</div>
+                      <button
+                        onClick={() => setZoom((z) => Math.min(z * 1.25, 6))}
+                        className="p-1 hover:bg-secondary/60 rounded"
+                        title="Zoom in"
+                      >
+                        <ZoomIn className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setZoom((z) => Math.max(z / 1.25, 0.4))}
+                        className="p-1 hover:bg-secondary/60 rounded"
+                        title="Zoom out"
+                      >
+                        <ZoomOut className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setZoom(1);
+                          setPan({ x: 0, y: 0 });
+                        }}
+                        className="p-1 hover:bg-secondary/60 rounded"
+                        title="Fit"
+                      >
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </button>
+                      <div className="text-[9px] text-center tabular-nums text-muted-foreground border-t border-border/40 pt-0.5">
+                        {Math.round(zoom * 100)}%
+                      </div>
                     </div>
                   )}
                   {/* Hover tooltip */}
                   {hover && (
                     <div
                       className="pointer-events-none absolute z-20 rounded-md border border-[color:var(--accent)]/40 bg-background/95 backdrop-blur px-2.5 py-1.5 text-[11px] shadow-xl"
-                      style={{ left: Math.min(hover.x + 14, width - 200), top: Math.max(hover.y - 4, 8) }}
+                      style={{
+                        left: Math.min(hover.x + 14, width - 200),
+                        top: Math.max(hover.y - 4, 8),
+                      }}
                     >
                       <div className="font-medium text-foreground">{hover.node.name}</div>
-                      <div className="text-muted-foreground text-[10px]">{hover.node.lineage ?? "Unassigned"}</div>
+                      <div className="text-muted-foreground text-[10px]">
+                        {hover.node.lineage ?? "Unassigned"}
+                      </div>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 mt-1 text-[10px]">
-                        <span className="text-muted-foreground">Branch</span><span className="tabular-nums">{(hover.node.branch ?? 0).toFixed(4)}</span>
-                        <span className="text-muted-foreground">Depth</span><span className="tabular-nums">{(hover.node.depth ?? 0).toFixed(4)}</span>
-                        <span className="text-muted-foreground">Cluster</span><span>#{hover.node.cluster ?? "—"}</span>
-                        <span className="text-muted-foreground">Country</span><span>{metadata[hover.node.name]?.country ?? "—"}</span>
-                        <span className="text-muted-foreground">Host</span><span>{metadata[hover.node.name]?.host ?? "Human"}</span>
-                        <span className="text-muted-foreground">Date</span><span>{metadata[hover.node.name]?.date ?? "—"}</span>
+                        <span className="text-muted-foreground">Branch</span>
+                        <span className="tabular-nums">{(hover.node.branch ?? 0).toFixed(4)}</span>
+                        <span className="text-muted-foreground">Depth</span>
+                        <span className="tabular-nums">{(hover.node.depth ?? 0).toFixed(4)}</span>
+                        <span className="text-muted-foreground">Cluster</span>
+                        <span>#{hover.node.cluster ?? "—"}</span>
+                        <span className="text-muted-foreground">Country</span>
+                        <span>{metadata[hover.node.name]?.country ?? "—"}</span>
+                        <span className="text-muted-foreground">Host</span>
+                        <span>{metadata[hover.node.name]?.host ?? "Human"}</span>
+                        <span className="text-muted-foreground">Date</span>
+                        <span>{metadata[hover.node.name]?.date ?? "—"}</span>
                       </div>
                     </div>
                   )}
@@ -667,7 +793,10 @@ function PhylogenyPage() {
                     </div>
                   )}
                   {!tree ? (
-                    <EmptyState onLoadDemo={() => setNewick(DEMO_NEWICK)} onUpload={() => fileRef.current?.click()} />
+                    <EmptyState
+                      onLoadDemo={() => setNewick(DEMO_NEWICK)}
+                      onUpload={() => fileRef.current?.click()}
+                    />
                   ) : view === "rectangular" ? (
                     <RectangularTree
                       tree={tree}
@@ -744,7 +873,9 @@ function PhylogenyPage() {
                     onChange={(e) => setTimeIdx(Number(e.target.value))}
                     className="flex-1 accent-[color:var(--accent)]"
                   />
-                  <span className="text-muted-foreground tabular-nums w-20 text-right">2024 → now</span>
+                  <span className="text-muted-foreground tabular-nums w-20 text-right">
+                    2024 → now
+                  </span>
                 </div>
               </div>
             </section>
@@ -755,7 +886,9 @@ function PhylogenyPage() {
                 {selectedTaxon ? (
                   <TaxonProfile name={selectedTaxon} leaves={leaves} metadata={metadata} />
                 ) : (
-                  <div className="text-[11px] text-muted-foreground">Click a leaf to view its profile.</div>
+                  <div className="text-[11px] text-muted-foreground">
+                    Click a leaf to view its profile.
+                  </div>
                 )}
               </Panel>
 
@@ -768,14 +901,19 @@ function PhylogenyPage() {
                     >
                       <div className="flex items-center justify-between text-[11px]">
                         <div className="flex items-center gap-1.5 font-medium">
-                          <span className="w-2.5 h-2.5 rounded-full" style={{ background: clusterColor(c.id) }} />
+                          <span
+                            className="w-2.5 h-2.5 rounded-full"
+                            style={{ background: clusterColor(c.id) }}
+                          />
                           Cluster {c.id}
                         </div>
                         <span className="text-muted-foreground">{c.size} taxa</span>
                       </div>
                       <div className="text-[10px] text-muted-foreground mt-0.5">{c.lineage}</div>
                       <div className="text-[10px] text-foreground/80 mt-1 leading-snug">
-                        AI: likely {c.size > 4 ? "expanding transmission chain" : "small founder group"} · conf {(70 + (c.id * 7) % 25)}%
+                        AI: likely{" "}
+                        {c.size > 4 ? "expanding transmission chain" : "small founder group"} · conf{" "}
+                        {70 + ((c.id * 7) % 25)}%
                       </div>
                     </div>
                   ))}
@@ -785,13 +923,20 @@ function PhylogenyPage() {
               <Panel title="Annotations" icon={MessageSquare}>
                 <div className="space-y-1.5 max-h-32 overflow-y-auto mb-2">
                   {annotations.length === 0 && (
-                    <div className="text-[11px] text-muted-foreground">Pin notes to taxa or clades.</div>
+                    <div className="text-[11px] text-muted-foreground">
+                      Pin notes to taxa or clades.
+                    </div>
                   )}
                   {annotations.map((a) => (
-                    <div key={a.id} className="text-[11px] rounded-md border border-border/50 bg-background/40 p-1.5">
+                    <div
+                      key={a.id}
+                      className="text-[11px] rounded-md border border-border/50 bg-background/40 p-1.5"
+                    >
                       <div className="text-[9px] uppercase text-muted-foreground">{a.target}</div>
                       <div>{a.text}</div>
-                      <div className="text-[9px] text-muted-foreground mt-0.5">{a.author} · {new Date(a.at).toLocaleTimeString()}</div>
+                      <div className="text-[9px] text-muted-foreground mt-0.5">
+                        {a.author} · {new Date(a.at).toLocaleTimeString()}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -814,7 +959,10 @@ function PhylogenyPage() {
                   {(["Nature", "Science", "Cell", "WHO", "CDC"] as const).map((s) => (
                     <button
                       key={s}
-                      onClick={() => { setPubStyle(s); toast.success(`${s} style applied`); }}
+                      onClick={() => {
+                        setPubStyle(s);
+                        toast.success(`${s} style applied`);
+                      }}
                       className={`text-[11px] py-1 rounded-md border transition-colors ${
                         pubStyle === s
                           ? "border-[color:var(--accent)] bg-[color:var(--accent)]/15 text-[color:var(--accent)]"
@@ -825,14 +973,22 @@ function PhylogenyPage() {
                     </button>
                   ))}
                   <button
-                    onClick={() => { setPubStyle("default"); toast.success("Default style"); }}
+                    onClick={() => {
+                      setPubStyle("default");
+                      toast.success("Default style");
+                    }}
                     className={`col-span-2 text-[11px] py-1 rounded-md border ${
-                      pubStyle === "default" ? "border-[color:var(--accent)] text-[color:var(--accent)]" : "border-border bg-background/40"
+                      pubStyle === "default"
+                        ? "border-[color:var(--accent)] text-[color:var(--accent)]"
+                        : "border-border bg-background/40"
                     }`}
-                  >Default</button>
+                  >
+                    Default
+                  </button>
                 </div>
                 <div className="text-[10px] text-muted-foreground mt-2">
-                  Presets adjust typography, branch weight, and label density. Export SVG/PNG for figures.
+                  Presets adjust typography, branch weight, and label density. Export SVG/PNG for
+                  figures.
                 </div>
               </Panel>
             </aside>
@@ -843,7 +999,15 @@ function PhylogenyPage() {
   );
 }
 
-function Panel({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
+function Panel({
+  title,
+  icon: Icon,
+  children,
+}: {
+  title: string;
+  icon: React.ElementType;
+  children: React.ReactNode;
+}) {
   return (
     <div className="rounded-xl border border-border bg-card/60 backdrop-blur-sm p-3">
       <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
@@ -863,7 +1027,8 @@ function EmptyState({ onLoadDemo, onUpload }: { onLoadDemo: () => void; onUpload
         </div>
         <h2 className="text-xl font-light">Phylogenomic Intelligence Workspace</h2>
         <p className="text-sm text-muted-foreground mt-2">
-          Upload a Newick tree and optional metadata to explore evolutionary relationships, lineage dynamics, and outbreak intelligence.
+          Upload a Newick tree and optional metadata to explore evolutionary relationships, lineage
+          dynamics, and outbreak intelligence.
         </p>
         <div className="flex items-center justify-center gap-2 mt-5">
           <Button onClick={onUpload}>
@@ -878,7 +1043,15 @@ function EmptyState({ onLoadDemo, onUpload }: { onLoadDemo: () => void; onUpload
   );
 }
 
-function TaxonProfile({ name, leaves, metadata }: { name: string; leaves: Node[]; metadata: Metadata }) {
+function TaxonProfile({
+  name,
+  leaves,
+  metadata,
+}: {
+  name: string;
+  leaves: Node[];
+  metadata: Metadata;
+}) {
   const leaf = leaves.find((l) => l.name === name);
   const meta = metadata[name] ?? {};
   const [a, b] = LINEAGE_GRADIENTS[familyOf(name)];
@@ -888,7 +1061,9 @@ function TaxonProfile({ name, leaves, metadata }: { name: string; leaves: Node[]
         className="rounded-lg p-3 text-white"
         style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
       >
-        <div className="text-[10px] uppercase opacity-80">{leaf?.lineage ?? "Unassigned lineage"}</div>
+        <div className="text-[10px] uppercase opacity-80">
+          {leaf?.lineage ?? "Unassigned lineage"}
+        </div>
         <div className="text-sm font-medium truncate">{name}</div>
       </div>
       <dl className="rounded-lg border border-border/50 bg-background/40 divide-y divide-border/40 text-[11px]">
@@ -918,24 +1093,53 @@ type AiFlag = { kind: "expanding" | "isolated" | "founder"; conf: number };
 type HoverSetter = (h: { x: number; y: number; node: Node } | null) => void;
 
 function RectangularTree({
-  tree, edges, leaves, width, height, matchedSet, selected, onSelect, leafColor, clusterColor, annotations,
-  zoom, pan, onHover, preset, aiFlags, maxDepth,
+  tree,
+  edges,
+  leaves,
+  width,
+  height,
+  matchedSet,
+  selected,
+  onSelect,
+  leafColor,
+  clusterColor,
+  annotations,
+  zoom,
+  pan,
+  onHover,
+  preset,
+  aiFlags,
+  maxDepth,
 }: {
-  tree: Node; edges: { x1: number; y1: number; x2: number; y2: number }[]; leaves: Node[];
-  width: number; height: number; matchedSet: Set<string> | null;
-  selected: string | null; onSelect: (n: string) => void;
-  leafColor: (l: Node) => string; clusterColor: (id?: number) => string;
+  tree: Node;
+  edges: { x1: number; y1: number; x2: number; y2: number }[];
+  leaves: Node[];
+  width: number;
+  height: number;
+  matchedSet: Set<string> | null;
+  selected: string | null;
+  onSelect: (n: string) => void;
+  leafColor: (l: Node) => string;
+  clusterColor: (id?: number) => string;
   annotations: Array<{ target: string }>;
-  zoom: number; pan: { x: number; y: number }; onHover: HoverSetter;
-  preset: Preset; aiFlags: Map<number, AiFlag>; maxDepth: number;
+  zoom: number;
+  pan: { x: number; y: number };
+  onHover: HoverSetter;
+  preset: Preset;
+  aiFlags: Map<number, AiFlag>;
+  maxDepth: number;
 }) {
   // Build orthogonal smoothed paths with thickness scaling by descendant count
   const descCount = useMemo(() => {
     const m = new Map<Node, number>();
     const walk = (n: Node): number => {
-      if (!n.children.length) { m.set(n, 1); return 1; }
+      if (!n.children.length) {
+        m.set(n, 1);
+        return 1;
+      }
       const s = n.children.reduce((a, c) => a + walk(c), 0);
-      m.set(n, s); return s;
+      m.set(n, s);
+      return s;
     };
     walk(tree);
     return m;
@@ -965,7 +1169,14 @@ function RectangularTree({
       id="vt-phylo-svg"
       viewBox={`0 0 ${width} ${height + 30}`}
       width="100%"
-      style={{ display: "block", minHeight: 360, transform: `scale(${zoom}) translate(${pan.x}px,${pan.y}px)`, transformOrigin: "0 0", transition: "transform 120ms ease-out", shapeRendering: "geometricPrecision" }}
+      style={{
+        display: "block",
+        minHeight: 360,
+        transform: `scale(${zoom}) translate(${pan.x}px,${pan.y}px)`,
+        transformOrigin: "0 0",
+        transition: "transform 120ms ease-out",
+        shapeRendering: "geometricPrecision",
+      }}
     >
       <defs>
         <linearGradient id="branch-grad" x1="0" y1="0" x2="1" y2="0">
@@ -974,20 +1185,34 @@ function RectangularTree({
         </linearGradient>
         <filter id="branch-glow" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="1.2" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
       </defs>
 
       {/* Depth axis */}
       <g opacity="0.4">
-        <line x1={20} y1={height + 8} x2={width - 140} y2={height + 8} stroke="currentColor" strokeWidth="0.5" />
+        <line
+          x1={20}
+          y1={height + 8}
+          x2={width - 140}
+          y2={height + 8}
+          stroke="currentColor"
+          strokeWidth="0.5"
+        />
         {ticks.map((t, i) => (
           <g key={i} transform={`translate(${xAt(t)}, ${height + 8})`}>
             <line y2="4" stroke="currentColor" strokeWidth="0.5" />
-            <text y="16" fontSize="9" textAnchor="middle" className="fill-muted-foreground">{t.toFixed(3)}</text>
+            <text y="16" fontSize="9" textAnchor="middle" className="fill-muted-foreground">
+              {t.toFixed(3)}
+            </text>
           </g>
         ))}
-        <text x={width - 130} y={height + 22} fontSize="9" className="fill-muted-foreground">subs/site</text>
+        <text x={width - 130} y={height + 22} fontSize="9" className="fill-muted-foreground">
+          subs/site
+        </text>
       </g>
 
       {/* Branches */}
@@ -1003,11 +1228,21 @@ function RectangularTree({
         if (!flag) return null;
         // only one badge per cluster (first occurrence)
         if (leaves.findIndex((x) => x.cluster === l.cluster) !== i) return null;
-        const Icon = flag.kind === "expanding" ? Flame : flag.kind === "isolated" ? AlertTriangle : Sparkles;
-        const fg = flag.kind === "expanding" ? "#ff8a3d" : flag.kind === "isolated" ? "#f5c451" : "#7dd3fc";
+        const Icon =
+          flag.kind === "expanding" ? Flame : flag.kind === "isolated" ? AlertTriangle : Sparkles;
+        const fg =
+          flag.kind === "expanding" ? "#ff8a3d" : flag.kind === "isolated" ? "#f5c451" : "#7dd3fc";
         return (
           <g key={`ai${i}`} transform={`translate(${(l.x ?? 0) - 16}, ${(l.y ?? 0) - 8})`}>
-            <rect width="14" height="14" rx="3" fill={fg} opacity="0.18" stroke={fg} strokeWidth="0.6" />
+            <rect
+              width="14"
+              height="14"
+              rx="3"
+              fill={fg}
+              opacity="0.18"
+              stroke={fg}
+              strokeWidth="0.6"
+            />
             <foreignObject x="2" y="2" width="10" height="10">
               <Icon className="w-2.5 h-2.5" style={{ color: fg }} />
             </foreignObject>
@@ -1029,24 +1264,56 @@ function RectangularTree({
             style={{ cursor: "pointer" }}
             onClick={() => onSelect(l.name)}
             onMouseEnter={(e) => {
-              const rect = (e.currentTarget.ownerSVGElement as SVGSVGElement).getBoundingClientRect();
-              const parent = (e.currentTarget.ownerSVGElement!.parentElement as HTMLElement).getBoundingClientRect();
-              onHover({ x: rect.left - parent.left + (l.x ?? 0) * (rect.width / width), y: rect.top - parent.top + (l.y ?? 0) * (rect.height / (height + 30)), node: l });
+              const rect = (
+                e.currentTarget.ownerSVGElement as SVGSVGElement
+              ).getBoundingClientRect();
+              const parent = (
+                e.currentTarget.ownerSVGElement!.parentElement as HTMLElement
+              ).getBoundingClientRect();
+              onHover({
+                x: rect.left - parent.left + (l.x ?? 0) * (rect.width / width),
+                y: rect.top - parent.top + (l.y ?? 0) * (rect.height / (height + 30)),
+                node: l,
+              });
             }}
             onMouseLeave={() => onHover(null)}
           >
             {sel && <circle r="10" fill={color} opacity="0.3" />}
-            <circle r={sel ? preset.leaf + 1.5 : preset.leaf} fill={color} stroke={sel ? "white" : "oklch(0.18 0.04 250)"} strokeWidth={sel ? 1.6 : 0.8} />
-            <text x="10" y="4" fontSize={preset.font} className="fill-foreground" style={{ fontFamily: "var(--font-mono)" }}>
+            <circle
+              r={sel ? preset.leaf + 1.5 : preset.leaf}
+              fill={color}
+              stroke={sel ? "white" : "oklch(0.18 0.04 250)"}
+              strokeWidth={sel ? 1.6 : 0.8}
+            />
+            <text
+              x="10"
+              y="4"
+              fontSize={preset.font}
+              className="fill-foreground"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
               {l.name}
               {preset.label && l.lineage && (
-                <tspan dx="6" fontSize={preset.font - 2} fill={clusterColor(l.cluster)}>· {l.lineage}</tspan>
+                <tspan dx="6" fontSize={preset.font - 2} fill={clusterColor(l.cluster)}>
+                  · {l.lineage}
+                </tspan>
               )}
-              {annotated && <tspan dx="4" fontSize={preset.font - 2} fill="#f5c451">📌</tspan>}
+              {annotated && (
+                <tspan dx="4" fontSize={preset.font - 2} fill="#f5c451">
+                  📌
+                </tspan>
+              )}
             </text>
             {/* branch length label */}
             {(l.branch ?? 0) > 0 && (
-              <text x="-4" y="-4" fontSize="7" textAnchor="end" className="fill-muted-foreground" style={{ fontFamily: "var(--font-mono)" }}>
+              <text
+                x="-4"
+                y="-4"
+                fontSize="7"
+                textAnchor="end"
+                className="fill-muted-foreground"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
                 {l.branch.toFixed(3)}
               </text>
             )}
@@ -1058,53 +1325,95 @@ function RectangularTree({
 }
 
 function CircularTree({
-  leaves, size, maxDepth, matchedSet, selected, onSelect, leafColor, showRings, metadata, onHover,
+  leaves,
+  size,
+  maxDepth,
+  matchedSet,
+  selected,
+  onSelect,
+  leafColor,
+  showRings,
+  metadata,
+  onHover,
 }: {
-  leaves: Node[]; size: number; maxDepth: number;
-  matchedSet: Set<string> | null; selected: string | null;
-  onSelect: (n: string) => void; leafColor: (l: Node) => string;
-  showRings: boolean; metadata: Metadata; onHover?: HoverSetter;
+  leaves: Node[];
+  size: number;
+  maxDepth: number;
+  matchedSet: Set<string> | null;
+  selected: string | null;
+  onSelect: (n: string) => void;
+  leafColor: (l: Node) => string;
+  showRings: boolean;
+  metadata: Metadata;
+  onHover?: HoverSetter;
 }) {
-  const cx = size / 2, cy = size / 2;
+  const cx = size / 2,
+    cy = size / 2;
   const Rcore = size * 0.22;
   const Rleaf = size * 0.36;
   const ringStart = size * 0.39;
   const ringStep = size * 0.018;
   const N = leaves.length;
   return (
-    <svg id="vt-phylo-svg" viewBox={`0 0 ${size} ${size}`} width="100%" style={{ display: "block" }}>
+    <svg
+      id="vt-phylo-svg"
+      viewBox={`0 0 ${size} ${size}`}
+      width="100%"
+      style={{ display: "block" }}
+    >
       <circle cx={cx} cy={cy} r={Rcore * 0.4} fill="oklch(0.22 0.04 250)" opacity="0.5" />
       <g stroke="oklch(0.6 0.15 200 / 0.4)" strokeWidth="1.2" fill="none">
         {leaves.map((l, i) => {
           const a = (i / N) * Math.PI * 2 - Math.PI / 2;
           const r1 = Rcore + ((l.depth ?? 0) / maxDepth) * (Rleaf - Rcore) * 0.3;
           const r2 = Rleaf;
-          return <line key={i} x1={cx + Math.cos(a) * r1} y1={cy + Math.sin(a) * r1} x2={cx + Math.cos(a) * r2} y2={cy + Math.sin(a) * r2} />;
+          return (
+            <line
+              key={i}
+              x1={cx + Math.cos(a) * r1}
+              y1={cy + Math.sin(a) * r1}
+              x2={cx + Math.cos(a) * r2}
+              y2={cy + Math.sin(a) * r2}
+            />
+          );
         })}
       </g>
       {/* annotation rings */}
-      {showRings && ["country", "host", "lineage", "risk"].map((col, ri) => (
-        <g key={col}>
-          {leaves.map((l, i) => {
-            const a1 = ((i - 0.5) / N) * Math.PI * 2 - Math.PI / 2;
-            const a2 = ((i + 0.5) / N) * Math.PI * 2 - Math.PI / 2;
-            const rIn = ringStart + ri * ringStep;
-            const rOut = rIn + ringStep - 1;
-            const v = col === "lineage" ? l.lineage ?? "" : metadata[l.name]?.[col] ?? "";
-            let h = 0;
-            for (let k = 0; k < v.length; k++) h = (h * 31 + v.charCodeAt(k)) >>> 0;
-            const fill = v ? `hsl(${h % 360} 65% 55%)` : "oklch(0.3 0.02 250)";
-            const x1 = cx + Math.cos(a1) * rIn, y1 = cy + Math.sin(a1) * rIn;
-            const x2 = cx + Math.cos(a2) * rIn, y2 = cy + Math.sin(a2) * rIn;
-            const x3 = cx + Math.cos(a2) * rOut, y3 = cy + Math.sin(a2) * rOut;
-            const x4 = cx + Math.cos(a1) * rOut, y4 = cy + Math.sin(a1) * rOut;
-            return <path key={i} d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4} Z`} fill={fill} opacity={matchedSet && !matchedSet.has(l.name) ? 0.25 : 0.9} />;
-          })}
-        </g>
-      ))}
+      {showRings &&
+        ["country", "host", "lineage", "risk"].map((col, ri) => (
+          <g key={col}>
+            {leaves.map((l, i) => {
+              const a1 = ((i - 0.5) / N) * Math.PI * 2 - Math.PI / 2;
+              const a2 = ((i + 0.5) / N) * Math.PI * 2 - Math.PI / 2;
+              const rIn = ringStart + ri * ringStep;
+              const rOut = rIn + ringStep - 1;
+              const v = col === "lineage" ? (l.lineage ?? "") : (metadata[l.name]?.[col] ?? "");
+              let h = 0;
+              for (let k = 0; k < v.length; k++) h = (h * 31 + v.charCodeAt(k)) >>> 0;
+              const fill = v ? `hsl(${h % 360} 65% 55%)` : "oklch(0.3 0.02 250)";
+              const x1 = cx + Math.cos(a1) * rIn,
+                y1 = cy + Math.sin(a1) * rIn;
+              const x2 = cx + Math.cos(a2) * rIn,
+                y2 = cy + Math.sin(a2) * rIn;
+              const x3 = cx + Math.cos(a2) * rOut,
+                y3 = cy + Math.sin(a2) * rOut;
+              const x4 = cx + Math.cos(a1) * rOut,
+                y4 = cy + Math.sin(a1) * rOut;
+              return (
+                <path
+                  key={i}
+                  d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4} Z`}
+                  fill={fill}
+                  opacity={matchedSet && !matchedSet.has(l.name) ? 0.25 : 0.9}
+                />
+              );
+            })}
+          </g>
+        ))}
       {leaves.map((l, i) => {
         const a = (i / N) * Math.PI * 2 - Math.PI / 2;
-        const x = cx + Math.cos(a) * Rleaf, y = cy + Math.sin(a) * Rleaf;
+        const x = cx + Math.cos(a) * Rleaf,
+          y = cy + Math.sin(a) * Rleaf;
         const sel = selected === l.name;
         const fade = matchedSet && !matchedSet.has(l.name);
         const color = leafColor(l);
@@ -1113,11 +1422,26 @@ function CircularTree({
         const rot = (a * 180) / Math.PI;
         const flip = rot > 90 || rot < -90;
         return (
-          <g key={i} opacity={fade ? 0.25 : 1} style={{ cursor: "pointer" }} onClick={() => onSelect(l.name)} onMouseEnter={() => onHover?.({ x, y, node: l })} onMouseLeave={() => onHover?.(null)}>
+          <g
+            key={i}
+            opacity={fade ? 0.25 : 1}
+            style={{ cursor: "pointer" }}
+            onClick={() => onSelect(l.name)}
+            onMouseEnter={() => onHover?.({ x, y, node: l })}
+            onMouseLeave={() => onHover?.(null)}
+          >
             {sel && <circle cx={x} cy={y} r={8} fill={color} opacity="0.4" />}
-            <circle cx={x} cy={y} r={sel ? 4.5 : 3.5} fill={color} stroke="oklch(0.18 0.04 250)" strokeWidth={0.6} />
+            <circle
+              cx={x}
+              cy={y}
+              r={sel ? 4.5 : 3.5}
+              fill={color}
+              stroke="oklch(0.18 0.04 250)"
+              strokeWidth={0.6}
+            />
             <text
-              x={lx} y={ly}
+              x={lx}
+              y={ly}
               fontSize="9"
               textAnchor={flip ? "end" : "start"}
               transform={`rotate(${flip ? rot + 180 : rot}, ${lx}, ${ly})`}
@@ -1133,44 +1457,111 @@ function CircularTree({
 }
 
 function RadialTree({
-  leaves, size, maxDepth, matchedSet, selected, onSelect, leafColor, onHover, aiFlags,
+  leaves,
+  size,
+  maxDepth,
+  matchedSet,
+  selected,
+  onSelect,
+  leafColor,
+  onHover,
+  aiFlags,
 }: {
-  leaves: Node[]; size: number; maxDepth: number;
-  matchedSet: Set<string> | null; selected: string | null;
-  onSelect: (n: string) => void; leafColor: (l: Node) => string;
-  onHover?: HoverSetter; clusterColor?: (id?: number) => string; aiFlags?: Map<number, AiFlag>;
+  leaves: Node[];
+  size: number;
+  maxDepth: number;
+  matchedSet: Set<string> | null;
+  selected: string | null;
+  onSelect: (n: string) => void;
+  leafColor: (l: Node) => string;
+  onHover?: HoverSetter;
+  clusterColor?: (id?: number) => string;
+  aiFlags?: Map<number, AiFlag>;
 }) {
-  const cx = size / 2, cy = size / 2;
+  const cx = size / 2,
+    cy = size / 2;
   return (
-    <svg id="vt-phylo-svg" viewBox={`0 0 ${size} ${size}`} width="100%" style={{ display: "block" }}>
-      {aiFlags && Array.from(aiFlags.entries()).map(([cid, flag], k) => {
-        const ls = leaves.filter((x) => x.cluster === cid);
-        if (!ls.length) return null;
-        const i = leaves.indexOf(ls[0]);
+    <svg
+      id="vt-phylo-svg"
+      viewBox={`0 0 ${size} ${size}`}
+      width="100%"
+      style={{ display: "block" }}
+    >
+      {aiFlags &&
+        Array.from(aiFlags.entries()).map(([cid, flag], k) => {
+          const ls = leaves.filter((x) => x.cluster === cid);
+          if (!ls.length) return null;
+          const i = leaves.indexOf(ls[0]);
+          const a = (i / leaves.length) * Math.PI * 2;
+          const r = 60 + ((ls[0].depth ?? 0) / maxDepth) * (size * 0.4);
+          const x = cx + Math.cos(a) * r,
+            y = cy + Math.sin(a) * r;
+          const fg =
+            flag.kind === "expanding"
+              ? "#ff8a3d"
+              : flag.kind === "isolated"
+                ? "#f5c451"
+                : "#7dd3fc";
+          return (
+            <circle
+              key={`halo${k}`}
+              cx={x}
+              cy={y}
+              r={22}
+              fill="none"
+              stroke={fg}
+              strokeWidth="1"
+              strokeDasharray="3 2"
+              opacity="0.6"
+            />
+          );
+        })}
+      {leaves.map((l, i) => {
         const a = (i / leaves.length) * Math.PI * 2;
-        const r = 60 + ((ls[0].depth ?? 0) / maxDepth) * (size * 0.4);
-        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
-        const fg = flag.kind === "expanding" ? "#ff8a3d" : flag.kind === "isolated" ? "#f5c451" : "#7dd3fc";
-        return <circle key={`halo${k}`} cx={x} cy={y} r={22} fill="none" stroke={fg} strokeWidth="1" strokeDasharray="3 2" opacity="0.6" />;
+        const r = 60 + ((l.depth ?? 0) / maxDepth) * (size * 0.4);
+        const x = cx + Math.cos(a) * r,
+          y = cy + Math.sin(a) * r;
+        return (
+          <line
+            key={`b${i}`}
+            x1={cx}
+            y1={cy}
+            x2={x}
+            y2={y}
+            stroke="oklch(0.6 0.15 200 / 0.35)"
+            strokeWidth="1"
+          />
+        );
       })}
       {leaves.map((l, i) => {
         const a = (i / leaves.length) * Math.PI * 2;
         const r = 60 + ((l.depth ?? 0) / maxDepth) * (size * 0.4);
-        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
-        return <line key={`b${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke="oklch(0.6 0.15 200 / 0.35)" strokeWidth="1" />;
-      })}
-      {leaves.map((l, i) => {
-        const a = (i / leaves.length) * Math.PI * 2;
-        const r = 60 + ((l.depth ?? 0) / maxDepth) * (size * 0.4);
-        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+        const x = cx + Math.cos(a) * r,
+          y = cy + Math.sin(a) * r;
         const sel = selected === l.name;
         const fade = matchedSet && !matchedSet.has(l.name);
         const color = leafColor(l);
         return (
-          <g key={i} opacity={fade ? 0.25 : 1} style={{ cursor: "pointer" }} onClick={() => onSelect(l.name)} onMouseEnter={() => onHover?.({ x, y, node: l })} onMouseLeave={() => onHover?.(null)}>
+          <g
+            key={i}
+            opacity={fade ? 0.25 : 1}
+            style={{ cursor: "pointer" }}
+            onClick={() => onSelect(l.name)}
+            onMouseEnter={() => onHover?.({ x, y, node: l })}
+            onMouseLeave={() => onHover?.(null)}
+          >
             {sel && <circle cx={x} cy={y} r={9} fill={color} opacity="0.4" />}
-            <circle cx={x} cy={y} r={sel ? 5 : 3.8} fill={color} stroke="oklch(0.18 0.04 250)" strokeWidth={0.7} />
-            <text x={x + 6} y={y + 3} fontSize="9" className="fill-foreground">{l.name}</text>
+            <circle
+              cx={x}
+              cy={y}
+              r={sel ? 5 : 3.8}
+              fill={color}
+              stroke="oklch(0.18 0.04 250)"
+              strokeWidth={0.7}
+            />
+            <text x={x + 6} y={y + 3} fontSize="9" className="fill-foreground">
+              {l.name}
+            </text>
           </g>
         );
       })}
@@ -1179,19 +1570,38 @@ function RadialTree({
 }
 
 function UnrootedNetwork({
-  leaves, size, matchedSet, selected, onSelect, leafColor, clusters, onHover, clusterColor, aiFlags,
+  leaves,
+  size,
+  matchedSet,
+  selected,
+  onSelect,
+  leafColor,
+  clusters,
+  onHover,
+  clusterColor,
+  aiFlags,
 }: {
-  leaves: Node[]; size: number; matchedSet: Set<string> | null; selected: string | null;
-  onSelect: (n: string) => void; leafColor: (l: Node) => string;
+  leaves: Node[];
+  size: number;
+  matchedSet: Set<string> | null;
+  selected: string | null;
+  onSelect: (n: string) => void;
+  leafColor: (l: Node) => string;
   clusters: { id: number; size: number; lineage: string }[];
-  onHover?: HoverSetter; clusterColor?: (id?: number) => string; aiFlags?: Map<number, AiFlag>;
+  onHover?: HoverSetter;
+  clusterColor?: (id?: number) => string;
+  aiFlags?: Map<number, AiFlag>;
 }) {
   // Lay out clusters around the canvas, leaves around their cluster centroid
-  const cx = size / 2, cy = size / 2;
+  const cx = size / 2,
+    cy = size / 2;
   const clusterCenters = new Map<number, { x: number; y: number }>();
   clusters.forEach((c, i) => {
     const a = (i / Math.max(clusters.length, 1)) * Math.PI * 2;
-    clusterCenters.set(c.id, { x: cx + Math.cos(a) * size * 0.28, y: cy + Math.sin(a) * size * 0.28 });
+    clusterCenters.set(c.id, {
+      x: cx + Math.cos(a) * size * 0.28,
+      y: cy + Math.sin(a) * size * 0.28,
+    });
   });
   const positions = leaves.map((l, i) => {
     const c = clusterCenters.get(l.cluster ?? 0) ?? { x: cx, y: cy };
@@ -1199,29 +1609,85 @@ function UnrootedNetwork({
     return { x: c.x + Math.cos(a) * 40, y: c.y + Math.sin(a) * 40, l };
   });
   return (
-    <svg id="vt-phylo-svg" viewBox={`0 0 ${size} ${size}`} width="100%" style={{ display: "block" }}>
+    <svg
+      id="vt-phylo-svg"
+      viewBox={`0 0 ${size} ${size}`}
+      width="100%"
+      style={{ display: "block" }}
+    >
       {Array.from(clusterCenters.entries()).map(([id, c]) => {
         const flag = aiFlags?.get(id);
         const baseColor = clusterColor?.(id) ?? "oklch(0.65 0.18 200)";
-        const haloColor = flag?.kind === "expanding" ? "#ff8a3d" : flag?.kind === "isolated" ? "#f5c451" : baseColor;
-        return <circle key={`halo${id}`} cx={c.x} cy={c.y} r={55} fill={haloColor} fillOpacity="0.06" stroke={haloColor} strokeWidth="0.8" strokeDasharray={flag ? "4 3" : "1 3"} />;
+        const haloColor =
+          flag?.kind === "expanding"
+            ? "#ff8a3d"
+            : flag?.kind === "isolated"
+              ? "#f5c451"
+              : baseColor;
+        return (
+          <circle
+            key={`halo${id}`}
+            cx={c.x}
+            cy={c.y}
+            r={55}
+            fill={haloColor}
+            fillOpacity="0.06"
+            stroke={haloColor}
+            strokeWidth="0.8"
+            strokeDasharray={flag ? "4 3" : "1 3"}
+          />
+        );
       })}
       {positions.map((p, i) => {
         const c = clusterCenters.get(p.l.cluster ?? 0) ?? { x: cx, y: cy };
-        return <line key={i} x1={c.x} y1={c.y} x2={p.x} y2={p.y} stroke="oklch(0.6 0.15 200 / 0.3)" strokeWidth="1" />;
+        return (
+          <line
+            key={i}
+            x1={c.x}
+            y1={c.y}
+            x2={p.x}
+            y2={p.y}
+            stroke="oklch(0.6 0.15 200 / 0.3)"
+            strokeWidth="1"
+          />
+        );
       })}
       {Array.from(clusterCenters.entries()).map(([id, c]) => (
-        <circle key={id} cx={c.x} cy={c.y} r={14} fill="oklch(0.3 0.05 250)" stroke="oklch(0.65 0.18 200)" strokeWidth="1" />
+        <circle
+          key={id}
+          cx={c.x}
+          cy={c.y}
+          r={14}
+          fill="oklch(0.3 0.05 250)"
+          stroke="oklch(0.65 0.18 200)"
+          strokeWidth="1"
+        />
       ))}
       {positions.map((p, i) => {
         const sel = selected === p.l.name;
         const fade = matchedSet && !matchedSet.has(p.l.name);
         const color = leafColor(p.l);
         return (
-          <g key={i} opacity={fade ? 0.25 : 1} style={{ cursor: "pointer" }} onClick={() => onSelect(p.l.name)} onMouseEnter={() => onHover?.({ x: p.x, y: p.y, node: p.l })} onMouseLeave={() => onHover?.(null)}>
+          <g
+            key={i}
+            opacity={fade ? 0.25 : 1}
+            style={{ cursor: "pointer" }}
+            onClick={() => onSelect(p.l.name)}
+            onMouseEnter={() => onHover?.({ x: p.x, y: p.y, node: p.l })}
+            onMouseLeave={() => onHover?.(null)}
+          >
             {sel && <circle cx={p.x} cy={p.y} r={9} fill={color} opacity="0.4" />}
-            <circle cx={p.x} cy={p.y} r={sel ? 5 : 3.6} fill={color} stroke="oklch(0.18 0.04 250)" strokeWidth={0.7} />
-            <text x={p.x + 6} y={p.y + 3} fontSize="8" className="fill-foreground">{p.l.name}</text>
+            <circle
+              cx={p.x}
+              cy={p.y}
+              r={sel ? 5 : 3.6}
+              fill={color}
+              stroke="oklch(0.18 0.04 250)"
+              strokeWidth={0.7}
+            />
+            <text x={p.x + 6} y={p.y + 3} fontSize="8" className="fill-foreground">
+              {p.l.name}
+            </text>
           </g>
         );
       })}

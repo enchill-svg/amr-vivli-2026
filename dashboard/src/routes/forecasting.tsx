@@ -1,7 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Brain } from "lucide-react";
-import { CartesianGrid, Scatter, ScatterChart, ResponsiveContainer, Tooltip, XAxis, YAxis, ZAxis } from "recharts";
+import {
+  CartesianGrid,
+  Scatter,
+  ScatterChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ZAxis,
+} from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 import { getLiveCountryTrends, getClusterTypology } from "@/lib/amr-data.functions";
 
@@ -11,8 +20,14 @@ export const Route = createFileRoute("/forecasting")({
 });
 
 function MLInsightsPage() {
-  const { data = [] } = useQuery({ queryKey: ["ml-countries"], queryFn: () => getLiveCountryTrends("all") });
-  const { data: clusterRows = [] } = useQuery({ queryKey: ["cluster-typology"], queryFn: getClusterTypology });
+  const { data = [] } = useQuery({
+    queryKey: ["ml-countries"],
+    queryFn: () => getLiveCountryTrends("all"),
+  });
+  const { data: clusterRows = [] } = useQuery({
+    queryKey: ["cluster-typology"],
+    queryFn: getClusterTypology,
+  });
   const scatter = data.map((r) => ({
     country: r.country,
     x: r.resistanceRate * 100,
@@ -27,13 +42,25 @@ function MLInsightsPage() {
       title="Clustering and country risk embedding"
       subtitle="Ward hierarchical clustering and composite risk scores from published pipeline outputs (not black-box ML)."
       kpis={[
-        { label: "Methods", value: "OLS + Ward", color: "var(--accent)", sub: "Published pipeline" },
+        {
+          label: "Methods",
+          value: "OLS + Ward",
+          color: "var(--accent)",
+          sub: "Published pipeline",
+        },
         { label: "Clusters", value: String(clusterRows.length), color: "var(--status-info)" },
-        { label: "Countries", value: String(new Set(data.map((d) => d.iso3)).size), color: "var(--status-warn)" },
+        {
+          label: "Countries",
+          value: String(new Set(data.map((d) => d.iso3)).size),
+          color: "var(--status-warn)",
+        },
         { label: "Evidence", value: "Gated", color: "var(--status-ok)", sub: "Integrity layer" },
       ]}
     >
-      <GlassCard title="Legacy route" subtitle="Primary navigation uses Overview, Evolution, and Methods.">
+      <GlassCard
+        title="Legacy route"
+        subtitle="Primary navigation uses Overview, Evolution, and Methods."
+      >
         <p className="text-sm text-muted-foreground">
           This page remains reachable for deep links. See{" "}
           <Link to="/lineages" className="text-[color:var(--accent)] hover:underline">
@@ -47,7 +74,10 @@ function MLInsightsPage() {
         </p>
       </GlassCard>
       <div className="grid gap-4 xl:grid-cols-2">
-        <GlassCard title="Country risk embedding" subtitle="X = burden proxy, Y = trajectory percentile, bubble = composite risk.">
+        <GlassCard
+          title="Country risk embedding"
+          subtitle="X = burden proxy, Y = trajectory percentile, bubble = composite risk."
+        >
           <div className="h-96">
             <ResponsiveContainer>
               <ScatterChart>
@@ -84,7 +114,10 @@ function MLInsightsPage() {
                   <div className="font-mono text-lg text-[color:var(--accent)]">{r.risk}</div>
                 </div>
                 <div className="mt-2 h-2 rounded-full bg-secondary">
-                  <div className="h-full rounded-full bg-[color:var(--accent)]" style={{ width: `${r.risk}%` }} />
+                  <div
+                    className="h-full rounded-full bg-[color:var(--accent)]"
+                    style={{ width: `${r.risk}%` }}
+                  />
                 </div>
               </div>
             ))}

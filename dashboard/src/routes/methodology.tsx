@@ -10,14 +10,37 @@ export const Route = createFileRoute("/methodology")({
 });
 
 function MethodologyPage() {
-  const { data: bundle } = useQuery({ queryKey: ["dashboard-bundle"], queryFn: loadDashboardBundle });
+  const { data: bundle } = useQuery({
+    queryKey: ["dashboard-bundle"],
+    queryFn: loadDashboardBundle,
+  });
 
   const stages = [
-    ["01", "Harmonize", "SOAR bacterial + SENTRY fungal cohorts → master table with versioned crosswalks (Steps 1–10)."],
-    ["02", "Burden & trajectory", "Manski bounds, evolutionary fitness scores, and Ward clustering per pathogen type."],
-    ["03", "External join", "Life expectancy, ESAC-Net consumption (Europe), GBD SDI, hospital beds joined by ISO3–year."],
-    ["04", "Association", "Pooled country-year OLS (suggestive only; small-sample flags where applicable)."],
-    ["05", "Integrity gate", "quality_gate applied to public deliverables — ranks/scores nulled when evidence fails."],
+    [
+      "01",
+      "Harmonize",
+      "SOAR bacterial + SENTRY fungal cohorts → master table with versioned crosswalks (Steps 1–10).",
+    ],
+    [
+      "02",
+      "Burden & trajectory",
+      "Manski bounds, evolutionary fitness scores, and Ward clustering per pathogen type.",
+    ],
+    [
+      "03",
+      "External join",
+      "Life expectancy, ESAC-Net consumption (Europe), GBD SDI, hospital beds joined by ISO3–year.",
+    ],
+    [
+      "04",
+      "Association",
+      "Pooled country-year OLS (suggestive only; small-sample flags where applicable).",
+    ],
+    [
+      "05",
+      "Integrity gate",
+      "quality_gate applied to public deliverables — ranks/scores nulled when evidence fails.",
+    ],
     ["06", "Publish", "Gated CSVs + dashboard_bundle_v1.json for the web app."],
   ];
 
@@ -28,7 +51,10 @@ function MethodologyPage() {
       title="Transparent AMR intelligence workflow"
       subtitle="Pipeline outputs, integrity gating, and published data provenance."
     >
-      <GlassCard title="End-to-end pipeline" subtitle={`Run ${bundle?.pipeline_run?.run_id ?? "—"} · ${bundle?.generated_at ?? "bundle not loaded"}`}>
+      <GlassCard
+        title="End-to-end pipeline"
+        subtitle={`Run ${bundle?.pipeline_run?.run_id ?? "—"} · ${bundle?.generated_at ?? "bundle not loaded"}`}
+      >
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {stages.map(([n, title, text]) => (
             <div key={n} className="rounded-xl border border-border/60 bg-background/30 p-4">
@@ -40,13 +66,28 @@ function MethodologyPage() {
         </div>
       </GlassCard>
 
-      <GlassCard title="Design choices (documented)" subtitle="Intentional scope boundaries aligned with Justice Section 7.">
+      <GlassCard
+        title="Design choices (documented)"
+        subtitle="Intentional scope boundaries aligned with Justice Section 7."
+      >
         <ul className="space-y-2 text-xs leading-relaxed text-muted-foreground">
-          <li>Gating is <strong className="text-foreground">output-only</strong> — regression inputs are not filtered pre-model; public ranks/scores are withheld post-hoc.</li>
-          <li>Country risk uses burden + trajectory + health expenditure (and ESAC consumption where matched); vaccination omitted from ranking per Output 4 wording.</li>
+          <li>
+            Gating is <strong className="text-foreground">output-only</strong> — regression inputs
+            are not filtered pre-model; public ranks/scores are withheld post-hoc.
+          </li>
+          <li>
+            Country risk uses burden + trajectory + health expenditure (and ESAC consumption where
+            matched); vaccination omitted from ranking per Output 4 wording.
+          </li>
           <li>GBD LRI is joined for audit but not used in any regression or ranking model.</li>
-          <li>Funding-gap organism ranks are computed separately within bacterial and fungal pathogen types.</li>
-          <li>Bacterial LE association primary model: see sensitivity manifest below (country-year panel; not causal).</li>
+          <li>
+            Funding-gap organism ranks are computed separately within bacterial and fungal pathogen
+            types.
+          </li>
+          <li>
+            Bacterial LE association primary model: see sensitivity manifest below (country-year
+            panel; not causal).
+          </li>
         </ul>
       </GlassCard>
 
@@ -62,7 +103,10 @@ function MethodologyPage() {
             headers={["Deliverable", "Pass", "Withhold", "Bounds only"]}
           />
         </GlassCard>
-        <GlassCard title="Association sensitivity" subtitle="From association_sensitivity_manifest_v1.csv">
+        <GlassCard
+          title="Association sensitivity"
+          subtitle="From association_sensitivity_manifest_v1.csv"
+        >
           <DataTable
             rows={(bundle?.associationSensitivity ?? []).map((r) => ({
               a: String(r.model_id ?? ""),
@@ -87,7 +131,10 @@ function MethodologyPage() {
             headers={["Driver", "Pathogen", "Status"]}
           />
         </GlassCard>
-        <GlassCard title="Identifiability ledger (sample)" subtitle="From identifiability_ledger_v1.csv">
+        <GlassCard
+          title="Identifiability ledger (sample)"
+          subtitle="From identifiability_ledger_v1.csv"
+        >
           <DataTable
             rows={(bundle?.identifiabilityLedger ?? []).slice(0, 8).map((r) => ({
               a: String(r.ledger_id ?? ""),
@@ -102,13 +149,7 @@ function MethodologyPage() {
   );
 }
 
-function DataTable({
-  headers,
-  rows,
-}: {
-  headers: string[];
-  rows: Record<string, string>[];
-}) {
+function DataTable({ headers, rows }: { headers: string[]; rows: Record<string, string>[] }) {
   const keys = ["a", "b", "c", "d", "e"].slice(0, headers.length);
   if (!rows.length) {
     return <p className="text-xs text-muted-foreground">No published rows loaded.</p>;

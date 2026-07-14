@@ -28,7 +28,10 @@ export function MapSelectionProvider({ children }: { children: ReactNode }) {
   }, []);
   const clear = useCallback(() => setSelected([]), []);
   const isSelected = useCallback((id: string) => selected.some((s) => s.id === id), [selected]);
-  const value = useMemo(() => ({ selected, toggle, clear, isSelected }), [selected, toggle, clear, isSelected]);
+  const value = useMemo(
+    () => ({ selected, toggle, clear, isSelected }),
+    [selected, toggle, clear, isSelected],
+  );
   return <MapSelectionCtx.Provider value={value}>{children}</MapSelectionCtx.Provider>;
 }
 

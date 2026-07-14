@@ -1,8 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  Newspaper, Radio, AlertTriangle, Sparkles, Globe2, Activity, Flame, Radar,
-  Filter, Tv, Play, Bot,
+  Newspaper,
+  Radio,
+  AlertTriangle,
+  Sparkles,
+  Globe2,
+  Activity,
+  Flame,
+  Radar,
+  Filter,
+  Tv,
+  Play,
+  Bot,
 } from "lucide-react";
 import { PageShell } from "@/components/vt/PageShell";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +23,11 @@ export const Route = createFileRoute("/news")({
   head: () => ({
     meta: [
       { title: "Intelligence Operations Center — ViralTrack-Afrika" },
-      { name: "description", content: "Live outbreak intelligence, breaking health news, and 24/7 broadcast monitoring across Africa." },
+      {
+        name: "description",
+        content:
+          "Live outbreak intelligence, breaking health news, and 24/7 broadcast monitoring across Africa.",
+      },
     ],
   }),
 });
@@ -26,7 +40,16 @@ const SEV: Record<string, { color: string; label: string; ring: string }> = {
   extreme: { color: "#ef4444", label: "EXTREME", ring: "ring-rose-500/70" },
 };
 
-const TOPICS = ["All", "Outbreaks", "Variants", "Genomics", "Climate & Health", "Emerging Threats", "Africa Focus", "Global"];
+const TOPICS = [
+  "All",
+  "Outbreaks",
+  "Variants",
+  "Genomics",
+  "Climate & Health",
+  "Emerging Threats",
+  "Africa Focus",
+  "Global",
+];
 
 const STREAMS = [
   { id: "9Auq9mYxFEE", label: "Sky News Live", source: "Sky News", viewers: "12.4k" },
@@ -36,20 +59,94 @@ const STREAMS = [
 ];
 
 const NEWS_SOURCES = [
-  { name: "WHO Africa", color: "#22d3ee", time: "2m" , title: "Mpox Clade Ib detected in new DRC province", desc: "Genomic sequencing confirms expansion of Clade Ib lineage; cross-border surveillance heightened." },
-  { name: "Africa CDC", color: "#34d399", time: "11m", title: "Marburg containment update — Rwanda response phase 3", desc: "Contact tracing closes 412 chains; ring vaccination scaled to 6 districts." },
-  { name: "Reuters Health", color: "#fbbf24", time: "27m", title: "Cholera outbreak intensifies in Sudan IDP camps", desc: "WHO estimates 1.2M at risk; AI early warning flagged signal 9 days prior." },
-  { name: "BBC Africa", color: "#a78bfa", time: "44m", title: "Rift Valley fever cluster reported in southern Kenya", desc: "Wastewater anomaly +2.1σ; livestock surveillance ramping up." },
-  { name: "WHO Emergencies", color: "#22d3ee", time: "1h", title: "Polio vaccination drive launched in 8 Sahel countries", desc: "Cross-border coordination; AI logistics model optimizes cold chain." },
-  { name: "AU Health", color: "#34d399", time: "1h", title: "Continental Genomic Surveillance Compact signed", desc: "32 nations agree to real-time sequence sharing under ViGOR framework." },
+  {
+    name: "WHO Africa",
+    color: "#22d3ee",
+    time: "2m",
+    title: "Mpox Clade Ib detected in new DRC province",
+    desc: "Genomic sequencing confirms expansion of Clade Ib lineage; cross-border surveillance heightened.",
+  },
+  {
+    name: "Africa CDC",
+    color: "#34d399",
+    time: "11m",
+    title: "Marburg containment update — Rwanda response phase 3",
+    desc: "Contact tracing closes 412 chains; ring vaccination scaled to 6 districts.",
+  },
+  {
+    name: "Reuters Health",
+    color: "#fbbf24",
+    time: "27m",
+    title: "Cholera outbreak intensifies in Sudan IDP camps",
+    desc: "WHO estimates 1.2M at risk; AI early warning flagged signal 9 days prior.",
+  },
+  {
+    name: "BBC Africa",
+    color: "#a78bfa",
+    time: "44m",
+    title: "Rift Valley fever cluster reported in southern Kenya",
+    desc: "Wastewater anomaly +2.1σ; livestock surveillance ramping up.",
+  },
+  {
+    name: "WHO Emergencies",
+    color: "#22d3ee",
+    time: "1h",
+    title: "Polio vaccination drive launched in 8 Sahel countries",
+    desc: "Cross-border coordination; AI logistics model optimizes cold chain.",
+  },
+  {
+    name: "AU Health",
+    color: "#34d399",
+    time: "1h",
+    title: "Continental Genomic Surveillance Compact signed",
+    desc: "32 nations agree to real-time sequence sharing under ViGOR framework.",
+  },
 ];
 
 const AI_ALERTS = [
-  { sev: "critical" as const, pathogen: "Mpox Clade Ib", country: "DRC", summary: "Mutation cluster N321K associated with increased transmissibility detected across 4 new sampling sites.", source: "WHO Africa · AI Anomaly Engine", time: "2 min ago" },
-  { sev: "high" as const, pathogen: "Marburg virus", country: "Rwanda", summary: "Wastewater positivity rate +38% in Kigali district 7. Trajectory exceeds Bayesian SEIR baseline.", source: "Africa CDC · Sentinel Network", time: "14 min ago" },
-  { sev: "moderate" as const, pathogen: "Cholera (Vibrio O1)", country: "Sudan", summary: "Rainfall anomaly +1.8σ combined with displacement flux raises 14-day risk index to 0.78.", source: "ViGOR Co-Pilot", time: "31 min ago" },
-  { sev: "high" as const, pathogen: "H5N1", country: "Nigeria", summary: "New reassortment event in poultry sector; cross-species jump probability now 0.22.", source: "AI Anomaly Engine", time: "1 h ago" },
-  { sev: "low" as const, pathogen: "Lassa fever", country: "Ghana", summary: "Sentinel reporting cadence improved; signal stable, no anomaly detected.", source: "Sentinel Network", time: "2 h ago" },
+  {
+    sev: "critical" as const,
+    pathogen: "Mpox Clade Ib",
+    country: "DRC",
+    summary:
+      "Mutation cluster N321K associated with increased transmissibility detected across 4 new sampling sites.",
+    source: "WHO Africa · AI Anomaly Engine",
+    time: "2 min ago",
+  },
+  {
+    sev: "high" as const,
+    pathogen: "Marburg virus",
+    country: "Rwanda",
+    summary:
+      "Wastewater positivity rate +38% in Kigali district 7. Trajectory exceeds Bayesian SEIR baseline.",
+    source: "Africa CDC · Sentinel Network",
+    time: "14 min ago",
+  },
+  {
+    sev: "moderate" as const,
+    pathogen: "Cholera (Vibrio O1)",
+    country: "Sudan",
+    summary:
+      "Rainfall anomaly +1.8σ combined with displacement flux raises 14-day risk index to 0.78.",
+    source: "ViGOR Co-Pilot",
+    time: "31 min ago",
+  },
+  {
+    sev: "high" as const,
+    pathogen: "H5N1",
+    country: "Nigeria",
+    summary: "New reassortment event in poultry sector; cross-species jump probability now 0.22.",
+    source: "AI Anomaly Engine",
+    time: "1 h ago",
+  },
+  {
+    sev: "low" as const,
+    pathogen: "Lassa fever",
+    country: "Ghana",
+    summary: "Sentinel reporting cadence improved; signal stable, no anomaly detected.",
+    source: "Sentinel Network",
+    time: "2 h ago",
+  },
 ];
 
 function NewsPage() {
@@ -59,14 +156,20 @@ function NewsPage() {
   const { data = [] } = useQuery({
     queryKey: ["news-feed"],
     queryFn: async () => {
-      const { data } = await supabase.from("alerts").select("*").order("detected_at", { ascending: false }).limit(80);
+      const { data } = await supabase
+        .from("alerts")
+        .select("*")
+        .order("detected_at", { ascending: false })
+        .limit(80);
       return data ?? [];
     },
     refetchInterval: 30_000,
   });
 
   const dbAlerts = useMemo(() => data ?? [], [data]);
-  const active24h = dbAlerts.filter((a) => Date.now() - new Date(a.detected_at).getTime() < 86_400_000).length;
+  const active24h = dbAlerts.filter(
+    (a) => Date.now() - new Date(a.detected_at).getTime() < 86_400_000,
+  ).length;
 
   return (
     <PageShell>
@@ -79,11 +182,15 @@ function NewsPage() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75 animate-ping" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
               </span>
-              <span className="text-[10px] uppercase tracking-widest text-rose-300 font-semibold">Breaking</span>
+              <span className="text-[10px] uppercase tracking-widest text-rose-300 font-semibold">
+                Breaking
+              </span>
             </div>
             <div className="overflow-hidden flex-1">
               <div className="whitespace-nowrap text-sm text-foreground/90 animate-[marquee_45s_linear_infinite]">
-                Mpox Clade Ib genomic expansion confirmed in DRC · Marburg ring vaccination scaled in Rwanda · Cholera signal rising across Sudan IDP camps · AI co-pilot flagged H5N1 reassortment event in Nigeria · WHO AFRO emergency briefing scheduled 14:00 UTC
+                Mpox Clade Ib genomic expansion confirmed in DRC · Marburg ring vaccination scaled
+                in Rwanda · Cholera signal rising across Sudan IDP camps · AI co-pilot flagged H5N1
+                reassortment event in Nigeria · WHO AFRO emergency briefing scheduled 14:00 UTC
               </div>
             </div>
           </div>
@@ -98,22 +205,35 @@ function NewsPage() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-[11px] uppercase tracking-widest text-cyan-300 mb-3">
                 <Radar className="w-3 h-3 animate-pulse" /> Intelligence Operations Center
               </div>
-              <h1 className="text-3xl font-light tracking-tight">Live News & Genomic Intelligence</h1>
+              <h1 className="text-3xl font-light tracking-tight">
+                Live News & Genomic Intelligence
+              </h1>
               <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-                Real-time outbreak intelligence, broadcast monitoring, and AI-generated situational summaries from across Africa and the world.
+                Real-time outbreak intelligence, broadcast monitoring, and AI-generated situational
+                summaries from across Africa and the world.
               </p>
             </div>
             <div className="grid grid-cols-4 gap-2">
               {[
-                { i: AlertTriangle, l: "Active alerts", v: String(active24h || AI_ALERTS.length), c: "#f87171" },
+                {
+                  i: AlertTriangle,
+                  l: "Active alerts",
+                  v: String(active24h || AI_ALERTS.length),
+                  c: "#f87171",
+                },
                 { i: Globe2, l: "Countries", v: "54", c: "#22d3ee" },
                 { i: Activity, l: "AI signals", v: "127", c: "#34d399" },
                 { i: Tv, l: "Live feeds", v: String(STREAMS.length), c: "#a78bfa" },
               ].map(({ i: Icon, l, v, c }) => (
-                <div key={l} className="rounded-lg border border-border bg-card/60 p-3 min-w-[110px]">
+                <div
+                  key={l}
+                  className="rounded-lg border border-border bg-card/60 p-3 min-w-[110px]"
+                >
                   <Icon className="w-3.5 h-3.5 mb-1.5" style={{ color: c }} />
                   <div className="text-xl font-semibold">{v}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {l}
+                  </div>
                 </div>
               ))}
             </div>
@@ -155,13 +275,21 @@ function NewsPage() {
               {AI_ALERTS.map((a, idx) => {
                 const s = SEV[a.sev];
                 return (
-                  <article key={idx} className={`p-4 hover:bg-white/[0.03] transition cursor-pointer ring-inset ${s.ring}`}>
+                  <article
+                    key={idx}
+                    className={`p-4 hover:bg-white/[0.03] transition cursor-pointer ring-inset ${s.ring}`}
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <span
                         className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded"
-                        style={{ background: `${s.color}22`, color: s.color, boxShadow: `inset 0 0 0 1px ${s.color}55` }}
+                        style={{
+                          background: `${s.color}22`,
+                          color: s.color,
+                          boxShadow: `inset 0 0 0 1px ${s.color}55`,
+                        }}
                       >
-                        {a.sev === "critical" && "🚨 "}{s.label} RISK
+                        {a.sev === "critical" && "🚨 "}
+                        {s.label} RISK
                       </span>
                       <span className="text-[10px] text-muted-foreground">{a.time}</span>
                     </div>
@@ -170,7 +298,9 @@ function NewsPage() {
                       <span className="text-foreground/80">Country:</span> {a.country}
                     </div>
                     <p className="text-xs text-foreground/75 leading-relaxed mb-2">{a.summary}</p>
-                    <div className="text-[10px] text-muted-foreground italic">Source: {a.source}</div>
+                    <div className="text-[10px] text-muted-foreground italic">
+                      Source: {a.source}
+                    </div>
                   </article>
                 );
               })}
@@ -179,17 +309,28 @@ function NewsPage() {
                 return (
                   <article key={a.id} className="p-4 hover:bg-white/[0.03] transition">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded"
-                        style={{ background: `${s.color}22`, color: s.color }}>
+                      <span
+                        className="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded"
+                        style={{ background: `${s.color}22`, color: s.color }}
+                      >
                         {s.label}
                       </span>
                       <span className="text-[10px] text-muted-foreground">
-                        {new Date(a.detected_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        {new Date(a.detected_at).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </span>
                     </div>
                     <h3 className="text-sm font-semibold mb-1">{a.title}</h3>
-                    <div className="text-[11px] text-muted-foreground">{a.country} · {a.pathogen}</div>
-                    {a.description && <p className="text-xs text-foreground/75 mt-2 leading-relaxed">{a.description}</p>}
+                    <div className="text-[11px] text-muted-foreground">
+                      {a.country} · {a.pathogen}
+                    </div>
+                    {a.description && (
+                      <p className="text-xs text-foreground/75 mt-2 leading-relaxed">
+                        {a.description}
+                      </p>
+                    )}
                   </article>
                 );
               })}
@@ -204,8 +345,13 @@ function NewsPage() {
                 <h2 className="text-sm font-medium">News Intelligence Wall</h2>
               </div>
               <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-                <span className="flex items-center gap-1"><Bot className="w-3 h-3 text-cyan-400" /> AI summaries every 30 min</span>
-                <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Auto-refresh</span>
+                <span className="flex items-center gap-1">
+                  <Bot className="w-3 h-3 text-cyan-400" /> AI summaries every 30 min
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />{" "}
+                  Auto-refresh
+                </span>
               </div>
             </div>
 
@@ -219,23 +365,31 @@ function NewsPage() {
                 <span className="text-[10px] text-muted-foreground">· updated 4 min ago</span>
               </div>
               <p className="text-xs text-foreground/80 leading-relaxed">
-                Across the last 6 hours, the continent recorded <span className="text-rose-300 font-medium">3 critical</span> and{" "}
-                <span className="text-amber-300 font-medium">5 elevated</span> signals. Mpox Clade Ib continues geographic expansion in
-                central Africa, while Sudan cholera trajectory now exceeds the 14-day Bayesian baseline. AI confidence:{" "}
+                Across the last 6 hours, the continent recorded{" "}
+                <span className="text-rose-300 font-medium">3 critical</span> and{" "}
+                <span className="text-amber-300 font-medium">5 elevated</span> signals. Mpox Clade
+                Ib continues geographic expansion in central Africa, while Sudan cholera trajectory
+                now exceeds the 14-day Bayesian baseline. AI confidence:{" "}
                 <span className="text-emerald-300 font-medium">87%</span>.
               </p>
             </div>
 
             <div className="divide-y divide-border/50 overflow-y-auto max-h-[640px]">
               {NEWS_SOURCES.map((n, idx) => (
-                <article key={idx} className="p-4 hover:bg-white/[0.03] transition cursor-pointer flex gap-3">
+                <article
+                  key={idx}
+                  className="p-4 hover:bg-white/[0.03] transition cursor-pointer flex gap-3"
+                >
                   <div
                     className="w-1 self-stretch rounded-full shrink-0"
                     style={{ background: n.color, boxShadow: `0 0 8px ${n.color}` }}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: n.color }}>
+                      <span
+                        className="text-[10px] uppercase tracking-wider font-semibold"
+                        style={{ color: n.color }}
+                      >
                         {n.name}
                       </span>
                       <span className="text-[10px] text-muted-foreground">· {n.time} ago</span>
@@ -293,8 +447,8 @@ function NewsPage() {
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t border-border text-[10px] text-muted-foreground flex items-center gap-1">
-                <Flame className="w-3 h-3 text-amber-400" />
-                4 channels monitored · last refresh just now
+                <Flame className="w-3 h-3 text-amber-400" />4 channels monitored · last refresh just
+                now
               </div>
             </div>
           </section>

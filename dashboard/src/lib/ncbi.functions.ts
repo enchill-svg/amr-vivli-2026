@@ -20,9 +20,11 @@ export const ncbiSearch = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const esearchUrl = withKey(`${NCBI_BASE}/esearch.fcgi?db=${data.db}&term=${encodeURIComponent(
-      data.query,
-    )}&retmax=${data.retmax}&retmode=json&sort=relevance`);
+    const esearchUrl = withKey(
+      `${NCBI_BASE}/esearch.fcgi?db=${data.db}&term=${encodeURIComponent(
+        data.query,
+      )}&retmax=${data.retmax}&retmode=json&sort=relevance`,
+    );
 
     const esearchRes = await fetch(esearchUrl, {
       headers: { "User-Agent": "ViralTrack-Afrika/1.0" },
@@ -36,9 +38,9 @@ export const ncbiSearch = createServerFn({ method: "POST" })
     const ids = esearch.esearchresult?.idlist ?? [];
     if (!ids.length) return { ids: [], summaries: [], total: 0 };
 
-    const esummaryUrl = withKey(`${NCBI_BASE}/esummary.fcgi?db=${data.db}&id=${ids.join(
-      ",",
-    )}&retmode=json`);
+    const esummaryUrl = withKey(
+      `${NCBI_BASE}/esummary.fcgi?db=${data.db}&id=${ids.join(",")}&retmode=json`,
+    );
     const esumRes = await fetch(esummaryUrl, {
       headers: { "User-Agent": "ViralTrack-Afrika/1.0" },
     });
@@ -78,9 +80,11 @@ export const ncbiFetchFasta = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const url = withKey(`${NCBI_BASE}/efetch.fcgi?db=${data.db}&id=${encodeURIComponent(
-      data.id,
-    )}&rettype=fasta&retmode=text`);
+    const url = withKey(
+      `${NCBI_BASE}/efetch.fcgi?db=${data.db}&id=${encodeURIComponent(
+        data.id,
+      )}&rettype=fasta&retmode=text`,
+    );
     const res = await fetch(url, { headers: { "User-Agent": "ViralTrack-Afrika/1.0" } });
     if (!res.ok) {
       return { fasta: "", error: `NCBI efetch failed (${res.status})` };

@@ -50,7 +50,9 @@ function LoginPage() {
         await logAudit("auth.login", "user", undefined, { email });
 
         // Route based on status / role
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (user) {
           const [{ data: profile }, { data: roles }] = await Promise.all([
             supabase.from("profiles").select("status").eq("id", user.id).maybeSingle(),
@@ -78,7 +80,9 @@ function LoginPage() {
 
   const handleGoogle = async () => {
     setError(null);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
     if (result.error) setError(result.error.message);
   };
 
@@ -92,14 +96,21 @@ function LoginPage() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/85" />
-        <div className="absolute inset-0 opacity-40"
-          style={{ background: "radial-gradient(600px 400px at 70% 20%, oklch(0.55 0.18 200 / 0.5), transparent 60%), radial-gradient(700px 500px at 20% 90%, oklch(0.55 0.18 165 / 0.4), transparent 60%)" }} />
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            background:
+              "radial-gradient(600px 400px at 70% 20%, oklch(0.55 0.18 200 / 0.5), transparent 60%), radial-gradient(700px 500px at 20% 90%, oklch(0.55 0.18 165 / 0.4), transparent 60%)",
+          }}
+        />
         {/* scanning line */}
         <div className="absolute inset-x-0 top-1/2 h-px bg-cyan-400/40 animate-pulse" />
 
         <div className="relative">
           <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-white">
-            <div className="w-8 h-8 rounded-md bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-black font-bold">V</div>
+            <div className="w-8 h-8 rounded-md bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-black font-bold">
+              V
+            </div>
             ViralTrack·Afrika
           </Link>
         </div>
@@ -110,10 +121,14 @@ function LoginPage() {
             Pan-African Genomic Intelligence
           </div>
           <h1 className="text-4xl xl:text-5xl font-light tracking-tight text-white leading-tight">
-            Predict outbreaks <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-emerald-300">before they spread.</span>
+            Predict outbreaks{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-emerald-300">
+              before they spread.
+            </span>
           </h1>
           <p className="text-sm text-white/70 leading-relaxed">
-            Genomic surveillance, wastewater intelligence, AI forecasting, and real-time outbreak intelligence — powered by the ViGOR Consortium.
+            Genomic surveillance, wastewater intelligence, AI forecasting, and real-time outbreak
+            intelligence — powered by the ViGOR Consortium.
           </p>
 
           <div className="grid grid-cols-4 gap-3 pt-4">
@@ -123,7 +138,10 @@ function LoginPage() {
               { i: Activity, v: "27", l: "Pathogens" },
               { i: Radio, v: "412", l: "Nodes" },
             ].map(({ i: Icon, v, l }) => (
-              <div key={l} className="rounded-lg bg-white/5 border border-white/10 backdrop-blur p-3">
+              <div
+                key={l}
+                className="rounded-lg bg-white/5 border border-white/10 backdrop-blur p-3"
+              >
                 <Icon className="w-3.5 h-3.5 text-cyan-300 mb-1.5" />
                 <div className="text-lg font-medium text-white">{v}</div>
                 <div className="text-[10px] uppercase tracking-wider text-white/50">{l}</div>
@@ -141,12 +159,17 @@ function LoginPage() {
       <div className="relative flex items-center justify-center px-6 py-10 bg-[#05070A]">
         <div
           className="pointer-events-none absolute inset-0 opacity-50"
-          style={{ background: "radial-gradient(500px 400px at 80% 10%, oklch(0.4 0.15 200 / 0.3), transparent 60%)" }}
+          style={{
+            background:
+              "radial-gradient(500px 400px at 80% 10%, oklch(0.4 0.15 200 / 0.3), transparent 60%)",
+          }}
         />
         <div className="relative w-full max-w-md">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 shadow-2xl">
             <h2 className="text-2xl font-light tracking-tight text-white">
-              {mode === "login" ? "Access Command Center" : "Join Africa's Disease Intelligence Network"}
+              {mode === "login"
+                ? "Access Command Center"
+                : "Join Africa's Disease Intelligence Network"}
             </h2>
             <p className="text-sm text-white/60 mt-1.5 mb-6">
               {mode === "login"
@@ -162,18 +185,40 @@ function LoginPage() {
             </button>
 
             <div className="flex items-center gap-3 my-4 text-[11px] uppercase tracking-widest text-white/40">
-              <div className="flex-1 h-px bg-white/10" />or with email<div className="flex-1 h-px bg-white/10" />
+              <div className="flex-1 h-px bg-white/10" />
+              or with email
+              <div className="flex-1 h-px bg-white/10" />
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-2.5">
               {mode === "signup" && (
                 <>
-                  <input required placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} className={fieldCls} />
+                  <input
+                    required
+                    placeholder="Full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className={fieldCls}
+                  />
                   <div className="grid grid-cols-2 gap-2.5">
-                    <input placeholder="Organization" value={institution} onChange={(e) => setInstitution(e.target.value)} className={fieldCls} />
-                    <input placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)} className={fieldCls} />
+                    <input
+                      placeholder="Organization"
+                      value={institution}
+                      onChange={(e) => setInstitution(e.target.value)}
+                      className={fieldCls}
+                    />
+                    <input
+                      placeholder="Country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      className={fieldCls}
+                    />
                   </div>
-                  <select value={role} onChange={(e) => setRole(e.target.value)} className={fieldCls}>
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className={fieldCls}
+                  >
                     <option value="">Select role…</option>
                     <option>Researcher</option>
                     <option>Epidemiologist</option>
@@ -183,8 +228,23 @@ function LoginPage() {
                   </select>
                 </>
               )}
-              <input required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={fieldCls} />
-              <input required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} className={fieldCls} />
+              <input
+                required
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={fieldCls}
+              />
+              <input
+                required
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                minLength={6}
+                className={fieldCls}
+              />
 
               {error && <p className="text-xs text-rose-400">{error}</p>}
 
@@ -193,7 +253,11 @@ function LoginPage() {
                 type="submit"
                 className="w-full py-2.5 mt-1 rounded-lg bg-gradient-to-r from-cyan-400 to-emerald-400 text-black text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition"
               >
-                {loading ? "Please wait…" : mode === "login" ? "Access Command Center" : "Create Research Account"}
+                {loading
+                  ? "Please wait…"
+                  : mode === "login"
+                    ? "Access Command Center"
+                    : "Create Research Account"}
               </button>
             </form>
 
@@ -201,12 +265,16 @@ function LoginPage() {
               onClick={() => setMode(mode === "login" ? "signup" : "login")}
               className="w-full mt-4 text-xs text-white/60 hover:text-white"
             >
-              {mode === "login" ? "Need an account? Request research access" : "Already registered? Sign in"}
+              {mode === "login"
+                ? "Need an account? Request research access"
+                : "Already registered? Sign in"}
             </button>
 
             <p className="text-[11px] text-white/40 mt-6 text-center leading-relaxed">
               By signing in you agree to ViGOR consortium data-use and research policies.{" "}
-              <Link to="/about" className="underline hover:text-white/70">Learn more</Link>
+              <Link to="/about" className="underline hover:text-white/70">
+                Learn more
+              </Link>
             </p>
           </div>
         </div>

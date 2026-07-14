@@ -103,7 +103,13 @@ export async function mapCountryTrends(
       const trajectory = num(row.trajectory_risk_percentile);
       const burden = num(row.burden_midpoint_weighted);
       const trendLabel =
-        trajectory >= 75 ? "surging" : trajectory >= 55 ? "rising" : trajectory <= 25 ? "declining" : "stable";
+        trajectory >= 75
+          ? "surging"
+          : trajectory >= 55
+            ? "rising"
+            : trajectory <= 25
+              ? "declining"
+              : "stable";
       const gate = str(row.quality_gate, "pass");
       const dataQuality = gate === "pass" ? 0.85 : gate === "bounds_only" ? 0.45 : 0.2;
 
@@ -123,7 +129,8 @@ export async function mapCountryTrends(
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch: 0,
         predictedLifeGain: 0,
-        recommendedIntervention: gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
+        recommendedIntervention:
+          gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
         confidence: dataQuality,
         evidenceLevel: gate,
         dataQuality,
@@ -191,8 +198,7 @@ export async function mapInterventions(): Promise<InterventionRow[]> {
     interventionCategory: str(r.intervention_category),
     subMeasure: str(r.sub_measure),
     dataStatus: str(r.data_status),
-    estimatedLeGainYears:
-      r.estimated_le_gain_years == null ? null : num(r.estimated_le_gain_years),
+    estimatedLeGainYears: r.estimated_le_gain_years == null ? null : num(r.estimated_le_gain_years),
     qualityGate: str(r.quality_gate),
     gateReason: str(r.gate_reason),
     priorityRank: r.priority_rank == null ? null : num(r.priority_rank),

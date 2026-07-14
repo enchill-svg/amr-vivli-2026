@@ -1,9 +1,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
-import { Activity, Bot, Brain, Database, FileText, FlaskConical, GitCompare, Globe2, HeartPulse, Home, Landmark, LineChart, Map, Sparkles, Upload } from "lucide-react";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import {
+  Activity,
+  Bot,
+  Brain,
+  Database,
+  FileText,
+  FlaskConical,
+  GitCompare,
+  Globe2,
+  HeartPulse,
+  Home,
+  Landmark,
+  LineChart,
+  Map,
+  Sparkles,
+  Upload,
+} from "lucide-react";
 
-type Item = { label: string; to: string; icon: React.ComponentType<{ className?: string }>; group: string; hint?: string };
+type Item = {
+  label: string;
+  to: string;
+  icon: React.ComponentType<{ className?: string }>;
+  group: string;
+  hint?: string;
+};
 
 const ITEMS: Item[] = [
   { label: "Executive Overview", to: "/", icon: Home, group: "Command" },
@@ -26,7 +56,12 @@ export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) { e.preventDefault(); setOpen((o) => !o); } };
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((o) => !o);
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
@@ -36,9 +71,39 @@ export function CommandPalette() {
       <CommandInput placeholder="Jump to country, risk map, resistance, intervention, report…" />
       <CommandList>
         <CommandEmpty>No matching AMR module.</CommandEmpty>
-        {groups.map((g, idx) => <div key={g}>{idx > 0 && <CommandSeparator />}<CommandGroup heading={g}>{ITEMS.filter((i) => i.group === g).map((i) => <CommandItem key={i.label} value={`${i.label} ${i.group}`} onSelect={() => { setOpen(false); navigate({ to: i.to }); }}><i.icon className="mr-2 h-4 w-4 text-[color:var(--accent)]" /><span>{i.label}</span>{i.hint && <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">{i.hint}</span>}</CommandItem>)}</CommandGroup></div>)}
+        {groups.map((g, idx) => (
+          <div key={g}>
+            {idx > 0 && <CommandSeparator />}
+            <CommandGroup heading={g}>
+              {ITEMS.filter((i) => i.group === g).map((i) => (
+                <CommandItem
+                  key={i.label}
+                  value={`${i.label} ${i.group}`}
+                  onSelect={() => {
+                    setOpen(false);
+                    navigate({ to: i.to });
+                  }}
+                >
+                  <i.icon className="mr-2 h-4 w-4 text-[color:var(--accent)]" />
+                  <span>{i.label}</span>
+                  {i.hint && (
+                    <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {i.hint}
+                    </span>
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </div>
+        ))}
         <CommandSeparator />
-        <CommandGroup heading="Tips"><CommandItem disabled><Sparkles className="mr-2 h-4 w-4 text-[color:var(--accent)]" />Press <kbd className="mx-1 rounded bg-secondary px-1.5 py-0.5 text-[10px]">⌘K</kbd> anywhere to reopen</CommandItem></CommandGroup>
+        <CommandGroup heading="Tips">
+          <CommandItem disabled>
+            <Sparkles className="mr-2 h-4 w-4 text-[color:var(--accent)]" />
+            Press <kbd className="mx-1 rounded bg-secondary px-1.5 py-0.5 text-[10px]">⌘K</kbd>{" "}
+            anywhere to reopen
+          </CommandItem>
+        </CommandGroup>
       </CommandList>
     </CommandDialog>
   );

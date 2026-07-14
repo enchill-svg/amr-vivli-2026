@@ -25,17 +25,36 @@ function SecurityPage() {
   });
 
   const cards = [
-    { label: "Failed Login Attempts", value: data?.failedLogins ?? 0, icon: Lock, tone: "text-rose-400" },
-    { label: "Suspicious Events", value: data?.suspicious ?? 0, icon: AlertTriangle, tone: "text-amber-300" },
+    {
+      label: "Failed Login Attempts",
+      value: data?.failedLogins ?? 0,
+      icon: Lock,
+      tone: "text-rose-400",
+    },
+    {
+      label: "Suspicious Events",
+      value: data?.suspicious ?? 0,
+      icon: AlertTriangle,
+      tone: "text-amber-300",
+    },
     { label: "Admin Actions", value: data?.approvals ?? 0, icon: Shield, tone: "text-cyan-300" },
-    { label: "Audit Events", value: data?.totalEvents ?? 0, icon: Activity, tone: "text-emerald-300" },
+    {
+      label: "Audit Events",
+      value: data?.totalEvents ?? 0,
+      icon: Activity,
+      tone: "text-emerald-300",
+    },
   ];
 
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-3xl font-light tracking-tight flex items-center gap-3"><Shield className="w-6 h-6 text-cyan-300" /> Security</h1>
-        <p className="text-sm text-white/50 mt-1">Authentication, access control, and platform integrity signals.</p>
+        <h1 className="text-3xl font-light tracking-tight flex items-center gap-3">
+          <Shield className="w-6 h-6 text-cyan-300" /> Security
+        </h1>
+        <p className="text-sm text-white/50 mt-1">
+          Authentication, access control, and platform integrity signals.
+        </p>
       </header>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -56,8 +75,14 @@ function SecurityPage() {
           <li>✓ Row-level security enforced on every user-owned table</li>
           <li>✓ Passwords hashed by Supabase Auth (bcrypt/argon2 via GoTrue)</li>
           <li>✓ JWT session tokens with automatic refresh & revocation on sign-out</li>
-          <li>✓ Role-based access control (super_admin, admin, analyst, researcher, viewer, public_health_officer)</li>
-          <li>✓ Approval workflow — new signups start in <span className="text-amber-300">pending</span> until reviewed</li>
+          <li>
+            ✓ Role-based access control (super_admin, admin, analyst, researcher, viewer,
+            public_health_officer)
+          </li>
+          <li>
+            ✓ Approval workflow — new signups start in{" "}
+            <span className="text-amber-300">pending</span> until reviewed
+          </li>
           <li>✓ Audit log of every administrative decision</li>
           <li>✓ Origin-bound HTTP calls (CSRF safe by same-origin policy)</li>
           <li>✓ Leaked-password protection (HIBP) available in auth settings</li>

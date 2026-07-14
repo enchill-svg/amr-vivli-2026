@@ -1,5 +1,14 @@
 import { createFileRoute, Outlet, Link, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Shield, ScrollText, KeyRound, LogOut, Activity, Sparkles } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Shield,
+  ScrollText,
+  KeyRound,
+  LogOut,
+  Activity,
+  Sparkles,
+} from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
@@ -67,11 +76,18 @@ function AdminLayout() {
         }}
       />
       <aside className="relative w-64 shrink-0 border-r border-white/10 bg-white/[0.02] backdrop-blur-xl flex flex-col">
-        <Link to="/admin/dashboard" className="p-5 flex items-center gap-2.5 border-b border-white/10">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-400 text-black font-bold flex items-center justify-center">V</div>
+        <Link
+          to="/admin/dashboard"
+          className="p-5 flex items-center gap-2.5 border-b border-white/10"
+        >
+          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-400 text-black font-bold flex items-center justify-center">
+            V
+          </div>
           <div>
             <div className="text-sm font-medium leading-none">ViralTrack</div>
-            <div className="text-[10px] uppercase tracking-widest text-cyan-300 mt-1">Admin Console</div>
+            <div className="text-[10px] uppercase tracking-widest text-cyan-300 mt-1">
+              Admin Console
+            </div>
           </div>
         </Link>
         <nav className="p-3 space-y-1 flex-1">
@@ -79,7 +95,10 @@ function AdminLayout() {
             <Link
               key={n.to}
               to={n.to}
-              activeProps={{ className: "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm bg-cyan-400/10 text-cyan-100 border border-cyan-400/20" }}
+              activeProps={{
+                className:
+                  "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm bg-cyan-400/10 text-cyan-100 border border-cyan-400/20",
+              }}
               className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/[0.04] border border-transparent"
             >
               <n.icon className="w-4 h-4" /> {n.label}
@@ -88,7 +107,9 @@ function AdminLayout() {
         </nav>
         <div className="p-3 border-t border-white/10">
           <div className="rounded-lg bg-white/[0.03] border border-white/10 p-3 mb-2">
-            <div className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Signed in as</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/40 mb-1">
+              Signed in as
+            </div>
             <div className="text-sm truncate">{profile?.full_name ?? user?.email}</div>
             <div className="text-[10px] text-white/50 truncate">{user?.email}</div>
             <div className="mt-2 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-emerald-300">
@@ -97,10 +118,16 @@ function AdminLayout() {
             </div>
           </div>
           <div className="flex gap-1.5">
-            <Link to="/" className="flex-1 px-2.5 py-1.5 rounded-md text-xs text-center border border-white/10 hover:bg-white/[0.04]">
+            <Link
+              to="/"
+              className="flex-1 px-2.5 py-1.5 rounded-md text-xs text-center border border-white/10 hover:bg-white/[0.04]"
+            >
               Platform
             </Link>
-            <button onClick={signOut} className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs border border-white/10 hover:bg-white/[0.04]">
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs border border-white/10 hover:bg-white/[0.04]"
+            >
               <LogOut className="w-3 h-3" /> Out
             </button>
           </div>
@@ -109,7 +136,9 @@ function AdminLayout() {
       <main className="relative flex-1 min-w-0">
         <div className="sticky top-0 z-10 flex items-center gap-3 px-6 py-3.5 border-b border-white/10 bg-[#05070A]/70 backdrop-blur-xl">
           <Activity className="w-4 h-4 text-cyan-300" />
-          <div className="text-xs uppercase tracking-widest text-white/50">ViralTrack·Afrika · Administration</div>
+          <div className="text-xs uppercase tracking-widest text-white/50">
+            ViralTrack·Afrika · Administration
+          </div>
           <span className="ml-auto inline-flex items-center gap-1.5 text-[10px] text-emerald-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live systems
           </span>

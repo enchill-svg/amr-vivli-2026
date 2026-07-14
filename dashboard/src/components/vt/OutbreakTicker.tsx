@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Radio } from "lucide-react";
 import { getLiveCountryTrends } from "@/lib/amr-data.functions";
 
-const colorFor = (score: number) => score >= 85 ? "var(--status-alert)" : score >= 72 ? "var(--status-warn)" : "var(--status-info)";
+const colorFor = (score: number) =>
+  score >= 85 ? "var(--status-alert)" : score >= 72 ? "var(--status-warn)" : "var(--status-info)";
 
 export function OutbreakTicker() {
   const { data = [] } = useQuery({
@@ -28,14 +29,27 @@ export function OutbreakTicker() {
             {loop.map((t, i) => {
               const c = colorFor(t.riskScore);
               return (
-                <div key={`${t.iso3}-${t.pathogenType}-${i}`} className="flex items-center gap-2 text-xs">
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: c, boxShadow: `0 0 8px ${c}` }} />
-                  <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: c }}>{t.trendLabel}</span>
+                <div
+                  key={`${t.iso3}-${t.pathogenType}-${i}`}
+                  className="flex items-center gap-2 text-xs"
+                >
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: c, boxShadow: `0 0 8px ${c}` }}
+                  />
+                  <span
+                    className="text-[10px] font-medium uppercase tracking-wider"
+                    style={{ color: c }}
+                  >
+                    {t.trendLabel}
+                  </span>
                   <span className="text-foreground/90">{t.country}</span>
                   <span className="text-muted-foreground">·</span>
                   <span className="text-foreground/70">{t.dominantOrganism}</span>
                   <span className="text-muted-foreground">·</span>
-                  <span className="text-muted-foreground">{t.dominantDrug} risk {t.riskScore.toFixed(0)}</span>
+                  <span className="text-muted-foreground">
+                    {t.dominantDrug} risk {t.riskScore.toFixed(0)}
+                  </span>
                 </div>
               );
             })}

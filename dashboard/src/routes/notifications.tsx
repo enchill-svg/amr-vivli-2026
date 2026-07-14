@@ -111,18 +111,14 @@ function NotificationPrefsPage() {
                 label="In-app notifications"
                 desc="Live bell + alert center stream"
                 checked={prefs.channels.inApp}
-                onChange={(v) =>
-                  setPrefs((p) => ({ ...p, channels: { ...p.channels, inApp: v } }))
-                }
+                onChange={(v) => setPrefs((p) => ({ ...p, channels: { ...p.channels, inApp: v } }))}
               />
               <ChannelRow
                 icon={Mail}
                 label="Email"
                 desc="Summarized digests + critical alerts"
                 checked={prefs.channels.email}
-                onChange={(v) =>
-                  setPrefs((p) => ({ ...p, channels: { ...p.channels, email: v } }))
-                }
+                onChange={(v) => setPrefs((p) => ({ ...p, channels: { ...p.channels, email: v } }))}
               >
                 {prefs.channels.email && (
                   <Input
@@ -154,9 +150,7 @@ function NotificationPrefsPage() {
                 label="Push (mobile)"
                 desc="ViralTrack mobile app push notifications"
                 checked={prefs.channels.push}
-                onChange={(v) =>
-                  setPrefs((p) => ({ ...p, channels: { ...p.channels, push: v } }))
-                }
+                onChange={(v) => setPrefs((p) => ({ ...p, channels: { ...p.channels, push: v } }))}
               />
             </div>
           </SectionCard>
@@ -226,7 +220,9 @@ function NotificationPrefsPage() {
                 />
               </div>
               <div>
-                <Label className="text-[11px] text-muted-foreground">Minimum severity to break quiet hours</Label>
+                <Label className="text-[11px] text-muted-foreground">
+                  Minimum severity to break quiet hours
+                </Label>
                 <div className="grid grid-cols-4 gap-1 mt-1">
                   {(["low", "moderate", "high", "critical"] as const).map((s) => (
                     <button

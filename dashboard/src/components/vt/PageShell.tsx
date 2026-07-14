@@ -5,8 +5,17 @@ import { OutbreakTicker } from "./OutbreakTicker";
 import { Info } from "lucide-react";
 import { loadDashboardBundle } from "@/lib/published-data";
 
-export function PageShell({ children, showTabs = true }: { children: React.ReactNode; showTabs?: boolean }) {
-  const { data: bundle } = useQuery({ queryKey: ["dashboard-bundle"], queryFn: loadDashboardBundle });
+export function PageShell({
+  children,
+  showTabs = true,
+}: {
+  children: React.ReactNode;
+  showTabs?: boolean;
+}) {
+  const { data: bundle } = useQuery({
+    queryKey: ["dashboard-bundle"],
+    queryFn: loadDashboardBundle,
+  });
   const runId = bundle?.pipeline_run?.run_id;
   const generated = bundle?.generated_at;
 

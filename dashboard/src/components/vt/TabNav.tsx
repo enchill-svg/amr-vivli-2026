@@ -1,5 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import { AlertTriangle, BarChart3, Brain, Database, Dna, FileText, FlaskConical, GitCompare, Globe2, HeartPulse, LineChart, Landmark, Upload } from "lucide-react";
+import {
+  AlertTriangle,
+  BarChart3,
+  Brain,
+  Database,
+  Dna,
+  FileText,
+  FlaskConical,
+  GitCompare,
+  Globe2,
+  HeartPulse,
+  LineChart,
+  Landmark,
+  Upload,
+} from "lucide-react";
 
 const tabs = [
   { to: "/", icon: BarChart3, label: "Overview" },

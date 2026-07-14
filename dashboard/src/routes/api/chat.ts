@@ -14,10 +14,14 @@ export const Route = createFileRoute("/api/chat")({
     handlers: {
       POST: async ({ request }) => {
         const body = (await request.json()) as { messages?: UIMessage[] };
-        if (!Array.isArray(body.messages)) return new Response("messages required", { status: 400 });
+        if (!Array.isArray(body.messages))
+          return new Response("messages required", { status: 400 });
         const key = process.env.LOVABLE_API_KEY;
         if (!key) {
-          return new Response("LOVABLE_API_KEY not configured. The UI is ready; configure the key to enable streaming AI responses.", { status: 500 });
+          return new Response(
+            "LOVABLE_API_KEY not configured. The UI is ready; configure the key to enable streaming AI responses.",
+            { status: 500 },
+          );
         }
 
         const gateway = createLovableAiGatewayProvider(key);
@@ -25,8 +29,12 @@ export const Route = createFileRoute("/api/chat")({
 
         const tools = {
           getLiveCountryTrends: tool({
-            description: "Fetch country-level AMR risk, resistance, trajectory and intervention fields from the published dashboard bundle.",
-            inputSchema: z.object({ country: z.string().optional(), pathogen_type: z.enum(["bacterial", "fungal", "all"]).optional() }),
+            description:
+              "Fetch country-level AMR risk, resistance, trajectory and intervention fields from the published dashboard bundle.",
+            inputSchema: z.object({
+              country: z.string().optional(),
+              pathogen_type: z.enum(["bacterial", "fungal", "all"]).optional(),
+            }),
             execute: async ({ country, pathogen_type }) => {
               try {
                 let rows = await getLiveCountryTrends(pathogen_type ?? "all");
@@ -36,13 +44,20 @@ export const Route = createFileRoute("/api/chat")({
                 }
                 return { rows: rows.slice(0, 50) };
               } catch (err) {
-                return { error: err instanceof Error ? err.message : "Failed to load country trends", rows: [] };
+                return {
+                  error: err instanceof Error ? err.message : "Failed to load country trends",
+                  rows: [],
+                };
               }
             },
           }),
           getPathogenSignals: tool({
-            description: "Fetch organism-drug AMR signals from the published bundle, including resistance, MIC drift, and evolutionary fitness.",
-            inputSchema: z.object({ organism: z.string().optional(), country: z.string().optional() }),
+            description:
+              "Fetch organism-drug AMR signals from the published bundle, including resistance, MIC drift, and evolutionary fitness.",
+            inputSchema: z.object({
+              organism: z.string().optional(),
+              country: z.string().optional(),
+            }),
             execute: async ({ organism, country }) => {
               try {
                 let rows = await getPathogenSignals("all");
@@ -56,13 +71,22 @@ export const Route = createFileRoute("/api/chat")({
                 }
                 return { rows: rows.slice(0, 50) };
               } catch (err) {
-                return { error: err instanceof Error ? err.message : "Failed to load pathogen signals", rows: [] };
+                return {
+                  error: err instanceof Error ? err.message : "Failed to load pathogen signals",
+                  rows: [],
+                };
               }
             },
           }),
         };
 
-        const result = streamText({ model, system: SYSTEM, tools, stopWhen: stepCountIs(16), messages: await convertToModelMessages(body.messages) });
+        const result = streamText({
+          model,
+          system: SYSTEM,
+          tools,
+          stopWhen: stepCountIs(16),
+          messages: await convertToModelMessages(body.messages),
+        });
         return result.toUIMessageStreamResponse({ originalMessages: body.messages });
       },
     },

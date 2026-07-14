@@ -31,13 +31,24 @@ export function useAdmin(): AdminInfo {
     let alive = true;
     if (authLoading) return;
     if (!user) {
-      setState({ loading: false, roles: [], status: null, isAdmin: false, isSuperAdmin: false, profile: null });
+      setState({
+        loading: false,
+        roles: [],
+        status: null,
+        isAdmin: false,
+        isSuperAdmin: false,
+        profile: null,
+      });
       return;
     }
     (async () => {
       const [rolesRes, profileRes] = await Promise.all([
         supabase.from("user_roles").select("role").eq("user_id", user.id),
-        supabase.from("profiles").select("status,full_name,email,country,institution").eq("id", user.id).maybeSingle(),
+        supabase
+          .from("profiles")
+          .select("status,full_name,email,country,institution")
+          .eq("id", user.id)
+          .maybeSingle(),
       ]);
       if (!alive) return;
       const roles = (rolesRes.data ?? []).map((r: { role: string }) => r.role);
@@ -67,9 +78,16 @@ export function useAdmin(): AdminInfo {
   return state;
 }
 
-export async function logAudit(action: string, entity?: string, entityId?: string, metadata?: Record<string, unknown>) {
+export async function logAudit(
+  action: string,
+  entity?: string,
+  entityId?: string,
+  metadata?: Record<string, unknown>,
+) {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     await supabase.from("audit_logs").insert({
       user_id: user?.id ?? null,
       actor_email: user?.email ?? null,

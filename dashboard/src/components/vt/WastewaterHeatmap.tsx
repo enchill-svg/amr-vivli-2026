@@ -4,7 +4,17 @@ import L from "leaflet";
 import "leaflet.heat";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Droplet, FlaskConical, Users, Activity, X, MapPin, Calendar, GitBranch, History } from "lucide-react";
+import {
+  Droplet,
+  FlaskConical,
+  Users,
+  Activity,
+  X,
+  MapPin,
+  Calendar,
+  GitBranch,
+  History,
+} from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer, Tooltip as RTooltip, XAxis, YAxis } from "recharts";
 
 type Site = {
@@ -44,7 +54,9 @@ function levelFor(id: string) {
 
 function Recenter() {
   const map = useMap();
-  useEffect(() => { map.setView([2, 20], 3.2); }, [map]);
+  useEffect(() => {
+    map.setView([2, 20], 3.2);
+  }, [map]);
   return null;
 }
 
@@ -52,17 +64,31 @@ function HeatLayer({ points }: { points: Array<[number, number, number]> }) {
   const map = useMap();
   useEffect(() => {
     if (!points.length) return;
-    const layer = (L as unknown as { heatLayer: (pts: Array<[number, number, number]>, opts: Record<string, unknown>) => L.Layer }).heatLayer(points, {
-      radius: 38, blur: 32, maxZoom: 6, minOpacity: 0.4, max: 1,
-      gradient: { 0.2: "#3ee6a8", 0.45: "#f5c451", 0.7: "#ff8a3d", 0.9: "#ff3d6e" },
-    }).addTo(map);
-    return () => { map.removeLayer(layer); };
+    const layer = (
+      L as unknown as {
+        heatLayer: (pts: Array<[number, number, number]>, opts: Record<string, unknown>) => L.Layer;
+      }
+    )
+      .heatLayer(points, {
+        radius: 38,
+        blur: 32,
+        maxZoom: 6,
+        minOpacity: 0.4,
+        max: 1,
+        gradient: { 0.2: "#3ee6a8", 0.45: "#f5c451", 0.7: "#ff8a3d", 0.9: "#ff3d6e" },
+      })
+      .addTo(map);
+    return () => {
+      map.removeLayer(layer);
+    };
   }, [map, points]);
   return null;
 }
 
 export function WastewaterHeatmap() {
-  const [selected, setSelected] = useState<(Site & { level: typeof LEVELS[number] }) | null>(null);
+  const [selected, setSelected] = useState<(Site & { level: (typeof LEVELS)[number] }) | null>(
+    null,
+  );
 
   const { data: sites = [] } = useQuery({
     queryKey: ["wastewater", "sites"],
@@ -78,15 +104,16 @@ export function WastewaterHeatmap() {
   });
 
   const enriched = useMemo(
-    () => sites
-      .filter((s) => s.latitude != null && s.longitude != null)
-      .map((s) => ({ ...s, level: levelFor(s.id) })),
-    [sites]
+    () =>
+      sites
+        .filter((s) => s.latitude != null && s.longitude != null)
+        .map((s) => ({ ...s, level: levelFor(s.id) })),
+    [sites],
   );
 
   const heatPoints = useMemo<Array<[number, number, number]>>(
     () => enriched.map((s) => [Number(s.latitude), Number(s.longitude), s.level.intensity]),
-    [enriched]
+    [enriched],
   );
 
   return (
@@ -101,7 +128,7 @@ export function WastewaterHeatmap() {
       >
         <Recenter />
         <TileLayer
-          attribution='&copy; OpenStreetMap &copy; CARTO'
+          attribution="&copy; OpenStreetMap &copy; CARTO"
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
         <HeatLayer points={heatPoints} />
@@ -122,7 +149,10 @@ export function WastewaterHeatmap() {
             <Tooltip direction="top">
               <div className="text-xs">
                 <div className="font-medium">{s.name}</div>
-                <div className="opacity-70">{s.city ? `${s.city}, ` : ""}{s.country}</div>
+                <div className="opacity-70">
+                  {s.city ? `${s.city}, ` : ""}
+                  {s.country}
+                </div>
                 <div className="opacity-60 capitalize">Signal: {s.level.label}</div>
                 <div className="opacity-60">Click to expand</div>
               </div>
@@ -131,14 +161,20 @@ export function WastewaterHeatmap() {
         ))}
       </MapContainer>
 
-      {selected && (
-        <SiteDrawer site={selected} onClose={() => setSelected(null)} />
-      )}
+      {selected && <SiteDrawer site={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
 
-function Mini({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+function Mini({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+}) {
   return (
     <div className="rounded-lg border border-border/50 bg-background/40 p-2">
       <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-wider text-muted-foreground">
@@ -153,7 +189,7 @@ function SiteDrawer({
   site,
   onClose,
 }: {
-  site: Site & { level: typeof LEVELS[number] };
+  site: Site & { level: (typeof LEVELS)[number] };
   onClose: () => void;
 }) {
   // Deterministic synthetic 60-day history

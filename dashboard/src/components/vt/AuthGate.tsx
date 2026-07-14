@@ -46,7 +46,10 @@ export function AuthGate({ children, message }: { children: React.ReactNode; mes
               ? "Your access request was declined."
               : "Your account is currently suspended."}
         </p>
-        <Link to="/pending" className="inline-block px-5 py-2 rounded-full bg-amber-400/20 text-amber-100 text-sm font-medium border border-amber-400/30">
+        <Link
+          to="/pending"
+          className="inline-block px-5 py-2 rounded-full bg-amber-400/20 text-amber-100 text-sm font-medium border border-amber-400/30"
+        >
           View status
         </Link>
       </div>

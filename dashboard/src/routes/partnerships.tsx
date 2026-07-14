@@ -4,17 +4,37 @@ import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 
 export const Route = createFileRoute("/partnerships")({
   component: PartnersPage,
-  head: () => ({ meta: [{ title: "Funding & Partnerships — ViralTrack-Afrika" }, { name: "description", content: "Institutional partners, funders, and consortia powering the network." }] }),
+  head: () => ({
+    meta: [
+      { title: "Funding & Partnerships — ViralTrack-Afrika" },
+      {
+        name: "description",
+        content: "Institutional partners, funders, and consortia powering the network.",
+      },
+    ],
+  }),
 });
 
 const partners = [
-  "Africa CDC", "WHO AFRO", "Wellcome Trust", "Gates Foundation",
-  "EDCTP3", "PEPFAR", "ANDI", "GISAID", "Institut Pasteur", "ILRI", "KEMRI-Wellcome", "NICD South Africa",
+  "Africa CDC",
+  "WHO AFRO",
+  "Wellcome Trust",
+  "Gates Foundation",
+  "EDCTP3",
+  "PEPFAR",
+  "ANDI",
+  "GISAID",
+  "Institut Pasteur",
+  "ILRI",
+  "KEMRI-Wellcome",
+  "NICD South Africa",
 ];
 
 function PartnersPage() {
   return (
-    <CommandPage icon={Handshake} eyebrow="Network"
+    <CommandPage
+      icon={Handshake}
+      eyebrow="Network"
       title="Funding & Partnerships"
       subtitle="Institutions, agencies, and consortia that sustain pan-African genomic surveillance."
       kpis={[
@@ -27,7 +47,10 @@ function PartnersPage() {
       <GlassCard title="Partners">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {partners.map((p) => (
-            <div key={p} className="rounded-lg border border-border/60 bg-secondary/20 p-4 text-sm text-center hover:border-[color:var(--accent)]/60">
+            <div
+              key={p}
+              className="rounded-lg border border-border/60 bg-secondary/20 p-4 text-sm text-center hover:border-[color:var(--accent)]/60"
+            >
               {p}
             </div>
           ))}

@@ -77,17 +77,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "AMR Life Expectancy Intelligence Platform" },
-      { name: "description", content: "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform." },
+      {
+        name: "description",
+        content:
+          "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform.",
+      },
       { name: "author", content: "AMR LifeIntel" },
       { property: "og:title", content: "AMR Life Expectancy Intelligence Platform" },
-      { property: "og:description", content: "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform." },
+      {
+        property: "og:description",
+        content:
+          "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@AMRLifeIntel" },
       { name: "twitter:title", content: "AMR Life Expectancy Intelligence Platform" },
-      { name: "twitter:description", content: "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/73e3df5b-e2c9-4a16-8ccf-8cb23afcb1fd" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/73e3df5b-e2c9-4a16-8ccf-8cb23afcb1fd" },
+      {
+        name: "twitter:description",
+        content:
+          "Publication-grade AMR, life expectancy, R&D funding, intervention, and policy intelligence platform.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/73e3df5b-e2c9-4a16-8ccf-8cb23afcb1fd",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/73e3df5b-e2c9-4a16-8ccf-8cb23afcb1fd",
+      },
     ],
     links: [
       {

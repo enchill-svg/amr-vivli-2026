@@ -11,7 +11,9 @@ export function ClientAMRWorldMap(props: Props) {
     import("./LiveAMRWorldMap").then((mod) => {
       if (alive) setComponent(() => mod.LiveAMRWorldMap);
     });
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, []);
 
   if (!Component) {

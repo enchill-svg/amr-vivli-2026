@@ -4,8 +4,15 @@ import { useServerFn } from "@tanstack/react-start";
 import { Dna, Search, ExternalLink, Download } from "lucide-react";
 import { KpiStrip, InsightPanel } from "@/components/vt/KpiStrip";
 import {
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
-  AreaChart, Area,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  AreaChart,
+  Area,
 } from "recharts";
 import { useState } from "react";
 import { PageShell, SectionCard } from "@/components/vt/PageShell";
@@ -19,10 +26,15 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/genomics")({
   component: GenomicsPage,
-  head: () => ({ meta: [
-    { title: "Genomics — ViralTrack-Afrika" },
-    { name: "description", content: "Whole-genome viral sequencing across African sentinel sites." },
-  ] }),
+  head: () => ({
+    meta: [
+      { title: "Genomics — ViralTrack-Afrika" },
+      {
+        name: "description",
+        content: "Whole-genome viral sequencing across African sentinel sites.",
+      },
+    ],
+  }),
 });
 
 function GenomicsPage() {
@@ -33,7 +45,9 @@ function GenomicsPage() {
           <Dna className="w-6 h-6 text-[color:var(--accent)]" />
           <div>
             <h1 className="text-2xl font-light tracking-tight">Genomics</h1>
-            <p className="text-xs text-muted-foreground">Genome quality · ORF coverage · mutation distribution · NCBI live</p>
+            <p className="text-xs text-muted-foreground">
+              Genome quality · ORF coverage · mutation distribution · NCBI live
+            </p>
           </div>
         </header>
         <AuthGate>
@@ -52,9 +66,21 @@ function GenomicsPage() {
               <div className="space-y-5">
                 <InsightPanel
                   items={[
-                    { title: "Spike mutations rising in West Africa", tag: "Signal", body: "Nigeria & Ghana show 3.2× enrichment for S:F456L in recent 14-day window across 412 sequences." },
-                    { title: "Mpox clade Ib genome quality improving", tag: "QC", body: "Median Phred score up from 28 to 34; reduced ambiguity bases (<1.2%) across sentinel labs." },
-                    { title: "Lineage cluster detected — DRC", tag: "Cluster", body: "Phylogenetic clustering of 18 sequences within 0.4 substitutions/site suggests sustained transmission chain." },
+                    {
+                      title: "Spike mutations rising in West Africa",
+                      tag: "Signal",
+                      body: "Nigeria & Ghana show 3.2× enrichment for S:F456L in recent 14-day window across 412 sequences.",
+                    },
+                    {
+                      title: "Mpox clade Ib genome quality improving",
+                      tag: "QC",
+                      body: "Median Phred score up from 28 to 34; reduced ambiguity bases (<1.2%) across sentinel labs.",
+                    },
+                    {
+                      title: "Lineage cluster detected — DRC",
+                      tag: "Cluster",
+                      body: "Phylogenetic clustering of 18 sequences within 0.4 substitutions/site suggests sustained transmission chain.",
+                    },
                   ]}
                 />
                 <GenomicsMeta />
@@ -90,7 +116,10 @@ const MUTATIONS = [
 
 function GenomeViewer() {
   return (
-    <SectionCard title="Genome coverage viewer" subtitle="SARS-CoV-2 reference (29,903 bp) — annotated ORFs with mutation positions">
+    <SectionCard
+      title="Genome coverage viewer"
+      subtitle="SARS-CoV-2 reference (29,903 bp) — annotated ORFs with mutation positions"
+    >
       <div className="space-y-3">
         <div className="relative h-24 rounded-lg bg-secondary/30 border border-border/40 overflow-hidden">
           <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-border" />
@@ -98,8 +127,17 @@ function GenomeViewer() {
             const left = (o.start / GENOME_LEN) * 100;
             const width = ((o.end - o.start) / GENOME_LEN) * 100;
             return (
-              <div key={o.name} className="absolute top-1/2 -translate-y-1/2 h-9 rounded grid place-items-center text-[10px] font-mono"
-                style={{ left: `${left}%`, width: `${width}%`, background: `${o.color}55`, borderTop: `2px solid ${o.color}`, borderBottom: `2px solid ${o.color}`, color: "white" }}
+              <div
+                key={o.name}
+                className="absolute top-1/2 -translate-y-1/2 h-9 rounded grid place-items-center text-[10px] font-mono"
+                style={{
+                  left: `${left}%`,
+                  width: `${width}%`,
+                  background: `${o.color}55`,
+                  borderTop: `2px solid ${o.color}`,
+                  borderBottom: `2px solid ${o.color}`,
+                  color: "white",
+                }}
                 title={`${o.name} · ${o.start.toLocaleString()}–${o.end.toLocaleString()}`}
               >
                 {width > 4 ? o.name : ""}
@@ -107,7 +145,11 @@ function GenomeViewer() {
             );
           })}
           {MUTATIONS.map((m) => (
-            <div key={m.label} className="absolute -top-1 h-[110%]" style={{ left: `${(m.pos / GENOME_LEN) * 100}%` }}>
+            <div
+              key={m.label}
+              className="absolute -top-1 h-[110%]"
+              style={{ left: `${(m.pos / GENOME_LEN) * 100}%` }}
+            >
               <div className="w-px h-full bg-[color:var(--status-alert)]" />
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[color:var(--status-alert)]" />
             </div>
@@ -115,7 +157,12 @@ function GenomeViewer() {
         </div>
         <div className="flex flex-wrap gap-1.5">
           {MUTATIONS.map((m) => (
-            <span key={m.label} className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[color:var(--status-alert)]/15 text-[color:var(--status-alert)]">{m.label}</span>
+            <span
+              key={m.label}
+              className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[color:var(--status-alert)]/15 text-[color:var(--status-alert)]"
+            >
+              {m.label}
+            </span>
           ))}
         </div>
       </div>
@@ -124,7 +171,10 @@ function GenomeViewer() {
 }
 
 function MutationDistribution() {
-  const data = ORFS.map((o) => ({ gene: o.name, mutations: Math.round(Math.random() * 30 + (o.name === "S" ? 38 : 5)) }));
+  const data = ORFS.map((o) => ({
+    gene: o.name,
+    mutations: Math.round(Math.random() * 30 + (o.name === "S" ? 38 : 5)),
+  }));
   return (
     <SectionCard title="Mutation distribution" subtitle="Calls per gene region">
       <div className="h-56">
@@ -133,7 +183,14 @@ function MutationDistribution() {
             <CartesianGrid stroke="rgba(255,255,255,0.05)" />
             <XAxis dataKey="gene" stroke="rgba(255,255,255,0.4)" fontSize={10} />
             <YAxis stroke="rgba(255,255,255,0.4)" fontSize={10} />
-            <Tooltip contentStyle={{ background: "rgba(15,20,30,0.95)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12 }} />
+            <Tooltip
+              contentStyle={{
+                background: "rgba(15,20,30,0.95)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+            />
             <Bar dataKey="mutations" fill="#22d3ee" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
@@ -159,8 +216,21 @@ function QualityDistribution() {
             <CartesianGrid stroke="rgba(255,255,255,0.05)" />
             <XAxis dataKey="b" stroke="rgba(255,255,255,0.4)" fontSize={10} />
             <YAxis stroke="rgba(255,255,255,0.4)" fontSize={10} />
-            <Tooltip contentStyle={{ background: "rgba(15,20,30,0.95)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, fontSize: 12 }} />
-            <Area type="monotone" dataKey="n" stroke="#a78bfa" fill="url(#q-fill)" strokeWidth={2} />
+            <Tooltip
+              contentStyle={{
+                background: "rgba(15,20,30,0.95)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+            />
+            <Area
+              type="monotone"
+              dataKey="n"
+              stroke="#a78bfa"
+              fill="url(#q-fill)"
+              strokeWidth={2}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -206,7 +276,10 @@ function SequencesTable() {
   });
 
   return (
-    <SectionCard title="Recent sequences" subtitle="Quality-controlled consensus genomes from sentinel samples.">
+    <SectionCard
+      title="Recent sequences"
+      subtitle="Quality-controlled consensus genomes from sentinel samples."
+    >
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading sequences…</p>
       ) : !data?.length ? (
@@ -215,7 +288,14 @@ function SequencesTable() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground border-b border-border">
-              <tr><th className="text-left py-2 font-medium">Accession</th><th className="text-left font-medium">Pathogen</th><th className="text-left font-medium">Lineage</th><th className="text-right font-medium">Length (bp)</th><th className="text-right font-medium">Quality</th><th className="text-right font-medium">Date</th></tr>
+              <tr>
+                <th className="text-left py-2 font-medium">Accession</th>
+                <th className="text-left font-medium">Pathogen</th>
+                <th className="text-left font-medium">Lineage</th>
+                <th className="text-right font-medium">Length (bp)</th>
+                <th className="text-right font-medium">Quality</th>
+                <th className="text-right font-medium">Date</th>
+              </tr>
             </thead>
             <tbody>
               {data.map((s) => (
@@ -224,8 +304,12 @@ function SequencesTable() {
                   <td>{s.pathogen}</td>
                   <td className="text-[color:var(--accent)]">{s.lineage}</td>
                   <td className="text-right tabular-nums">{s.length_bp?.toLocaleString()}</td>
-                  <td className="text-right tabular-nums">{((s.quality_score ?? 0) * 100).toFixed(1)}%</td>
-                  <td className="text-right text-muted-foreground text-xs">{new Date(s.sequenced_at).toLocaleDateString()}</td>
+                  <td className="text-right tabular-nums">
+                    {((s.quality_score ?? 0) * 100).toFixed(1)}%
+                  </td>
+                  <td className="text-right text-muted-foreground text-xs">
+                    {new Date(s.sequenced_at).toLocaleDateString()}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -246,8 +330,13 @@ function NcbiPanel() {
     mutationFn: (q: string) => search({ data: { query: q, db: "nuccore", retmax: 15 } }),
   });
   const importMut = useMutation({
-    mutationFn: (r: { uid: string; accession: string; organism: string; title: string; length: number }) =>
-      importFn({ data: { ...r, pathogen } }),
+    mutationFn: (r: {
+      uid: string;
+      accession: string;
+      organism: string;
+      title: string;
+      length: number;
+    }) => importFn({ data: { ...r, pathogen } }),
     onSuccess: (res) => {
       if (res.ok) {
         toast.success(`Imported ${res.length_bp?.toLocaleString() ?? "?"} bp into library`);
@@ -309,10 +398,16 @@ function NcbiPanel() {
             <tbody>
               {m.data.summaries.map((r) => (
                 <tr key={r.uid} className="border-b border-border/40 hover:bg-secondary/30">
-                  <td className="py-2 font-mono text-xs text-[color:var(--accent)]">{r.accession}</td>
-                  <td className="text-xs max-w-md truncate" title={r.title}>{r.title}</td>
+                  <td className="py-2 font-mono text-xs text-[color:var(--accent)]">
+                    {r.accession}
+                  </td>
+                  <td className="text-xs max-w-md truncate" title={r.title}>
+                    {r.title}
+                  </td>
                   <td className="text-xs">{r.organism}</td>
-                  <td className="text-right tabular-nums text-xs">{r.length?.toLocaleString() || "—"}</td>
+                  <td className="text-right tabular-nums text-xs">
+                    {r.length?.toLocaleString() || "—"}
+                  </td>
                   <td className="text-right text-muted-foreground text-xs">{r.update_date}</td>
                   <td className="text-right whitespace-nowrap">
                     <button

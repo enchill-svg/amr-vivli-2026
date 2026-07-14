@@ -2,14 +2,30 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { GitCompare, TrendingUp, TrendingDown, Layers, Zap, Brain } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ReferenceLine } from "recharts";
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+  ReferenceLine,
+} from "recharts";
 
 export const Route = createFileRoute("/forecast-compare")({
   component: ForecastComparePage,
-  head: () => ({ meta: [
-    { title: "Country-to-Country Forecast Comparison — ViralTrack-Afrika" },
-    { name: "description", content: "Compare epidemic forecasts side by side across African countries with selectable horizons and AI-surfaced drivers." },
-  ]}),
+  head: () => ({
+    meta: [
+      { title: "Country-to-Country Forecast Comparison — ViralTrack-Afrika" },
+      {
+        name: "description",
+        content:
+          "Compare epidemic forecasts side by side across African countries with selectable horizons and AI-surfaced drivers.",
+      },
+    ],
+  }),
 });
 
 const COUNTRIES = [
@@ -24,7 +40,7 @@ const COUNTRIES = [
 ];
 
 const HORIZONS = [7, 14, 30, 90] as const;
-type Horizon = typeof HORIZONS[number];
+type Horizon = (typeof HORIZONS)[number];
 
 const DRIVERS: Record<string, string[]> = {
   NG: ["Wastewater ↑31% (Lagos)", "Mpox clade Ib detected", "Inter-state mobility +18%"],
@@ -57,9 +73,21 @@ function ForecastComparePage() {
       subtitle="Side-by-side AI projections with selectable horizons and the drivers shaping each country's trajectory."
       kpis={[
         { label: "Horizon", value: `${h}d`, color: "var(--accent)" },
-        { label: `${ca.name} Δ`, value: fmtDelta(deltaA), color: deltaA >= 0 ? "var(--status-warn)" : "var(--status-ok)" },
-        { label: `${cb.name} Δ`, value: fmtDelta(deltaB), color: deltaB >= 0 ? "var(--status-warn)" : "var(--status-ok)" },
-        { label: "Model confidence", value: h <= 14 ? "91%" : h <= 30 ? "84%" : "71%", color: "var(--status-info)" },
+        {
+          label: `${ca.name} Δ`,
+          value: fmtDelta(deltaA),
+          color: deltaA >= 0 ? "var(--status-warn)" : "var(--status-ok)",
+        },
+        {
+          label: `${cb.name} Δ`,
+          value: fmtDelta(deltaB),
+          color: deltaB >= 0 ? "var(--status-warn)" : "var(--status-ok)",
+        },
+        {
+          label: "Model confidence",
+          value: h <= 14 ? "91%" : h <= 30 ? "84%" : "71%",
+          color: "var(--status-info)",
+        },
       ]}
     >
       <GlassCard
@@ -69,8 +97,13 @@ function ForecastComparePage() {
           <div className="flex items-center gap-2">
             <div className="flex gap-1 text-[10px]">
               {HORIZONS.map((d) => (
-                <button key={d} onClick={() => setH(d)}
-                  className={`px-2 py-1 rounded ${h === d ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "border border-border text-muted-foreground"}`}>{d}d</button>
+                <button
+                  key={d}
+                  onClick={() => setH(d)}
+                  className={`px-2 py-1 rounded ${h === d ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "border border-border text-muted-foreground"}`}
+                >
+                  {d}d
+                </button>
               ))}
             </div>
           </div>
@@ -83,11 +116,31 @@ function ForecastComparePage() {
                 <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
                 <XAxis dataKey="d" stroke="#94a3b8" fontSize={10} />
                 <YAxis stroke="#94a3b8" fontSize={10} />
-                <Tooltip contentStyle={{ background: "oklch(0.22 0.04 250)", border: "1px solid oklch(0.3 0.05 250)", fontSize: 11 }} />
+                <Tooltip
+                  contentStyle={{
+                    background: "oklch(0.22 0.04 250)",
+                    border: "1px solid oklch(0.3 0.05 250)",
+                    fontSize: 11,
+                  }}
+                />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <ReferenceLine x="Today" stroke="oklch(0.78 0.18 200)" strokeDasharray="3 3" />
-                <Line type="monotone" dataKey={a} stroke={ca.color} strokeWidth={2} dot={false} name={ca.name} />
-                <Line type="monotone" dataKey={b} stroke={cb.color} strokeWidth={2} dot={false} name={cb.name} />
+                <Line
+                  type="monotone"
+                  dataKey={a}
+                  stroke={ca.color}
+                  strokeWidth={2}
+                  dot={false}
+                  name={ca.name}
+                />
+                <Line
+                  type="monotone"
+                  dataKey={b}
+                  stroke={cb.color}
+                  strokeWidth={2}
+                  dot={false}
+                  name={cb.name}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -96,10 +149,17 @@ function ForecastComparePage() {
             <Selector label="Country A" value={a} onChange={setA} disabled={b} color={ca.color} />
             <Selector label="Country B" value={b} onChange={setB} disabled={a} color={cb.color} />
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Pathogen</div>
-              <select value={pathogen} onChange={(e) => setPathogen(e.target.value)}
-                className="w-full bg-background/40 border border-border/60 rounded-md text-xs px-2 py-1.5">
-                {["Mpox","SARS-CoV-2","Cholera","Lassa","Dengue","RSV","H5N1"].map((p) => <option key={p}>{p}</option>)}
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
+                Pathogen
+              </div>
+              <select
+                value={pathogen}
+                onChange={(e) => setPathogen(e.target.value)}
+                className="w-full bg-background/40 border border-border/60 rounded-md text-xs px-2 py-1.5"
+              >
+                {["Mpox", "SARS-CoV-2", "Cholera", "Lassa", "Dengue", "RSV", "H5N1"].map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -113,58 +173,114 @@ function ForecastComparePage() {
 
       <GlassCard title="AI comparative brief" subtitle="Auto-generated narrative">
         <p className="text-sm text-foreground/90 leading-relaxed">
-          Over the next <span className="text-[color:var(--accent)] font-medium">{h} days</span>, the model projects
-          <span className="font-medium" style={{ color: ca.color }}> {ca.name}</span> to {deltaA >= 0 ? "expand" : "contract"} {pathogen} burden by
+          Over the next <span className="text-[color:var(--accent)] font-medium">{h} days</span>,
+          the model projects
+          <span className="font-medium" style={{ color: ca.color }}>
+            {" "}
+            {ca.name}
+          </span>{" "}
+          to {deltaA >= 0 ? "expand" : "contract"} {pathogen} burden by
           <span className="font-medium"> {fmtDelta(deltaA)}</span>, while
-          <span className="font-medium" style={{ color: cb.color }}> {cb.name}</span> is expected to {deltaB >= 0 ? "rise" : "decline"} by
-          <span className="font-medium"> {fmtDelta(deltaB)}</span>. The divergence is primarily driven by wastewater and mobility signals.
-          Recommend prioritising responder mobilization toward the country with higher growth and tightening cross-border genomic exchange.
+          <span className="font-medium" style={{ color: cb.color }}>
+            {" "}
+            {cb.name}
+          </span>{" "}
+          is expected to {deltaB >= 0 ? "rise" : "decline"} by
+          <span className="font-medium"> {fmtDelta(deltaB)}</span>. The divergence is primarily
+          driven by wastewater and mobility signals. Recommend prioritising responder mobilization
+          toward the country with higher growth and tightening cross-border genomic exchange.
         </p>
       </GlassCard>
     </CommandPage>
   );
 }
 
-function Selector({ label, value, onChange, disabled, color }: { label: string; value: string; onChange: (v: string) => void; disabled: string; color: string }) {
+function Selector({
+  label,
+  value,
+  onChange,
+  disabled,
+  color,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  disabled: string;
+  color: string;
+}) {
   return (
     <div>
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full" style={{ background: color }} />
         {label}
       </div>
-      <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-background/40 border border-border/60 rounded-md text-xs px-2 py-1.5">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-background/40 border border-border/60 rounded-md text-xs px-2 py-1.5"
+      >
         {COUNTRIES.filter((c) => c.code !== disabled).map((c) => (
-          <option key={c.code} value={c.code}>{c.name}</option>
+          <option key={c.code} value={c.code}>
+            {c.name}
+          </option>
         ))}
       </select>
     </div>
   );
 }
 
-function DriverPanel({ country, drivers, delta, horizon }: { country: { code: string; name: string; color: string }; drivers: string[]; delta: number; horizon: number }) {
+function DriverPanel({
+  country,
+  drivers,
+  delta,
+  horizon,
+}: {
+  country: { code: string; name: string; color: string };
+  drivers: string[];
+  delta: number;
+  horizon: number;
+}) {
   const up = delta >= 0;
   return (
     <GlassCard title={country.name} subtitle={`${horizon}-day outlook`}>
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-xl grid place-items-center border" style={{ borderColor: `${country.color}55`, background: `${country.color}14`, color: country.color }}>
+        <div
+          className="w-12 h-12 rounded-xl grid place-items-center border"
+          style={{
+            borderColor: `${country.color}55`,
+            background: `${country.color}14`,
+            color: country.color,
+          }}
+        >
           {up ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
         </div>
         <div>
-          <div className="text-2xl font-light tabular-nums" style={{ color: country.color }}>{fmtDelta(delta)}</div>
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">projected change</div>
+          <div className="text-2xl font-light tabular-nums" style={{ color: country.color }}>
+            {fmtDelta(delta)}
+          </div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            projected change
+          </div>
         </div>
       </div>
       <div className="mt-4 space-y-2">
-        <div className="text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1"><Layers className="w-3 h-3" /> Drivers</div>
+        <div className="text-[10px] uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+          <Layers className="w-3 h-3" /> Drivers
+        </div>
         {drivers.map((d, i) => (
-          <div key={i} className="text-xs flex items-start gap-2 rounded-lg border border-border/50 bg-background/30 p-2.5">
+          <div
+            key={i}
+            className="text-xs flex items-start gap-2 rounded-lg border border-border/50 bg-background/30 p-2.5"
+          >
             <Brain className="w-3.5 h-3.5 mt-0.5 text-[color:var(--accent)] shrink-0" />
             <span>{d}</span>
           </div>
         ))}
       </div>
-      <div className="mt-3 text-[10px] text-[color:var(--accent)] inline-flex items-center gap-1"><Zap className="w-3 h-3" /> Action: {up ? "Stage rapid-response capacity" : "Maintain baseline & re-evaluate weekly"}</div>
+      <div className="mt-3 text-[10px] text-[color:var(--accent)] inline-flex items-center gap-1">
+        <Zap className="w-3 h-3" /> Action:{" "}
+        {up ? "Stage rapid-response capacity" : "Maintain baseline & re-evaluate weekly"}
+      </div>
     </GlassCard>
   );
 }

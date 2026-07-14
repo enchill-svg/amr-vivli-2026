@@ -16,15 +16,57 @@ export const Route = createFileRoute("/structural-biology")({
   }),
 });
 
-type Target = { pdb: string; name: string; pathogen: string; muts: string[]; risk: "low" | "moderate" | "high" };
+type Target = {
+  pdb: string;
+  name: string;
+  pathogen: string;
+  muts: string[];
+  risk: "low" | "moderate" | "high";
+};
 
 const TARGETS: Target[] = [
-  { pdb: "6VXX", name: "SARS-CoV-2 Spike trimer (closed)", pathogen: "SARS-CoV-2", muts: ["D614G", "L452R", "E484K"], risk: "high" },
-  { pdb: "6M0J", name: "Spike RBD ↔ ACE2 complex", pathogen: "SARS-CoV-2", muts: ["K417N", "N501Y"], risk: "high" },
-  { pdb: "7VNF", name: "Mpox A29 surface protein", pathogen: "Mpox", muts: ["D86Y"], risk: "moderate" },
-  { pdb: "5W6N", name: "Influenza A H3 hemagglutinin", pathogen: "Influenza A", muts: ["T160K"], risk: "moderate" },
-  { pdb: "6LU7", name: "SARS-CoV-2 Main protease (Mpro)", pathogen: "SARS-CoV-2", muts: ["E166V"], risk: "low" },
-  { pdb: "7BV2", name: "RNA-dependent RNA polymerase", pathogen: "SARS-CoV-2", muts: ["P323L"], risk: "moderate" },
+  {
+    pdb: "6VXX",
+    name: "SARS-CoV-2 Spike trimer (closed)",
+    pathogen: "SARS-CoV-2",
+    muts: ["D614G", "L452R", "E484K"],
+    risk: "high",
+  },
+  {
+    pdb: "6M0J",
+    name: "Spike RBD ↔ ACE2 complex",
+    pathogen: "SARS-CoV-2",
+    muts: ["K417N", "N501Y"],
+    risk: "high",
+  },
+  {
+    pdb: "7VNF",
+    name: "Mpox A29 surface protein",
+    pathogen: "Mpox",
+    muts: ["D86Y"],
+    risk: "moderate",
+  },
+  {
+    pdb: "5W6N",
+    name: "Influenza A H3 hemagglutinin",
+    pathogen: "Influenza A",
+    muts: ["T160K"],
+    risk: "moderate",
+  },
+  {
+    pdb: "6LU7",
+    name: "SARS-CoV-2 Main protease (Mpro)",
+    pathogen: "SARS-CoV-2",
+    muts: ["E166V"],
+    risk: "low",
+  },
+  {
+    pdb: "7BV2",
+    name: "RNA-dependent RNA polymerase",
+    pathogen: "SARS-CoV-2",
+    muts: ["P323L"],
+    risk: "moderate",
+  },
 ];
 
 const RISK_COLOR: Record<string, string> = {
@@ -99,10 +141,7 @@ function StructuralBiologyPage() {
               </SectionCard>
             </div>
 
-            <SectionCard
-              title="Surveillance targets"
-              subtitle="Click to load a structure."
-            >
+            <SectionCard title="Surveillance targets" subtitle="Click to load a structure.">
               <ul className="space-y-2">
                 {TARGETS.map((t) => (
                   <li key={t.pdb}>
@@ -115,10 +154,15 @@ function StructuralBiologyPage() {
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-xs text-[color:var(--accent)]">{t.pdb}</span>
+                        <span className="font-mono text-xs text-[color:var(--accent)]">
+                          {t.pdb}
+                        </span>
                         <span
                           className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
-                          style={{ background: `${RISK_COLOR[t.risk]}33`, color: RISK_COLOR[t.risk] }}
+                          style={{
+                            background: `${RISK_COLOR[t.risk]}33`,
+                            color: RISK_COLOR[t.risk],
+                          }}
                         >
                           {t.risk}
                         </span>
@@ -128,7 +172,10 @@ function StructuralBiologyPage() {
                       {t.muts.length > 0 && (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {t.muts.map((m) => (
-                            <span key={m} className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-secondary/60">
+                            <span
+                              key={m}
+                              className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-secondary/60"
+                            >
                               {m}
                             </span>
                           ))}
