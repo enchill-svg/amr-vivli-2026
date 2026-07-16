@@ -6,7 +6,7 @@ Competition deliverables, integrity gated tables, and the dashboard JSON bundle.
 
 | Step | What happens |
 |------|----------------|
-| `python analysis/run_all.py` | Runs the full pipeline (29 stages), then auto publishes here |
+| `python analysis/run_all.py` | Runs the full pipeline (30 stages), then auto publishes here |
 | `python analysis/scripts/publish_dashboard_data.py` | Standalone re publish (copies CSVs, rebuilds JSON, syncs dashboard) |
 
 Do not hand copy CSVs unless you are debugging publish. Use the script so the bundle and `dataset_status_v1.json` stay in sync.
@@ -31,9 +31,10 @@ dashboard/public/data/published/
 `dashboard_bundle_v1.json` includes:
 
 - `countryRiskBacterial` / `countryRiskFungal` from `country_risk_ranking_*_gated_v1.csv` (`risk_rank_core`, `quality_gate`)
+- `countryYearBacterial` / `countryYearFungal` from `country_year_panel_*_gated_v1.csv` (per-country, per-year life expectancy and resistance panel)
 - `clusterTypologyBacterial` / `clusterTypologyFungal` gated typology
 - `interventions` from `intervention_recommendations_ranked_gated_v1.csv`
-- `fundingGap`, `identifiabilityLedger`, `gatingComparison`
+- `fundingGap`, `fundingByYear`, `hubFundingComposition`, `identifiabilityLedger`, `gatingComparison`
 - `q2DriverSummary`, `associationSensitivity`, `deliverablesIndex`
 - `pipeline_run.run_id` from the latest manifest
 
