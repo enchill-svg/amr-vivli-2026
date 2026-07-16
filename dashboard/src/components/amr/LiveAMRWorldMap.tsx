@@ -19,7 +19,11 @@ import {
   ShieldCheck,
   TrendingUp,
 } from "lucide-react";
-import { getCountryYearPanel, getLiveCountryTrends } from "@/lib/amr-data.functions";
+import {
+  getCountryYearPanel,
+  getLiveCountryTrends,
+  lifeGainDisplay,
+} from "@/lib/amr-data.functions";
 import type { AMRCountryTrend, CountryYearRow, PathogenType } from "@/lib/amr-demo-data";
 
 type MapMetric =
@@ -321,9 +325,7 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
               </div>
             </div>
           ) : (
-            <div className="mt-3 text-[10px] italic text-muted-foreground">
-              Loading year data…
-            </div>
+            <div className="mt-3 text-[10px] italic text-muted-foreground">Loading year data…</div>
           ))}
       </div>
 
@@ -498,7 +500,8 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                     <div className="font-medium">Recommended intervention</div>
                     <div className="mt-1 opacity-75">{row.recommendedIntervention}</div>
                     <div className="mt-1 text-[11px] opacity-75">
-                      Predicted gain: +{row.predictedLifeGain.toFixed(2)} years
+                      Predicted gain:{" "}
+                      {lifeGainDisplay(row.predictedLifeGain, row.predictedLifeGainSampleCount)}
                     </div>
                   </div>
                   {gated && row.gateReason && (
@@ -604,9 +607,11 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
           </div>
           <div className="mt-3 rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs leading-relaxed">
             <span className="font-medium text-[color:var(--accent)]">Policy recommendation:</span>{" "}
-            {selected.recommendedIntervention}. Expected life expectancy gain is approximately{" "}
-            <b>+{selected.predictedLifeGain.toFixed(2)} years</b>, evidence level{" "}
-            <b>{selected.evidenceLevel}</b>.
+            {selected.recommendedIntervention}. Expected life expectancy gain is{" "}
+            <b>
+              {lifeGainDisplay(selected.predictedLifeGain, selected.predictedLifeGainSampleCount)}
+            </b>
+            , evidence level <b>{selected.evidenceLevel}</b>.
           </div>
         </div>
       )}

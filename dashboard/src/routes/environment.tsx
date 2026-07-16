@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { lazy, Suspense, useMemo, useState } from "react";
 import {
   Leaf,
@@ -11,8 +11,10 @@ import {
   MapPin,
 } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { AuthGate } from "@/components/vt/AuthGate";
 import { InsightPanel } from "@/components/vt/KpiStrip";
 import { AnomalyExplanationCard, DEMO_ANOMALIES } from "@/components/vt/AnomalyExplanation";
+import { hasSessionCookie } from "@/lib/session-cookie.functions";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -29,6 +31,11 @@ import {
 } from "recharts";
 
 export const Route = createFileRoute("/environment")({
+  beforeLoad: async () => {
+    if (!(await hasSessionCookie())) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: EnvironmentPage,
   head: () => ({
     meta: [
@@ -183,300 +190,302 @@ function EnvironmentPage() {
         },
       ]}
     >
-      <div className="grid lg:grid-cols-3 gap-4">
-        <GlassCard
-          className="lg:col-span-2"
-          title="Pathogen signal vs. baseline"
-          subtitle={`8-week wastewater concentration · current ${delta}% week-over-week`}
-          action={
-            <div className="flex flex-wrap gap-1 text-[10px]">
-              {(["sarscov2", "influenza", "rsv", "cholera", "mpox"] as const).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPathogen(p)}
-                  className={`px-2 py-1 rounded ${pathogen === p ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "bg-secondary/40 text-muted-foreground hover:text-foreground"}`}
-                >
-                  {p === "sarscov2"
-                    ? "SARS-CoV-2"
-                    : p === "influenza"
-                      ? "Influenza"
-                      : p === "rsv"
-                        ? "RSV"
-                        : p === "cholera"
-                          ? "Cholera"
-                          : "Mpox"}
-                </button>
-              ))}
-            </div>
-          }
-        >
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="envSig" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="oklch(0.78 0.18 200)" stopOpacity={0.6} />
-                    <stop offset="100%" stopColor="oklch(0.78 0.18 200)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.4 0.05 250 / 0.3)" />
-                <XAxis
-                  dataKey="day"
-                  tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }}
-                  interval={6}
-                />
-                <YAxis tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} />
-                <Tooltip
-                  contentStyle={{
-                    background: "oklch(0.22 0.045 250)",
-                    border: "1px solid oklch(0.4 0.05 250)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                />
-                <ReferenceLine
-                  y={35}
-                  stroke="#f5c451"
-                  strokeDasharray="4 4"
-                  label={{
-                    value: "Outbreak baseline",
-                    fill: "#f5c451",
-                    fontSize: 10,
-                    position: "insideTopLeft",
-                  }}
-                />
-                <ReferenceArea
-                  x1={data[data.length - 8].day}
-                  x2={data[data.length - 1].day}
-                  fill="#ff3d6e"
-                  fillOpacity={0.06}
-                />
-                <Area
-                  type="monotone"
-                  dataKey={pathogen}
-                  stroke="oklch(0.78 0.18 200)"
-                  strokeWidth={2}
-                  fill="url(#envSig)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="grid grid-cols-3 gap-3 mt-3 text-xs">
-            <Stat label="Latest" value={`${latest} cp/mL`} color="var(--accent)" />
-            <Stat label="7d peak" value={`${peak} cp/mL`} color="var(--status-warn)" />
-            <Stat
-              label="WoW change"
-              value={`${delta}%`}
-              color={Number(delta) > 0 ? "var(--status-alert)" : "var(--status-ok)"}
-            />
-          </div>
-        </GlassCard>
-
-        <InsightPanel
-          items={[
-            {
-              tag: "Critical",
-              title: "Cholera surge — Kinshasa basin",
-              body: "Composite z-score 4.2 across 3 Kinshasa sites. Predicted clinical signal in 6–9 days; pre-position ORS and chlorine stocks.",
-            },
-            {
-              tag: "High",
-              title: "Mpox clade Ib expanding",
-              body: "Lagos and Kinshasa wastewater both >3σ above baseline. 14-day forecast suggests cross-border spread to Cameroon.",
-            },
-            {
-              tag: "Watch",
-              title: "SARS-CoV-2 JN.1 plateau breaking",
-              body: "Nairobi and Kampala signals rising after 6-week plateau — likely autumn wave initiation.",
-            },
-          ]}
-        />
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-4">
-        <GlassCard
-          className="lg:col-span-2"
-          title="Africa wastewater heatmap"
-          subtitle="412 sentinel sites · click any node for site-level intelligence"
-        >
-          <div
-            className="rounded-xl overflow-hidden border border-border/60 bg-background/30"
-            style={{ height: 460 }}
+      <AuthGate message="Sign in to view environmental surveillance signals.">
+        <div className="grid lg:grid-cols-3 gap-4">
+          <GlassCard
+            className="lg:col-span-2"
+            title="Pathogen signal vs. baseline"
+            subtitle={`8-week wastewater concentration · current ${delta}% week-over-week`}
+            action={
+              <div className="flex flex-wrap gap-1 text-[10px]">
+                {(["sarscov2", "influenza", "rsv", "cholera", "mpox"] as const).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPathogen(p)}
+                    className={`px-2 py-1 rounded ${pathogen === p ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "bg-secondary/40 text-muted-foreground hover:text-foreground"}`}
+                  >
+                    {p === "sarscov2"
+                      ? "SARS-CoV-2"
+                      : p === "influenza"
+                        ? "Influenza"
+                        : p === "rsv"
+                          ? "RSV"
+                          : p === "cholera"
+                            ? "Cholera"
+                            : "Mpox"}
+                  </button>
+                ))}
+              </div>
+            }
           >
-            <Suspense
-              fallback={
-                <div className="h-full grid place-items-center text-xs text-muted-foreground">
-                  Loading geospatial layer…
-                </div>
-              }
-            >
-              <WastewaterHeatmap />
-            </Suspense>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 mt-3 text-[10px] uppercase tracking-wider text-muted-foreground">
-            <span className="font-medium text-foreground">Severity</span>
-            {Object.entries(SEVERITY).map(([k, v]) => (
-              <span key={k} className="flex items-center gap-1.5">
-                <span
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ background: v, boxShadow: `0 0 8px ${v}` }}
-                />
-                {k}
-              </span>
-            ))}
-          </div>
-        </GlassCard>
-
-        <GlassCard
-          title="AI anomaly detector"
-          subtitle="Z-score > 2.0 across rolling 14-day window"
-        >
-          <ul className="space-y-2.5">
-            {ANOMALIES.map((a) => (
-              <li
-                key={a.site}
-                className="rounded-lg border border-border/60 bg-background/30 p-3 hover:border-[color:var(--accent)]/50 transition-colors"
-              >
-                <div className="flex items-start gap-2">
-                  <span
-                    className="mt-0.5 w-2 h-2 rounded-full shrink-0"
-                    style={{
-                      background: SEVERITY[a.severity],
-                      boxShadow: `0 0 6px ${SEVERITY[a.severity]}`,
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="envSig" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="oklch(0.78 0.18 200)" stopOpacity={0.6} />
+                      <stop offset="100%" stopColor="oklch(0.78 0.18 200)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.4 0.05 250 / 0.3)" />
+                  <XAxis
+                    dataKey="day"
+                    tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }}
+                    interval={6}
+                  />
+                  <YAxis tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "oklch(0.22 0.045 250)",
+                      border: "1px solid oklch(0.4 0.05 250)",
+                      borderRadius: 8,
+                      fontSize: 12,
                     }}
                   />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="text-sm font-medium truncate">{a.pathogen}</div>
-                      <div
-                        className="text-[11px] font-mono tabular-nums"
-                        style={{ color: SEVERITY[a.severity] }}
-                      >
-                        z {a.z.toFixed(1)}
+                  <ReferenceLine
+                    y={35}
+                    stroke="#f5c451"
+                    strokeDasharray="4 4"
+                    label={{
+                      value: "Outbreak baseline",
+                      fill: "#f5c451",
+                      fontSize: 10,
+                      position: "insideTopLeft",
+                    }}
+                  />
+                  <ReferenceArea
+                    x1={data[data.length - 8].day}
+                    x2={data[data.length - 1].day}
+                    fill="#ff3d6e"
+                    fillOpacity={0.06}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey={pathogen}
+                    stroke="oklch(0.78 0.18 200)"
+                    strokeWidth={2}
+                    fill="url(#envSig)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid grid-cols-3 gap-3 mt-3 text-xs">
+              <Stat label="Latest" value={`${latest} cp/mL`} color="var(--accent)" />
+              <Stat label="7d peak" value={`${peak} cp/mL`} color="var(--status-warn)" />
+              <Stat
+                label="WoW change"
+                value={`${delta}%`}
+                color={Number(delta) > 0 ? "var(--status-alert)" : "var(--status-ok)"}
+              />
+            </div>
+          </GlassCard>
+
+          <InsightPanel
+            items={[
+              {
+                tag: "Critical",
+                title: "Cholera surge — Kinshasa basin",
+                body: "Composite z-score 4.2 across 3 Kinshasa sites. Predicted clinical signal in 6–9 days; pre-position ORS and chlorine stocks.",
+              },
+              {
+                tag: "High",
+                title: "Mpox clade Ib expanding",
+                body: "Lagos and Kinshasa wastewater both >3σ above baseline. 14-day forecast suggests cross-border spread to Cameroon.",
+              },
+              {
+                tag: "Watch",
+                title: "SARS-CoV-2 JN.1 plateau breaking",
+                body: "Nairobi and Kampala signals rising after 6-week plateau — likely autumn wave initiation.",
+              },
+            ]}
+          />
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-4">
+          <GlassCard
+            className="lg:col-span-2"
+            title="Africa wastewater heatmap"
+            subtitle="412 sentinel sites · click any node for site-level intelligence"
+          >
+            <div
+              className="rounded-xl overflow-hidden border border-border/60 bg-background/30"
+              style={{ height: 460 }}
+            >
+              <Suspense
+                fallback={
+                  <div className="h-full grid place-items-center text-xs text-muted-foreground">
+                    Loading geospatial layer…
+                  </div>
+                }
+              >
+                <WastewaterHeatmap />
+              </Suspense>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 mt-3 text-[10px] uppercase tracking-wider text-muted-foreground">
+              <span className="font-medium text-foreground">Severity</span>
+              {Object.entries(SEVERITY).map(([k, v]) => (
+                <span key={k} className="flex items-center gap-1.5">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ background: v, boxShadow: `0 0 8px ${v}` }}
+                  />
+                  {k}
+                </span>
+              ))}
+            </div>
+          </GlassCard>
+
+          <GlassCard
+            title="AI anomaly detector"
+            subtitle="Z-score > 2.0 across rolling 14-day window"
+          >
+            <ul className="space-y-2.5">
+              {ANOMALIES.map((a) => (
+                <li
+                  key={a.site}
+                  className="rounded-lg border border-border/60 bg-background/30 p-3 hover:border-[color:var(--accent)]/50 transition-colors"
+                >
+                  <div className="flex items-start gap-2">
+                    <span
+                      className="mt-0.5 w-2 h-2 rounded-full shrink-0"
+                      style={{
+                        background: SEVERITY[a.severity],
+                        boxShadow: `0 0 6px ${SEVERITY[a.severity]}`,
+                      }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="text-sm font-medium truncate">{a.pathogen}</div>
+                        <div
+                          className="text-[11px] font-mono tabular-nums"
+                          style={{ color: SEVERITY[a.severity] }}
+                        >
+                          z {a.z.toFixed(1)}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-0.5">
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" /> {a.site} · {a.country}
+                        </span>
+                        <span className="text-[color:var(--status-alert)]">{a.delta}</span>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-0.5">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" /> {a.site} · {a.country}
-                      </span>
-                      <span className="text-[color:var(--status-alert)]">{a.delta}</span>
-                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </GlassCard>
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-4">
-        <GlassCard
-          className="lg:col-span-2"
-          title="Weekly early-warning forecast"
-          subtitle="Composite outbreak risk · 5 weeks history + 2 weeks AI projection"
-        >
-          <div className="h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={WEEKLY} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.4 0.05 250 / 0.3)" />
-                <XAxis dataKey="week" tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} />
-                <YAxis tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} domain={[0, 100]} />
-                <Tooltip
-                  contentStyle={{
-                    background: "oklch(0.22 0.045 250)",
-                    border: "1px solid oklch(0.4 0.05 250)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                />
-                <ReferenceLine
-                  y={75}
-                  stroke="#ff3d6e"
-                  strokeDasharray="4 4"
-                  label={{
-                    value: "Action threshold",
-                    fill: "#ff3d6e",
-                    fontSize: 10,
-                    position: "insideTopRight",
-                  }}
-                />
-                <Bar dataKey="risk" radius={[6, 6, 0, 0]}>
-                  {WEEKLY.map((w, i) => (
-                    <Cell
-                      key={i}
-                      fill={
-                        w.risk >= 75
-                          ? "#ff3d6e"
-                          : w.risk >= 60
-                            ? "#ff8a3d"
-                            : w.risk >= 45
-                              ? "#f5c451"
-                              : "#3ee6a8"
-                      }
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="grid grid-cols-3 gap-3 mt-3 text-xs">
-            <Stat label="This week" value="74" color="var(--status-warn)" />
-            <Stat label="Next week (AI)" value="81" color="var(--status-alert)" />
-            <Stat label="W+2 (AI)" value="86" color="var(--status-alert)" />
-          </div>
-        </GlassCard>
-
-        <GlassCard title="Environmental covariates" subtitle="Climate & infrastructure drivers">
-          <ul className="space-y-3 text-xs">
-            <Covariate
-              icon={Thermometer}
-              label="Surface temp anomaly"
-              value="+1.8°C"
-              color="#ff8a3d"
-              sub="Sahel belt · 30-day mean"
-            />
-            <Covariate
-              icon={Droplet}
-              label="Rainfall (z)"
-              value="+2.3σ"
-              color="#5cb8ff"
-              sub="Central Africa · flood-linked cholera risk"
-            />
-            <Covariate
-              icon={Wind}
-              label="PM2.5 (urban mean)"
-              value="68 µg/m³"
-              color="#f5c451"
-              sub="WHO limit 15 — respiratory load"
-            />
-            <Covariate
-              icon={TrendingUp}
-              label="Mobility index"
-              value="+12%"
-              color="#a78bfa"
-              sub="Inter-country travel vs 2024 baseline"
-            />
-            <Covariate
-              icon={AlertTriangle}
-              label="Sanitation coverage"
-              value="62%"
-              color="#ff3d6e"
-              sub="Sub-Saharan mean — gap fuels enteric outbreaks"
-            />
-          </ul>
-        </GlassCard>
-      </div>
-
-      <GlassCard
-        title="AI anomaly explanations"
-        subtitle="Top contributing features, confidence, and recommended response actions for each flagged signal"
-      >
-        <div className="grid lg:grid-cols-2 gap-3">
-          {DEMO_ANOMALIES.map((a) => (
-            <AnomalyExplanationCard key={a.id} a={a} />
-          ))}
+                </li>
+              ))}
+            </ul>
+          </GlassCard>
         </div>
-      </GlassCard>
+
+        <div className="grid lg:grid-cols-3 gap-4">
+          <GlassCard
+            className="lg:col-span-2"
+            title="Weekly early-warning forecast"
+            subtitle="Composite outbreak risk · 5 weeks history + 2 weeks AI projection"
+          >
+            <div className="h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={WEEKLY} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.4 0.05 250 / 0.3)" />
+                  <XAxis dataKey="week" tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} />
+                  <YAxis tick={{ fill: "oklch(0.7 0.02 220)", fontSize: 10 }} domain={[0, 100]} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "oklch(0.22 0.045 250)",
+                      border: "1px solid oklch(0.4 0.05 250)",
+                      borderRadius: 8,
+                      fontSize: 12,
+                    }}
+                  />
+                  <ReferenceLine
+                    y={75}
+                    stroke="#ff3d6e"
+                    strokeDasharray="4 4"
+                    label={{
+                      value: "Action threshold",
+                      fill: "#ff3d6e",
+                      fontSize: 10,
+                      position: "insideTopRight",
+                    }}
+                  />
+                  <Bar dataKey="risk" radius={[6, 6, 0, 0]}>
+                    {WEEKLY.map((w, i) => (
+                      <Cell
+                        key={i}
+                        fill={
+                          w.risk >= 75
+                            ? "#ff3d6e"
+                            : w.risk >= 60
+                              ? "#ff8a3d"
+                              : w.risk >= 45
+                                ? "#f5c451"
+                                : "#3ee6a8"
+                        }
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid grid-cols-3 gap-3 mt-3 text-xs">
+              <Stat label="This week" value="74" color="var(--status-warn)" />
+              <Stat label="Next week (AI)" value="81" color="var(--status-alert)" />
+              <Stat label="W+2 (AI)" value="86" color="var(--status-alert)" />
+            </div>
+          </GlassCard>
+
+          <GlassCard title="Environmental covariates" subtitle="Climate & infrastructure drivers">
+            <ul className="space-y-3 text-xs">
+              <Covariate
+                icon={Thermometer}
+                label="Surface temp anomaly"
+                value="+1.8°C"
+                color="#ff8a3d"
+                sub="Sahel belt · 30-day mean"
+              />
+              <Covariate
+                icon={Droplet}
+                label="Rainfall (z)"
+                value="+2.3σ"
+                color="#5cb8ff"
+                sub="Central Africa · flood-linked cholera risk"
+              />
+              <Covariate
+                icon={Wind}
+                label="PM2.5 (urban mean)"
+                value="68 µg/m³"
+                color="#f5c451"
+                sub="WHO limit 15 — respiratory load"
+              />
+              <Covariate
+                icon={TrendingUp}
+                label="Mobility index"
+                value="+12%"
+                color="#a78bfa"
+                sub="Inter-country travel vs 2024 baseline"
+              />
+              <Covariate
+                icon={AlertTriangle}
+                label="Sanitation coverage"
+                value="62%"
+                color="#ff3d6e"
+                sub="Sub-Saharan mean — gap fuels enteric outbreaks"
+              />
+            </ul>
+          </GlassCard>
+        </div>
+
+        <GlassCard
+          title="AI anomaly explanations"
+          subtitle="Top contributing features, confidence, and recommended response actions for each flagged signal"
+        >
+          <div className="grid lg:grid-cols-2 gap-3">
+            {DEMO_ANOMALIES.map((a) => (
+              <AnomalyExplanationCard key={a.id} a={a} />
+            ))}
+          </div>
+        </GlassCard>
+      </AuthGate>
     </CommandPage>
   );
 }

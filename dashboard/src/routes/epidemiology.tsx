@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 import {
+  formatLifeGain,
   getLiveCountryTrends,
   getPathogenComparisonStats,
   getResistanceSeries,
@@ -64,7 +65,9 @@ function LifeExpectancyPage() {
     risk: r.riskScore,
     gain: r.predictedLifeGain,
   }));
-  const strongest = [...countries].sort((a, b) => b.predictedLifeGain - a.predictedLifeGain)[0];
+  const strongest = [...countries]
+    .filter((r) => r.predictedLifeGain != null)
+    .sort((a, b) => (b.predictedLifeGain as number) - (a.predictedLifeGain as number))[0];
   const comparisonColumns = [
     { key: "bacterial", label: "Bacterial", stats: bacterialStats, color: "oklch(0.68 0.24 25)" },
     { key: "fungal", label: "Fungal", stats: fungalStats, color: "oklch(0.78 0.18 200)" },
@@ -79,7 +82,7 @@ function LifeExpectancyPage() {
       kpis={[
         {
           label: "Best intervention gain",
-          value: strongest ? `+${strongest.predictedLifeGain.toFixed(2)}y` : "—",
+          value: strongest ? formatLifeGain(strongest.predictedLifeGain) : "—",
           color: "var(--status-ok)",
           sub: strongest?.country,
         },

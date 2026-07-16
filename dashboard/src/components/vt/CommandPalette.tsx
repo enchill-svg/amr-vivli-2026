@@ -42,7 +42,7 @@ const ITEMS: Item[] = [
   { label: "Resistance Explorer", to: "/pathogens", icon: FlaskConical, group: "Explore" },
   { label: "Evolution Explorer", to: "/lineages", icon: Activity, group: "Explore" },
   { label: "Life Expectancy Explorer", to: "/epidemiology", icon: HeartPulse, group: "Explore" },
-  { label: "Intervention Simulator", to: "/policy", icon: GitCompare, group: "Policy" },
+  { label: "Intervention Policy", to: "/policy", icon: GitCompare, group: "Policy" },
   { label: "Funding Gap Explorer", to: "/marketplace", icon: Landmark, group: "Policy" },
   { label: "Machine Learning Insights", to: "/forecasting", icon: Brain, group: "Modeling" },
   { label: "Data Ingestion", to: "/ingest", icon: Upload, group: "Workflow" },

@@ -17,7 +17,8 @@ export type AMRCountryTrend = {
   dominantOrganism: string;
   dominantDrug: string;
   fundingMismatch: number | null;
-  predictedLifeGain: number;
+  predictedLifeGain: number | null;
+  predictedLifeGainSampleCount: number;
   recommendedIntervention: string;
   confidence: number;
   evidenceLevel: string;
@@ -104,7 +105,8 @@ export const demoCountryTrends: AMRCountryTrend[] = [
     dominantOrganism: "Streptococcus pneumoniae",
     dominantDrug: "Penicillin",
     fundingMismatch: 0.35,
-    predictedLifeGain: 0,
+    predictedLifeGain: 0.3,
+    predictedLifeGainSampleCount: 5,
     recommendedIntervention: "See gated policy table",
     confidence: 0.55,
     evidenceLevel: "demo",

@@ -22,6 +22,23 @@ export { mapFundingRows, mapInterventions, mapClusterRows, isUsingPublishedData 
 
 export type FundingByYearPoint = { year: number; bacterial: number; fungal: number };
 
+/** Sign-aware — a real predictedLifeGain can be negative, unlike the old
+ * hardcoded `+{value}y` display. Null (not enough measured interventions) is
+ * always "—", never a fabricated number. */
+export function formatLifeGain(value: number | null): string {
+  if (value == null) return "—";
+  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}y`;
+}
+
+/** Full-sentence variant for captions with room to explain the sparse-sample
+ * gate, e.g. map popups and side panels. */
+export function lifeGainDisplay(value: number | null, sampleCount: number): string {
+  if (value == null) {
+    return `not enough measured interventions yet (${sampleCount} so far)`;
+  }
+  return `${formatLifeGain(value)} (average across ${sampleCount} measured intervention${sampleCount === 1 ? "" : "s"})`;
+}
+
 export async function getLiveCountryTrends(
   pathogenType: PathogenType = "all",
 ): Promise<AMRCountryTrend[]> {
@@ -71,13 +88,18 @@ export async function getResistanceSeries() {
       if (r.pathogenType === "fungal") bucket.fungal.push(r.burden);
     }
   }
-  const avg = (arr: number[]) =>
-    arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
+  const avg = (arr: number[]) => (arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null);
   return [...byYear.keys()]
     .sort((a, b) => a - b)
     .map((year) => {
       const b = byYear.get(year)!;
-      return { year, bacterial: avg(b.bacterial), fungal: avg(b.fungal), life: avg(b.life), n: b.life.length };
+      return {
+        year,
+        bacterial: avg(b.bacterial),
+        fungal: avg(b.fungal),
+        life: avg(b.life),
+        n: b.life.length,
+      };
     });
 }
 
@@ -99,9 +121,7 @@ function pivotFundingByYear(
     if (r.pathogenType === "bacterial") bucket.bacterial += r.amountUsd;
     else if (r.pathogenType === "fungal") bucket.fungal += r.amountUsd;
   }
-  return [...byYear.keys()]
-    .sort((a, b) => a - b)
-    .map((year) => ({ year, ...byYear.get(year)! }));
+  return [...byYear.keys()].sort((a, b) => a - b).map((year) => ({ year, ...byYear.get(year)! }));
 }
 
 /** Real Hub R&D pro-rata totals by start year, pivoted to {year, bacterial, fungal}. */

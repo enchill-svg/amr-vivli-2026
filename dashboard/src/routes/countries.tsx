@@ -18,7 +18,7 @@ import {
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 import { RiskPill, TinyBar } from "@/components/amr/AMRDataCards";
-import { getLiveCountryTrends } from "@/lib/amr-data.functions";
+import { formatLifeGain, getLiveCountryTrends } from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/countries")({
   component: CountriesPage,
@@ -47,8 +47,12 @@ function CountriesPage() {
   const chartRows = rows.slice(0, 10).map((r) => ({
     country: r.iso3,
     risk: r.riskScore,
-    gain: Number((r.predictedLifeGain * 100).toFixed(0)),
+    gain: r.predictedLifeGain == null ? 0 : Number((r.predictedLifeGain * 100).toFixed(0)),
   }));
+  const knownGainRows = rows.filter((r) => r.predictedLifeGain != null);
+  const avgGain = knownGainRows.length
+    ? knownGainRows.reduce((s, r) => s + (r.predictedLifeGain as number), 0) / knownGainRows.length
+    : null;
   const radar = top
     ? [
         { metric: "Risk", value: top.riskScore },
@@ -86,9 +90,7 @@ function CountriesPage() {
         },
         {
           label: "Avg gain",
-          value: rows.length
-            ? `+${(rows.reduce((s, r) => s + r.predictedLifeGain, 0) / rows.length).toFixed(2)}y`
-            : "—",
+          value: formatLifeGain(avgGain),
           color: "var(--status-ok)",
         },
       ]}
@@ -144,8 +146,14 @@ function CountriesPage() {
                     </td>
                     <td className="capitalize">{r.trendLabel}</td>
                     <td>{r.lifeExpectancy.toFixed(1)}y</td>
-                    <td className="text-[color:var(--status-ok)]">
-                      +{r.predictedLifeGain.toFixed(2)}y
+                    <td
+                      className={
+                        r.predictedLifeGain == null
+                          ? "text-muted-foreground"
+                          : "text-[color:var(--status-ok)]"
+                      }
+                    >
+                      {formatLifeGain(r.predictedLifeGain)}
                     </td>
                     <td className="pr-3">
                       <TinyBar value={r.dataQuality * 100} color="var(--accent)" />

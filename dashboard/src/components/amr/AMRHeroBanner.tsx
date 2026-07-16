@@ -81,7 +81,7 @@ export function AMRHeroBanner() {
               to="/policy"
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-4 py-2 text-xs font-medium hover:border-[color:var(--accent)]/60"
             >
-              <Brain className="h-3.5 w-3.5" /> Simulate interventions
+              <Brain className="h-3.5 w-3.5" /> View intervention rankings
             </Link>
             <Link
               to="/reports"

@@ -107,6 +107,32 @@ export async function mapCountryTrends(
     );
   }
 
+  // estimated_le_gain_years is pathogen-type-level only (no country/organism
+  // key), and today's published data has just 2 non-null bacterial samples
+  // (one negative) and 0 fungal samples. Broadcasting a 1-2 sample mean
+  // identically across every country would read as spurious precision, so
+  // require at least 3 measured samples per pathogen type before showing a
+  // number; below that, predictedLifeGain stays null ("not enough data yet")
+  // rather than fabricated or overclaimed.
+  const MIN_INTERVENTION_SAMPLES = 3;
+  const interventionGainSampleCount = new Map<string, number>();
+  const interventionGainSum = new Map<string, number>();
+  for (const row of bundle.interventions) {
+    if (row.estimated_le_gain_years == null) continue;
+    const gain = num(row.estimated_le_gain_years, NaN);
+    if (!Number.isFinite(gain)) continue;
+    const pathogen = str(row.pathogen_type);
+    interventionGainSampleCount.set(pathogen, (interventionGainSampleCount.get(pathogen) ?? 0) + 1);
+    interventionGainSum.set(pathogen, (interventionGainSum.get(pathogen) ?? 0) + gain);
+  }
+  const interventionGainByPathogen = new Map<string, number | null>();
+  for (const [pathogen, count] of interventionGainSampleCount) {
+    interventionGainByPathogen.set(
+      pathogen,
+      count >= MIN_INTERVENTION_SAMPLES ? interventionGainSum.get(pathogen)! / count : null,
+    );
+  }
+
   const rows: AMRCountryTrend[] = [];
   const tables: Array<{ pathogen: "bacterial" | "fungal"; data: Record<string, unknown>[] }> = [
     { pathogen: "bacterial", data: bundle.countryRiskBacterial },
@@ -149,7 +175,8 @@ export async function mapCountryTrends(
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch,
-        predictedLifeGain: 0,
+        predictedLifeGain: interventionGainByPathogen.get(pathogen) ?? null,
+        predictedLifeGainSampleCount: interventionGainSampleCount.get(pathogen) ?? 0,
         recommendedIntervention:
           gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
         confidence: dataQuality,
