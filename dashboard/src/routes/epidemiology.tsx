@@ -4,6 +4,7 @@ import { HeartPulse } from "lucide-react";
 import {
   CartesianGrid,
   ComposedChart,
+  Legend,
   Line,
   ResponsiveContainer,
   Scatter,
@@ -13,12 +14,31 @@ import {
   YAxis,
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { getLiveCountryTrends, getResistanceSeries } from "@/lib/amr-data.functions";
+import {
+  getLiveCountryTrends,
+  getPathogenComparisonStats,
+  getResistanceSeries,
+} from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/epidemiology")({
   component: LifeExpectancyPage,
   head: () => ({ meta: [{ title: "Life Expectancy Explorer — AMR LifeIntel" }] }),
 });
+
+function formatUsd(value: number) {
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${value.toFixed(0)}`;
+}
+
+function StatRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="font-mono text-foreground">{value}</dd>
+    </div>
+  );
+}
 
 function LifeExpectancyPage() {
   const { data: countries = [] } = useQuery({
@@ -29,6 +49,14 @@ function LifeExpectancyPage() {
     queryKey: ["life-series"],
     queryFn: getResistanceSeries,
   });
+  const { data: bacterialStats = null } = useQuery({
+    queryKey: ["pathogen-compare", "bacterial"],
+    queryFn: () => getPathogenComparisonStats("bacterial"),
+  });
+  const { data: fungalStats = null } = useQuery({
+    queryKey: ["pathogen-compare", "fungal"],
+    queryFn: () => getPathogenComparisonStats("fungal"),
+  });
   const scatter = countries.map((r) => ({
     country: r.country,
     resistance: Math.round(r.resistanceRate * 100),
@@ -37,6 +65,10 @@ function LifeExpectancyPage() {
     gain: r.predictedLifeGain,
   }));
   const strongest = [...countries].sort((a, b) => b.predictedLifeGain - a.predictedLifeGain)[0];
+  const comparisonColumns = [
+    { key: "bacterial", label: "Bacterial", stats: bacterialStats, color: "oklch(0.68 0.24 25)" },
+    { key: "fungal", label: "Fungal", stats: fungalStats, color: "oklch(0.78 0.18 200)" },
+  ] as const;
 
   return (
     <CommandPage
@@ -119,19 +151,69 @@ function LifeExpectancyPage() {
                     fontSize: 11,
                   }}
                 />
-                <Line dataKey="life" stroke="oklch(0.78 0.17 155)" strokeWidth={2} dot={false} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Line
+                  dataKey="life"
+                  name="Life expectancy"
+                  stroke="oklch(0.78 0.17 155)"
+                  strokeWidth={2}
+                  dot={false}
+                />
                 <Line
                   dataKey="bacterial"
+                  name="Bacterial burden"
                   stroke="oklch(0.68 0.24 25)"
                   strokeWidth={2}
                   dot={false}
                 />
-                <Line dataKey="fungal" stroke="oklch(0.78 0.18 200)" strokeWidth={2} dot={false} />
+                <Line
+                  dataKey="fungal"
+                  name="Fungal burden"
+                  stroke="oklch(0.78 0.18 200)"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
         </GlassCard>
       </div>
+      <GlassCard
+        title="Bacteria vs. fungi"
+        subtitle="Reporting coverage and R&D funding profile by pathogen type, from the gated country-year panel."
+      >
+        <div className="grid gap-3 md:grid-cols-2">
+          {comparisonColumns.map(({ key, label, stats, color }) => (
+            <div key={key} className="rounded-xl border border-border/60 bg-background/30 p-4">
+              <div className="text-sm font-medium" style={{ color }}>
+                {label}
+              </div>
+              {stats ? (
+                <dl className="mt-3 space-y-2 text-xs">
+                  <StatRow label="Year range" value={`${stats.yearMin}–${stats.yearMax}`} />
+                  <StatRow label="Countries reporting" value={String(stats.countryCount)} />
+                  <StatRow
+                    label="Longest single-country run"
+                    value={stats.longestIso ? `${stats.longestIso} · ${stats.longestN}y` : "—"}
+                  />
+                  <StatRow
+                    label="Peak R&D funding year"
+                    value={`${stats.fundingPeakYear} · ${formatUsd(stats.fundingPeakValue)}`}
+                  />
+                  <StatRow
+                    label="Organisms below quality gate"
+                    value={String(stats.gatedOrganisms.length)}
+                  />
+                </dl>
+              ) : (
+                <p className="mt-3 text-xs italic text-muted-foreground">
+                  Not modeled — insufficient published data.
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </GlassCard>
       <GlassCard
         title="Interpretation guardrails"
         subtitle="The platform is designed for transparent, policy-safe inference."

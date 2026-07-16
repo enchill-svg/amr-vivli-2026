@@ -104,7 +104,7 @@ const NEWS_SOURCES = [
     color: "#34d399",
     time: "1h",
     title: "Continental Genomic Surveillance Compact signed",
-    desc: "32 nations agree to real-time sequence sharing under ViGOR framework.",
+    desc: "32 nations agree to real-time sequence sharing under the AMR Life Expectancy Intelligence framework.",
     topics: ["Genomics", "Africa Focus", "Global"],
   },
 ];
@@ -136,7 +136,7 @@ const AI_ALERTS = [
     country: "Sudan",
     summary:
       "Rainfall anomaly +1.8σ combined with displacement flux raises 14-day risk index to 0.78.",
-    source: "ViGOR Co-Pilot",
+    source: "AMR Life Expectancy Intelligence Co-Pilot",
     time: "31 min ago",
     topics: ["Climate & Health", "Outbreaks", "Africa Focus"],
   },

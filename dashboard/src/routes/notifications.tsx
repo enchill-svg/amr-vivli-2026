@@ -70,7 +70,9 @@ function NotificationPrefsPage() {
     try {
       const raw = localStorage.getItem(STORAGE);
       if (raw) setPrefs({ ...DEFAULTS, ...JSON.parse(raw) });
-    } catch {}
+    } catch {
+      // malformed/missing stored prefs — defaults from useState already apply
+    }
   }, []);
 
   function save() {

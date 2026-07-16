@@ -1,10 +1,16 @@
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter, redirect } from "@tanstack/react-router";
 import { Clock, LogOut, ShieldCheck, Mail } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/hooks/use-auth";
+import { hasSessionCookie } from "@/lib/session-cookie.functions";
 
 export const Route = createFileRoute("/pending")({
+  beforeLoad: async () => {
+    if (!(await hasSessionCookie())) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: PendingPage,
   head: () => ({ meta: [{ title: "Approval pending — AMR Life Expectancy Intelligence" }] }),
 });
@@ -49,7 +55,7 @@ function PendingPage() {
         </h1>
         <p className="text-sm text-white/60 leading-relaxed mb-6">
           {rejected
-            ? "Your AMR Life Expectancy Intelligence research access request was declined. Contact the ViGOR Consortium administrators if you believe this is an error."
+            ? "Your AMR Life Expectancy Intelligence research access request was declined. Contact the AMR Life Expectancy Intelligence administrators if you believe this is an error."
             : suspended
               ? "Your account has been suspended. Please reach out to your administrator for reinstatement."
               : "Thanks for signing up. A super administrator will review your credentials shortly. You'll receive an email as soon as your account is approved."}

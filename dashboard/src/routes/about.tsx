@@ -9,7 +9,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "AMR Life Expectancy Intelligence is the operational dashboard of the ViGOR genomic surveillance consortium.",
+          "AMR Life Expectancy Intelligence is the operational dashboard for the AMR, Life Expectancy, and Intervention Impact project.",
       },
     ],
   }),
@@ -29,11 +29,10 @@ function AboutPage() {
             <span className="text-[color:var(--accent)]">so outbreaks stop being surprises.</span>
           </h1>
           <p className="text-sm text-foreground/80 mt-5 max-w-2xl leading-relaxed">
-            AMR Life Expectancy Intelligence is the operational platform of the{" "}
-            <strong>ViGOR Genomic Research Fellowship</strong> — an integrated wastewater genomics
-            and epidemiological intelligence network covering 47 countries. We sequence what
-            communities shed, in near real-time, so ministries of health get a 14-to-21 day head
-            start on the next outbreak.
+            AMR Life Expectancy Intelligence is the operational platform for an integrated
+            wastewater genomics and epidemiological intelligence network covering 47 countries. We
+            sequence what communities shed, in near real-time, so ministries of health get a
+            14-to-21 day head start on the next outbreak.
           </p>
         </div>
 
@@ -108,9 +107,9 @@ function AboutPage() {
 
         <SectionCard title="Partners">
           <p className="text-sm text-foreground/85">
-            ViGOR works alongside Africa CDC, national public-health institutes (NICD, NPHI Kenya,
-            NCDC Nigeria, IPS Senegal), African bioinformatics hubs (H3ABioNet, KRISP, ACEGID), and
-            community-based sampling teams across the continent.
+            AMR Life Expectancy Intelligence works alongside Africa CDC, national public-health
+            institutes (NICD, NPHI Kenya, NCDC Nigeria, IPS Senegal), African bioinformatics hubs
+            (H3ABioNet, KRISP, ACEGID), and community-based sampling teams across the continent.
           </p>
         </SectionCard>
       </div>

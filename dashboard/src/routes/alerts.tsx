@@ -27,9 +27,9 @@ function RiskMapPage() {
       kpis={[
         {
           label: "Live layers",
-          value: "4",
+          value: "5",
           color: "var(--accent)",
-          sub: "Risk · warning · burden · funding",
+          sub: "Risk · warning · burden · funding · life exp.",
         },
         {
           label: "Signal types",

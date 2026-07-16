@@ -1,0 +1,17 @@
+---
+description: Never credit Claude or Anthropic as a contributor
+alwaysApply: true
+---
+
+# No Claude / Anthropic contributor attribution
+
+Never add Claude, Anthropic, or any AI assistant as a project contributor or co-author.
+
+Forbidden in commits, PRs, README, AUTHORS, team pages, metadata, or docs:
+
+- `Co-Authored-By: Claude …`
+- `Co-Authored-By: …@anthropic.com`
+- “Generated with Claude”, “Assisted by Claude”, or similar credit lines
+- Listing Claude / Anthropic in contributor, team, or acknowledgements lists
+
+Commit messages and PR bodies must credit only human team members the user names, or omit tooling credits entirely.

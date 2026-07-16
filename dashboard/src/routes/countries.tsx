@@ -54,7 +54,10 @@ function CountriesPage() {
         { metric: "Risk", value: top.riskScore },
         { metric: "Warning", value: top.earlyWarningScore },
         { metric: "Resistance", value: top.resistanceRate * 100 },
-        { metric: "Funding gap", value: Math.max(0, top.fundingMismatch * 100) },
+        {
+          metric: "Funding gap",
+          value: top.fundingMismatch == null ? null : Math.abs(top.fundingMismatch) * 100,
+        },
         { metric: "Data quality", value: top.dataQuality * 100 },
         { metric: "Confidence", value: top.confidence * 100 },
       ]
@@ -173,6 +176,7 @@ function CountriesPage() {
                   stroke="oklch(0.78 0.18 200)"
                   fill="oklch(0.78 0.18 200)"
                   fillOpacity={0.25}
+                  connectNulls
                 />
               </RadarChart>
             </ResponsiveContainer>
@@ -181,6 +185,11 @@ function CountriesPage() {
             <div className="rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs leading-relaxed">
               <b>Recommendation:</b> {top.recommendedIntervention}. Evidence level:{" "}
               {top.evidenceLevel}; confidence {Math.round(top.confidence * 100)}%.
+              <div className="mt-1.5 italic text-muted-foreground">
+                {top.fundingMismatch == null
+                  ? `Funding gap not modeled — no Hub R&D data matched to ${top.dominantOrganism}.`
+                  : `Funding gap reflects ${top.dominantOrganism}'s global R&D-vs-burden proxy, not a ${top.country}-specific figure.`}
+              </div>
             </div>
           )}
         </GlassCard>

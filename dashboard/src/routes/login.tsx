@@ -128,7 +128,7 @@ function LoginPage() {
           </h1>
           <p className="text-sm text-white/70 leading-relaxed">
             Genomic surveillance, wastewater intelligence, AI forecasting, and real-time outbreak
-            intelligence — powered by the ViGOR Consortium.
+            intelligence — powered by AMR Life Expectancy Intelligence.
           </p>
 
           <div className="grid grid-cols-4 gap-3 pt-4">
@@ -151,7 +151,8 @@ function LoginPage() {
         </div>
 
         <div className="relative text-[11px] text-white/40">
-          © {new Date().getFullYear()} ViGOR Consortium · Africa CDC · WHO AFRO partners
+          © {new Date().getFullYear()} AMR Life Expectancy Intelligence · Africa CDC · WHO AFRO
+          partners
         </div>
       </div>
 
@@ -271,7 +272,8 @@ function LoginPage() {
             </button>
 
             <p className="text-[11px] text-white/40 mt-6 text-center leading-relaxed">
-              By signing in you agree to ViGOR consortium data-use and research policies.{" "}
+              By signing in you agree to AMR Life Expectancy Intelligence data-use and research
+              policies.{" "}
               <Link to="/about" className="underline hover:text-white/70">
                 Learn more
               </Link>

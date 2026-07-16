@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, Link, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useRouter, redirect } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Users,
@@ -12,8 +12,14 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
+import { hasSessionCookie } from "@/lib/session-cookie.functions";
 
 export const Route = createFileRoute("/admin")({
+  beforeLoad: async () => {
+    if (!(await hasSessionCookie())) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: AdminLayout,
   head: () => ({ meta: [{ title: "Admin — AMR Life Expectancy Intelligence" }] }),
 });
@@ -43,7 +49,8 @@ function AdminLayout() {
           <Shield className="w-8 h-8 text-rose-400 mx-auto mb-3" />
           <h1 className="text-lg font-medium">Restricted area</h1>
           <p className="text-sm text-white/60 mt-2">
-            You need administrator privileges to access the AMR Life Expectancy Intelligence command center.
+            You need administrator privileges to access the AMR Life Expectancy Intelligence command
+            center.
           </p>
           <Link to="/" className="inline-block mt-5 text-cyan-300 text-sm hover:underline">
             ← Back to platform

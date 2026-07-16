@@ -6,7 +6,10 @@ export const Route = createFileRoute("/team")({
   head: () => ({
     meta: [
       { title: "Team — AMR Life Expectancy Intelligence" },
-      { name: "description", content: "The researchers and partners behind the ViGOR consortium." },
+      {
+        name: "description",
+        content: "The researchers and partners behind AMR Life Expectancy Intelligence.",
+      },
     ],
   }),
 });
@@ -46,8 +49,8 @@ function TeamPage() {
       <div className="max-w-4xl mx-auto space-y-5">
         <h1 className="text-3xl font-light tracking-tight">Team</h1>
         <p className="text-sm text-muted-foreground">
-          The ViGOR consortium brings together genomic, computational, and field expertise from
-          across Africa.
+          AMR Life Expectancy Intelligence brings together genomic, computational, and field
+          expertise from across Africa.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {team.map((m) => (

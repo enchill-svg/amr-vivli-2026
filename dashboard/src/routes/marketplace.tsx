@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Landmark } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { getFundingGapRows } from "@/lib/amr-data.functions";
+import { getFundingByYear, getFundingGapRows } from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/marketplace")({
   component: FundingPage,
@@ -11,9 +23,14 @@ export const Route = createFileRoute("/marketplace")({
 });
 
 function FundingPage() {
+  const [view, setView] = useState<"organism" | "year">("organism");
   const { data: fundingRows = [] } = useQuery({
     queryKey: ["funding-gap"],
     queryFn: getFundingGapRows,
+  });
+  const { data: fundingByYear = [] } = useQuery({
+    queryKey: ["funding-by-year"],
+    queryFn: getFundingByYear,
   });
   const underfunded = fundingRows.filter((r) => r.gap < 0).sort((a, b) => a.gap - b.gap);
   const chart = fundingRows.map((r) => ({
@@ -50,31 +67,81 @@ function FundingPage() {
         <GlassCard
           className="xl:col-span-2"
           title="Burden–funding share"
-          subtitle="Negative gap = funding share below burden share."
+          subtitle={
+            view === "organism"
+              ? "Negative gap = funding share below burden share."
+              : "Hub R&D pro-rated totals by project start year, bacterial vs fungal."
+          }
         >
+          <div className="mb-3 flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setView("organism")}
+              className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${view === "organism" ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "border border-border bg-card/60 text-muted-foreground hover:text-foreground"}`}
+            >
+              By organism
+            </button>
+            <button
+              onClick={() => setView("year")}
+              className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${view === "year" ? "bg-[color:var(--accent)] text-[color:var(--accent-foreground)]" : "border border-border bg-card/60 text-muted-foreground hover:text-foreground"}`}
+            >
+              By year
+            </button>
+          </div>
           <div className="h-96">
             <ResponsiveContainer>
-              <BarChart data={chart}>
-                <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
-                <XAxis
-                  dataKey="organism"
-                  stroke="#94a3b8"
-                  fontSize={10}
-                  angle={-20}
-                  height={60}
-                  textAnchor="end"
-                />
-                <YAxis stroke="#94a3b8" fontSize={10} />
-                <Tooltip
-                  contentStyle={{
-                    background: "oklch(0.22 0.04 250)",
-                    border: "1px solid oklch(0.3 0.05 250)",
-                    fontSize: 11,
-                  }}
-                />
-                <Bar dataKey="burden" fill="oklch(0.68 0.24 25)" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="funding" fill="oklch(0.78 0.18 200)" radius={[6, 6, 0, 0]} />
-              </BarChart>
+              {view === "organism" ? (
+                <BarChart data={chart}>
+                  <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
+                  <XAxis
+                    dataKey="organism"
+                    stroke="#94a3b8"
+                    fontSize={10}
+                    angle={-20}
+                    height={60}
+                    textAnchor="end"
+                  />
+                  <YAxis stroke="#94a3b8" fontSize={10} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "oklch(0.22 0.04 250)",
+                      border: "1px solid oklch(0.3 0.05 250)",
+                      fontSize: 11,
+                    }}
+                  />
+                  <Bar dataKey="burden" fill="oklch(0.68 0.24 25)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="funding" fill="oklch(0.78 0.18 200)" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              ) : (
+                <LineChart data={fundingByYear}>
+                  <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
+                  <XAxis dataKey="year" stroke="#94a3b8" fontSize={10} />
+                  <YAxis stroke="#94a3b8" fontSize={10} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "oklch(0.22 0.04 250)",
+                      border: "1px solid oklch(0.3 0.05 250)",
+                      fontSize: 11,
+                    }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Line
+                    type="monotone"
+                    dataKey="bacterial"
+                    name="Bacterial"
+                    stroke="oklch(0.68 0.24 25)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="fungal"
+                    name="Fungal"
+                    stroke="oklch(0.78 0.18 200)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              )}
             </ResponsiveContainer>
           </div>
         </GlassCard>
