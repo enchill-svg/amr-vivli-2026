@@ -1,6 +1,6 @@
 driver,pathogen_type,evidence_status,justice_question,detail,version,date_added
-antimicrobial_overconsumption,bacterial,partial_coverage,Q2,ESAC-Net J01 DDD joined on 21 country-year row(s); Europe-only; not antifungal consumption.,v1,2026-07-14
-health_system_capacity,both,measured,Q2,"Health expenditure % GDP, hospital beds per 1,000, GBD SDI in Stage 5 OLS.",v1,2026-07-14
-vaccination_coverage,bacterial,weak_or_confounded,Q2,Hib/PCV in bacterial OLS; PCV implausible magnitude; Hib non-significant.,v1,2026-07-14
-vaccination_coverage,fungal,not_applicable,Q2,No licensed fungal vaccination analog per Justice Stage 7.,v1,2026-07-14
-hospital_acquired_exposure,both,no_dataset,Q2,Not named in Justice Section 3 external data sources.,v1,2026-07-14
+antimicrobial_overconsumption,bacterial,partial_coverage,Q2,ESAC-Net J01 DDD joined on 21 country-year row(s); Europe-only; not antifungal consumption.,v1,2026-07-16
+health_system_capacity,both,measured,Q2,"Health expenditure % GDP, hospital beds per 1,000, GBD SDI in Stage 5 OLS.",v1,2026-07-16
+vaccination_coverage,bacterial,weak_or_confounded,Q2,Hib/PCV in bacterial OLS; PCV implausible magnitude; Hib non-significant.,v1,2026-07-16
+vaccination_coverage,fungal,not_applicable,Q2,No licensed fungal vaccination analog per Justice Stage 7.,v1,2026-07-16
+hospital_acquired_exposure,both,no_dataset,Q2,Not named in Justice Section 3 external data sources.,v1,2026-07-16

@@ -1,12 +1,12 @@
 {
-  "run_id": "20260714T042315",
+  "run_id": "20260716T151058",
   "pipeline_version": "v1",
   "entrypoint": "run_all.py",
   "status": "passed",
   "deliverables_complete": true,
-  "started_at": "2026-07-14T04:23:15",
-  "finished_at": "2026-07-14T04:37:21",
-  "duration_seconds": 846.0,
+  "started_at": "2026-07-16T15:10:58",
+  "finished_at": "2026-07-16T15:24:51",
+  "duration_seconds": 833.0,
   "halted_at_stage": null,
   "stage_count": 29,
   "phases": [
@@ -21,8 +21,8 @@
           "label": "Country harmonization",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:23:15",
-          "finished_at": "2026-07-14T04:23:57",
+          "started_at": "2026-07-16T15:10:58",
+          "finished_at": "2026-07-16T15:11:34",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step01_country.py"
@@ -32,8 +32,8 @@
           "label": "Date harmonization",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:23:57",
-          "finished_at": "2026-07-14T04:24:37",
+          "started_at": "2026-07-16T15:11:34",
+          "finished_at": "2026-07-16T15:12:09",
           "exit_code": 0,
           "artifact_summary": "Wrote 0 exception row(s) to analysis\\exceptions\\date_parse_exceptions_log_v1.csv",
           "target": "step02_date.py"
@@ -43,8 +43,8 @@
           "label": "Organism harmonization",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:24:37",
-          "finished_at": "2026-07-14T04:24:48",
+          "started_at": "2026-07-16T15:12:09",
+          "finished_at": "2026-07-16T15:12:21",
           "exit_code": 0,
           "artifact_summary": "Wrote 61 row(s) to analysis\\crosswalks\\organism_crosswalk_v1.csv; Wrote 29 row(s) to analysis\\exceptions\\organism_exclusions_log_v1.csv",
           "target": "step03_organism.py"
@@ -54,8 +54,8 @@
           "label": "Drug harmonization",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:24:48",
-          "finished_at": "2026-07-14T04:24:52",
+          "started_at": "2026-07-16T15:12:21",
+          "finished_at": "2026-07-16T15:12:29",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step04_drug.py"
@@ -65,8 +65,8 @@
           "label": "Evaluability flags",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:24:52",
-          "finished_at": "2026-07-14T04:25:02",
+          "started_at": "2026-07-16T15:12:29",
+          "finished_at": "2026-07-16T15:12:39",
           "exit_code": 0,
           "artifact_summary": "Wrote 613 row(s) to analysis\\exceptions\\evaluability_exclusions_log_v1.csv",
           "target": "step06_evaluability.py"
@@ -76,8 +76,8 @@
           "label": "Age harmonization",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:25:02",
-          "finished_at": "2026-07-14T04:25:40",
+          "started_at": "2026-07-16T15:12:39",
+          "finished_at": "2026-07-16T15:13:14",
           "exit_code": 0,
           "artifact_summary": "Wrote 23 row(s) to analysis\\exceptions\\age_sentinel_exclusions_log_v1.csv",
           "target": "step09_age.py"
@@ -87,8 +87,8 @@
           "label": "MIC parsing",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:25:40",
-          "finished_at": "2026-07-14T04:26:24",
+          "started_at": "2026-07-16T15:13:14",
+          "finished_at": "2026-07-16T15:13:55",
           "exit_code": 0,
           "artifact_summary": "Wrote 0 row(s) to analysis\\exceptions\\mic_parse_failures_log_v1.csv; Wrote 113863 row(s) to analysis\\master\\mic_parsed_values_v1.csv; Wrote 128 cohort-drug dilution panel row(s) to analysis\\crosswalks\\soar_drug_dilution_panel_v1.csv",
           "target": "step05_mic.py"
@@ -98,8 +98,8 @@
           "label": "Beta-lactamase bounds",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:26:24",
-          "finished_at": "2026-07-14T04:26:43",
+          "started_at": "2026-07-16T15:13:55",
+          "finished_at": "2026-07-16T15:14:14",
           "exit_code": 0,
           "artifact_summary": "Wrote 339 organism x country x year stratum row(s) to analysis\\bounds\\beta_lactamase_bounds_v1.csv",
           "target": "step08_beta_lactamase_bounds.py"
@@ -109,8 +109,8 @@
           "label": "EUCAST breakpoint tables",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:26:43",
-          "finished_at": "2026-07-14T04:26:55",
+          "started_at": "2026-07-16T15:14:14",
+          "finished_at": "2026-07-16T15:14:26",
           "exit_code": 0,
           "artifact_summary": "Wrote 2654 raw EUCAST breakpoint row(s) across 27 organism sheets and 2 version(s) to analysis\\crosswalks\\eucast_breakpoint_table_v1.csv; Wrote 3 cohort -> EUCAST version row(s) to analysis\\crosswalks\\eucast_cohort_version_map_v1.csv; Wrote 49 canonical-organism -> EUCAST-sheet row(s) (37 matched, 12 genuine coverage gap(s)) to analysis\\crosswalks\\eucast_organism_crosswalk_v1.csv; Wrote 1960 (version, organism, drug) resolution row(s) (466 carry a real applicable S<=/R> value) to analysis\\crosswalks\\eucast_drug_crosswalk_v1.csv",
           "target": "eucast_breakpoints.py"
@@ -120,8 +120,8 @@
           "label": "Resistance classification",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:26:55",
-          "finished_at": "2026-07-14T04:27:30",
+          "started_at": "2026-07-16T15:14:26",
+          "finished_at": "2026-07-16T15:14:59",
           "exit_code": 0,
           "artifact_summary": "Wrote 1749 species x drug summary row(s) to analysis\\bounds\\antifungal_ecv_classification_v1.csv",
           "target": "step07_classification.py"
@@ -131,8 +131,8 @@
           "label": "Master table assembly",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:27:30",
-          "finished_at": "2026-07-14T04:28:51",
+          "started_at": "2026-07-16T15:14:59",
+          "finished_at": "2026-07-16T15:16:11",
           "exit_code": 0,
           "artifact_summary": "Wrote 3 dedup review row(s) to analysis\\exceptions\\dedup_review_log_v1.csv; Wrote 343236 isolate-drug row(s) to analysis\\master\\master_table_v1.csv; Wrote 34787 isolate-level row(s) to analysis\\master\\isolate_registry_v1.csv; Wrote 0 zero-measurement isolate row(s) to analysis\\exceptions\\zero_measurement_isolates_log_v1.csv; Wrote 584 Evaluable=N isolate row(s) to analysis\\exceptions\\evaluable_excluded_from_master_log_v1.csv; Wrote 0 unknown-drug-crosswalk row(s) to analysis\\exceptions\\step10_unknown_drug_crosswalk_log_v1.csv; Wrote 0 swallowed-MIC-parse-failure row(s) to analysis\\exceptions\\step10_swallowed_mic_parse_failures_log_v1.csv",
           "target": "step10_master.py"
@@ -142,8 +142,8 @@
           "label": "Evaluability rates",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:28:51",
-          "finished_at": "2026-07-14T04:29:03",
+          "started_at": "2026-07-16T15:16:11",
+          "finished_at": "2026-07-16T15:16:26",
           "exit_code": 0,
           "artifact_summary": "Wrote 20 drug-level rate-comparison row(s) to analysis\\exceptions\\evaluability_rate_comparison_v1.csv",
           "target": "step06_evaluability_rates.py"
@@ -153,8 +153,8 @@
           "label": "Master table acceptance check",
           "phase_id": "preprocessing",
           "status": "pass",
-          "started_at": "2026-07-14T04:29:03",
-          "finished_at": "2026-07-14T04:29:42",
+          "started_at": "2026-07-16T15:16:26",
+          "finished_at": "2026-07-16T15:17:05",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "pipeline_acceptance_check.py"
@@ -172,8 +172,8 @@
           "label": "Clean ATLAS + PLEA cohorts",
           "phase_id": "integrity",
           "status": "pass",
-          "started_at": "2026-07-14T04:29:42",
-          "finished_at": "2026-07-14T04:30:39",
+          "started_at": "2026-07-16T15:17:05",
+          "finished_at": "2026-07-16T15:17:59",
           "exit_code": 0,
           "artifact_summary": "Wrote 106946 ATLAS Kp row(s) to cleaned\\atlas\\atlas_kp_v1.csv; Wrote 3150 PLEA row(s) to cleaned\\plea\\plea_study_i_v1.csv",
           "target": "step19a_clean_evidence_gate_cohorts.py"
@@ -183,8 +183,8 @@
           "label": "ATLAS bounds + identifiability table",
           "phase_id": "integrity",
           "status": "pass",
-          "started_at": "2026-07-14T04:30:39",
-          "finished_at": "2026-07-14T04:30:46",
+          "started_at": "2026-07-16T15:17:59",
+          "finished_at": "2026-07-16T15:18:03",
           "exit_code": 0,
           "artifact_summary": "Wrote 341 bound row(s) to bounds\\identifiability_bounds_v1.csv",
           "target": "step19_evidence_gate_bounds.py"
@@ -194,8 +194,8 @@
           "label": "PLEA/SOAR sampling validation",
           "phase_id": "integrity",
           "status": "pass",
-          "started_at": "2026-07-14T04:30:46",
-          "finished_at": "2026-07-14T04:33:16",
+          "started_at": "2026-07-16T15:18:03",
+          "finished_at": "2026-07-16T15:20:31",
           "exit_code": 0,
           "artifact_summary": "Wrote 24 validation detail row(s) to bounds\\sampling_validation_v1.csv; Wrote 4 summary row(s) to bounds\\sampling_validation_summary_v1.csv",
           "target": "step20_sampling_validation.py"
@@ -205,8 +205,8 @@
           "label": "Budget allocator",
           "phase_id": "integrity",
           "status": "pass",
-          "started_at": "2026-07-14T04:33:16",
-          "finished_at": "2026-07-14T04:33:19",
+          "started_at": "2026-07-16T15:20:31",
+          "finished_at": "2026-07-16T15:20:36",
           "exit_code": 0,
           "artifact_summary": "Wrote 7 band allocation row(s) to C:\\Users\\enchi\\amr-vivli-2026\\analysis\\bounds\\allocator_recommendations_v1.csv",
           "target": "evidence_gate_core.allocator"
@@ -216,8 +216,8 @@
           "label": "Export validator",
           "phase_id": "integrity",
           "status": "pass",
-          "started_at": "2026-07-14T04:33:19",
-          "finished_at": "2026-07-14T04:33:25",
+          "started_at": "2026-07-16T15:20:36",
+          "finished_at": "2026-07-16T15:20:43",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "evidence_gate_core.export_validator"
@@ -235,8 +235,8 @@
           "label": "Stage 1 \u2014 descriptive profiling",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:33:25",
-          "finished_at": "2026-07-14T04:34:06",
+          "started_at": "2026-07-16T15:20:43",
+          "finished_at": "2026-07-16T15:21:27",
           "exit_code": 0,
           "artifact_summary": "Wrote 9901 bacterial resistance-rate row(s) to bounds/descriptive_bacterial_resistance_v1.csv; Wrote 5141 bacterial resistance-rate-by-drug-class row(s) to bounds/descriptive_bacterial_resistance_by_class_v1.csv; Wrote 21365 fungal susceptibility-rate row(s) (CLSI tier) to bounds/descriptive_fungal_susceptibility_v1.csv.; Wrote 9190 fungal susceptibility-rate-by-drug-class row(s) to bounds/descriptive_fungal_susceptibility_by_class_v1.csv; Wrote 24290 fungal WT-rate row(s) (ECV tier, NOT a susceptibility rate) to bounds/descriptive_fungal_ecv_wt_rate_v1.csv; Wrote 30 canonical_drug -> drug_class mapping(s) to crosswalks/drug_class_crosswalk_v1.csv",
           "target": "step11_descriptive.py"
@@ -246,8 +246,8 @@
           "label": "Stage 2 \u2014 evolutionary layer",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:34:06",
-          "finished_at": "2026-07-14T04:34:33",
+          "started_at": "2026-07-16T15:21:27",
+          "finished_at": "2026-07-16T15:21:53",
           "exit_code": 0,
           "artifact_summary": "Wrote 2082 bacterial (country, organism, drug, dosing_variant, year) distance-to-failure row(s) to bounds/evolutionary_bacterial_distance_v1.csv; Wrote 630 bacterial (country, organism, drug, dosing_variant) Evolutionary Fitness Score row(s) to bounds/evolutionary_bacterial_fitness_score_v1.csv; Wrote 9574 fungal (country, organism, drug, year) distance-to-failure row(s) to bounds/evolutionary_fungal_distance_v1.csv; Wrote 1365 fungal (country, organism, drug) Evolutionary Fitness Score row(s) to bounds/evolutionary_fungal_fitness_score_v1.csv",
           "target": "step12_evolutionary.py"
@@ -257,8 +257,8 @@
           "label": "Stage 3 \u2014 clustering",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:34:33",
-          "finished_at": "2026-07-14T04:35:05",
+          "started_at": "2026-07-16T15:21:53",
+          "finished_at": "2026-07-16T15:22:24",
           "exit_code": 0,
           "artifact_summary": "Wrote 620 bacterial cluster assignment(s) to bounds/cluster_bacterial_assignments_v1.csv; Wrote 1288 fungal cluster assignment(s) to bounds/cluster_fungal_assignments_v1.csv",
           "target": "step13_clustering.py"
@@ -268,8 +268,8 @@
           "label": "Stage 4 \u2014 external data join",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:35:05",
-          "finished_at": "2026-07-14T04:35:38",
+          "started_at": "2026-07-16T15:22:24",
+          "finished_at": "2026-07-16T15:23:00",
           "exit_code": 0,
           "artifact_summary": "Wrote 99 bacterial country-year row(s) to bounds/external_join_bacterial_country_year_v1.csv; Wrote 413 fungal country-year row(s) to bounds/external_join_fungal_country_year_v1.csv",
           "target": "step14_external_join.py"
@@ -279,8 +279,8 @@
           "label": "Stage 5 \u2014 life expectancy association",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:35:38",
-          "finished_at": "2026-07-14T04:35:51",
+          "started_at": "2026-07-16T15:23:00",
+          "finished_at": "2026-07-16T15:23:16",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step15_association.py"
@@ -290,10 +290,10 @@
           "label": "Stage 6 \u2014 R&D alignment",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:35:51",
-          "finished_at": "2026-07-14T04:36:36",
+          "started_at": "2026-07-16T15:23:16",
+          "finished_at": "2026-07-16T15:24:07",
           "exit_code": 0,
-          "artifact_summary": "n/a",
+          "artifact_summary": "Wrote 72 funding-by-year row(s) to funding_by_year_summary_v1.csv",
           "target": "step16_rd_alignment.py"
         },
         {
@@ -301,8 +301,8 @@
           "label": "Stage 7 \u2014 intervention impact",
           "phase_id": "analytics",
           "status": "pass",
-          "started_at": "2026-07-14T04:36:36",
-          "finished_at": "2026-07-14T04:36:57",
+          "started_at": "2026-07-16T15:24:07",
+          "finished_at": "2026-07-16T15:24:19",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step17_intervention.py"
@@ -320,8 +320,8 @@
           "label": "Section 7 deliverables (ungated)",
           "phase_id": "deliverables",
           "status": "pass",
-          "started_at": "2026-07-14T04:36:57",
-          "finished_at": "2026-07-14T04:37:05",
+          "started_at": "2026-07-16T15:24:19",
+          "finished_at": "2026-07-16T15:24:30",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step18_section7_deliverables.py"
@@ -331,11 +331,22 @@
           "label": "Section 7 deliverables (gated)",
           "phase_id": "deliverables",
           "status": "pass",
-          "started_at": "2026-07-14T04:37:05",
-          "finished_at": "2026-07-14T04:37:13",
+          "started_at": "2026-07-16T15:24:30",
+          "finished_at": "2026-07-16T15:24:41",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "step18b_gated_deliverables.py"
+        },
+        {
+          "stage_id": "step18c_gated_country_year_panel",
+          "label": "Section 7 deliverable \u2014 gated country-year LE panel",
+          "phase_id": "deliverables",
+          "status": "pass",
+          "started_at": "2026-07-16T15:24:41",
+          "finished_at": "2026-07-16T15:24:46",
+          "exit_code": 0,
+          "artifact_summary": "Wrote 99 bacterial country-year row(s) to deliverables/country_year_panel_bacterial_gated_v1.csv; Wrote 407 fungal country-year row(s) to deliverables/country_year_panel_fungal_gated_v1.csv",
+          "target": "step18c_gated_country_year_panel.py"
         }
       ]
     },
@@ -350,22 +361,11 @@
           "label": "Figure and output verification",
           "phase_id": "verification",
           "status": "pass",
-          "started_at": "2026-07-14T04:37:13",
-          "finished_at": "2026-07-14T04:37:15",
+          "started_at": "2026-07-16T15:24:46",
+          "finished_at": "2026-07-16T15:24:51",
           "exit_code": 0,
           "artifact_summary": "n/a",
           "target": "scripts/verify_all_figures.py"
-        },
-        {
-          "stage_id": "publish_dashboard_data",
-          "label": "Publish to data/published/",
-          "phase_id": "verification",
-          "status": "pass",
-          "started_at": "2026-07-14T04:37:16",
-          "finished_at": "2026-07-14T04:37:21",
-          "exit_code": 0,
-          "artifact_summary": "Wrote 15 artifact(s) to data\\published",
-          "target": "scripts/publish_dashboard_data.py"
         }
       ]
     }
@@ -440,6 +440,14 @@
     {
       "path": "deliverables/organism_drug_quality_gate_v1.csv",
       "present": true
+    },
+    {
+      "path": "deliverables/country_year_panel_bacterial_gated_v1.csv",
+      "present": true
+    },
+    {
+      "path": "deliverables/country_year_panel_fungal_gated_v1.csv",
+      "present": true
     }
   ],
   "section7_index": {
@@ -508,5 +516,5 @@
       "assumption_or_caveat": "Justice Section 8; plan Part 2.3"
     }
   ],
-  "stage_log_csv": "runs/20260714T042315/pipeline_run_stages_v1.csv"
+  "stage_log_csv": "runs/20260716T151058/pipeline_run_stages_v1.csv"
 }
