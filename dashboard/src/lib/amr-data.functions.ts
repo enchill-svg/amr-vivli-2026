@@ -1,10 +1,17 @@
 import geocodes from "./iso3-geocodes.json";
-import { demoCountryTrends, type AMRCountryTrend, type PathogenType } from "./amr-demo-data";
+import {
+  demoCountryTrends,
+  type AMRCountryTrend,
+  type CountryYearRow,
+  type PathogenType,
+} from "./amr-demo-data";
 import {
   isUsingPublishedData,
   loadDashboardBundle,
   mapClusterRows,
   mapCountryTrends,
+  mapCountryYearPanel,
+  mapFundingByYear,
   mapFundingRows,
   mapInterventions,
   mapPathogenSignals,
@@ -12,6 +19,8 @@ import {
 
 export type { AMRCountryTrend, PathogenType } from "./amr-demo-data";
 export { mapFundingRows, mapInterventions, mapClusterRows, isUsingPublishedData };
+
+export type FundingByYearPoint = { year: number; bacterial: number; fungal: number };
 
 export async function getLiveCountryTrends(
   pathogenType: PathogenType = "all",
@@ -44,29 +53,126 @@ export async function getClusterTypology() {
   return mapClusterRows();
 }
 
+/**
+ * Real per-year global average (unweighted mean across whatever countries
+ * reported that year) from the gated country-year panel. Gaps — a year or
+ * pathogen type with no reporting countries — come back as null, never a
+ * fabricated/interpolated value.
+ */
 export async function getResistanceSeries() {
-  const countries = await getLiveCountryTrends("all");
-  const year =
-    countries.length > 0
-      ? Math.max(...countries.map((c) => c.latestYear))
-      : new Date().getFullYear() - 1;
-  if (!countries.length) {
-    return [{ year, bacterial: 0, fungal: 0, life: 0 }];
+  const rows = await mapCountryYearPanel();
+  const byYear = new Map<number, { bacterial: number[]; fungal: number[]; life: number[] }>();
+  for (const r of rows) {
+    if (!byYear.has(r.year)) byYear.set(r.year, { bacterial: [], fungal: [], life: [] });
+    const bucket = byYear.get(r.year)!;
+    bucket.life.push(r.lifeExpectancy);
+    if (r.burden != null) {
+      if (r.pathogenType === "bacterial") bucket.bacterial.push(r.burden);
+      if (r.pathogenType === "fungal") bucket.fungal.push(r.burden);
+    }
   }
-  const bacterial = countries.filter((c) => c.pathogenType === "bacterial");
-  const fungal = countries.filter((c) => c.pathogenType === "fungal");
-  const avg = (arr: AMRCountryTrend[]) =>
-    arr.length ? arr.reduce((s, c) => s + c.resistanceRate, 0) / arr.length : 0;
-  const avgLife = (arr: AMRCountryTrend[]) =>
-    arr.length ? arr.reduce((s, c) => s + c.lifeExpectancy, 0) / arr.length : 0;
-  return [
-    {
-      year,
-      bacterial: avg(bacterial),
-      fungal: avg(fungal),
-      life: avgLife([...bacterial, ...fungal]),
-    },
+  const avg = (arr: number[]) =>
+    arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : null;
+  return [...byYear.keys()]
+    .sort((a, b) => a - b)
+    .map((year) => {
+      const b = byYear.get(year)!;
+      return { year, bacterial: avg(b.bacterial), fungal: avg(b.fungal), life: avg(b.life), n: b.life.length };
+    });
+}
+
+export async function getCountryYearPanel(
+  pathogenType: PathogenType = "all",
+): Promise<CountryYearRow[]> {
+  const rows = await mapCountryYearPanel();
+  if (pathogenType === "all") return rows;
+  return rows.filter((r) => r.pathogenType === pathogenType);
+}
+
+function pivotFundingByYear(
+  rows: Array<{ year: number; pathogenType: string; amountUsd: number }>,
+): FundingByYearPoint[] {
+  const byYear = new Map<number, { bacterial: number; fungal: number }>();
+  for (const r of rows) {
+    if (!byYear.has(r.year)) byYear.set(r.year, { bacterial: 0, fungal: 0 });
+    const bucket = byYear.get(r.year)!;
+    if (r.pathogenType === "bacterial") bucket.bacterial += r.amountUsd;
+    else if (r.pathogenType === "fungal") bucket.fungal += r.amountUsd;
+  }
+  return [...byYear.keys()]
+    .sort((a, b) => a - b)
+    .map((year) => ({ year, ...byYear.get(year)! }));
+}
+
+/** Real Hub R&D pro-rata totals by start year, pivoted to {year, bacterial, fungal}. */
+export async function getFundingByYear(): Promise<FundingByYearPoint[]> {
+  const rows = await mapFundingByYear();
+  return pivotFundingByYear(rows);
+}
+
+export async function getGatedOrganisms(): Promise<Record<"bacterial" | "fungal", string[]>> {
+  const bundle = await loadDashboardBundle();
+  const result: Record<"bacterial" | "fungal", string[]> = { bacterial: [], fungal: [] };
+  if (!bundle) return result;
+  const tables: Array<["bacterial" | "fungal", Record<string, unknown>[]]> = [
+    ["bacterial", bundle.clusterTypologyBacterial],
+    ["fungal", bundle.clusterTypologyFungal],
   ];
+  for (const [pathogenType, table] of tables) {
+    const set = new Set<string>();
+    for (const row of table) {
+      if (String(row.quality_gate ?? "") !== "pass") {
+        set.add(String(row.canonical_organism ?? ""));
+      }
+    }
+    result[pathogenType] = [...set];
+  }
+  return result;
+}
+
+export type PathogenComparisonStats = {
+  yearMin: number;
+  yearMax: number;
+  countryCount: number;
+  longestIso: string | null;
+  longestN: number;
+  fundingPeakYear: number;
+  fundingPeakValue: number;
+  gatedOrganisms: string[];
+};
+
+export async function getPathogenComparisonStats(
+  pathogenType: "bacterial" | "fungal",
+): Promise<PathogenComparisonStats | null> {
+  const rows = await getCountryYearPanel(pathogenType);
+  const fundingByYear = await getFundingByYear();
+  const gatedOrganisms = await getGatedOrganisms();
+  if (!rows.length || !fundingByYear.length) return null;
+
+  const years = rows.map((r) => r.year);
+  const countries = new Set(rows.map((r) => r.iso3));
+  const counts = new Map<string, number>();
+  for (const r of rows) counts.set(r.iso3, (counts.get(r.iso3) ?? 0) + 1);
+  let longestIso: string | null = null;
+  let longestN = 0;
+  for (const [iso, n] of counts) {
+    if (n > longestN) {
+      longestN = n;
+      longestIso = iso;
+    }
+  }
+  const peak = fundingByYear.reduce((a, b) => (b[pathogenType] > a[pathogenType] ? b : a));
+
+  return {
+    yearMin: Math.min(...years),
+    yearMax: Math.max(...years),
+    countryCount: countries.size,
+    longestIso,
+    longestN,
+    fundingPeakYear: peak.year,
+    fundingPeakValue: peak[pathogenType],
+    gatedOrganisms: gatedOrganisms[pathogenType] ?? [],
+  };
 }
 
 export async function getExecutiveKpis() {
@@ -80,6 +186,8 @@ export async function getExecutiveKpis() {
     countries.length > 0
       ? countries.reduce((s, c) => s + c.resistanceRate, 0) / countries.length
       : 0;
+  const avgRiskScore =
+    countries.length > 0 ? countries.reduce((s, c) => s + c.riskScore, 0) / countries.length : 0;
   const funding = await mapFundingRows();
   const maxGap = funding.length ? Math.max(...funding.map((f) => Math.abs(f.gap))) : 0;
   const summary = bundle?.pipelineSummary;
@@ -95,6 +203,7 @@ export async function getExecutiveKpis() {
     highRisk,
     rising,
     avgResistance,
+    avgRiskScore,
     avgLifeGain,
     fundingGap: Math.round(maxGap * 100),
     isolates,

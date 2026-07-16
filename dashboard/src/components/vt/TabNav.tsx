@@ -7,7 +7,6 @@ import {
   Dna,
   FileText,
   FlaskConical,
-  GitCompare,
   Globe2,
   HeartPulse,
   LineChart,
@@ -22,7 +21,6 @@ const tabs = [
   { to: "/pathogens", icon: FlaskConical, label: "Resistance" },
   { to: "/lineages", icon: Dna, label: "Evolution" },
   { to: "/epidemiology", icon: HeartPulse, label: "Life Exp." },
-  { to: "/policy", icon: GitCompare, label: "Simulator" },
   { to: "/marketplace", icon: LineChart, label: "Funding" },
   { to: "/forecasting", icon: Brain, label: "ML" },
   { to: "/ingest", icon: Upload, label: "Ingest" },
@@ -33,7 +31,7 @@ const tabs = [
 export function TabNav() {
   return (
     <nav className="px-6 pb-4">
-      <div className="vt-glass grid grid-cols-4 gap-1 rounded-2xl p-1.5 md:grid-cols-12">
+      <div className="vt-glass grid grid-cols-4 gap-1 rounded-2xl p-1.5 md:grid-cols-11">
         {tabs.map((t) => (
           <Link
             key={t.to}

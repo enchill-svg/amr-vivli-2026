@@ -33,16 +33,12 @@ Live dashboard views + reports + AI assistant
 - Recharts
 - Leaflet
 
-## Analytical database
+## Analytical data
 
-- Supabase/PostgreSQL in production
-- The earlier platform backend can also load the same analytical model into PostgreSQL, DuckDB or SQLite.
-
-## Live views
-
-- `v_live_country_trends`: country-level risk, burden, trajectory, life expectancy and intervention fields.
-- `v_live_pathogen_signals`: organism–drug signal table for resistance and evolutionary risk.
+- The Python pipeline in `analysis/` publishes `dashboard_bundle_v1.json` to `data/published/` and syncs it into `dashboard/public/data/published/`.
+- The frontend fetches that static bundle directly (`dashboard/src/lib/published-data.ts`, `BUNDLE_URL = "/data/published/dashboard_bundle_v1.json"`) — there is no live database query in the AMR data path. Supabase/PostgreSQL is used elsewhere in the app for authentication and admin tooling only.
+- Bundle keys include `countryRiskBacterial`/`countryRiskFungal` (country-level risk, burden, trajectory, life expectancy fields), `interventions`, `fundingGap`, and other Stage 7 deliverables — see `DashboardBundle` in `published-data.ts` for the full shape.
 
 ## AI assistant
 
-The assistant route is designed for tool-calling against the analytical views. It separates observed evidence from model estimates and should always surface uncertainty.
+The assistant route is designed for tool-calling against the published analytical data. It separates observed evidence from model estimates and should always surface uncertainty.

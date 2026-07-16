@@ -23,11 +23,12 @@ export function AMRHeroBanner() {
     highRisk: 0,
     rising: 0,
     avgResistance: 0,
+    avgRiskScore: 0,
     avgLifeGain: 0,
     fundingGap: 0,
     isolates: 0,
   };
-  const platformRisk = Math.min(98, Math.round(42 + kpis.highRisk * 5 + kpis.rising * 1.2));
+  const platformRisk = Math.round(kpis.avgRiskScore);
   const color =
     platformRisk >= 80
       ? "var(--status-alert)"
@@ -133,8 +134,8 @@ export function AMRHeroBanner() {
                 : "Monitored"}
           </div>
           <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
-            Combines resistance prevalence, MIC drift, funding mismatch, data quality, and predicted
-            life-expectancy gain.
+            Equal-weight average of resistance burden, evolutionary trajectory, and health-system
+            capacity percentiles, across all countries.
           </p>
           <div className="mt-4 rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs">
             <b>Best current lever:</b> diagnostics + stewardship in high-trajectory countries.

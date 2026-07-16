@@ -63,6 +63,7 @@ POST_PREPROCESSING_STAGES: tuple[PipelineStage, ...] = (
     PipelineStage("step17_intervention", "Stage 7 — intervention impact", "analytics", "script", "step17_intervention.py"),
     PipelineStage("step18_section7_deliverables", "Section 7 deliverables (ungated)", "deliverables", "script", "step18_section7_deliverables.py"),
     PipelineStage("step18b_gated_deliverables", "Section 7 deliverables (gated)", "deliverables", "script", "step18b_gated_deliverables.py"),
+    PipelineStage("step18c_gated_country_year_panel", "Section 7 deliverable — gated country-year LE panel", "deliverables", "script", "step18c_gated_country_year_panel.py"),
     PipelineStage("verify_all_figures", "Figure and output verification", "verification", "script", "scripts/verify_all_figures.py"),
     PipelineStage("publish_dashboard_data", "Publish to data/published/", "verification", "script", "scripts/publish_dashboard_data.py"),
 )
@@ -88,6 +89,8 @@ GATED_DELIVERABLE_FILES: tuple[str, ...] = (
     "deliverables/intervention_recommendations_ranked_gated_v1.csv",
     "deliverables/gating_comparison_v1.csv",
     "deliverables/organism_drug_quality_gate_v1.csv",
+    "deliverables/country_year_panel_bacterial_gated_v1.csv",
+    "deliverables/country_year_panel_fungal_gated_v1.csv",
 )
 
 PHASE_BY_ID = {phase.phase_id: phase for phase in PHASES}

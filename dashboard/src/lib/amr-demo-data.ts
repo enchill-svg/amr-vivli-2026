@@ -16,7 +16,7 @@ export type AMRCountryTrend = {
   lifeExpectancy: number;
   dominantOrganism: string;
   dominantDrug: string;
-  fundingMismatch: number;
+  fundingMismatch: number | null;
   predictedLifeGain: number;
   recommendedIntervention: string;
   confidence: number;
@@ -70,6 +70,21 @@ export type ClusterRow = {
   action: string;
   risk: number;
   qualityGate?: string;
+};
+
+export type CountryYearRow = {
+  pathogenType: "bacterial" | "fungal";
+  iso3: string;
+  year: number;
+  lifeExpectancy: number;
+  burden: number | null;
+  qualityGate: string;
+};
+
+export type FundingByYearRow = {
+  year: number;
+  pathogenType: string;
+  amountUsd: number;
 };
 
 /** Minimal demo fallback when published bundle is unavailable (dev only). */

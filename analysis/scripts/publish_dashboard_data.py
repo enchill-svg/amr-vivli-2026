@@ -26,6 +26,7 @@ PUBLIC_DELIVERABLE_GLOBS = [
     "*_gated_v1.csv",
     "funding_gap_summary_v1.csv",
     "hub_funding_composition_summary_v1.csv",
+    "funding_by_year_summary_v1.csv",
     "gating_comparison_v1.csv",
     "identifiability_ledger_v1.csv",
     "q2_driver_evidence_summary_v1.csv",
@@ -214,6 +215,9 @@ def build_dashboard_bundle() -> dict:
         "q2DriverSummary": _read_csv(PUBLISHED / "q2_driver_evidence_summary_v1.csv"),
         "associationSensitivity": _read_csv(PUBLISHED / "association_sensitivity_manifest_v1.csv"),
         "deliverablesIndex": _read_csv(PUBLISHED / "section7_deliverables_index_v1.csv"),
+        "countryYearBacterial": _read_csv(PUBLISHED / "country_year_panel_bacterial_gated_v1.csv"),
+        "countryYearFungal": _read_csv(PUBLISHED / "country_year_panel_fungal_gated_v1.csv"),
+        "fundingByYear": _read_csv(PUBLISHED / "funding_by_year_summary_v1.csv"),
     }
 
 

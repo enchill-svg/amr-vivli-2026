@@ -19,16 +19,22 @@ import {
   ShieldCheck,
   TrendingUp,
 } from "lucide-react";
-import { getLiveCountryTrends } from "@/lib/amr-data.functions";
-import type { AMRCountryTrend, PathogenType } from "@/lib/amr-demo-data";
+import { getCountryYearPanel, getLiveCountryTrends } from "@/lib/amr-data.functions";
+import type { AMRCountryTrend, CountryYearRow, PathogenType } from "@/lib/amr-demo-data";
 
-type MapMetric = "riskScore" | "earlyWarningScore" | "resistanceRate" | "fundingMismatch";
+type MapMetric =
+  | "riskScore"
+  | "earlyWarningScore"
+  | "resistanceRate"
+  | "fundingMismatch"
+  | "lifeExpectancy";
 
 const metricLabels: Record<MapMetric, string> = {
   riskScore: "Country risk",
   earlyWarningScore: "Early warning",
   resistanceRate: "Resistance burden",
   fundingMismatch: "Funding gap",
+  lifeExpectancy: "Life expectancy",
 };
 
 function severityColor(value: number) {
@@ -38,10 +44,64 @@ function severityColor(value: number) {
   return "#3ee6a8";
 }
 
-function metricValue(row: AMRCountryTrend, metric: MapMetric) {
+/** Inverted scale — unlike the other (higher-is-worse) metrics, a low life
+ * expectancy is the hotspot. */
+function lifeExpectancyColor(value: number) {
+  if (value < 55) return "#ff3d6e";
+  if (value < 65) return "#ff8a3d";
+  if (value < 75) return "#f5c451";
+  return "#3ee6a8";
+}
+
+function colorForMetric(metric: MapMetric, value: number) {
+  return metric === "lifeExpectancy" ? lifeExpectancyColor(value) : severityColor(value);
+}
+
+/** 0–1 "badness" used for heat-layer intensity and marker radius. For the
+ * higher-is-worse metrics this is just value/100 (unchanged from before);
+ * life expectancy is normalized over a plausible 40–85y band and inverted. */
+function metricIntensity(metric: MapMetric, value: number): number {
+  if (metric === "lifeExpectancy") {
+    const clamped = Math.min(85, Math.max(40, value));
+    return Math.min(1, Math.max(0, (85 - clamped) / 45));
+  }
+  return Math.min(1, Math.max(0, value / 100));
+}
+
+function yearKey(pathogenType: string, iso3: string, year: number) {
+  return `${pathogenType}:${iso3}:${year}`;
+}
+
+function metricValue(
+  row: AMRCountryTrend,
+  metric: MapMetric,
+  yearCtx: { year: number | null; yearIndex: Map<string, CountryYearRow> },
+): number | null {
   if (metric === "resistanceRate") return row.resistanceRate * 100;
-  if (metric === "fundingMismatch") return Math.max(0, row.fundingMismatch * 100);
+  if (metric === "fundingMismatch")
+    return row.fundingMismatch == null ? null : Math.abs(row.fundingMismatch) * 100;
+  if (metric === "lifeExpectancy") {
+    if (yearCtx.year == null) return null;
+    const hit = yearCtx.yearIndex.get(yearKey(row.pathogenType, row.iso3, yearCtx.year));
+    return hit ? hit.lifeExpectancy : null;
+  }
   return row[metric];
+}
+
+function coordKey(row: AMRCountryTrend) {
+  return `${row.latitude},${row.longitude}`;
+}
+
+/** Deterministic small offset so a country present in both the bacterial and
+ * fungal tables (same geocoded coordinate) doesn't render two markers stacked
+ * exactly on top of each other. */
+function jitteredPosition(row: AMRCountryTrend, group: AMRCountryTrend[]): [number, number] {
+  if (group.length <= 1) return [row.latitude, row.longitude];
+  const ordered = [...group].sort((a, b) => a.pathogenType.localeCompare(b.pathogenType));
+  const index = ordered.indexOf(row);
+  const angle = (2 * Math.PI * index) / ordered.length;
+  const offsetDeg = 0.6;
+  return [row.latitude + offsetDeg * Math.sin(angle), row.longitude + offsetDeg * Math.cos(angle)];
 }
 
 function trendIcon(label: AMRCountryTrend["trendLabel"]) {
@@ -110,23 +170,75 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
     refetchInterval: 60_000,
   });
 
+  const { data: yearRows = [] } = useQuery({
+    queryKey: ["amr-country-year-panel", pathogenType],
+    queryFn: () => getCountryYearPanel(pathogenType),
+    refetchInterval: 60_000,
+  });
+
+  const yearIndex = useMemo(() => {
+    const map = new Map<string, CountryYearRow>();
+    for (const row of yearRows) map.set(yearKey(row.pathogenType, row.iso3, row.year), row);
+    return map;
+  }, [yearRows]);
+
+  const yearBounds = useMemo(() => {
+    if (!yearRows.length) return null;
+    let min = Infinity;
+    let max = -Infinity;
+    for (const row of yearRows) {
+      if (row.year < min) min = row.year;
+      if (row.year > max) max = row.year;
+    }
+    return { min, max };
+  }, [yearRows]);
+
+  const [yearOverride, setYearOverride] = useState<number | null>(null);
+  useEffect(() => {
+    setYearOverride(null);
+  }, [pathogenType]);
+  const year = yearOverride ?? yearBounds?.max ?? null;
+  const yearCtx = useMemo(() => ({ year, yearIndex }), [year, yearIndex]);
+
   const sorted = useMemo(
-    () => [...data].sort((a, b) => metricValue(b, metric) - metricValue(a, metric)),
-    [data, metric],
+    () =>
+      [...data].sort((a, b) => {
+        const av = metricValue(a, metric, yearCtx);
+        const bv = metricValue(b, metric, yearCtx);
+        if (av == null && bv == null) return 0;
+        if (av == null) return 1;
+        if (bv == null) return -1;
+        return metric === "lifeExpectancy" ? av - bv : bv - av;
+      }),
+    [data, metric, yearCtx],
   );
   const hotspots = sorted.slice(0, 5);
   const rising = data.filter(
     (row) => row.trendLabel === "surging" || row.trendLabel === "rising",
   ).length;
   const highRisk = data.filter((row) => row.riskScore >= 80).length;
-  const heatPoints = data.map(
-    (row) =>
-      [row.latitude, row.longitude, Math.min(1, metricValue(row, metric) / 100)] as [
-        number,
-        number,
-        number,
-      ],
-  );
+  const heatPoints = data
+    .map((row) => {
+      const value = metricValue(row, metric, yearCtx);
+      return value == null
+        ? null
+        : ([row.latitude, row.longitude, metricIntensity(metric, value)] as [
+            number,
+            number,
+            number,
+          ]);
+    })
+    .filter((point): point is [number, number, number] => point !== null);
+  const coordGroups = useMemo(() => {
+    const groups = new Map<string, AMRCountryTrend[]>();
+    for (const row of data) {
+      const key = coordKey(row);
+      const group = groups.get(key);
+      if (group) group.push(row);
+      else groups.set(key, [row]);
+    }
+    return groups;
+  }, [data]);
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl vt-glass vt-scanline">
@@ -186,6 +298,33 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
             </button>
           ))}
         </div>
+
+        {metric === "lifeExpectancy" &&
+          (yearBounds ? (
+            <div className="mt-3 rounded-lg border border-border/60 bg-card/40 p-2">
+              <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                <span className="uppercase tracking-wider">Year</span>
+                <span className="font-mono text-[color:var(--accent)]">{year}</span>
+              </div>
+              <input
+                type="range"
+                min={yearBounds.min}
+                max={yearBounds.max}
+                step={1}
+                value={year ?? yearBounds.max}
+                onChange={(e) => setYearOverride(Number(e.target.value))}
+                className="mt-1.5 w-full accent-[color:var(--accent)]"
+              />
+              <div className="mt-0.5 flex justify-between text-[9px] text-muted-foreground">
+                <span>{yearBounds.min}</span>
+                <span>{yearBounds.max}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 text-[10px] italic text-muted-foreground">
+              Loading year data…
+            </div>
+          ))}
       </div>
 
       {!compact && (
@@ -245,12 +384,28 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
         <LegendItem color="#ff8a3d" label="High" />
         <LegendItem color="#f5c451" label="Moderate" />
         <LegendItem color="#3ee6a8" label="Lower risk" />
+        {metric === "lifeExpectancy" && (
+          <div className="mt-1 text-[10px] italic text-muted-foreground">
+            Scale inverted for this metric — red = lowest life expectancy
+          </div>
+        )}
         <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
           <span
             className="h-2.5 w-2.5 rounded-full border border-dashed"
             style={{ borderColor: "var(--status-warn)" }}
           />
           Dashed = gated (bounds only / withheld)
+        </div>
+        <div className="mt-1 flex items-center gap-2 text-[10px] text-muted-foreground">
+          <span
+            className="h-2.5 w-2.5 rounded-full border border-dotted"
+            style={{ borderColor: "var(--muted-foreground)" }}
+          />
+          {metric === "lifeExpectancy"
+            ? "Dotted = no life-expectancy data for the selected year"
+            : metric === "fundingMismatch"
+              ? "Dotted = funding gap not modeled (organism-level proxy, no match)"
+              : "Dotted = metric not modeled for this country"}
         </div>
         <div className="mt-2 border-t border-border/60 pt-2 text-[10px] text-muted-foreground">
           Refresh: {isFetching ? "syncing…" : "60s"}
@@ -273,25 +428,29 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
         <MapAutoFit rows={data} />
         <HeatLayer points={heatPoints} />
         {data.map((row) => {
-          const value = metricValue(row, metric);
-          const color = severityColor(value);
-          const radius = Math.max(8, Math.min(28, 8 + value / 4));
+          const value = metricValue(row, metric, yearCtx);
+          const notModeled = value == null;
+          const color = notModeled ? "var(--muted-foreground)" : colorForMetric(metric, value);
+          const radius = notModeled
+            ? 8
+            : Math.max(8, Math.min(28, 8 + metricIntensity(metric, value) * 25));
           const withheld = row.qualityGate === "withhold";
           const gated = withheld || row.qualityGate === "bounds_only";
           const gateColor = withheld ? "var(--status-alert)" : "var(--status-warn)";
           const gateLabel = withheld ? "Withheld" : "Bounds only";
+          const position = jitteredPosition(row, coordGroups.get(coordKey(row)) ?? [row]);
           return (
             <CircleMarker
-              key={`${row.iso3}-${row.pathogenType}-${metric}`}
-              center={[row.latitude, row.longitude]}
+              key={`${row.iso3}-${row.pathogenType}-${metric}-${year ?? ""}`}
+              center={position}
               radius={radius}
               pathOptions={{
                 color,
                 fillColor: color,
-                fillOpacity: withheld ? 0.18 : gated ? 0.28 : 0.45,
-                opacity: 0.95,
+                fillOpacity: notModeled ? 0.12 : withheld ? 0.18 : gated ? 0.28 : 0.45,
+                opacity: notModeled ? 0.55 : 0.95,
                 weight: selected?.iso3 === row.iso3 ? 3 : 1.5,
-                dashArray: gated ? "4 3" : undefined,
+                dashArray: notModeled ? "1 4" : gated ? "4 3" : undefined,
               }}
               eventHandlers={{ click: () => setSelected(row) }}
               className={row.trendLabel === "surging" ? "vt-pulse" : undefined}
@@ -404,23 +563,43 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
               <span className="text-muted-foreground">Funding mismatch</span>
               <span
                 className={
-                  selected.fundingMismatch > 0.5
-                    ? "text-[color:var(--status-alert)]"
-                    : "text-[color:var(--status-ok)]"
+                  selected.fundingMismatch == null
+                    ? "text-muted-foreground"
+                    : selected.fundingMismatch > 0.5
+                      ? "text-[color:var(--status-alert)]"
+                      : "text-[color:var(--status-ok)]"
                 }
               >
-                {formatPercent(Math.abs(selected.fundingMismatch))}
+                {selected.fundingMismatch == null
+                  ? "Not modeled"
+                  : formatPercent(Math.abs(selected.fundingMismatch))}
               </span>
             </div>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
               <div
                 className="h-full rounded-full"
-                style={{
-                  width: `${Math.min(100, Math.abs(selected.fundingMismatch) * 100)}%`,
-                  background:
-                    selected.fundingMismatch > 0.5 ? "var(--status-alert)" : "var(--status-ok)",
-                }}
+                style={
+                  selected.fundingMismatch == null
+                    ? {
+                        width: "100%",
+                        opacity: 0.35,
+                        background:
+                          "repeating-linear-gradient(45deg, var(--muted-foreground), var(--muted-foreground) 4px, transparent 4px, transparent 8px)",
+                      }
+                    : {
+                        width: `${Math.min(100, Math.abs(selected.fundingMismatch) * 100)}%`,
+                        background:
+                          selected.fundingMismatch > 0.5
+                            ? "var(--status-alert)"
+                            : "var(--status-ok)",
+                      }
+                }
               />
+            </div>
+            <div className="mt-1.5 text-[10px] italic text-muted-foreground">
+              {selected.fundingMismatch == null
+                ? `Not modeled — no Hub R&D data matched to ${selected.dominantOrganism}.`
+                : `Proxy: ${selected.dominantOrganism}'s global R&D-vs-burden gap — organism-level, not country-specific.`}
             </div>
           </div>
           <div className="mt-3 rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs leading-relaxed">

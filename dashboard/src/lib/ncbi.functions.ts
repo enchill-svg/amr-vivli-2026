@@ -3,6 +3,18 @@ import { z } from "zod";
 
 const NCBI_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 
+type NcbiEsummaryRecord = {
+  uid?: string;
+  accessionversion?: string;
+  caption?: string;
+  title?: string;
+  organism?: string;
+  slen?: string | number;
+  updatedate?: string;
+  source?: string;
+  fulljournalname?: string;
+};
+
 function withKey(url: string) {
   const key = process.env.NCBI_API_KEY;
   return key ? `${url}&api_key=${key}` : url;
@@ -47,12 +59,12 @@ export const ncbiSearch = createServerFn({ method: "POST" })
     if (!esumRes.ok) {
       return { ids, summaries: [], error: `NCBI esummary failed (${esumRes.status})` };
     }
-    const esum = (await esumRes.json()) as { result?: Record<string, any> };
+    const esum = (await esumRes.json()) as { result?: Record<string, NcbiEsummaryRecord> };
     const result = esum.result ?? {};
     const summaries = ids
       .map((id) => result[id])
       .filter(Boolean)
-      .map((r: any) => ({
+      .map((r: NcbiEsummaryRecord) => ({
         uid: r.uid as string,
         accession: (r.accessionversion ?? r.caption ?? r.uid) as string,
         title: (r.title ?? "") as string,
@@ -85,7 +97,9 @@ export const ncbiFetchFasta = createServerFn({ method: "POST" })
         data.id,
       )}&rettype=fasta&retmode=text`,
     );
-    const res = await fetch(url, { headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" } });
+    const res = await fetch(url, {
+      headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" },
+    });
     if (!res.ok) {
       return { fasta: "", error: `NCBI efetch failed (${res.status})` };
     }
@@ -117,7 +131,9 @@ export const weeklyOutbreakSummary = createServerFn({ method: "POST" })
           `${NCBI_BASE}/esearch.fcgi?db=nuccore&term=${encodeURIComponent(term)}&retmode=json&retmax=0`,
         );
         try {
-          const r = await fetch(url, { headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" } });
+          const r = await fetch(url, {
+            headers: { "User-Agent": "AMR-Life-Expectancy-Intelligence/1.0" },
+          });
           if (!r.ok) return { pathogen: p, count: 0, error: `HTTP ${r.status}` };
           const j = (await r.json()) as { esearchresult?: { count?: string } };
           return { pathogen: p, count: Number(j.esearchresult?.count ?? 0) };

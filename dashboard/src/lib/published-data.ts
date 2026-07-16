@@ -1,6 +1,8 @@
 import type {
   AMRCountryTrend,
   ClusterRow,
+  CountryYearRow,
+  FundingByYearRow,
   FundingRow,
   InterventionRow,
   PathogenSignal,
@@ -22,6 +24,9 @@ export type DashboardBundle = {
   q2DriverSummary: Record<string, unknown>[];
   associationSensitivity: Record<string, unknown>[];
   deliverablesIndex: Record<string, unknown>[];
+  countryYearBacterial: Record<string, unknown>[];
+  countryYearFungal: Record<string, unknown>[];
+  fundingByYear: Record<string, unknown>[];
   pipelineSummary?: {
     raw_isolate_count?: number;
     master_isolate_count?: number;
@@ -90,6 +95,18 @@ export async function mapCountryTrends(
     }
   }
 
+  // Justice's Q3 methodology (funding_gap_summary_v1.csv) is organism-level only.
+  // Country-level fundingMismatch is a dominant-organism proxy joined below; no
+  // match (e.g. Candida/Aspergillus-dominant countries) falls back to null.
+  const fundingGapByOrganism = new Map<string, number>();
+  for (const row of bundle.fundingGap) {
+    if (str(row.deliverable_level) !== "organism") continue;
+    fundingGapByOrganism.set(
+      `${str(row.pathogen_type)}:${str(row.canonical_organism)}`,
+      num(row.funding_minus_burden_share),
+    );
+  }
+
   const rows: AMRCountryTrend[] = [];
   const tables: Array<{ pathogen: "bacterial" | "fungal"; data: Record<string, unknown>[] }> = [
     { pathogen: "bacterial", data: bundle.countryRiskBacterial },
@@ -113,6 +130,9 @@ export async function mapCountryTrends(
               : "stable";
       const gate = str(row.quality_gate, "pass");
       const dataQuality = gate === "pass" ? 0.85 : gate === "bounds_only" ? 0.45 : 0.2;
+      const fundingMismatch = dom
+        ? (fundingGapByOrganism.get(`${pathogen}:${dom.organism}`) ?? null)
+        : null;
 
       rows.push({
         iso3: iso,
@@ -128,7 +148,7 @@ export async function mapCountryTrends(
         lifeExpectancy: num(row.life_expectancy),
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
-        fundingMismatch: 0,
+        fundingMismatch,
         predictedLifeGain: 0,
         recommendedIntervention:
           gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
@@ -229,5 +249,40 @@ export async function mapClusterRows(): Promise<ClusterRow[]> {
     action: label.includes("trajectory") ? "Early stewardship / diagnostics" : "Monitor burden",
     risk: Math.round(info.risk),
     qualityGate: info.gate,
+  }));
+}
+
+export async function mapCountryYearPanel(): Promise<CountryYearRow[]> {
+  const bundle = await loadDashboardBundle();
+  if (!bundle) return [];
+
+  const tables: Array<{ pathogen: "bacterial" | "fungal"; data: Record<string, unknown>[] }> = [
+    { pathogen: "bacterial", data: bundle.countryYearBacterial },
+    { pathogen: "fungal", data: bundle.countryYearFungal },
+  ];
+
+  const rows: CountryYearRow[] = [];
+  for (const { pathogen, data } of tables) {
+    for (const row of data) {
+      rows.push({
+        pathogenType: pathogen,
+        iso3: str(row.iso3_country),
+        year: num(row.parsed_year),
+        lifeExpectancy: num(row.life_expectancy),
+        burden: row.burden_midpoint_weighted == null ? null : num(row.burden_midpoint_weighted),
+        qualityGate: str(row.quality_gate, "withhold"),
+      });
+    }
+  }
+  return rows;
+}
+
+export async function mapFundingByYear(): Promise<FundingByYearRow[]> {
+  const bundle = await loadDashboardBundle();
+  if (!bundle) return [];
+  return bundle.fundingByYear.map((r) => ({
+    year: num(r.start_year),
+    pathogenType: str(r.pathogen_type),
+    amountUsd: num(r.amount_usd_prorated_total),
   }));
 }

@@ -256,4 +256,5 @@ dashboard/.tanstack/
 dashboard/.wrangler/
 dashboard/.env
 dashboard/.env.*
+!dashboard/.env.example
 dashboard/.dev.vars

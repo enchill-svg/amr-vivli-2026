@@ -94,6 +94,39 @@ def main():
   funding_long = load_rd_projects_prorated()
   projects_path = resolve_rd_projects_path()
 
+  # Year-bucketed R&D funding totals (bacterial vs fungal) for the dashboard's
+  # funding-by-year view — same pro-rata amounts as the rest of this step,
+  # grouped by Start Year instead of organism. Rows with no valid Start Year
+  # are excluded (count printed, never silently dropped).
+  DELIVERABLES_DIR.mkdir(parents=True, exist_ok=True)
+  funding_long["start_year_numeric"] = pd.to_numeric(funding_long["start_year"], errors="coerce")
+  funding_by_year_valid = funding_long[funding_long["start_year_numeric"].notna()].copy()
+  n_excluded_year = len(funding_long) - len(funding_by_year_valid)
+  funding_by_year_valid["start_year_numeric"] = funding_by_year_valid["start_year_numeric"].astype(int)
+  funding_by_year = (
+    funding_by_year_valid.groupby(["start_year_numeric", "pathogen_type"], as_index=False)["amount_usd_prorated"]
+    .sum()
+    .rename(columns={"start_year_numeric": "start_year", "amount_usd_prorated": "amount_usd_prorated_total"})
+    .sort_values(["start_year", "pathogen_type"])
+  )
+  funding_by_year["version"] = "v1"
+  funding_by_year["date_added"] = TODAY
+  funding_by_year_path = DELIVERABLES_DIR / "funding_by_year_summary_v1.csv"
+  funding_by_year.to_csv(funding_by_year_path, index=False)
+  print(f"Excluded {n_excluded_year} project-agent row(s) with no valid Start Year from funding-by-year summary.")
+  print(f"Wrote {len(funding_by_year)} funding-by-year row(s) to {funding_by_year_path.name}")
+
+  by_year_total = float(funding_by_year["amount_usd_prorated_total"].sum())
+  expected_total = float(funding_by_year_valid["amount_usd_prorated"].sum())
+  if abs(by_year_total - expected_total) > 0.01:
+    print(f"FAIL: funding-by-year total {by_year_total} does not match included-row total {expected_total}")
+    failed = True
+  else:
+    print(
+      f"PASS: funding-by-year totals conserve the included project-agent amounts "
+      f"(diff {abs(by_year_total - expected_total):.6f})."
+    )
+
   rd_raw = pd.read_excel(projects_path, sheet_name="data")
   rd_raw["amount_usd"] = pd.to_numeric(rd_raw["Amount USD"], errors="coerce").fillna(0.0)
   summed = funding_long.groupby("project_id")["amount_usd_prorated"].sum()
