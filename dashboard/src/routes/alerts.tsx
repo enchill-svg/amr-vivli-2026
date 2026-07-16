@@ -23,7 +23,7 @@ function RiskMapPage() {
       icon={Globe2}
       eyebrow="Live Global Risk Map"
       title="World AMR situation map"
-      subtitle="Interactive country-level AMR risk, resistance prevalence, evolutionary trajectory, life-expectancy signal, funding mismatch, and intervention priority. The map refreshes from analytical views every 60 seconds."
+      subtitle="Interactive country-level AMR risk, resistance prevalence, evolutionary trajectory, life-expectancy signal, funding mismatch, and intervention priority. The map refreshes from the published pipeline bundle every 60 seconds."
       kpis={[
         {
           label: "Live layers",
@@ -37,7 +37,12 @@ function RiskMapPage() {
           color: "var(--status-info)",
           sub: "Bacterial + fungal",
         },
-        { label: "Refresh", value: "60s", color: "var(--status-ok)", sub: "Database view polling" },
+        {
+          label: "Refresh",
+          value: "60s",
+          color: "var(--status-ok)",
+          sub: "Published bundle refetch",
+        },
         { label: "Evidence", value: "CI", color: "var(--status-warn)", sub: "Confidence-aware" },
       ]}
     >

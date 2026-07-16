@@ -62,7 +62,7 @@ The app reads `dashboard/public/data/published/dashboard_bundle_v1.json`, which 
 | `/pathogens` | Organism and drug signals |
 | `/marketplace` | Funding gap by pathogen |
 | `/policy` | Gated intervention table |
-| `/methodology` | Methods and provenance (in progress) |
+| `/methodology` | Methods and provenance |
 
 If the bundle fails to load, the app falls back to a single demo country. That should not happen in a normal clone of this repo after a successful publish.
 
@@ -127,7 +127,7 @@ Supporting files: `dashboard_bundle_v1.json`, `dataset_status_v1.json`, `gating_
 
 ## What we know is still thin
 
-Life expectancy is joined in the pipeline, but the dashboard life expectancy views are not fully wired yet. Time trend charts on some pages still use a short synthetic series derived from country averages, not isolate level year by year history. Only a small set of countries support long bacterial MIC trajectories across cohorts. Fungal burden and funding alignment is weak in the data we have. Hospital acquired exposure is not modeled directly.
+Life expectancy is joined in the pipeline and wired into the dashboard: the country explorer and life expectancy views show real per country, per year figures from the gated country-year panel, and predicted intervention gain is only shown once at least 3 measured interventions support it, otherwise it reads as not enough data rather than a fabricated number. Time trend charts aggregate by year across whichever countries reported that year; they are not isolate level longitudinal cohorts. Only a small set of countries support long bacterial MIC trajectories across cohorts. Fungal burden and funding alignment is weak in the data we have. Hospital acquired exposure is not modeled directly.
 
 We treat those limits as part of the finding, not as footnotes to hide.
 

@@ -13,6 +13,7 @@ import {
   mapCountryYearPanel,
   mapFundingByYear,
   mapFundingRows,
+  mapHubFundingComposition,
   mapInterventions,
   mapPathogenSignals,
 } from "./published-data";
@@ -64,6 +65,10 @@ export async function getFundingGapRows() {
 
 export async function getInterventionTable() {
   return mapInterventions();
+}
+
+export async function getHubFundingComposition() {
+  return mapHubFundingComposition();
 }
 
 export async function getClusterTypology() {

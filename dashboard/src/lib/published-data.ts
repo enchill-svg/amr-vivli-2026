@@ -313,3 +313,25 @@ export async function mapFundingByYear(): Promise<FundingByYearRow[]> {
     amountUsd: num(r.amount_usd_prorated_total),
   }));
 }
+
+export type HubFundingCompositionRow = {
+  compositionDimension: "geography" | "modality";
+  bucket: string;
+  amountUsd: number;
+  shareOfHubTotal: number;
+  nProjects: number;
+  dataStatus: string;
+};
+
+export async function mapHubFundingComposition(): Promise<HubFundingCompositionRow[]> {
+  const bundle = await loadDashboardBundle();
+  if (!bundle) return [];
+  return bundle.hubFundingComposition.map((r) => ({
+    compositionDimension: str(r.composition_dimension) as "geography" | "modality",
+    bucket: str(r.bucket),
+    amountUsd: num(r.amount_usd),
+    shareOfHubTotal: num(r.share_of_hub_total),
+    nProjects: num(r.n_projects),
+    dataStatus: str(r.data_status),
+  }));
+}

@@ -15,7 +15,19 @@ import {
   YAxis,
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { getFundingByYear, getFundingGapRows } from "@/lib/amr-data.functions";
+import { TinyBar } from "@/components/amr/AMRDataCards";
+import {
+  getFundingByYear,
+  getFundingGapRows,
+  getHubFundingComposition,
+} from "@/lib/amr-data.functions";
+
+function formatUsd(value: number) {
+  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`;
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${value.toFixed(0)}`;
+}
 
 export const Route = createFileRoute("/marketplace")({
   component: FundingPage,
@@ -32,7 +44,18 @@ function FundingPage() {
     queryKey: ["funding-by-year"],
     queryFn: getFundingByYear,
   });
+  const { data: hubComposition = [] } = useQuery({
+    queryKey: ["hub-funding-composition"],
+    queryFn: getHubFundingComposition,
+  });
   const underfunded = fundingRows.filter((r) => r.gap < 0).sort((a, b) => a.gap - b.gap);
+  const hubGeography = hubComposition
+    .filter((r) => r.compositionDimension === "geography")
+    .sort((a, b) => b.shareOfHubTotal - a.shareOfHubTotal);
+  const hubModality = hubComposition
+    .filter((r) => r.compositionDimension === "modality")
+    .sort((a, b) => b.shareOfHubTotal - a.shareOfHubTotal);
+  const hubTotal = hubGeography.reduce((s, r) => s + r.amountUsd, 0);
   const chart = fundingRows.map((r) => ({
     organism: r.organism.split(" ").slice(0, 2).join(" "),
     burden: Math.round(r.burdenShare * 1000) / 10,
@@ -166,6 +189,57 @@ function FundingPage() {
           </div>
         </GlassCard>
       </div>
+
+      <GlassCard
+        title="Global AMR R&D Hub funding composition"
+        subtitle={`Where the Hub's ${formatUsd(hubTotal)} in tracked funding goes, by recipient geography and R&D modality.`}
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <div className="mb-2 text-[10px] uppercase tracking-wider text-muted-foreground">
+              By recipient geography
+            </div>
+            <div className="space-y-2.5">
+              {hubGeography.map((r) => (
+                <div key={r.bucket}>
+                  <div className="mb-1 flex items-baseline justify-between text-xs">
+                    <span className="font-medium capitalize">{r.bucket.replace(/_/g, " ")}</span>
+                    <span className="font-mono text-muted-foreground">
+                      {formatUsd(r.amountUsd)} · {(r.shareOfHubTotal * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <TinyBar
+                    value={r.shareOfHubTotal * 100}
+                    color={r.bucket === "ssa" ? "var(--status-alert)" : "var(--accent)"}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="mb-2 text-[10px] uppercase tracking-wider text-muted-foreground">
+              By R&D modality
+            </div>
+            <div className="space-y-2.5">
+              {hubModality.map((r) => (
+                <div key={r.bucket}>
+                  <div className="mb-1 flex items-baseline justify-between text-xs">
+                    <span className="font-medium capitalize">{r.bucket.replace(/_/g, " ")}</span>
+                    <span className="font-mono text-muted-foreground">
+                      {formatUsd(r.amountUsd)} · {(r.shareOfHubTotal * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <TinyBar value={r.shareOfHubTotal * 100} color="var(--status-info)" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-xs italic text-muted-foreground">
+          Global AMR R&D Hub, all diseases — not AMR-specific, not country-level. Hub excludes
+          private/VC funding.
+        </p>
+      </GlassCard>
     </CommandPage>
   );
 }

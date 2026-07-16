@@ -14,7 +14,7 @@ import {
   ZAxis,
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
-import { getPathogenSignals } from "@/lib/amr-data.functions";
+import { getPathogenSignals, isUsingPublishedData } from "@/lib/amr-data.functions";
 import { TinyBar } from "@/components/amr/AMRDataCards";
 
 export const Route = createFileRoute("/pathogens")({
@@ -69,7 +69,11 @@ function ResistancePage() {
       <div className="grid gap-4 xl:grid-cols-2">
         <GlassCard
           title="Resistance prevalence by organism–drug"
-          subtitle="Current classified resistance rate from analytical view or demo data."
+          subtitle={
+            isUsingPublishedData()
+              ? "Current classified resistance rate from the published pipeline bundle."
+              : "Published pipeline bundle unavailable — no demo fallback for this view."
+          }
         >
           <div className="h-80">
             <ResponsiveContainer>

@@ -42,5 +42,19 @@
   "AUS": { "country": "Australia", "latitude": -25.2744, "longitude": 133.7751 },
   "JPN": { "country": "Japan", "latitude": 36.2048, "longitude": 138.2529 },
   "COL": { "country": "Colombia", "latitude": 4.5709, "longitude": -74.2973 },
-  "PER": { "country": "Peru", "latitude": -9.19, "longitude": -75.0152 }
+  "PER": { "country": "Peru", "latitude": -9.19, "longitude": -75.0152 },
+  "CAN": { "country": "Canada", "latitude": 56.1304, "longitude": -106.3468 },
+  "CHN": { "country": "China", "latitude": 35.8617, "longitude": 104.1954 },
+  "DEU": { "country": "Germany", "latitude": 51.1657, "longitude": 10.4515 },
+  "ECU": { "country": "Ecuador", "latitude": -1.8312, "longitude": -78.1834 },
+  "FRA": { "country": "France", "latitude": 46.2276, "longitude": 2.2137 },
+  "HKG": { "country": "Hong Kong", "latitude": 22.3193, "longitude": 114.1694 },
+  "HUN": { "country": "Hungary", "latitude": 47.1625, "longitude": 19.5033 },
+  "ISR": { "country": "Israel", "latitude": 31.0461, "longitude": 34.8516 },
+  "KOR": { "country": "South Korea", "latitude": 35.9078, "longitude": 127.7669 },
+  "NZL": { "country": "New Zealand", "latitude": -40.9006, "longitude": 174.886 },
+  "PRT": { "country": "Portugal", "latitude": 39.3999, "longitude": -8.2245 },
+  "SVN": { "country": "Slovenia", "latitude": 46.1512, "longitude": 14.9955 },
+  "SWE": { "country": "Sweden", "latitude": 60.1282, "longitude": 18.6435 },
+  "TWN": { "country": "Taiwan", "latitude": 23.6978, "longitude": 120.9605 }
 }

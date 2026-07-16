@@ -32,7 +32,7 @@ The app loads the bundle at runtime via `src/lib/published-data.ts` → `src/lib
 | `/countries` | Country explorer |
 | `/pathogens` | Resistance explorer |
 | `/lineages` | Evolution explorer (signals from bundle; time series partly synthetic) |
-| `/epidemiology` | Life expectancy explorer (LE not yet joined in bundle — placeholder `0`) |
+| `/epidemiology` | Life expectancy explorer (real LE from the gated country-year panel) |
 | `/policy` | Intervention table from gated CSV |
 | `/marketplace` | Funding gap explorer |
 | `/forecasting` | Cluster typology insights |
@@ -91,10 +91,9 @@ Migration: `supabase/migrations/20260708234500_amr_life_intelligence_core.sql`
 - **Primary country rank:** `risk_rank_core` (3-component composite). Consumption is supplementary.
 - **Interventions:** no fabricated life-expectancy gains; withheld scenarios show caveats, not priority ranks.
 - **Resistance / fungal:** pairs without breakpoints stay bounds-only; do not read as false S/R categories.
-- **Life expectancy charts:** association views only until LE is joined into the publish bundle.
+- **Life expectancy charts:** LE is joined into the publish bundle; charts remain association views, not causal claims.
 
 ## Known gaps (honest demo scope)
 
-- Life expectancy and predicted intervention gain are not fully wired in the bundle loader yet.
-- `getResistanceSeries()` uses a short synthetic year series derived from country averages, not raw surveillance time series.
+- `getResistanceSeries()` aggregates by year across whichever countries reported that year from the gated country-year panel — a real per-year mean, not isolate-level longitudinal cohorts.
 - Footer/ticker “live” labels mean **bundle refresh every 60s**, not a streaming database.
