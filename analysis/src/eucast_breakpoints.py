@@ -128,7 +128,13 @@ NOTE_ONLY_RE = re.compile(r"^Note\s*\d+(,\s*\d+)*$", re.IGNORECASE)
 # --- Step 1: parse the workbook into a raw long-format table. -------------
 
 def is_class_header_row(row):
-    return isinstance(row[1], str) and "MIC breakpoints" in row[1]
+    # v8.1 workbooks repeat the column header mid-sheet as singular
+    # "MIC breakpoint (mg/L)"; v10.0 uses plural "MIC breakpoints (mg/L)".
+    # Match on the singular stem so both versions are caught - a
+    # plural-only check silently lets all v8.1 header rows fall through as
+    # if they were real drug rows (verified: 201 leaked rows across v8.1
+    # organism sheets before this fix).
+    return isinstance(row[1], str) and "MIC breakpoint" in row[1]
 
 
 def is_subheader_row(row):
@@ -243,7 +249,7 @@ ORGANISM_CROSSWALK = {
     "Moraxella osloensis": (None, "the M.catarrhalis sheet is species-specific (titled 'Moraxella catarrhalis', no genus-scope extrapolation note, unlike Acinetobacter/Corynebacterium)"),
     "Moraxella sp": (None, "same - M.catarrhalis sheet does not extrapolate to other Moraxella species"),
     "Pantoea septica": ("Enterobacterales", "Pantoea is taxonomically within the order Enterobacterales, covered by the sheet's genus-wide note"),
-    "Pasteurella multocida": ("Pasteurella", "sheet's own note: 'EUCAST breakpoints are based mainly on data for Pasteurella multocida'"),
+    "Pasteurella multocida": ("P.multocida", "sheet's own note: 'EUCAST breakpoints are based mainly on data for Pasteurella multocida'"),
     "Pseudomonas aeruginosa": ("Pseudomonas", "sheet's own note names P. aeruginosa as the most frequent species covered"),
     "Pseudomonas monteilii": ("Pseudomonas", "sheet's own note covers 'less frequent Pseudomonas species' including the P. putida group, which P. monteilii is taxonomically part of (not individually named by EUCAST - documented extrapolation, not a fabricated value)"),
     "Pseudomonas stutzeri": ("Pseudomonas", "explicitly named in the sheet's own note ('P. stutzeri group')"),
@@ -455,6 +461,19 @@ def resolve_drug_row(sheet_rows, canonical_drug, canonical_organism):
     return candidates[0][0], candidates[0][2]
 
 
+# Sheet names that changed between EUCAST workbook versions. EUCAST renamed
+# the Enterobacterales-family tab from "Enterobacteriaceae" (v8.1) to
+# "Enterobacterales" (v10.0) - a real taxonomic rename between versions, not
+# a data error. ORGANISM_CROSSWALK stores one (current/v10.0) sheet name per
+# organism; when that name is not an actual tab in a given workbook version,
+# _build_resolved_for_version tries these aliases, in order, before treating
+# the organism as unmatched. Verified directly against both workbooks:
+# v8.1.sheet_names has "Enterobacteriaceae" (not "Enterobacterales"); v10.0
+# has "Enterobacterales" (not "Enterobacteriaceae").
+EUCAST_SHEET_ALIASES = {
+    "Enterobacterales": ["Enterobacteriaceae"],
+}
+
 # Per-EUCAST-version caches: version -> {(organism, drug): resolution dict}
 _VERSION_CACHE = {}
 
@@ -488,11 +507,30 @@ def bacterial_valid_bases():
 BACTERIAL_VALID_BASES = bacterial_valid_bases()
 
 
+def _resolve_sheet_name_for_version(sheet, real_sheet_names):
+    """Return the sheet name actually present in this workbook version.
+
+    ORGANISM_CROSSWALK names one canonical sheet per organism. If that name
+    isn't a real tab in this specific workbook (e.g. "Enterobacterales" in
+    the v8.1 file, which calls it "Enterobacteriaceae"), fall back to a
+    known alias - but only when the primary name is genuinely absent as a
+    tab, never merely because a sheet exists with no matching drug row (that
+    must stay a legitimate "no_drug_match", not be masked by a fallback).
+    """
+    if sheet in real_sheet_names:
+        return sheet
+    for alias in EUCAST_SHEET_ALIASES.get(sheet, []):
+        if alias in real_sheet_names:
+            return alias
+    return sheet
+
+
 def _build_resolved_for_version(version):
     xlsx_path = EUCAST_VERSION_PATHS[version]
     if not xlsx_path.exists():
         raise FileNotFoundError(f"EUCAST v{version} workbook not found at {xlsx_path}")
 
+    real_sheet_names = set(pd.ExcelFile(xlsx_path).sheet_names)
     all_rows = parse_all_sheets(xlsx_path)
     rows_by_sheet = {}
     for row in all_rows:
@@ -512,14 +550,16 @@ def _build_resolved_for_version(version):
                 })
                 continue
 
-            row, qualifier = resolve_drug_row(rows_by_sheet.get(sheet, []), drug, organism)
+            resolved_sheet = _resolve_sheet_name_for_version(sheet, real_sheet_names)
+
+            row, qualifier = resolve_drug_row(rows_by_sheet.get(resolved_sheet, []), drug, organism)
             if row is None:
-                reason = f"'{drug}' is not offered as a row in the {sheet!r} sheet"
+                reason = f"'{drug}' is not offered as a row in the {resolved_sheet!r} sheet"
                 resolved[(organism, drug)] = {"outcome": "no_drug_match", "reason": reason}
                 resolution_log.append({
                     "eucast_version": version,
                     "canonical_organism": organism, "canonical_drug": drug,
-                    "eucast_sheet": sheet, "eucast_drug_label_used": "", "qualifier": "",
+                    "eucast_sheet": resolved_sheet, "eucast_drug_label_used": "", "qualifier": "",
                     "s_leq": "", "r_gt": "", "outcome": "no_drug_match", "reason": reason,
                 })
                 continue
@@ -544,7 +584,7 @@ def _build_resolved_for_version(version):
             resolution_log.append({
                 "eucast_version": version,
                 "canonical_organism": organism, "canonical_drug": drug,
-                "eucast_sheet": sheet, "eucast_drug_label_used": row["drug_label_raw"],
+                "eucast_sheet": resolved_sheet, "eucast_drug_label_used": row["drug_label_raw"],
                 "qualifier": qualifier, "s_leq": row["s_leq_raw"], "r_gt": row["r_gt_raw"],
                 "outcome": resolved[(organism, drug)]["outcome"], "reason": "",
             })

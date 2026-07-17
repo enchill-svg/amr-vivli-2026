@@ -18,6 +18,7 @@ DELIVERABLES = ROOT / "deliverables"
 MASTER = ROOT / "master"
 sys.path.insert(0, str(ROOT / "src"))
 
+from evidence_gate_core.export_validator import validate_gated_deliverable  # noqa: E402
 from evidence_gate_core.gate_rules import (  # noqa: E402
     GATE_METHODOLOGY,
     aggregate_country_gate,
@@ -167,14 +168,25 @@ def main() -> None:
     print(f"  organism_drug_quality_gate: {len(org_drug_gates)} rows")
     print(f"  gating_comparison: {len(comparison)} summary rows")
 
-    if "quality_gate" not in bact_risk.columns:
-        print("FAIL: gated country risk missing quality_gate column.")
-        failed = True
-    elif bact_risk["quality_gate"].isna().any():
-        print("FAIL: null quality_gate in bacterial country risk.")
+    gate_checks = [
+        ("cluster_typology_bacterial_gated_v1.csv", bact_typ, "typology_rank"),
+        ("cluster_typology_fungal_gated_v1.csv", fung_typ, "typology_rank"),
+        ("country_risk_ranking_bacterial_gated_v1.csv", bact_risk, "risk_rank"),
+        ("country_risk_ranking_fungal_gated_v1.csv", fung_risk, "risk_rank"),
+        ("intervention_recommendations_ranked_gated_v1.csv", interventions, "priority_rank"),
+    ]
+    gate_failures = []
+    for file_name, table, rank_col in gate_checks:
+        report = validate_gated_deliverable(table, name=file_name, rank_col=rank_col)
+        if report["status"] != "PASS":
+            gate_failures.append(report)
+    if gate_failures:
+        for report in gate_failures:
+            print(f"FAIL: {report['file']} gate integrity violation: {', '.join(report['flags'])}")
         failed = True
     else:
-        print("PASS: bacterial country risk gated with quality_gate column.")
+        print(f"PASS: all {len(gate_checks)} gated tables carry a fully-populated, "
+              "valid-vocabulary quality_gate and no rank without a pass gate.")
 
     withhold_typ = int((bact_typ["quality_gate"] == "withhold").sum() + (fung_typ["quality_gate"] == "withhold").sum())
     bounds_typ = int((bact_typ["quality_gate"] == "bounds_only").sum() + (fung_typ["quality_gate"] == "bounds_only").sum())

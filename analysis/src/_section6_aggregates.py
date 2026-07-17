@@ -182,11 +182,17 @@ def pool_country_year_distance(dist: pd.DataFrame) -> pd.DataFrame:
 
 def organism_burden_global(
     desc: pd.DataFrame,
-    p_col: str,
     weight_col: str = "n_tested",
     invert: bool = False,
 ) -> pd.DataFrame:
-    """Organism-level burden for R&D alignment."""
+    """Organism-level burden for R&D alignment.
+
+    Burden is the weight_col-weighted Tier-1 Manski bound midpoint
+    (tier1_bound_lower/tier1_bound_upper) — never a raw resistant-count /
+    tested-count point estimate, for the same reason pool_country_year_
+    descriptive above avoids one: zero-coverage strata carry an
+    uninformative [0%, 100%] bound rather than a fabricated rate.
+    """
     df = desc.copy()
     df["midpoint"] = (df["tier1_bound_lower"] + df["tier1_bound_upper"]) / 2.0
     if invert:

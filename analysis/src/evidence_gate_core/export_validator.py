@@ -8,6 +8,7 @@ import pandas as pd
 
 DETECTION_ONLY_GENE_COLS = {"NDM", "KPC", "VIM", "IMP", "OXA", "GES", "SPM", "GIM"}
 NEGATIVE_TOKENS = {"NEG", "NEGATIVE", "NOT DETECTED", "NOT_DETECTED", "0", "-"}
+GATE_VALUES = {"pass", "bounds_only", "withhold"}
 
 
 def validate_export(df: pd.DataFrame, *, name: str = "export") -> dict:
@@ -40,6 +41,49 @@ def validate_export(df: pd.DataFrame, *, name: str = "export") -> dict:
     else:
         reason = "inconclusive"
 
+    return {"file": name, "status": status, "flags": flags, "reason": reason}
+
+
+def validate_gated_deliverable(
+    df: pd.DataFrame, *, name: str = "gated_export", rank_col: str | None = None
+) -> dict:
+    """Structural integrity check for a Section 7 gated deliverable table.
+
+    validate_export() above checks raw/cleaned surveillance cohort exports
+    (denominator reconstructability); this checks the pipeline's later,
+    published-facing output — every gated table gate_rules.py produces must
+    carry a fully-populated quality_gate column drawn only from the known
+    pass/bounds_only/withhold vocabulary, and (when rank_col is given) must
+    never carry a rank for a row whose quality_gate isn't "pass".
+    """
+    flags: list[str] = []
+    status = "PASS"
+
+    if "quality_gate" not in df.columns:
+        return {
+            "file": name,
+            "status": "FAIL",
+            "flags": ["missing_quality_gate_column"],
+            "reason": "no_quality_gate_column",
+        }
+
+    n_null = int(df["quality_gate"].isna().sum())
+    if n_null:
+        flags.append(f"null_quality_gate:{n_null}_row(s)")
+        status = "FAIL"
+
+    unknown = set(df["quality_gate"].dropna().astype(str)) - GATE_VALUES
+    if unknown:
+        flags.append(f"unknown_quality_gate_value:{','.join(sorted(unknown))}")
+        status = "FAIL"
+
+    if rank_col and rank_col in df.columns:
+        mis_ranked = df[(df["quality_gate"] != "pass") & df[rank_col].notna()]
+        if len(mis_ranked):
+            flags.append(f"rank_without_pass_gate:{len(mis_ranked)}_row(s)")
+            status = "FAIL"
+
+    reason = "quality_gate_populated_and_consistent" if status == "PASS" else "gate_integrity_violation"
     return {"file": name, "status": status, "flags": flags, "reason": reason}
 
 

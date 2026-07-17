@@ -259,12 +259,37 @@ def run_pipeline_stages(
             # with this run's id right before it runs (every prior stage in
             # this loop already passed, or we would have returned above),
             # otherwise it publishes whatever a previous run left behind.
+            #
+            # publish_dashboard_data is itself about to be the 30th stage,
+            # but its true StageRunResult (real timing, exit code) only
+            # exists after run_stage() below returns - and by then the
+            # manifest has already been read and copied into
+            # data/published/ from inside that subprocess. Without a
+            # provisional entry here, the published manifest would always
+            # undercount stage_count by one and silently omit
+            # publish_dashboard_data from phases/stage_results, even though
+            # its own output is the artifact being published. The real
+            # result (line ~274) still supersedes this in the final
+            # end-of-loop manifest write to analysis/runs/latest/; only the
+            # copy already taken by this successful-so-far run uses the
+            # provisional entry.
+            provisional_publish_result = StageRunResult(
+                stage_id=stage.stage_id,
+                label=stage.label,
+                phase_id=stage.phase_id,
+                status="pass",
+                started_at=_now(),
+                finished_at=_now(),
+                exit_code=0,
+                artifact_summary="n/a",
+                target=stage.target,
+            )
             write_run_manifest(
                 run_id=run_id,
                 started_at=started_at,
                 finished_at=_now(),
                 status="passed",
-                stage_results=stage_results,
+                stage_results=stage_results + [provisional_publish_result],
                 halted_at_stage=None,
             )
 

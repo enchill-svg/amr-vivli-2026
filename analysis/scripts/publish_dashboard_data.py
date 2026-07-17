@@ -233,6 +233,14 @@ def main() -> int:
     if removed:
         print(f"Removed {len(removed)} unsafe ungated file(s) from {PUBLISHED.relative_to(REPO)}")
 
+    # Gate here, not at the end of main(): this must run before anything
+    # copies out of data/published/ into dashboard/public/ (the directory
+    # the deployed web app actually reads from). Previously this ran last,
+    # so if the purge above ever left an unsafe ungated ranking table
+    # behind, the RuntimeError only fired after the bundle had already been
+    # synced to the dashboard-facing copy - too late to have prevented it.
+    _assert_publish_policy()
+
     sens = BOUNDS / "association_sensitivity_manifest_v1.csv"
     if sens.exists():
         shutil.copy2(sens, PUBLISHED / sens.name)
@@ -257,8 +265,6 @@ def main() -> int:
     DASHBOARD_PUBLIC.mkdir(parents=True, exist_ok=True)
     shutil.copy2(bundle_path, DASHBOARD_PUBLIC / bundle_path.name)
     shutil.copy2(PUBLISHED / "dataset_status_v1.json", DASHBOARD_PUBLIC / "dataset_status_v1.json")
-
-    _assert_publish_policy()
 
     print(f"Wrote {len(copied)} artifact(s) to {PUBLISHED.relative_to(REPO)}")
     print(f"Wrote dashboard_bundle_v1.json ({len(bundle['countryRiskBacterial'])} bacterial risk rows)")

@@ -170,19 +170,32 @@ def vaccination_scenario_row(
   p_value: float,
   extra_caveat: str,
 ) -> dict:
-  gain_1pp = coef if np.isfinite(coef) else np.nan
-  gain_10pp = coef * 10.0 if np.isfinite(coef) else np.nan
-  magnitude_flag = (
-    "implausible_magnitude_likely_confounding"
-    if np.isfinite(gain_10pp) and abs(gain_10pp) > IMPLAUSIBLE_GAIN_THRESHOLD_YEARS
-    else "within_illustrative_threshold"
-  )
+  has_coefficient = np.isfinite(coef)
+  gain_1pp = coef if has_coefficient else np.nan
+  gain_10pp = coef * 10.0 if has_coefficient else np.nan
+  if not has_coefficient:
+    # coef_lookup() found no matching Stage 5 term (e.g. the OLS fell back
+    # to its insufficient-complete-cases branch) - this is a genuine data
+    # gap, not a measured-but-small-magnitude result. Must not be labelled
+    # "measured" / "within_illustrative_threshold": those labels let a
+    # missing coefficient sail through gate_intervention_recommendations'
+    # quality_gate (which defaults every row to "pass" and only withholds
+    # rows whose data_status is explicitly gap-like) with quality_gate=pass
+    # despite carrying no real estimate.
+    magnitude_flag = "not_applicable_no_coefficient"
+  elif abs(gain_10pp) > IMPLAUSIBLE_GAIN_THRESHOLD_YEARS:
+    magnitude_flag = "implausible_magnitude_likely_confounding"
+  else:
+    magnitude_flag = "within_illustrative_threshold"
   return {
     "pathogen_type": "bacterial",
     "intervention_category": "vaccination",
     "sub_measure": sub_measure,
-    "data_status": "measured",
-    "estimation_method": "stage5_ols_coefficient_x_scenario_coverage_increase",
+    "data_status": "measured" if has_coefficient else "data_gap",
+    "estimation_method": (
+      "stage5_ols_coefficient_x_scenario_coverage_increase" if has_coefficient
+      else "not_estimable"
+    ),
     "unit_definition": "per 1 percentage-point increase in coverage (primary); 10pp illustrative secondary",
     "estimated_le_gain_years": gain_1pp,
     "estimated_le_gain_years_10pp_scenario": gain_10pp,
@@ -191,7 +204,9 @@ def vaccination_scenario_row(
     "coefficient_p_value": p_value,
     "scenario_coverage_increase_pp": 1.0,
     "scenario_coverage_increase_pp_secondary": 10.0,
-    "evidence_caveat": ASSOCIATIONAL_CAVEAT + " " + extra_caveat,
+    "evidence_caveat": ASSOCIATIONAL_CAVEAT + " " + extra_caveat + (
+      "" if has_coefficient else " No Stage 5 coefficient available for this term."
+    ),
     "version": "v1",
     "date_added": TODAY,
   }

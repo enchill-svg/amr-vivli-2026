@@ -59,6 +59,15 @@ INTERVENTION_RANKING_METHODOLOGY = (
   "explicit status — not fabricated LE estimates."
 )
 
+# Mirrors dashboard/src/lib/published-data.ts's MIN_INTERVENTION_SAMPLES: that
+# file will only average estimated_le_gain_years into a headline per-pathogen
+# number once >=3 non-null samples exist, precisely to avoid broadcasting a
+# 1-2 sample mean as if it were representative. A reader working from this
+# CSV directly (not through the dashboard) has no such guard unless this
+# pipeline states it explicitly, so the same threshold and its outcome are
+# recorded here as data, not left implicit in downstream TypeScript.
+MIN_INTERVENTION_SAMPLES = 3
+
 
 def percentile_rank(series: pd.Series) -> pd.Series:
   return series.rank(method="average", pct=True) * 100.0
@@ -652,6 +661,17 @@ def build_intervention_recommendations_ranked() -> pd.DataFrame:
   impact["methodology"] = INTERVENTION_RANKING_METHODOLOGY
   impact["version"] = VERSION
   impact["date_added"] = TODAY
+
+  sample_counts = impact.groupby("pathogen_type")["estimated_le_gain_years"].apply(
+    lambda s: int(s.notna().sum())
+  )
+  impact["measured_sample_count_pathogen_type"] = impact["pathogen_type"].map(sample_counts)
+  impact["aggregate_reliability_flag"] = np.where(
+    impact["measured_sample_count_pathogen_type"] < MIN_INTERVENTION_SAMPLES,
+    "below_min_samples_for_aggregate_claims",
+    "",
+  )
+
   return impact.sort_values(
     ["priority_rank", "pathogen_type", "intervention_category"],
     na_position="last",

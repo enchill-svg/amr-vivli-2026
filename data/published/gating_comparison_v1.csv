@@ -1,6 +1,6 @@
 deliverable,pathogen_type,n_rows,n_pass,n_bounds_only,n_withhold,n_ranked_ungated,n_ranked_gated,version,date_added
-cluster_typology,bacterial,620,620,0,0,620,620,v1,2026-07-16
-cluster_typology,fungal,1288,394,894,0,1288,394,v1,2026-07-16
-country_risk_ranking,bacterial,30,29,0,1,30,29,v1,2026-07-16
-country_risk_ranking,fungal,43,0,40,3,43,0,v1,2026-07-16
-intervention_recommendations,both,11,0,0,11,2,0,v1,2026-07-16
+cluster_typology,bacterial,640,640,0,0,640,640,v1,2026-07-17
+cluster_typology,fungal,1288,394,894,0,1288,394,v1,2026-07-17
+country_risk_ranking,bacterial,30,29,0,1,30,29,v1,2026-07-17
+country_risk_ranking,fungal,43,0,40,3,43,0,v1,2026-07-17
+intervention_recommendations,both,11,0,0,11,2,0,v1,2026-07-17

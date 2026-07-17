@@ -67,6 +67,9 @@ def fit_ols(df: pd.DataFrame, pathogen_type: str) -> tuple[pd.DataFrame, pd.Data
     predictors.append("antimicrobial_consumption_ddd")
 
   model_df = df.dropna(subset=["life_expectancy", "burden_midpoint_weighted"] + predictors).copy()
+  n_countries = (
+    int(model_df["iso3_country"].nunique()) if "iso3_country" in model_df.columns else np.nan
+  )
   y = model_df["life_expectancy"]
   x = sm.add_constant(model_df[predictors])
   if len(model_df) < len(predictors) + 2:
@@ -75,10 +78,12 @@ def fit_ols(df: pd.DataFrame, pathogen_type: str) -> tuple[pd.DataFrame, pd.Data
         "pathogen_type": pathogen_type, "note": "insufficient_complete_cases"}]
     )
     meta = pd.DataFrame(
-      [{"pathogen_type": pathogen_type, "n_obs": len(model_df), "r_squared": np.nan,
+      [{"pathogen_type": pathogen_type, "n_obs": len(model_df), "n_countries": n_countries,
+        "r_squared": np.nan,
         "adj_r_squared": np.nan, "consumption_included": consumption_included,
         "sdi_included": SDI_INCLUDED,
         "trajectory_covariate": "mean_evolutionary_fitness_slope",
+        "sample_warning": "insufficient_complete_cases",
         "limitation": limitation_text(consumption_included=consumption_included),
         "version": "v1", "date_added": TODAY}]
     )
@@ -96,15 +101,26 @@ def fit_ols(df: pd.DataFrame, pathogen_type: str) -> tuple[pd.DataFrame, pd.Data
       "date_added": TODAY,
     }
   )
+  # Same small-sample flag fit_ols_variant() already applies to its
+  # sensitivity specs - this primary model needs it too. n=16 against 10
+  # parameters (this bacterial spec, verified live) leaves 6 residual
+  # degrees of freedom and R^2 > 0.99, a textbook overfitting signature;
+  # downstream consumers (dashboard, deliverables) must see this flag, not
+  # just the sensitivity manifest.
+  sample_warning = ""
+  if result.nobs < 30 or (isinstance(n_countries, int) and n_countries < 10):
+    sample_warning = "small_sample_not_for_causal_claims"
   meta = pd.DataFrame(
     [{
       "pathogen_type": pathogen_type,
       "n_obs": int(result.nobs),
+      "n_countries": n_countries,
       "r_squared": float(result.rsquared),
       "adj_r_squared": float(result.rsquared_adj),
       "consumption_included": consumption_included,
       "sdi_included": SDI_INCLUDED,
       "trajectory_covariate": "mean_evolutionary_fitness_slope",
+      "sample_warning": sample_warning,
       "limitation": limitation_text(consumption_included=consumption_included),
       "version": "v1",
       "date_added": TODAY,

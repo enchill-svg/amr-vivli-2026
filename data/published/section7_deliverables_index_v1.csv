@@ -1,7 +1,7 @@
 justice_output_number,justice_output_text,deliverable_file,internal_audit_file,source_stage,version,date_added
-1,Harmonized multi-cohort dual-pathogen AMR dataset with versioned crosswalks,dataset_manifest_v1.csv,,Section 5 (preprocessing Steps 1-10),v1,2026-07-16
-2,Documented identifiability ledger for detection-only and breakpoint-absent gaps,identifiability_ledger_v1.csv,,Section 5 Steps 7-8 + master classification_basis,v1,2026-07-16
-3,Cluster typology of high-risk and high-trajectory organism-drug-country combinations,cluster_typology_bacterial_gated_v1.csv; cluster_typology_fungal_gated_v1.csv,cluster_typology_bacterial_v1.csv; cluster_typology_fungal_v1.csv,Section 6 Stage 3 (step13_clustering.py),v1,2026-07-16
-4,"Country risk ranking: burden, trajectory, consumption, health-system capacity",country_risk_ranking_bacterial_gated_v1.csv; country_risk_ranking_fungal_gated_v1.csv,country_risk_ranking_bacterial_v1.csv; country_risk_ranking_fungal_v1.csv,Section 6 Stage 4 join panels (step14_external_join.py),v1,2026-07-16
-5,Funding-gap summary: R&D Hub investment vs observed burden by pathogen type,funding_gap_summary_v1.csv,,Section 6 Stage 6 (step16_rd_alignment.py),v1,2026-07-16
-6,Ranked intervention recommendations with estimated life-expectancy impact,intervention_recommendations_ranked_gated_v1.csv,intervention_recommendations_ranked_v1.csv,Section 6 Stage 7 (step17_intervention.py),v1,2026-07-16
+1,Harmonized multi-cohort dual-pathogen AMR dataset with versioned crosswalks,dataset_manifest_v1.csv,,Section 5 (preprocessing Steps 1-10),v1,2026-07-17
+2,Documented identifiability ledger for detection-only and breakpoint-absent gaps,identifiability_ledger_v1.csv,,Section 5 Steps 7-8 + master classification_basis,v1,2026-07-17
+3,Cluster typology of high-risk and high-trajectory organism-drug-country combinations,cluster_typology_bacterial_gated_v1.csv; cluster_typology_fungal_gated_v1.csv,cluster_typology_bacterial_v1.csv; cluster_typology_fungal_v1.csv,Section 6 Stage 3 (step13_clustering.py),v1,2026-07-17
+4,"Country risk ranking: burden, trajectory, consumption, health-system capacity",country_risk_ranking_bacterial_gated_v1.csv; country_risk_ranking_fungal_gated_v1.csv,country_risk_ranking_bacterial_v1.csv; country_risk_ranking_fungal_v1.csv,Section 6 Stage 4 join panels (step14_external_join.py),v1,2026-07-17
+5,Funding-gap summary: R&D Hub investment vs observed burden by pathogen type,funding_gap_summary_v1.csv,,Section 6 Stage 6 (step16_rd_alignment.py),v1,2026-07-17
+6,Ranked intervention recommendations with estimated life-expectancy impact,intervention_recommendations_ranked_gated_v1.csv,intervention_recommendations_ranked_v1.csv,Section 6 Stage 7 (step17_intervention.py),v1,2026-07-17

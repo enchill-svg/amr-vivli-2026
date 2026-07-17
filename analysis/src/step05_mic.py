@@ -51,7 +51,16 @@ DILUTION_VIOLATIONS_PATH = ROOT / "exceptions" / "mic_dilution_range_violations_
 COMPARATOR_TOKENS = [
     ("</=", "<="),
     ("<=", "<="),
-    (">=", ">"),   # not observed in any SOAR file; supported defensively only.
+    # ">=" (at least X, X itself included) is a materially different claim
+    # from ">" (strictly greater than X, X itself excluded) - collapsing it
+    # to ">" would assert a stronger claim than the source notation actually
+    # supports. Not observed in any of the 3 live SOAR files (verified
+    # directly against every drug column in all three raw files - 0 hits),
+    # so this mapping is defensive-only; kept as its own canonical symbol
+    # so classify_bacterial's existing unrecognized-comparator fallback
+    # (eucast_breakpoints.py) safely flags it as indeterminate rather than
+    # this step silently misclassifying it as a definite ">" reading.
+    (">=", ">="),
     ("<", "<="),
     (">", ">"),
 ]

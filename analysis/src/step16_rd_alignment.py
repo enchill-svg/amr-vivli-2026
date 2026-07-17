@@ -46,6 +46,16 @@ BACTERIAL_BURDEN_NOTE = (
   "Klebsiella pneumoniae have no EUCAST breakpoint classification in this data."
 )
 
+# Spearman rho is mathematically defined below n=3 but conveys no real
+# information there (3 points always trace an extreme, saturated rank
+# correlation) - already blocked from computing at all. SPEARMAN_THIN_N is a
+# looser, transparency-only threshold: rho below this n is real but backed by
+# too few organisms to interpret confidently, mirroring the n_countries < 10
+# small-sample convention step15_association.py already applies to the LE
+# regressions.
+SPEARMAN_MIN_N = 3
+SPEARMAN_THIN_N = 10
+
 
 def agent_matches_organism(agent: str, organism: str) -> bool:
   if not isinstance(agent, str) or not isinstance(organism, str):
@@ -173,10 +183,8 @@ def main():
 
   bact_desc = pd.read_csv(BOUNDS_DIR / "descriptive_bacterial_resistance_v1.csv")
   fung_desc = pd.read_csv(BOUNDS_DIR / "descriptive_fungal_ecv_wt_rate_v1.csv")
-  bact_burden = organism_burden_global(bact_desc, p_col="n_resistant", weight_col="n_tested", invert=False)
-  fung_burden = organism_burden_global(
-    fung_desc, p_col="n_nwt", weight_col="n_classified", invert=True
-  )
+  bact_burden = organism_burden_global(bact_desc, weight_col="n_tested", invert=False)
+  fung_burden = organism_burden_global(fung_desc, weight_col="n_classified", invert=True)
 
   bact_align = align_funding_to_organisms(bact_burden, funding_long, "bacterial")
   fung_align = align_funding_to_organisms(fung_burden, funding_long, "fungal")
@@ -203,13 +211,16 @@ def main():
     total_funding = sub_fund["amount_usd_prorated"].sum()
     total_burden = align["burden_midpoint_weighted"].sum()
     mask = (align["burden_midpoint_weighted"] > 0) & (align["rd_funding_usd_matched"] > 0)
-    if mask.sum() >= 3:
+    spearman_n = int(mask.sum())
+    if spearman_n >= SPEARMAN_MIN_N:
       rho, pval = spearmanr(
         align.loc[mask, "burden_midpoint_weighted"],
         align.loc[mask, "rd_funding_usd_matched"],
       )
+      reliability_flag = "too_thin_for_interpretation" if spearman_n < SPEARMAN_THIN_N else ""
     else:
       rho, pval = np.nan, np.nan
+      reliability_flag = "not_computed_below_min_n"
     summary_rows.append(
       {
         "pathogen_type": pathogen_type,
@@ -217,8 +228,10 @@ def main():
         "n_organisms_with_matched_funding": int((align["rd_funding_usd_matched"] > 0).sum()),
         "total_burden_midpoint_weighted": total_burden,
         "total_rd_funding_usd_prorated": total_funding,
+        "spearman_n": spearman_n,
         "spearman_rho_burden_vs_funding": rho,
         "spearman_p_value": pval,
+        "spearman_reliability_flag": reliability_flag,
         "spearman_note": "novel_application_no_amr_precedent_found",
         "prorata_caveat": PRORATA_CAVEAT,
         "version": "v1",
