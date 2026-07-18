@@ -58,6 +58,15 @@ def is_gene_column_recorded(row: pd.Series) -> bool:
     return any(_non_blank(row.get(col)) for col in GENE_COLUMNS)
 
 
+# Deliberately identical body to is_gene_column_recorded, not a copy-paste bug:
+# EVIDENCE_GATE_ESTIMANDS.md SS2.1/2.3 define T ("detection-only Register export")
+# and this "broader column-presence positive (reference only)" metric with the
+# same rule (>=1 non-blank gene column) on purpose - confirmed against the raw
+# ATLAS export that these 8 columns only ever hold NaN or a detected allele
+# name (e.g. "NDM-1"), never an explicit negative token, so "recorded" and
+# "positive under the loosest rule" are the same predicate on this dataset.
+# Reference only - production bounds (step19) use the allele-restricted
+# is_carbapenemase_positive_allele_restricted for P, not this column.
 def is_carbapenemase_positive_broad(row: pd.Series) -> bool:
     return any(_non_blank(row.get(col)) for col in GENE_COLUMNS)
 

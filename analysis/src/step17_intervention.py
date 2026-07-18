@@ -169,6 +169,7 @@ def vaccination_scenario_row(
   coef: float,
   p_value: float,
   extra_caveat: str,
+  model_sample_warning: str = "",
 ) -> dict:
   has_coefficient = np.isfinite(coef)
   gain_1pp = coef if has_coefficient else np.nan
@@ -187,6 +188,18 @@ def vaccination_scenario_row(
     magnitude_flag = "implausible_magnitude_likely_confounding"
   else:
     magnitude_flag = "within_illustrative_threshold"
+  caveat = ASSOCIATIONAL_CAVEAT + " " + extra_caveat + (
+    "" if has_coefficient else " No Stage 5 coefficient available for this term."
+  )
+  if model_sample_warning:
+    # The coefficient itself can look clean (small magnitude, high p-value)
+    # while still coming from an overfit regression (Stage 5 primary spec:
+    # n=16 against 10 parameters, R^2>0.99 - see fit_ols() in
+    # step15_association.py). A future data update could make this
+    # coefficient significant without the sample-size problem going away, so
+    # this warning must travel with the estimate itself, not rely on the
+    # current p-value staying non-significant.
+    caveat += f" Stage 5 model reliability warning: {model_sample_warning}."
   return {
     "pathogen_type": "bacterial",
     "intervention_category": "vaccination",
@@ -204,24 +217,32 @@ def vaccination_scenario_row(
     "coefficient_p_value": p_value,
     "scenario_coverage_increase_pp": 1.0,
     "scenario_coverage_increase_pp_secondary": 10.0,
-    "evidence_caveat": ASSOCIATIONAL_CAVEAT + " " + extra_caveat + (
-      "" if has_coefficient else " No Stage 5 coefficient available for this term."
-    ),
+    "evidence_caveat": caveat,
+    "model_sample_warning": model_sample_warning,
     "version": "v1",
     "date_added": TODAY,
   }
 
 
-def build_category_summary(coef_df: pd.DataFrame, rd_summary: pd.DataFrame) -> pd.DataFrame:
+def build_category_summary(
+  coef_df: pd.DataFrame, rd_summary: pd.DataFrame, meta_df: pd.DataFrame
+) -> pd.DataFrame:
   rows = []
   hib_coef, hib_p = coef_lookup(coef_df, "bacterial", "hib3_coverage_pct")
   pcv_coef, pcv_p = coef_lookup(coef_df, "bacterial", "pcvc_coverage_pct")
+  bact_meta = meta_df[meta_df["pathogen_type"] == "bacterial"]
+  bact_sample_warning = (
+    str(bact_meta["sample_warning"].iloc[0])
+    if len(bact_meta) and pd.notna(bact_meta["sample_warning"].iloc[0])
+    else ""
+  )
   rows.append(
     vaccination_scenario_row(
       "hib3_coverage",
       hib_coef,
       hib_p,
       "Hib represented in only 2 of 62 vaccine-AMR studies in Iwu-Jaja et al.",
+      bact_sample_warning,
     )
   )
   rows.append(
@@ -230,6 +251,7 @@ def build_category_summary(coef_df: pd.DataFrame, rd_summary: pd.DataFrame) -> p
       pcv_coef,
       pcv_p,
       "PCV coefficient not statistically significant in Stage 5 model.",
+      bact_sample_warning,
     )
   )
 
@@ -258,6 +280,7 @@ def build_category_summary(coef_df: pd.DataFrame, rd_summary: pd.DataFrame) -> p
         "scenario_coverage_increase_pp": np.nan,
         "scenario_coverage_increase_pp_secondary": np.nan,
         "evidence_caveat": reason,
+        "model_sample_warning": "",
         "version": "v1",
         "date_added": TODAY,
       }
@@ -279,6 +302,7 @@ def build_category_summary(coef_df: pd.DataFrame, rd_summary: pd.DataFrame) -> p
       "scenario_coverage_increase_pp": np.nan,
       "scenario_coverage_increase_pp_secondary": np.nan,
       "evidence_caveat": "No licensed Candida or Aspergillus vaccine (Justice Section 6 Stage 7).",
+      "model_sample_warning": "",
       "version": "v1",
       "date_added": TODAY,
     }
@@ -304,6 +328,7 @@ def build_category_summary(coef_df: pd.DataFrame, rd_summary: pd.DataFrame) -> p
           f"Stage 6 total prorated funding USD {rd_row['total_rd_funding_usd_prorated']:,.0f}; "
           "no local R&D-to-burden-to-LE model exists. Hub excludes private/VC funding (Justice Section 8)."
         ),
+        "model_sample_warning": "",
         "version": "v1",
         "date_added": TODAY,
       }
@@ -318,11 +343,12 @@ def main():
 
   project_iso3 = set(pd.read_csv(CROSSWALK_DIR / "country_iso3_crosswalk_v1.csv")["iso3"].astype(str))
   coef_df = pd.read_csv(BOUNDS_DIR / "association_ols_coefficients_v1.csv")
+  meta_df = pd.read_csv(BOUNDS_DIR / "association_model_metadata_v1.csv")
   desc = pd.read_csv(BOUNDS_DIR / "descriptive_bacterial_resistance_v1.csv")
   rd_summary = pd.read_csv(BOUNDS_DIR / "rd_alignment_summary_v1.csv")
   life_exp = load_life_expectancy_long()
 
-  summary = build_category_summary(coef_df, rd_summary)
+  summary = build_category_summary(coef_df, rd_summary, meta_df)
   summary.sort_values(["pathogen_type", "intervention_category", "sub_measure"]).to_csv(
     BOUNDS_DIR / "intervention_impact_by_category_v1.csv", index=False
   )
@@ -332,7 +358,22 @@ def main():
     BOUNDS_DIR / "intervention_vaccination_event_study_v1.csv", index=False
   )
   n_resistance = event_study["resistance_rate_change_post_minus_pre"].notna().sum()
+  n_event_study = len(event_study)
   print(f"Wrote intervention outputs ({n_resistance} event-study row(s) with computable resistance change).")
+  if n_resistance == 0 and n_event_study:
+    # Every row is still written (life_expectancy_change_post_minus_pre and
+    # resistance_window_status are populated regardless), so the CSV looks
+    # like a working 104-row event study at a glance. Say the quiet part
+    # loudly here so a reader who only checks the console log - not the
+    # resistance_window_status column distribution - doesn't mistake this
+    # for a populated resistance-change dataset.
+    print(
+      f"NOTE: 0 of {n_event_study} vaccination event-study country-pairs have AMR "
+      "surveillance data in BOTH pre and post windows - resistance_rate_change_post_minus_pre "
+      "is null in every row of intervention_vaccination_event_study_v1.csv. Only "
+      "life_expectancy_change_post_minus_pre is populate-able from this deliverable; it "
+      "carries no resistance-trend evidence in the current data."
+    )
 
   pcv_row = summary[summary["sub_measure"] == "pcvc_coverage"].iloc[0]
   if pcv_row["scenario_magnitude_flag"] != "implausible_magnitude_likely_confounding":
@@ -350,6 +391,16 @@ def main():
     print("PASS: Hib association non-significant — eligible for integrity-layer withhold.")
   else:
     print("PASS: Hib scenario recorded for ungated illustrative ranking only.")
+
+  bact_meta_row = meta_df[meta_df["pathogen_type"] == "bacterial"].iloc[0]
+  if bact_meta_row["sample_warning"] == "small_sample_not_for_causal_claims":
+    vacc_rows = summary[summary["sub_measure"].isin(["hib3_coverage", "pcvc_coverage"])]
+    if (vacc_rows["model_sample_warning"] != "small_sample_not_for_causal_claims").any():
+      print("FAIL: Stage 5 bacterial model is flagged small-sample but a vaccination "
+            "scenario row is missing model_sample_warning.")
+      failed = True
+    else:
+      print("PASS: Stage 5 small-sample warning propagated onto both vaccination scenario rows.")
 
   computable = event_study["resistance_window_status"].eq("computable")
   change_present = event_study["resistance_rate_change_post_minus_pre"].notna()

@@ -127,11 +127,26 @@ def allocate_budget(
             )
         )
 
+    # weighted_pos / weight_sum pools by pilot population share (n_pilot), so
+    # this is algebraically identical to the plain unweighted pilot mean
+    # (Sum(n_band * mean_band) / Sum(n_band) == overall mean for any partition
+    # into bands) - est_prev is always exactly obs_prev when target_prevalence
+    # is unset. It is kept as a separate field because a caller-supplied
+    # target_prevalence changes prev (used for the discovery-arm threshold)
+    # but currently has no effect on this pooled point estimate.
     est_prev = weighted_pos / weight_sum if weight_sum else obs_prev
+    # Pooled design-based interval for the planned core round as a whole,
+    # using total budget as the effective n - the per-band ci95_lower/upper
+    # above are each band's own design-based projection at that band's n_core;
+    # this is the single-number analog a caller who only wants one headline
+    # interval (not 8 band-level ones) would otherwise have to compute itself.
+    ci_se = np.sqrt(est_prev * (1 - est_prev) / max(budget, 1)) if pd.notna(est_prev) else np.nan
     meta = {
         "budget": budget,
         "observed_prevalence": obs_prev,
         "estimated_prevalence_pooled": est_prev,
+        "estimated_prevalence_pooled_ci95_lower": max(0.0, est_prev - 1.96 * ci_se) if pd.notna(ci_se) else np.nan,
+        "estimated_prevalence_pooled_ci95_upper": min(1.0, est_prev + 1.96 * ci_se) if pd.notna(ci_se) else np.nan,
         "discovery_go_no_go": discovery_go,
         "random_seed": random_seed,
     }
@@ -142,6 +157,12 @@ def run_allocator_cli():
     import argparse
     from .paths import ALLOCATOR_RECOMMENDATIONS, PLEA_CLEAN
 
+    # Defaults (PLEA_CLEAN + carbapenemase_positive) match this tool's own
+    # integration-check dataset (LAYER_A build plan WS3 "Check (integration)":
+    # representative design vs WS4 validation on PLEA) - a validation-demo
+    # invocation, not the true label-scarce production use case (a lab running
+    # this on a pilot where outcome_col is what it's trying to decide whether
+    # to fund testing for). Override --pilot/--outcome-col for real use.
     parser = argparse.ArgumentParser(description="AMR Evidence Gate budget allocator")
     parser.add_argument("--budget", type=int, default=200)
     parser.add_argument("--pilot", type=str, default=str(PLEA_CLEAN))
@@ -166,7 +187,12 @@ def run_allocator_cli():
     ALLOCATOR_RECOMMENDATIONS.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(ALLOCATOR_RECOMMENDATIONS, index=False)
     print(f"Wrote {len(out)} band allocation row(s) to {ALLOCATOR_RECOMMENDATIONS}")
-    print(f"Estimated prevalence (pooled): {meta['estimated_prevalence_pooled']:.4f}")
+    print(
+        f"Estimated prevalence (pooled): {meta['estimated_prevalence_pooled']:.4f} "
+        f"[{meta['estimated_prevalence_pooled_ci95_lower']:.4f}, "
+        f"{meta['estimated_prevalence_pooled_ci95_upper']:.4f}] "
+        f"(design-based, budget={meta['budget']})"
+    )
 
 
 if __name__ == "__main__":

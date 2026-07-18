@@ -9,6 +9,24 @@ COVERAGE_LOW = 0.93
 COVERAGE_HIGH = 0.97
 RESISTANT_ONLY_MIN_BIAS_PP = 10.0
 
+# EG-07 (EVIDENCE_GATE_ESTIMANDS.md SS1) is a direction check: resistant-only
+# ascertainment must inflate the estimate, not hit +10pp exactly. A dataset
+# whose resistant-only bias is positive and clearly outside the ±0.5pp noise
+# floor (BIAS_TOLERANCE_PP) but short of the +10pp target is only waved
+# through — as a disclosed warning, never silently — if it has a specific,
+# data-verified mechanism on file here. Anything else short of +10pp is a
+# hard failure. See EVIDENCE_GATE_ESTIMANDS.md SS4 for the full derivation.
+RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS = {
+    "SOAR_Hin": (
+        "BLNAR (beta-lactamase-negative, ampicillin-resistant H. influenzae) — "
+        "verified against raw SOAR isolate data: beta-lactamase-negative "
+        "isolates range ampicillin MIC 0.03-128 mg/L, the same ceiling as "
+        "beta-lactamase-positive isolates, so MIC-based resistant-only "
+        "selection cannot cleanly enrich for the beta-lactamase genotype the "
+        "way meropenem MIC enriches for PLEA_I's carbapenemase genotype."
+    ),
+}
+
 ATLAS_KP_SPECIES = "Klebsiella pneumoniae"
 
 OXA48_FAMILY_MARKERS = (

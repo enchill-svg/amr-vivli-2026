@@ -41,6 +41,15 @@ def pool_country_year_descriptive(
     df["midpoint"] = (df["tier1_bound_lower"] + df["tier1_bound_upper"]) / 2.0
     if invert:
         df["midpoint"] = 1.0 - df["midpoint"]
+        # Keep the pooled tier1_bound_lower/upper columns in the same
+        # (inverted) direction as midpoint above - interval inversion swaps
+        # and complements the endpoints (new_lower = 1 - old_upper), not just
+        # the midpoint - otherwise midpoint and bounds describe opposite
+        # quantities for fungal rows (resistance- vs susceptibility-oriented).
+        df["tier1_bound_lower"], df["tier1_bound_upper"] = (
+            1.0 - df["tier1_bound_upper"],
+            1.0 - df["tier1_bound_lower"],
+        )
 
     stratum_n = dedupe_isolate_denominator(df, site_col)
     n_by_cy = (

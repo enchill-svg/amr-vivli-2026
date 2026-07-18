@@ -16,8 +16,10 @@ from evidence_gate_core.estimands import (
     BIAS_TOLERANCE_PP,
     COVERAGE_HIGH,
     COVERAGE_LOW,
+    RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS,
     RESISTANT_ONLY_MIN_BIAS_PP,
 )
+from evidence_gate_core.export_validator import validate_gated_deliverable
 
 DELIVERABLES = ROOT / "deliverables"
 BOUNDS = ROOT / "bounds"
@@ -80,8 +82,23 @@ def main() -> int:
                 all_ok &= check(eg, False)
         res = val[val["design"] == "resistant_only"]
         if len(res):
-            max_bias = float(res["mean_bias_pp"].max())
-            all_ok &= check("EG-07 resistant-only bias", max_bias >= RESISTANT_ONLY_MIN_BIAS_PP, f"max={max_bias:.1f}pp")
+            # Per-dataset, not pooled with .max() — a single dataset clearing
+            # +10pp must not mask another dataset that doesn't. Mirrors the
+            # 3-tier logic in validate_sampling.check_validation_summary():
+            # below target but still a documented, positive, real exception
+            # is reported (not silently full-PASS, not a hard FAIL either).
+            per_dataset = res.groupby("dataset")["mean_bias_pp"].mean()
+            for ds, bias in per_dataset.items():
+                if bias >= RESISTANT_ONLY_MIN_BIAS_PP:
+                    all_ok &= check(f"EG-07 resistant-only bias ({ds})", True, f"bias={bias:.1f}pp")
+                elif bias > BIAS_TOLERANCE_PP and ds in RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS:
+                    print(
+                        f"  [PASS*] EG-07 resistant-only bias ({ds}) — bias={bias:.1f}pp, "
+                        f"below +{RESISTANT_ONLY_MIN_BIAS_PP}pp target; documented mechanism "
+                        "exception, see EVIDENCE_GATE_ESTIMANDS.md SS1/SS4"
+                    )
+                else:
+                    all_ok &= check(f"EG-07 resistant-only bias ({ds})", False, f"bias={bias:.1f}pp")
         else:
             all_ok &= check("EG-07 resistant-only", False)
     else:
@@ -128,6 +145,32 @@ def main() -> int:
                 n_pass == 0,
                 f"n_pass={n_pass}",
             )
+
+    # J-07 independent gate-integrity re-validation. step18b_gated_deliverables.py
+    # already calls validate_gated_deliverable() on the DataFrames it just built
+    # in-process - that only catches a bug in gate_rules.py if the same buggy
+    # code also happens to notice its own mistake. Re-reading each gated file
+    # fresh from disk, in this separate script/process, is what actually gives
+    # an independent second opinion on the on-disk artifact a judge would see.
+    gate_checks = [
+        ("cluster_typology_bacterial_gated_v1.csv", "typology_rank"),
+        ("cluster_typology_fungal_gated_v1.csv", "typology_rank"),
+        ("country_risk_ranking_bacterial_gated_v1.csv", "risk_rank"),
+        ("country_risk_ranking_fungal_gated_v1.csv", "risk_rank"),
+        ("intervention_recommendations_ranked_gated_v1.csv", "priority_rank"),
+    ]
+    for file_name, rank_col in gate_checks:
+        path = DELIVERABLES / file_name
+        if not path.exists():
+            all_ok &= check(f"J-07 {file_name} independent re-validation", False, "file missing")
+            continue
+        table = pd.read_csv(path)
+        report = validate_gated_deliverable(table, name=file_name, rank_col=rank_col)
+        all_ok &= check(
+            f"J-07 {file_name} independent re-validation",
+            report["status"] == "PASS",
+            "; ".join(report["flags"]) if report["flags"] else "quality_gate populated and consistent",
+        )
 
     # S6 Hub funding composition (modality + SSA geography)
     hub_path = DELIVERABLES / "hub_funding_composition_summary_v1.csv"

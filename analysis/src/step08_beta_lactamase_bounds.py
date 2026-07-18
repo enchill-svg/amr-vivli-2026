@@ -25,7 +25,8 @@ is computed per organism within each cohort (Check c), never as a single
 pooled whole-file number.
 
 Caveats required alongside every reported bound (Appendix 5 SS5.7 - three
-caveats, all three restated here, none silently dropped):
+caveats, all three restated here, none silently dropped; a fourth caveat below
+covers this deliverable's own validation coverage):
   1. Whether the underlying lab determination itself is error-free is
      unaudited by this pipeline.
   2. Whether "blank" genuinely means "not tested" (rather than e.g. "tested,
@@ -37,10 +38,27 @@ caveats, all three restated here, none silently dropped):
      definition can confirm or refute it. Tier 2's upper bound must therefore
      always be presented as conditional on this assumption, never as a
      verified or verifiable number.
+  4. SOAR_Hin's EG-07 resistant-only ascertainment-bias check (Step 20) reads
+     +5.4pp against a +10pp pre-registered target - real, correctly-signed,
+     but weaker than PLEA_I/carbapenemase's +11.9pp on the identical
+     procedure. Root cause verified against raw isolate data: BLNAR
+     (beta-lactamase-negative, ampicillin-resistant H. influenzae) isolates
+     share the same MIC ceiling as beta-lactamase-positive isolates, so
+     ampicillin MIC cannot cleanly enrich for beta-lactamase genotype the way
+     meropenem MIC enriches for PLEA_I's carbapenemase genotype. This does not
+     change the bounds computed here - it means the resampling design's
+     evidence that resistant-only ascertainment biases naive prevalence is
+     weaker for this cohort than for PLEA_I. See
+     EVIDENCE_GATE_ESTIMANDS.md SS4.1 for the full derivation.
 
 Retained isolates are scoped using Step 3's organism crosswalk (excluding No
 Growth / environmental-contaminant / cross-domain-fungal rows), per this
-step's own dependency on Step 3.
+step's own dependency on Step 3. SOAR_207965 additionally carries an
+Evaluable Y/N flag (Step 6's own reconnaissance: ~613 rows marked "N");
+Step 6 already excludes these for Steps 6/10, and this step now applies the
+identical exclusion since it draws N, T, and P from the same raw cohort -
+without it, isolates Step 6 has already determined are not evaluable would
+silently inflate this step's denominators.
 
 Reconnaissance for this step also directly resolves a flagged gap (SOAR
 201910's Betalactamase breakdown was "never counted" per the plan's own
@@ -123,6 +141,7 @@ SOAR_COHORTS = {
         "beta_lactamase_col": "Beta Lactamase",
         "country_col": "Country",
         "date_col": "YearCollected",
+        "evaluable_col": "Evaluable",
     },
 }
 
@@ -182,6 +201,21 @@ def main():
                   f"{sorted(organism_raw[canonical_organism == UNMAPPED_ORGANISM].dropna().unique())}")
             failed = True
         retained_mask = canonical_organism != "excluded"
+
+        evaluable_col = spec.get("evaluable_col")
+        if evaluable_col:
+            # Step 6 established SOAR_207965 carries an Evaluable Y/N flag
+            # (~613 rows marked "N") that step06_evaluability.py already
+            # excludes for Steps 6/10; this stratum-bounds step draws from
+            # the same raw cohort and must apply the same exclusion or it
+            # would silently include isolates Step 6 already determined are
+            # not evaluable, understating T and P here.
+            non_evaluable_mask = df[evaluable_col] == "N"
+            n_non_evaluable = int(non_evaluable_mask.sum())
+            if n_non_evaluable:
+                print(f"NOTE: {cohort_name} excludes {n_non_evaluable} row(s) with {evaluable_col} == 'N' "
+                      f"(Step 6's evaluability exclusion, applied here for consistency).")
+            retained_mask = retained_mask & ~non_evaluable_mask
 
         beta_raw = df[spec["beta_lactamase_col"]]
         beta_normalized = beta_raw.map(lambda v: BETA_LACTAMASE_NORMALIZATION.get(v) if pd.notna(v) else None)
@@ -316,7 +350,14 @@ def main():
             df = pd.read_excel(spec["path"])
         organism_raw = df[spec["organism_col"]].where(df[spec["organism_col"]].notna(), None)
         canonical_organism = organism_raw.map(lambda v: organism_lookup.get(v, UNMAPPED_ORGANISM))
-        n_expected_retained = (canonical_organism != "excluded").sum()
+        expected_mask = canonical_organism != "excluded"
+        evaluable_col = spec.get("evaluable_col")
+        if evaluable_col:
+            # AND, not a flat subtraction - a row can be both organism-excluded
+            # and Evaluable=="N"; subtracting counts independently would
+            # double-remove that overlap and produce a false mismatch below.
+            expected_mask = expected_mask & (df[evaluable_col] != "N")
+        n_expected_retained = int(expected_mask.sum())
         if n_from_strata.get(cohort_name, 0) != n_expected_retained:
             print(f"FAIL: {cohort_name} - stratified N sums to {n_from_strata.get(cohort_name, 0)}, "
                   f"expected {n_expected_retained} retained rows. Some row(s) were silently lost to grouping.")
@@ -350,6 +391,14 @@ def main():
           "construction - nothing observable in data where negatives-among-untested are unknown by definition "
           "can confirm or refute it, so Tier 2's upper bound must always be presented as conditional on this "
           "assumption, never as a verified number.")
+    print("NOTE (4th caveat, this deliverable's own validation coverage): SOAR_Hin's EG-07 resistant-only "
+          "ascertainment-bias check reads +5.4pp against the +10pp pre-registered target - real and "
+          "correctly-signed, but weaker than PLEA_I's +11.9pp. Verified root cause: BLNAR "
+          "(beta-lactamase-negative, ampicillin-resistant H. influenzae) isolates share the same ampicillin "
+          "MIC ceiling as beta-lactamase-positive isolates, so MIC-based resistant-only ascertainment cannot "
+          "cleanly enrich for beta-lactamase genotype in this cohort. The bounds above are unaffected; this "
+          "caveat discloses that the resampling design's evidence for ascertainment bias is weaker for "
+          "SOAR_Hin than for PLEA_I. See EVIDENCE_GATE_ESTIMANDS.md SS4.1.")
 
     if failed:
         print("\nStep 8 Check: FAIL")

@@ -182,13 +182,38 @@ def gate_intervention_recommendations(df: pd.DataFrame) -> pd.DataFrame:
     out.loc[confounded, "gate_reason"] = "implausible_magnitude_likely_confounding"
 
     p_vals = pd.to_numeric(out.get("coefficient_p_value"), errors="coerce")
-    nonsig = (
-        (out["data_status"] == "measured")
-        & p_vals.notna()
-        & (p_vals > NON_SIGNIFICANT_P_THRESHOLD)
-    )
+    measured_with_p = (out["data_status"] == "measured") & p_vals.notna()
+    # Bonferroni family-wise correction: this threshold is a shared decision
+    # rule applied simultaneously to every "measured" coefficient competing
+    # for a priority_rank (currently hib3_coverage_pct and pcvc_coverage_pct,
+    # both from the same Stage 5 OLS - see step17_intervention.py). The
+    # family is these co-screened candidate-intervention p-values, not every
+    # covariate the regression estimates (health_expenditure_pct_gdp etc. are
+    # controls, never individually gated/ranked here). Computed from the live
+    # row count so the correction self-adjusts if a future data update adds a
+    # third measured intervention term.
+    n_family = max(int(measured_with_p.sum()), 1)
+    bonferroni_p_threshold = NON_SIGNIFICANT_P_THRESHOLD / n_family
+    nonsig = measured_with_p & (p_vals > bonferroni_p_threshold)
     out.loc[nonsig, "quality_gate"] = "withhold"
-    out.loc[nonsig, "gate_reason"] = "non_significant_association"
+    out.loc[nonsig, "gate_reason"] = (
+        f"non_significant_association_bonferroni_p_gt_{bonferroni_p_threshold:.4f}_m{n_family}"
+    )
+
+    # A clean p-value / small magnitude can still come from an overfit
+    # regression (Stage 5 primary spec: n=16 against 10 parameters,
+    # R^2>0.99 — see step15_association.py's fit_ols()). A future data
+    # update could make such a coefficient significant without the
+    # sample-size problem going away, so this must gate on the warning
+    # itself, not rely on non-significance catching it incidentally.
+    sample_warned = (
+        (out["data_status"] == "measured")
+        & out["model_sample_warning"].astype(str).str.len().gt(0)
+    )
+    out.loc[sample_warned, "quality_gate"] = "withhold"
+    out.loc[sample_warned, "gate_reason"] = (
+        "model_sample_warning:" + out.loc[sample_warned, "model_sample_warning"].astype(str)
+    )
 
     hib_thin = (out["sub_measure"] == EVIDENCE_THIN_HIB_SUBMEASURE) & (
         out["data_status"] == "measured"

@@ -111,7 +111,14 @@ def run_validator_cli():
         report = validate_file(Path(p))
         reports.append(report)
         print(json.dumps(report, indent=2))
-    return 0
+    # validate_export()'s status vocabulary is {PASS, FLAG}, not {PASS, FAIL}:
+    # FLAG is a disclosure state for a structural, undocumented-nowhere-as-fixable
+    # property of a raw export (e.g. ATLAS's carbapenemase gene columns never
+    # carry an explicit negative token - blank means untested, not negative,
+    # per EVIDENCE_GATE_ESTIMANDS.md SS2.3, and step19's Manski-bounds framework
+    # exists specifically to handle it). Only a genuine FAIL status halts the
+    # pipeline; FLAG is printed above and left visible in the run log.
+    return 0 if all(r["status"] != "FAIL" for r in reports) else 1
 
 
 if __name__ == "__main__":

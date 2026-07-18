@@ -41,7 +41,12 @@ def gate_cluster_typology(pathogen_type: str, org_drug_gates: pd.DataFrame) -> p
     merged["quality_gate"] = merged["quality_gate"].fillna("withhold")
     merged["gate_reason"] = merged["gate_reason"].fillna("missing_organism_drug_gate")
     merged["typology_rank_ungated"] = merged["typology_rank"]
-    merged.loc[merged["quality_gate"].isin(["withhold", "bounds_only"]), "typology_rank"] = np.nan
+    rankable = merged[merged["quality_gate"] == "pass"].sort_values(
+        "composite_priority_score", ascending=False
+    )
+    merged["typology_rank"] = np.nan
+    for i, idx in enumerate(rankable.index, start=1):
+        merged.at[idx, "typology_rank"] = i
     merged["methodology"] = (
         str(merged["methodology"].iloc[0]) if len(merged) else ""
     ) + f" {GATE_METHODOLOGY}"

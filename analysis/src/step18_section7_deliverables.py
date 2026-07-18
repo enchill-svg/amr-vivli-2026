@@ -237,7 +237,12 @@ def build_identifiability_ledger() -> pd.DataFrame:
       "field_or_drug": "Beta Lactamase (POS/NEG/blank)",
       "description": (
         "Blank beta-lactamase field means untested, not negative — prevalence reported "
-        "as Manski bounds, never a bare point estimate (Justice Section 5 Step 8)."
+        "as Manski bounds, never a bare point estimate (Justice Section 5 Step 8). "
+        "Caveat: SOAR_Hin's resistant-only ascertainment-bias validation (EG-07) reads "
+        "+5.4pp against the +10pp target — real and correctly-signed, but weaker than "
+        "PLEA_I's +11.9pp, due to BLNAR isolates sharing beta-lactamase-positive "
+        "isolates' MIC ceiling. Bounds above are unaffected; see "
+        "EVIDENCE_GATE_ESTIMANDS.md SS4.1 for the derivation."
       ),
       "source_artifact": "bounds/beta_lactamase_bounds_v1.csv",
       "n_strata_or_rows": len(bl),

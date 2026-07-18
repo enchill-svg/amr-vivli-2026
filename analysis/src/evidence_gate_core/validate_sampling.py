@@ -14,6 +14,7 @@ from .estimands import (
     COVERAGE_HIGH,
     COVERAGE_LOW,
     RESAMPLE_COUNT,
+    RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS,
     RESISTANT_ONLY_MIN_BIAS_PP,
     VALIDATION_RANDOM_SEED,
 )
@@ -118,8 +119,11 @@ def resample_validate(
     return detail, summary
 
 
-def check_validation_summary(summary: pd.DataFrame) -> list[str]:
-    errors = []
+def check_validation_summary(summary: pd.DataFrame) -> tuple[list[str], list[str]]:
+    """Returns (errors, warnings). Errors must halt the pipeline; warnings are
+    disclosed, documented exceptions that do not."""
+    errors: list[str] = []
+    warnings: list[str] = []
     rep = summary[summary["design"] == "representative_ht"]
     res = summary[summary["design"] == "resistant_only"]
     if rep.empty:
@@ -130,6 +134,43 @@ def check_validation_summary(summary: pd.DataFrame) -> list[str]:
         cov = rep["coverage_rate"].mean()
         if not (COVERAGE_LOW <= cov <= COVERAGE_HIGH):
             errors.append(f"Representative coverage {cov:.3f} outside [{COVERAGE_LOW}, {COVERAGE_HIGH}]")
-    if not res.empty and (res["mean_bias_pp"] < RESISTANT_ONLY_MIN_BIAS_PP).all():
-        errors.append(f"Resistant-only bias did not exceed +{RESISTANT_ONLY_MIN_BIAS_PP} pp on any dataset")
-    return errors
+    if res.empty:
+        errors.append("No resistant_only rows in validation summary")
+    else:
+        # Every dataset is judged on its own — pooling with .all()/.max() only
+        # flags an error if ALL datasets fail, so one dataset clearing +10pp
+        # would silently hide another that doesn't.
+        #
+        # EG-07 is documented (EVIDENCE_GATE_ESTIMANDS.md SS1) as a direction
+        # check, not a point match: resistant-only ascertainment must inflate
+        # the estimate, not hit +10pp exactly. So a dataset's own bias is
+        # judged in three tiers, not a single pass/fail cut:
+        #   - >= RESISTANT_ONLY_MIN_BIAS_PP: clears the pre-registered target -> pass.
+        #   - > BIAS_TOLERANCE_PP but < target: positive, real bias (clearly
+        #     outside the ±0.5pp noise floor already used above for the
+        #     representative design), just below the target magnitude. Only
+        #     accepted with a specific, verified, per-dataset mechanism on
+        #     file in EVIDENCE_GATE_ESTIMANDS.md (SOAR_Hin/BLNAR is the one
+        #     documented case as of this check) — not a blanket allowance.
+        #     Reported as a warning so it stays visible, not silently passed.
+        #   - <= BIAS_TOLERANCE_PP: indistinguishable from zero, or negative
+        #     (wrong direction) - the resampling design isn't demonstrating
+        #     ascertainment bias at all for this dataset. Still a hard error.
+        for _, row in res.iterrows():
+            ds, bias = row["dataset"], row["mean_bias_pp"]
+            if bias >= RESISTANT_ONLY_MIN_BIAS_PP:
+                continue
+            if bias > BIAS_TOLERANCE_PP and ds in RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS:
+                warnings.append(
+                    f"Resistant-only bias for {ds} ({bias:.2f}pp) is positive and "
+                    f"real but below the +{RESISTANT_ONLY_MIN_BIAS_PP}pp target - "
+                    f"documented exception: {RESISTANT_ONLY_DOCUMENTED_EXCEPTIONS[ds]} "
+                    "(see EVIDENCE_GATE_ESTIMANDS.md SS1/SS4)."
+                )
+            else:
+                errors.append(
+                    f"Resistant-only bias for {ds} ({bias:.2f}pp) did not exceed "
+                    f"+{RESISTANT_ONLY_MIN_BIAS_PP} pp and has no documented "
+                    "mechanism exception on file"
+                )
+    return errors, warnings

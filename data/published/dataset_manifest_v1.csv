@@ -1,11 +1,11 @@
 artifact_type,artifact_path,pathogen_type,record_count,notes,version,date_added
-isolate_registry,master/isolate_registry_v1.csv,all,34787,"Justice brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); this build has 7,836 bacterial + 26,922 fungal = 34,787 total after preprocessing exclusions.",v1,2026-07-17
-master_table,master/master_table_v1.csv,all,343236,Long format: one row per isolate-drug pair (not one row per isolate).,v1,2026-07-17
-country_crosswalk,crosswalks/country_iso3_crosswalk_v1.csv,all,59,ISO3 harmonization for all cohorts and external joins.,v1,2026-07-17
-organism_crosswalk,crosswalks/organism_crosswalk_v1.csv,all,61,Canonical organism names across cohorts.,v1,2026-07-17
-drug_code_crosswalk,crosswalks/drug_code_crosswalk_v1.csv,all,71,Includes unresolved DIN (SOAR 201910) flagged exclude_from_cross_cohort_comparison.,v1,2026-07-17
-drug_class_crosswalk,crosswalks/drug_class_crosswalk_v1.csv,all,30,Canonical drug to drug-class mapping.,v1,2026-07-17
-master_table_by_cohort,master/master_table_v1.csv,all,229373,source_cohort=SENTRY; distinct_countries=43,v1,2026-07-17
-master_table_by_cohort,master/master_table_v1.csv,all,29235,source_cohort=SOAR_201818; distinct_countries=9,v1,2026-07-17
-master_table_by_cohort,master/master_table_v1.csv,all,37264,source_cohort=SOAR_201910; distinct_countries=18,v1,2026-07-17
-master_table_by_cohort,master/master_table_v1.csv,all,47364,source_cohort=SOAR_207965; distinct_countries=10,v1,2026-07-17
+isolate_registry,master/isolate_registry_v1.csv,all,34787,"Justice brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); this build has 7,836 bacterial + 26,922 fungal = 34,787 total after preprocessing exclusions.",v1,2026-07-18
+master_table,master/master_table_v1.csv,all,343236,Long format: one row per isolate-drug pair (not one row per isolate).,v1,2026-07-18
+country_crosswalk,crosswalks/country_iso3_crosswalk_v1.csv,all,59,ISO3 harmonization for all cohorts and external joins.,v1,2026-07-18
+organism_crosswalk,crosswalks/organism_crosswalk_v1.csv,all,61,Canonical organism names across cohorts.,v1,2026-07-18
+drug_code_crosswalk,crosswalks/drug_code_crosswalk_v1.csv,all,71,Includes unresolved DIN (SOAR 201910) flagged exclude_from_cross_cohort_comparison.,v1,2026-07-18
+drug_class_crosswalk,crosswalks/drug_class_crosswalk_v1.csv,all,30,Canonical drug to drug-class mapping.,v1,2026-07-18
+master_table_by_cohort,master/master_table_v1.csv,all,229373,source_cohort=SENTRY; distinct_countries=43,v1,2026-07-18
+master_table_by_cohort,master/master_table_v1.csv,all,29235,source_cohort=SOAR_201818; distinct_countries=9,v1,2026-07-18
+master_table_by_cohort,master/master_table_v1.csv,all,37264,source_cohort=SOAR_201910; distinct_countries=18,v1,2026-07-18
+master_table_by_cohort,master/master_table_v1.csv,all,47364,source_cohort=SOAR_207965; distinct_countries=10,v1,2026-07-18

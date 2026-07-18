@@ -78,13 +78,23 @@ def main():
     print("\nValidation summary:")
     print(summary.to_string(index=False))
 
-    errors = check_validation_summary(summary)
+    errors, warnings = check_validation_summary(summary)
+    for w in warnings:
+        print(f"WARN: {w}")
     for e in errors:
         print(f"FAIL: {e}")
         failed = True
 
     if not failed:
-        print("PASS: representative design near-zero bias and nominal coverage; resistant-only inflated")
+        if warnings:
+            print(
+                "PASS (with documented caveat): representative design near-zero bias "
+                "and nominal coverage; resistant-only inflated in the correct direction "
+                "for every dataset — see WARN line(s) above for dataset(s) below the "
+                "+10pp target under a documented mechanism exception."
+            )
+        else:
+            print("PASS: representative design near-zero bias and nominal coverage; resistant-only inflated")
 
     if failed:
         print("\nStep 20 Check: FAIL")

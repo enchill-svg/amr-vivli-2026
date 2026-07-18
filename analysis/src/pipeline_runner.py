@@ -4,6 +4,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import asdict, dataclass
@@ -239,6 +240,27 @@ def write_run_manifest(
     return manifest_path
 
 
+def _resync_published_manifest(manifest_path: Path) -> None:
+    """Overwrite data/published/runs/latest/ with this run's true final manifest.
+
+    publish_dashboard_data.py (a mid-pipeline stage) copies analysis/runs/latest/
+    into data/published/runs/latest/ while it runs - at that point the only
+    manifest on disk is the provisional snapshot written just before it started
+    (see the provisional_publish_result comment below), so the published copy
+    always ends up with a placeholder ("n/a", zero duration) publish_dashboard_data
+    entry. The true final manifest, with that stage's real result, is only
+    written afterward, to analysis/runs/latest/. Re-copying it here - once it
+    exists - closes that gap.
+    """
+    published_run_dir = ROOT.parent / "data" / "published" / "runs" / "latest"
+    if not published_run_dir.exists():
+        return
+    shutil.copy2(manifest_path, published_run_dir / "pipeline_run_manifest_v1.json")
+    stages_csv = RUNS_DIR / "latest" / "pipeline_run_stages_v1.csv"
+    if stages_csv.exists():
+        shutil.copy2(stages_csv, published_run_dir / "pipeline_run_stages_v1.csv")
+
+
 def run_pipeline_stages(
     stages: tuple[PipelineStage, ...],
     *,
@@ -328,6 +350,7 @@ def run_pipeline_stages(
         stage_results=stage_results,
         halted_at_stage=None,
     )
+    _resync_published_manifest(manifest_path)
     if write_legacy_preprocessing_log and preprocessing_results:
         _append_legacy_preprocessing_log(preprocessing_results)
     print(f"\n{'=' * 70}\nONE PIPELINE RUN: ALL STAGES PASSED\n{'=' * 70}")
