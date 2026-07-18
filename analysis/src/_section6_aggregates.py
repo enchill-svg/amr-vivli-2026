@@ -61,18 +61,28 @@ def pool_country_year_descriptive(
     def _agg(g: pd.DataFrame) -> pd.Series:
         n_tested = g[weight_col].sum()
         n_event = g[p_col].sum()
-        w = g[weight_col].clip(lower=1)
+        # Do NOT clip(lower=1): Step 11's per-organism cross join deliberately
+        # emits an explicit n_tested=0 row for every (organism, drug, site)
+        # combination never tested in a stratum, carrying the maximally
+        # uninformative Manski midpoint (0.5). Flooring its weight to 1 would
+        # give that "no data" placeholder the same say as a stratum with one
+        # real tested isolate, biasing burden_midpoint_weighted toward 0.5 in
+        # proportion to how many untested combinations exist in the group.
+        # Zero-weight rows must drop out of the average entirely; only guard
+        # the case where every row in the group is untested (total weight 0).
+        w = g[weight_col]
+        has_tested = w.sum() > 0
         return pd.Series(
             {
                 "n_tested": n_tested,
                 "n_event": n_event,
                 "burden_point_estimate": n_event / n_tested if n_tested else np.nan,
-                "burden_midpoint_weighted": np.average(g["midpoint"], weights=w),
+                "burden_midpoint_weighted": np.average(g["midpoint"], weights=w) if has_tested else np.nan,
                 # Weighted average of stratum Manski bounds — do not divide pooled
                 # drug-test counts by deduplicated isolate N (same isolate may be
                 # tested for multiple drugs).
-                "tier1_bound_lower_pooled": np.average(g["tier1_bound_lower"], weights=w),
-                "tier1_bound_upper_pooled": np.average(g["tier1_bound_upper"], weights=w),
+                "tier1_bound_lower_pooled": np.average(g["tier1_bound_lower"], weights=w) if has_tested else np.nan,
+                "tier1_bound_upper_pooled": np.average(g["tier1_bound_upper"], weights=w) if has_tested else np.nan,
             }
         )
 

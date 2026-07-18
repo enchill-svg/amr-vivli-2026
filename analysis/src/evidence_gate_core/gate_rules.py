@@ -21,7 +21,7 @@ JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS = frozenset(
         "itraconazole",
         "posaconazole",
         "flucytosine",
-        "amphotericin B",
+        "amphotericin b",
     }
 )
 

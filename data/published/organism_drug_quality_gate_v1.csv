@@ -72,7 +72,7 @@ bacterial,Streptococcus pneumoniae,moxifloxacin,pass,interpretable_classificatio
 bacterial,Streptococcus pneumoniae,penicillin,pass,interpretable_classification_majority,3407,3407
 bacterial,Streptococcus pneumoniae,tetracycline,pass,interpretable_classification_majority,993,993
 bacterial,Streptococcus pneumoniae,trimethoprim/sulfamethoxazole,pass,interpretable_classification_majority,3407,3398
-fungal,Acremonium strictum genogroup III,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Acremonium strictum genogroup III,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Acremonium strictum genogroup III,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Acremonium strictum genogroup III,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Acremonium strictum genogroup III,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -80,14 +80,14 @@ fungal,Acremonium strictum genogroup III,Itraconazole,bounds_only,breakpoint_abs
 fungal,Acremonium strictum genogroup III,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Acremonium strictum genogroup III,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Acremonium strictum genogroup III,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Alternaria alternata,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Alternaria alternata,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Alternaria alternata,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Alternaria alternata,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Alternaria alternata,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Alternaria alternata,Itraconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Alternaria alternata,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Alternaria alternata,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Apiotrichum mycotoxinivorans,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Apiotrichum mycotoxinivorans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Apiotrichum mycotoxinivorans,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Apiotrichum mycotoxinivorans,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Apiotrichum mycotoxinivorans,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -96,14 +96,14 @@ fungal,Apiotrichum mycotoxinivorans,Itraconazole,bounds_only,breakpoint_absent_d
 fungal,Apiotrichum mycotoxinivorans,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Apiotrichum mycotoxinivorans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Apiotrichum mycotoxinivorans,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus aculeatus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus aculeatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus aculeatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus aculeatus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus aculeatus,Itraconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus aculeatus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus aculeatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus aculeatus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus alabamensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Aspergillus alabamensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus alabamensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus alabamensis,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus alabamensis,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
@@ -112,7 +112,7 @@ fungal,Aspergillus alabamensis,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Aspergillus alabamensis,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus alabamensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus alabamensis,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Aspergillus brasiliensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Aspergillus brasiliensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus brasiliensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus brasiliensis,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus brasiliensis,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -120,7 +120,7 @@ fungal,Aspergillus brasiliensis,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Aspergillus brasiliensis,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus brasiliensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus brasiliensis,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Aspergillus caelatus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus caelatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus caelatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus caelatus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus caelatus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -128,7 +128,7 @@ fungal,Aspergillus caelatus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus caelatus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus caelatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus caelatus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus clavatus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus clavatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus clavatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus clavatus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus clavatus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -136,7 +136,7 @@ fungal,Aspergillus clavatus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus clavatus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus clavatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus clavatus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus flavus,Amphotericin B,withhold,majority_unclassifiable_no_standard,11,0
+fungal,Aspergillus flavus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
 fungal,Aspergillus flavus,Anidulafungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus flavus,Caspofungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus flavus,Isavuconazole,withhold,majority_unclassifiable_no_standard,11,0
@@ -144,7 +144,7 @@ fungal,Aspergillus flavus,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Aspergillus flavus,Micafungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus flavus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,11
 fungal,Aspergillus flavus,Voriconazole,withhold,majority_unclassifiable_no_standard,11,0
-fungal,Aspergillus flavus species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,319,0
+fungal,Aspergillus flavus species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,319,0
 fungal,Aspergillus flavus species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,320,0
 fungal,Aspergillus flavus species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,320,0
 fungal,Aspergillus flavus species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,54,0
@@ -153,7 +153,7 @@ fungal,Aspergillus flavus species complex,Itraconazole,bounds_only,breakpoint_ab
 fungal,Aspergillus flavus species complex,Micafungin,withhold,majority_unclassifiable_no_standard,320,0
 fungal,Aspergillus flavus species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,320,320
 fungal,Aspergillus flavus species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,320,0
-fungal,Aspergillus foetidus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus foetidus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus foetidus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus foetidus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus foetidus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -161,7 +161,7 @@ fungal,Aspergillus foetidus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus foetidus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus foetidus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus foetidus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus fumigatus,Amphotericin B,pass,interpretable_classification_majority,2085,2085
+fungal,Aspergillus fumigatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2085,2085
 fungal,Aspergillus fumigatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,2084,0
 fungal,Aspergillus fumigatus,Caspofungin,withhold,majority_unclassifiable_no_standard,2084,0
 fungal,Aspergillus fumigatus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,307,0
@@ -170,7 +170,7 @@ fungal,Aspergillus fumigatus,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Aspergillus fumigatus,Micafungin,withhold,majority_unclassifiable_no_standard,2085,0
 fungal,Aspergillus fumigatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2083,2083
 fungal,Aspergillus fumigatus,Voriconazole,pass,interpretable_classification_majority,2084,2084
-fungal,Aspergillus fumisynnematus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus fumisynnematus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus fumisynnematus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus fumisynnematus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus fumisynnematus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -178,7 +178,7 @@ fungal,Aspergillus fumisynnematus,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Aspergillus fumisynnematus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus fumisynnematus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus fumisynnematus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus hiratsukae,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Aspergillus hiratsukae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus hiratsukae,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus hiratsukae,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus hiratsukae,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -186,7 +186,7 @@ fungal,Aspergillus hiratsukae,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Aspergillus hiratsukae,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus hiratsukae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus hiratsukae,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Aspergillus hortai,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus hortai,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus hortai,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus hortai,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus hortai,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -194,7 +194,7 @@ fungal,Aspergillus hortai,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Aspergillus hortai,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus hortai,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus hortai,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus lentulus,Amphotericin B,withhold,majority_unclassifiable_no_standard,11,0
+fungal,Aspergillus lentulus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
 fungal,Aspergillus lentulus,Anidulafungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus lentulus,Caspofungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus lentulus,Isavuconazole,withhold,majority_unclassifiable_no_standard,8,0
@@ -202,7 +202,7 @@ fungal,Aspergillus lentulus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus lentulus,Micafungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus lentulus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
 fungal,Aspergillus lentulus,Voriconazole,withhold,majority_unclassifiable_no_standard,11,0
-fungal,Aspergillus melleus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus melleus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus melleus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus melleus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus melleus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -210,7 +210,7 @@ fungal,Aspergillus melleus,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Aspergillus melleus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus melleus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus melleus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus nidulans,Amphotericin B,withhold,majority_unclassifiable_no_standard,49,0
+fungal,Aspergillus nidulans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,49,0
 fungal,Aspergillus nidulans,Anidulafungin,withhold,majority_unclassifiable_no_standard,49,0
 fungal,Aspergillus nidulans,Caspofungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Aspergillus nidulans,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,8,0
@@ -219,7 +219,7 @@ fungal,Aspergillus nidulans,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus nidulans,Micafungin,withhold,majority_unclassifiable_no_standard,49,0
 fungal,Aspergillus nidulans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,49,0
 fungal,Aspergillus nidulans,Voriconazole,withhold,majority_unclassifiable_no_standard,49,0
-fungal,Aspergillus nidulans species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,20,0
+fungal,Aspergillus nidulans species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Aspergillus nidulans species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Aspergillus nidulans species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Aspergillus nidulans species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,18,0
@@ -227,7 +227,7 @@ fungal,Aspergillus nidulans species complex,Itraconazole,bounds_only,breakpoint_
 fungal,Aspergillus nidulans species complex,Micafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Aspergillus nidulans species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Aspergillus nidulans species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,20,0
-fungal,Aspergillus niger,Amphotericin B,withhold,majority_unclassifiable_no_standard,143,0
+fungal,Aspergillus niger,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,143,0
 fungal,Aspergillus niger,Anidulafungin,withhold,majority_unclassifiable_no_standard,143,0
 fungal,Aspergillus niger,Caspofungin,withhold,majority_unclassifiable_no_standard,143,0
 fungal,Aspergillus niger,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
@@ -236,7 +236,7 @@ fungal,Aspergillus niger,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Aspergillus niger,Micafungin,withhold,majority_unclassifiable_no_standard,143,0
 fungal,Aspergillus niger,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,142,142
 fungal,Aspergillus niger,Voriconazole,withhold,majority_unclassifiable_no_standard,142,0
-fungal,Aspergillus niger species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,216,0
+fungal,Aspergillus niger species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,216,0
 fungal,Aspergillus niger species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,216,0
 fungal,Aspergillus niger species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,215,0
 fungal,Aspergillus niger species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,33,0
@@ -245,7 +245,7 @@ fungal,Aspergillus niger species complex,Itraconazole,bounds_only,breakpoint_abs
 fungal,Aspergillus niger species complex,Micafungin,withhold,majority_unclassifiable_no_standard,216,0
 fungal,Aspergillus niger species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,216,216
 fungal,Aspergillus niger species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,216,0
-fungal,Aspergillus nomius,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Aspergillus nomius,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus nomius,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus nomius,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus nomius,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -254,7 +254,7 @@ fungal,Aspergillus nomius,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Aspergillus nomius,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus nomius,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus nomius,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Aspergillus ochraceus species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Aspergillus ochraceus species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus ochraceus species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus ochraceus species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus ochraceus species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -262,7 +262,7 @@ fungal,Aspergillus ochraceus species complex,Itraconazole,bounds_only,breakpoint
 fungal,Aspergillus ochraceus species complex,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus ochraceus species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus ochraceus species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Aspergillus parasiticus,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Aspergillus parasiticus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus parasiticus,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus parasiticus,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus parasiticus,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -270,14 +270,14 @@ fungal,Aspergillus parasiticus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Aspergillus parasiticus,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus parasiticus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus parasiticus,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Aspergillus piperis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus piperis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus piperis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus piperis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus piperis,Itraconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus piperis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus piperis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus piperis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus sclerotiorum,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Aspergillus sclerotiorum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus sclerotiorum,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus sclerotiorum,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus sclerotiorum,Isavuconazole,withhold,majority_unclassifiable_no_standard,4,0
@@ -285,7 +285,7 @@ fungal,Aspergillus sclerotiorum,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Aspergillus sclerotiorum,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Aspergillus sclerotiorum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Aspergillus sclerotiorum,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Aspergillus sydowii,Amphotericin B,withhold,majority_unclassifiable_no_standard,10,0
+fungal,Aspergillus sydowii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Aspergillus sydowii,Anidulafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Aspergillus sydowii,Caspofungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Aspergillus sydowii,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
@@ -294,7 +294,7 @@ fungal,Aspergillus sydowii,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Aspergillus sydowii,Micafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Aspergillus sydowii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Aspergillus sydowii,Voriconazole,withhold,majority_unclassifiable_no_standard,10,0
-fungal,Aspergillus tamarii,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Aspergillus tamarii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus tamarii,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus tamarii,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus tamarii,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -302,7 +302,7 @@ fungal,Aspergillus tamarii,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Aspergillus tamarii,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus tamarii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus tamarii,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Aspergillus terreus,Amphotericin B,withhold,majority_unclassifiable_no_standard,77,0
+fungal,Aspergillus terreus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,77,0
 fungal,Aspergillus terreus,Anidulafungin,withhold,majority_unclassifiable_no_standard,77,0
 fungal,Aspergillus terreus,Caspofungin,withhold,majority_unclassifiable_no_standard,77,0
 fungal,Aspergillus terreus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
@@ -311,7 +311,7 @@ fungal,Aspergillus terreus,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Aspergillus terreus,Micafungin,withhold,majority_unclassifiable_no_standard,77,0
 fungal,Aspergillus terreus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,77,0
 fungal,Aspergillus terreus,Voriconazole,withhold,majority_unclassifiable_no_standard,77,0
-fungal,Aspergillus terreus species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,48,0
+fungal,Aspergillus terreus species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,48,0
 fungal,Aspergillus terreus species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Aspergillus terreus species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Aspergillus terreus species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
@@ -320,7 +320,7 @@ fungal,Aspergillus terreus species complex,Itraconazole,bounds_only,breakpoint_a
 fungal,Aspergillus terreus species complex,Micafungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Aspergillus terreus species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,48,0
 fungal,Aspergillus terreus species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,48,0
-fungal,Aspergillus thermomutatus,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Aspergillus thermomutatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus thermomutatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus thermomutatus,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus thermomutatus,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -328,7 +328,7 @@ fungal,Aspergillus thermomutatus,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Aspergillus thermomutatus,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Aspergillus thermomutatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Aspergillus thermomutatus,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Aspergillus tubingensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,22,0
+fungal,Aspergillus tubingensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,22,0
 fungal,Aspergillus tubingensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,22,0
 fungal,Aspergillus tubingensis,Caspofungin,withhold,majority_unclassifiable_no_standard,22,0
 fungal,Aspergillus tubingensis,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -337,7 +337,7 @@ fungal,Aspergillus tubingensis,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Aspergillus tubingensis,Micafungin,withhold,majority_unclassifiable_no_standard,22,0
 fungal,Aspergillus tubingensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,22,0
 fungal,Aspergillus tubingensis,Voriconazole,withhold,majority_unclassifiable_no_standard,22,0
-fungal,Aspergillus udagawae,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Aspergillus udagawae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus udagawae,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus udagawae,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus udagawae,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -345,7 +345,7 @@ fungal,Aspergillus udagawae,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Aspergillus udagawae,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aspergillus udagawae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aspergillus udagawae,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Aspergillus unguis,Amphotericin B,withhold,majority_unclassifiable_no_standard,5,0
+fungal,Aspergillus unguis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Aspergillus unguis,Anidulafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Aspergillus unguis,Caspofungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Aspergillus unguis,Isavuconazole,withhold,majority_unclassifiable_no_standard,4,0
@@ -353,7 +353,7 @@ fungal,Aspergillus unguis,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Aspergillus unguis,Micafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Aspergillus unguis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Aspergillus unguis,Voriconazole,withhold,majority_unclassifiable_no_standard,5,0
-fungal,Aspergillus ustus,Amphotericin B,withhold,majority_unclassifiable_no_standard,7,0
+fungal,Aspergillus ustus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,7,0
 fungal,Aspergillus ustus,Anidulafungin,withhold,majority_unclassifiable_no_standard,7,0
 fungal,Aspergillus ustus,Caspofungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Aspergillus ustus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -362,7 +362,7 @@ fungal,Aspergillus ustus,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Aspergillus ustus,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Aspergillus ustus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,7,0
 fungal,Aspergillus ustus,Voriconazole,withhold,majority_unclassifiable_no_standard,7,0
-fungal,Aspergillus ustus species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,12,0
+fungal,Aspergillus ustus species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,12,0
 fungal,Aspergillus ustus species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Aspergillus ustus species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Aspergillus ustus species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -371,7 +371,7 @@ fungal,Aspergillus ustus species complex,Itraconazole,bounds_only,breakpoint_abs
 fungal,Aspergillus ustus species complex,Micafungin,withhold,majority_unclassifiable_no_standard,12,0
 fungal,Aspergillus ustus species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
 fungal,Aspergillus ustus species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,12,0
-fungal,Aspergillus versicolor,Amphotericin B,withhold,majority_unclassifiable_no_standard,14,0
+fungal,Aspergillus versicolor,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Aspergillus versicolor,Anidulafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Aspergillus versicolor,Caspofungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Aspergillus versicolor,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -380,7 +380,7 @@ fungal,Aspergillus versicolor,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Aspergillus versicolor,Micafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Aspergillus versicolor,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Aspergillus versicolor,Voriconazole,withhold,majority_unclassifiable_no_standard,14,0
-fungal,Aspergillus versicolor species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus versicolor species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus versicolor species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus versicolor species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus versicolor species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -389,7 +389,7 @@ fungal,Aspergillus versicolor species complex,Itraconazole,bounds_only,breakpoin
 fungal,Aspergillus versicolor species complex,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus versicolor species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus versicolor species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aspergillus welwitschiae,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Aspergillus welwitschiae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus welwitschiae,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus welwitschiae,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus welwitschiae,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -397,7 +397,7 @@ fungal,Aspergillus welwitschiae,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Aspergillus welwitschiae,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Aspergillus welwitschiae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Aspergillus welwitschiae,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Aureobasidium pullulans,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Aureobasidium pullulans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aureobasidium pullulans,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aureobasidium pullulans,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aureobasidium pullulans,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -407,7 +407,7 @@ fungal,Aureobasidium pullulans,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Aureobasidium pullulans,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Aureobasidium pullulans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Aureobasidium pullulans,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Blastobotrys adeninivorans,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Blastobotrys adeninivorans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Blastobotrys adeninivorans,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Blastobotrys adeninivorans,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Blastobotrys adeninivorans,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -416,7 +416,7 @@ fungal,Blastobotrys adeninivorans,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Blastobotrys adeninivorans,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Blastobotrys adeninivorans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Blastobotrys adeninivorans,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida albicans,Amphotericin B,pass,interpretable_classification_majority,9781,9781
+fungal,Candida albicans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9781,9781
 fungal,Candida albicans,Anidulafungin,pass,interpretable_classification_majority,9784,9784
 fungal,Candida albicans,Caspofungin,pass,interpretable_classification_majority,9720,9720
 fungal,Candida albicans,Fluconazole,pass,interpretable_classification_majority,9784,9784
@@ -426,7 +426,7 @@ fungal,Candida albicans,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Candida albicans,Micafungin,pass,interpretable_classification_majority,9784,9784
 fungal,Candida albicans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9784,9784
 fungal,Candida albicans,Voriconazole,pass,interpretable_classification_majority,9784,9784
-fungal,Candida auris,Amphotericin B,pass,interpretable_classification_majority,122,122
+fungal,Candida auris,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,122,122
 fungal,Candida auris,Anidulafungin,pass,interpretable_classification_majority,122,122
 fungal,Candida auris,Caspofungin,pass,interpretable_classification_majority,122,122
 fungal,Candida auris,Fluconazole,pass,interpretable_classification_majority,122,122
@@ -436,14 +436,14 @@ fungal,Candida auris,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Candida auris,Micafungin,pass,interpretable_classification_majority,122,122
 fungal,Candida auris,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,122,0
 fungal,Candida auris,Voriconazole,withhold,majority_unclassifiable_no_standard,122,0
-fungal,Candida blankii,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida blankii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida blankii,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida blankii,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida blankii,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida blankii,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida blankii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida blankii,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida bracarensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,13,0
+fungal,Candida bracarensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
 fungal,Candida bracarensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida bracarensis,Caspofungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida bracarensis,Fluconazole,withhold,majority_unclassifiable_no_standard,13,0
@@ -453,7 +453,7 @@ fungal,Candida bracarensis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida bracarensis,Micafungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida bracarensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
 fungal,Candida bracarensis,Voriconazole,withhold,majority_unclassifiable_no_standard,13,0
-fungal,Candida cacao,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Candida cacao,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida cacao,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida cacao,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida cacao,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -463,7 +463,7 @@ fungal,Candida cacao,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Candida cacao,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida cacao,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida cacao,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Candida catenulata,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Candida catenulata,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Candida catenulata,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Candida catenulata,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Candida catenulata,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -473,7 +473,7 @@ fungal,Candida catenulata,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida catenulata,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Candida catenulata,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Candida catenulata,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Candida digboiensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida digboiensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida digboiensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida digboiensis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida digboiensis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -482,7 +482,7 @@ fungal,Candida digboiensis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida digboiensis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida digboiensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida digboiensis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida dubliniensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,527,0
+fungal,Candida dubliniensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,527,0
 fungal,Candida dubliniensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,527,0
 fungal,Candida dubliniensis,Caspofungin,withhold,majority_unclassifiable_no_standard,523,0
 fungal,Candida dubliniensis,Fluconazole,withhold,majority_unclassifiable_no_standard,527,0
@@ -492,7 +492,7 @@ fungal,Candida dubliniensis,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Candida dubliniensis,Micafungin,withhold,majority_unclassifiable_no_standard,527,0
 fungal,Candida dubliniensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,527,527
 fungal,Candida dubliniensis,Voriconazole,withhold,majority_unclassifiable_no_standard,527,0
-fungal,Candida duobushaemulonii,Amphotericin B,withhold,majority_unclassifiable_no_standard,5,0
+fungal,Candida duobushaemulonii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Candida duobushaemulonii,Anidulafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Candida duobushaemulonii,Caspofungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Candida duobushaemulonii,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -501,7 +501,7 @@ fungal,Candida duobushaemulonii,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Candida duobushaemulonii,Micafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Candida duobushaemulonii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Candida duobushaemulonii,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida fabianii,Amphotericin B,withhold,majority_unclassifiable_no_standard,31,0
+fungal,Candida fabianii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,31,0
 fungal,Candida fabianii,Anidulafungin,withhold,majority_unclassifiable_no_standard,31,0
 fungal,Candida fabianii,Caspofungin,withhold,majority_unclassifiable_no_standard,31,0
 fungal,Candida fabianii,Fluconazole,withhold,majority_unclassifiable_no_standard,31,0
@@ -511,7 +511,7 @@ fungal,Candida fabianii,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Candida fabianii,Micafungin,withhold,majority_unclassifiable_no_standard,31,0
 fungal,Candida fabianii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,31,0
 fungal,Candida fabianii,Voriconazole,withhold,majority_unclassifiable_no_standard,31,0
-fungal,Candida fermentati,Amphotericin B,withhold,majority_unclassifiable_no_standard,47,0
+fungal,Candida fermentati,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,47,0
 fungal,Candida fermentati,Anidulafungin,withhold,majority_unclassifiable_no_standard,47,0
 fungal,Candida fermentati,Caspofungin,withhold,majority_unclassifiable_no_standard,46,0
 fungal,Candida fermentati,Fluconazole,withhold,majority_unclassifiable_no_standard,47,0
@@ -521,7 +521,7 @@ fungal,Candida fermentati,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida fermentati,Micafungin,withhold,majority_unclassifiable_no_standard,47,0
 fungal,Candida fermentati,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,47,0
 fungal,Candida fermentati,Voriconazole,withhold,majority_unclassifiable_no_standard,47,0
-fungal,Candida fluviatilis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida fluviatilis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida fluviatilis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida fluviatilis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida fluviatilis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -530,7 +530,7 @@ fungal,Candida fluviatilis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida fluviatilis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida fluviatilis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida fluviatilis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida glabrata,Amphotericin B,pass,interpretable_classification_majority,4314,4314
+fungal,Candida glabrata,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4314,4314
 fungal,Candida glabrata,Anidulafungin,pass,interpretable_classification_majority,4314,4314
 fungal,Candida glabrata,Caspofungin,pass,interpretable_classification_majority,4264,4264
 fungal,Candida glabrata,Fluconazole,pass,interpretable_classification_majority,4314,4314
@@ -540,7 +540,7 @@ fungal,Candida glabrata,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Candida glabrata,Micafungin,pass,interpretable_classification_majority,4313,4313
 fungal,Candida glabrata,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4314,4314
 fungal,Candida glabrata,Voriconazole,pass,interpretable_classification_majority,4314,4314
-fungal,Candida guilliermondii,Amphotericin B,pass,interpretable_classification_majority,149,149
+fungal,Candida guilliermondii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,149,149
 fungal,Candida guilliermondii,Anidulafungin,pass,interpretable_classification_majority,149,149
 fungal,Candida guilliermondii,Caspofungin,pass,interpretable_classification_majority,148,148
 fungal,Candida guilliermondii,Fluconazole,withhold,majority_unclassifiable_no_standard,149,0
@@ -550,7 +550,7 @@ fungal,Candida guilliermondii,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Candida guilliermondii,Micafungin,pass,interpretable_classification_majority,149,149
 fungal,Candida guilliermondii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,149,149
 fungal,Candida guilliermondii,Voriconazole,withhold,majority_unclassifiable_no_standard,149,0
-fungal,Candida haemulonii,Amphotericin B,withhold,majority_unclassifiable_no_standard,16,0
+fungal,Candida haemulonii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,16,0
 fungal,Candida haemulonii,Anidulafungin,withhold,majority_unclassifiable_no_standard,16,0
 fungal,Candida haemulonii,Caspofungin,withhold,majority_unclassifiable_no_standard,16,0
 fungal,Candida haemulonii,Fluconazole,withhold,majority_unclassifiable_no_standard,16,0
@@ -560,7 +560,7 @@ fungal,Candida haemulonii,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida haemulonii,Micafungin,withhold,majority_unclassifiable_no_standard,16,0
 fungal,Candida haemulonii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,16,0
 fungal,Candida haemulonii,Voriconazole,withhold,majority_unclassifiable_no_standard,16,0
-fungal,Candida inconspicua,Amphotericin B,withhold,majority_unclassifiable_no_standard,20,0
+fungal,Candida inconspicua,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Candida inconspicua,Anidulafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Candida inconspicua,Caspofungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Candida inconspicua,Fluconazole,withhold,majority_unclassifiable_no_standard,20,0
@@ -570,7 +570,7 @@ fungal,Candida inconspicua,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida inconspicua,Micafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Candida inconspicua,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Candida inconspicua,Voriconazole,withhold,majority_unclassifiable_no_standard,20,0
-fungal,Candida inconspicua/Pichia cactophila,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Candida inconspicua/Pichia cactophila,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida inconspicua/Pichia cactophila,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida inconspicua/Pichia cactophila,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida inconspicua/Pichia cactophila,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -580,7 +580,7 @@ fungal,Candida inconspicua/Pichia cactophila,Itraconazole,bounds_only,breakpoint
 fungal,Candida inconspicua/Pichia cactophila,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida inconspicua/Pichia cactophila,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida inconspicua/Pichia cactophila,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Candida intermedia,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Candida intermedia,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida intermedia,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida intermedia,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida intermedia,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -589,7 +589,7 @@ fungal,Candida intermedia,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida intermedia,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida intermedia,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida intermedia,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida kefyr,Amphotericin B,withhold,majority_unclassifiable_no_standard,181,0
+fungal,Candida kefyr,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,181,0
 fungal,Candida kefyr,Anidulafungin,withhold,majority_unclassifiable_no_standard,181,0
 fungal,Candida kefyr,Caspofungin,withhold,majority_unclassifiable_no_standard,180,0
 fungal,Candida kefyr,Fluconazole,withhold,majority_unclassifiable_no_standard,181,0
@@ -599,7 +599,7 @@ fungal,Candida kefyr,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Candida kefyr,Micafungin,withhold,majority_unclassifiable_no_standard,181,0
 fungal,Candida kefyr,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,181,0
 fungal,Candida kefyr,Voriconazole,withhold,majority_unclassifiable_no_standard,181,0
-fungal,Candida krusei,Amphotericin B,pass,interpretable_classification_majority,647,647
+fungal,Candida krusei,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,647,647
 fungal,Candida krusei,Anidulafungin,pass,interpretable_classification_majority,647,647
 fungal,Candida krusei,Caspofungin,pass,interpretable_classification_majority,636,636
 fungal,Candida krusei,Fluconazole,withhold,majority_unclassifiable_no_standard,282,0
@@ -609,7 +609,7 @@ fungal,Candida krusei,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Candida krusei,Micafungin,pass,interpretable_classification_majority,647,647
 fungal,Candida krusei,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,647,647
 fungal,Candida krusei,Voriconazole,pass,interpretable_classification_majority,647,647
-fungal,Candida lipolytica,Amphotericin B,withhold,majority_unclassifiable_no_standard,18,0
+fungal,Candida lipolytica,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,18,0
 fungal,Candida lipolytica,Anidulafungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Candida lipolytica,Caspofungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Candida lipolytica,Fluconazole,withhold,majority_unclassifiable_no_standard,18,0
@@ -619,7 +619,7 @@ fungal,Candida lipolytica,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida lipolytica,Micafungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Candida lipolytica,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,18,0
 fungal,Candida lipolytica,Voriconazole,withhold,majority_unclassifiable_no_standard,18,0
-fungal,Candida lusitaniae,Amphotericin B,pass,interpretable_classification_majority,416,416
+fungal,Candida lusitaniae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,416,416
 fungal,Candida lusitaniae,Anidulafungin,withhold,majority_unclassifiable_no_standard,416,0
 fungal,Candida lusitaniae,Caspofungin,withhold,majority_unclassifiable_no_standard,411,0
 fungal,Candida lusitaniae,Fluconazole,withhold,majority_unclassifiable_no_standard,416,0
@@ -629,7 +629,7 @@ fungal,Candida lusitaniae,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida lusitaniae,Micafungin,withhold,majority_unclassifiable_no_standard,416,0
 fungal,Candida lusitaniae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,416,416
 fungal,Candida lusitaniae,Voriconazole,withhold,majority_unclassifiable_no_standard,416,0
-fungal,Candida margitis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida margitis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida margitis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida margitis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida margitis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -638,7 +638,7 @@ fungal,Candida margitis,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Candida margitis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida margitis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida margitis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida metapsilosis,Amphotericin B,withhold,majority_unclassifiable_no_standard,81,0
+fungal,Candida metapsilosis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,81,0
 fungal,Candida metapsilosis,Anidulafungin,withhold,majority_unclassifiable_no_standard,81,0
 fungal,Candida metapsilosis,Caspofungin,withhold,majority_unclassifiable_no_standard,79,0
 fungal,Candida metapsilosis,Fluconazole,withhold,majority_unclassifiable_no_standard,81,0
@@ -648,7 +648,7 @@ fungal,Candida metapsilosis,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Candida metapsilosis,Micafungin,withhold,majority_unclassifiable_no_standard,81,0
 fungal,Candida metapsilosis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,81,0
 fungal,Candida metapsilosis,Voriconazole,withhold,majority_unclassifiable_no_standard,81,0
-fungal,Candida nivariensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,15,0
+fungal,Candida nivariensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Candida nivariensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Candida nivariensis,Caspofungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida nivariensis,Fluconazole,withhold,majority_unclassifiable_no_standard,15,0
@@ -658,7 +658,7 @@ fungal,Candida nivariensis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida nivariensis,Micafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Candida nivariensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Candida nivariensis,Voriconazole,withhold,majority_unclassifiable_no_standard,15,0
-fungal,Candida norvegensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,8,0
+fungal,Candida norvegensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,8,0
 fungal,Candida norvegensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Candida norvegensis,Caspofungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Candida norvegensis,Fluconazole,withhold,majority_unclassifiable_no_standard,7,0
@@ -668,7 +668,7 @@ fungal,Candida norvegensis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida norvegensis,Micafungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Candida norvegensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,7,0
 fungal,Candida norvegensis,Voriconazole,withhold,majority_unclassifiable_no_standard,7,0
-fungal,Candida orthopsilosis,Amphotericin B,withhold,majority_unclassifiable_no_standard,174,0
+fungal,Candida orthopsilosis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,174,0
 fungal,Candida orthopsilosis,Anidulafungin,withhold,majority_unclassifiable_no_standard,174,0
 fungal,Candida orthopsilosis,Caspofungin,withhold,majority_unclassifiable_no_standard,171,0
 fungal,Candida orthopsilosis,Fluconazole,withhold,majority_unclassifiable_no_standard,174,0
@@ -678,7 +678,7 @@ fungal,Candida orthopsilosis,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Candida orthopsilosis,Micafungin,withhold,majority_unclassifiable_no_standard,174,0
 fungal,Candida orthopsilosis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,174,0
 fungal,Candida orthopsilosis,Voriconazole,withhold,majority_unclassifiable_no_standard,174,0
-fungal,Candida palmioleophila,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida palmioleophila,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida palmioleophila,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida palmioleophila,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida palmioleophila,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -687,7 +687,7 @@ fungal,Candida palmioleophila,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Candida palmioleophila,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida palmioleophila,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida palmioleophila,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida parapsilosis,Amphotericin B,pass,interpretable_classification_majority,3423,3423
+fungal,Candida parapsilosis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3423,3423
 fungal,Candida parapsilosis,Anidulafungin,pass,interpretable_classification_majority,3424,3424
 fungal,Candida parapsilosis,Caspofungin,pass,interpretable_classification_majority,3391,3391
 fungal,Candida parapsilosis,Fluconazole,pass,interpretable_classification_majority,3424,3424
@@ -697,7 +697,7 @@ fungal,Candida parapsilosis,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Candida parapsilosis,Micafungin,pass,interpretable_classification_majority,3424,3424
 fungal,Candida parapsilosis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3424,3424
 fungal,Candida parapsilosis,Voriconazole,pass,interpretable_classification_majority,3424,3424
-fungal,Candida pararugosa,Amphotericin B,withhold,majority_unclassifiable_no_standard,13,0
+fungal,Candida pararugosa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
 fungal,Candida pararugosa,Anidulafungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida pararugosa,Caspofungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida pararugosa,Fluconazole,withhold,majority_unclassifiable_no_standard,11,0
@@ -707,7 +707,7 @@ fungal,Candida pararugosa,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida pararugosa,Micafungin,withhold,majority_unclassifiable_no_standard,13,0
 fungal,Candida pararugosa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
 fungal,Candida pararugosa,Voriconazole,withhold,majority_unclassifiable_no_standard,12,0
-fungal,Candida pelliculosa,Amphotericin B,withhold,majority_unclassifiable_no_standard,51,0
+fungal,Candida pelliculosa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,51,0
 fungal,Candida pelliculosa,Anidulafungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Candida pelliculosa,Caspofungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Candida pelliculosa,Fluconazole,withhold,majority_unclassifiable_no_standard,51,0
@@ -717,7 +717,7 @@ fungal,Candida pelliculosa,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida pelliculosa,Micafungin,withhold,majority_unclassifiable_no_standard,48,0
 fungal,Candida pelliculosa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,51,0
 fungal,Candida pelliculosa,Voriconazole,withhold,majority_unclassifiable_no_standard,51,0
-fungal,Candida pseudohaemulonii,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Candida pseudohaemulonii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida pseudohaemulonii,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida pseudohaemulonii,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida pseudohaemulonii,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -726,7 +726,7 @@ fungal,Candida pseudohaemulonii,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Candida pseudohaemulonii,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida pseudohaemulonii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida pseudohaemulonii,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida quercitrusa,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Candida quercitrusa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida quercitrusa,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida quercitrusa,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida quercitrusa,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -735,7 +735,7 @@ fungal,Candida quercitrusa,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Candida quercitrusa,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida quercitrusa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida quercitrusa,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida rugosa,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Candida rugosa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Candida rugosa,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Candida rugosa,Caspofungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Candida rugosa,Fluconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -744,7 +744,7 @@ fungal,Candida rugosa,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Candida rugosa,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Candida rugosa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Candida rugosa,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Candida sojae,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Candida sojae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida sojae,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sojae,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sojae,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -753,7 +753,7 @@ fungal,Candida sojae,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Candida sojae,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sojae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida sojae,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Candida spencermartinsiae,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida spencermartinsiae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida spencermartinsiae,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida spencermartinsiae,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida spencermartinsiae,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -762,7 +762,7 @@ fungal,Candida spencermartinsiae,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Candida spencermartinsiae,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida spencermartinsiae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida spencermartinsiae,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida sphaerica,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Candida sphaerica,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida sphaerica,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sphaerica,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sphaerica,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -771,7 +771,7 @@ fungal,Candida sphaerica,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Candida sphaerica,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Candida sphaerica,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Candida sphaerica,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Candida thasaenensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Candida thasaenensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida thasaenensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida thasaenensis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida thasaenensis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -780,7 +780,7 @@ fungal,Candida thasaenensis,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Candida thasaenensis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Candida thasaenensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Candida thasaenensis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Candida theae,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Candida theae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida theae,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida theae,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida theae,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -789,7 +789,7 @@ fungal,Candida theae,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Candida theae,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Candida theae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Candida theae,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Candida tropicalis,Amphotericin B,pass,interpretable_classification_majority,2138,2138
+fungal,Candida tropicalis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2138,2138
 fungal,Candida tropicalis,Anidulafungin,pass,interpretable_classification_majority,2139,2139
 fungal,Candida tropicalis,Caspofungin,pass,interpretable_classification_majority,2126,2126
 fungal,Candida tropicalis,Fluconazole,pass,interpretable_classification_majority,2139,2139
@@ -799,7 +799,7 @@ fungal,Candida tropicalis,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Candida tropicalis,Micafungin,pass,interpretable_classification_majority,2139,2139
 fungal,Candida tropicalis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2139,2139
 fungal,Candida tropicalis,Voriconazole,pass,interpretable_classification_majority,2139,2139
-fungal,Candida utilis,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Candida utilis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Candida utilis,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Candida utilis,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Candida utilis,Fluconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -808,7 +808,7 @@ fungal,Candida utilis,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Candida utilis,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Candida utilis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Candida utilis,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Coprinellus radians,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Coprinellus radians,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Coprinellus radians,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Coprinellus radians,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Coprinellus radians,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -816,7 +816,7 @@ fungal,Coprinellus radians,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Coprinellus radians,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Coprinellus radians,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Coprinellus radians,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Cryptococcus gattii,Amphotericin B,withhold,majority_unclassifiable_no_standard,14,0
+fungal,Cryptococcus gattii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Cryptococcus gattii,Anidulafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Cryptococcus gattii,Caspofungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Cryptococcus gattii,Fluconazole,withhold,majority_unclassifiable_no_standard,14,0
@@ -826,7 +826,7 @@ fungal,Cryptococcus gattii,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Cryptococcus gattii,Micafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Cryptococcus gattii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
 fungal,Cryptococcus gattii,Voriconazole,withhold,majority_unclassifiable_no_standard,14,0
-fungal,Cryptococcus gattii species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Cryptococcus gattii species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Cryptococcus gattii species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Cryptococcus gattii species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Cryptococcus gattii species complex,Fluconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -835,7 +835,7 @@ fungal,Cryptococcus gattii species complex,Itraconazole,bounds_only,breakpoint_a
 fungal,Cryptococcus gattii species complex,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Cryptococcus gattii species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Cryptococcus gattii species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Cryptococcus laurentii,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Cryptococcus laurentii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Cryptococcus laurentii,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Cryptococcus laurentii,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Cryptococcus laurentii,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -845,7 +845,7 @@ fungal,Cryptococcus laurentii,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Cryptococcus laurentii,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Cryptococcus laurentii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Cryptococcus laurentii,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Cryptococcus neoformans,Amphotericin B,pass,interpretable_classification_majority,100,100
+fungal,Cryptococcus neoformans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,100,100
 fungal,Cryptococcus neoformans,Anidulafungin,withhold,majority_unclassifiable_no_standard,100,0
 fungal,Cryptococcus neoformans,Caspofungin,withhold,majority_unclassifiable_no_standard,100,0
 fungal,Cryptococcus neoformans,Fluconazole,pass,interpretable_classification_majority,100,100
@@ -855,7 +855,7 @@ fungal,Cryptococcus neoformans,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Cryptococcus neoformans,Micafungin,withhold,majority_unclassifiable_no_standard,100,0
 fungal,Cryptococcus neoformans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,100,100
 fungal,Cryptococcus neoformans,Voriconazole,pass,interpretable_classification_majority,100,100
-fungal,Cryptococcus neoformans var. grubii,Amphotericin B,pass,interpretable_classification_majority,430,430
+fungal,Cryptococcus neoformans var. grubii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,430,430
 fungal,Cryptococcus neoformans var. grubii,Anidulafungin,withhold,majority_unclassifiable_no_standard,432,0
 fungal,Cryptococcus neoformans var. grubii,Caspofungin,withhold,majority_unclassifiable_no_standard,432,0
 fungal,Cryptococcus neoformans var. grubii,Fluconazole,pass,interpretable_classification_majority,432,432
@@ -865,7 +865,7 @@ fungal,Cryptococcus neoformans var. grubii,Itraconazole,bounds_only,breakpoint_a
 fungal,Cryptococcus neoformans var. grubii,Micafungin,withhold,majority_unclassifiable_no_standard,431,0
 fungal,Cryptococcus neoformans var. grubii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,432,432
 fungal,Cryptococcus neoformans var. grubii,Voriconazole,pass,interpretable_classification_majority,432,432
-fungal,Cryptococcus neoformans var. neoformans,Amphotericin B,pass,interpretable_classification_majority,52,52
+fungal,Cryptococcus neoformans var. neoformans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,52,52
 fungal,Cryptococcus neoformans var. neoformans,Anidulafungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Cryptococcus neoformans var. neoformans,Caspofungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Cryptococcus neoformans var. neoformans,Fluconazole,pass,interpretable_classification_majority,52,52
@@ -875,7 +875,7 @@ fungal,Cryptococcus neoformans var. neoformans,Itraconazole,bounds_only,breakpoi
 fungal,Cryptococcus neoformans var. neoformans,Micafungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Cryptococcus neoformans var. neoformans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,52,52
 fungal,Cryptococcus neoformans var. neoformans,Voriconazole,pass,interpretable_classification_majority,52,52
-fungal,Cunninghamella bertholletiae,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Cunninghamella bertholletiae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Cunninghamella bertholletiae,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cunninghamella bertholletiae,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cunninghamella bertholletiae,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -883,7 +883,7 @@ fungal,Cunninghamella bertholletiae,Itraconazole,bounds_only,breakpoint_absent_d
 fungal,Cunninghamella bertholletiae,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cunninghamella bertholletiae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Cunninghamella bertholletiae,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Cyberlindnera rhodanensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Cyberlindnera rhodanensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Cyberlindnera rhodanensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cyberlindnera rhodanensis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cyberlindnera rhodanensis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -892,7 +892,7 @@ fungal,Cyberlindnera rhodanensis,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Cyberlindnera rhodanensis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Cyberlindnera rhodanensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Cyberlindnera rhodanensis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Debaryomyces fabryi,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Debaryomyces fabryi,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Debaryomyces fabryi,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Debaryomyces fabryi,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Debaryomyces fabryi,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -902,7 +902,7 @@ fungal,Debaryomyces fabryi,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Debaryomyces fabryi,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Debaryomyces fabryi,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Debaryomyces fabryi,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Epicoccum nigrum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Epicoccum nigrum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Epicoccum nigrum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Epicoccum nigrum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Epicoccum nigrum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -910,7 +910,7 @@ fungal,Epicoccum nigrum,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Epicoccum nigrum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Epicoccum nigrum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Epicoccum nigrum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Exophiala attenuata,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Exophiala attenuata,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Exophiala attenuata,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala attenuata,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala attenuata,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -918,7 +918,7 @@ fungal,Exophiala attenuata,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Exophiala attenuata,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala attenuata,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Exophiala attenuata,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Exophiala dermatitidis,Amphotericin B,withhold,majority_unclassifiable_no_standard,20,0
+fungal,Exophiala dermatitidis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Exophiala dermatitidis,Anidulafungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Exophiala dermatitidis,Caspofungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Exophiala dermatitidis,Isavuconazole,withhold,majority_unclassifiable_no_standard,13,0
@@ -926,14 +926,14 @@ fungal,Exophiala dermatitidis,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Exophiala dermatitidis,Micafungin,withhold,majority_unclassifiable_no_standard,17,0
 fungal,Exophiala dermatitidis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Exophiala dermatitidis,Voriconazole,withhold,majority_unclassifiable_no_standard,20,0
-fungal,Exophiala phaeomuriformis,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Exophiala phaeomuriformis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Exophiala phaeomuriformis,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala phaeomuriformis,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala phaeomuriformis,Itraconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Exophiala phaeomuriformis,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Exophiala phaeomuriformis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Exophiala phaeomuriformis,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Fonsecaea pedrosoi,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fonsecaea pedrosoi,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fonsecaea pedrosoi,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fonsecaea pedrosoi,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fonsecaea pedrosoi,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -942,7 +942,7 @@ fungal,Fonsecaea pedrosoi,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Fonsecaea pedrosoi,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fonsecaea pedrosoi,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fonsecaea pedrosoi,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium annulatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Fusarium annulatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Fusarium annulatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Fusarium annulatum,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Fusarium annulatum,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -950,7 +950,7 @@ fungal,Fusarium annulatum,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Fusarium annulatum,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Fusarium annulatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Fusarium annulatum,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Fusarium dimerum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fusarium dimerum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium dimerum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -958,7 +958,7 @@ fungal,Fusarium dimerum,Itraconazole,bounds_only,breakpoint_absent_drug_justice_
 fungal,Fusarium dimerum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium dimerum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium dimerum species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fusarium dimerum species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium dimerum species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -966,7 +966,7 @@ fungal,Fusarium dimerum species complex,Itraconazole,bounds_only,breakpoint_abse
 fungal,Fusarium dimerum species complex,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium dimerum species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium dimerum species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium falciforme,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fusarium falciforme,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium falciforme,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium falciforme,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium falciforme,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -974,7 +974,7 @@ fungal,Fusarium falciforme,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Fusarium falciforme,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium falciforme,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium falciforme,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium incarnatum-equiseti species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Fusarium incarnatum-equiseti species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Fusarium incarnatum-equiseti species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium incarnatum-equiseti species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium incarnatum-equiseti species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,4,0
@@ -982,7 +982,7 @@ fungal,Fusarium incarnatum-equiseti species complex,Itraconazole,bounds_only,bre
 fungal,Fusarium incarnatum-equiseti species complex,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium incarnatum-equiseti species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Fusarium incarnatum-equiseti species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Fusarium musae,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fusarium musae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium musae,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium musae,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium musae,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -990,7 +990,7 @@ fungal,Fusarium musae,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Fusarium musae,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium musae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium musae,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium oxysporum species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,25,0
+fungal,Fusarium oxysporum species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,25,0
 fungal,Fusarium oxysporum species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,25,0
 fungal,Fusarium oxysporum species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,25,0
 fungal,Fusarium oxysporum species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,23,0
@@ -998,7 +998,7 @@ fungal,Fusarium oxysporum species complex,Itraconazole,bounds_only,breakpoint_ab
 fungal,Fusarium oxysporum species complex,Micafungin,withhold,majority_unclassifiable_no_standard,25,0
 fungal,Fusarium oxysporum species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,25,0
 fungal,Fusarium oxysporum species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,25,0
-fungal,Fusarium petroliphilum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Fusarium petroliphilum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium petroliphilum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium petroliphilum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium petroliphilum,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1006,7 +1006,7 @@ fungal,Fusarium petroliphilum,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Fusarium petroliphilum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Fusarium petroliphilum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Fusarium petroliphilum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Fusarium solani,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Fusarium solani,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Fusarium solani,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium solani,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium solani,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1014,7 +1014,7 @@ fungal,Fusarium solani,Itraconazole,bounds_only,breakpoint_absent_drug_justice_s
 fungal,Fusarium solani,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Fusarium solani,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Fusarium solani,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Fusarium solani species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,65,0
+fungal,Fusarium solani species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,65,0
 fungal,Fusarium solani species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,65,0
 fungal,Fusarium solani species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,65,0
 fungal,Fusarium solani species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
@@ -1023,7 +1023,7 @@ fungal,Fusarium solani species complex,Itraconazole,bounds_only,breakpoint_absen
 fungal,Fusarium solani species complex,Micafungin,withhold,majority_unclassifiable_no_standard,65,0
 fungal,Fusarium solani species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,65,0
 fungal,Fusarium solani species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,65,0
-fungal,Geotrichum clavatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,35,0
+fungal,Geotrichum clavatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,35,0
 fungal,Geotrichum clavatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,35,0
 fungal,Geotrichum clavatum,Caspofungin,withhold,majority_unclassifiable_no_standard,35,0
 fungal,Geotrichum clavatum,Fluconazole,withhold,majority_unclassifiable_no_standard,35,0
@@ -1033,7 +1033,7 @@ fungal,Geotrichum clavatum,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Geotrichum clavatum,Micafungin,withhold,majority_unclassifiable_no_standard,35,0
 fungal,Geotrichum clavatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,35,0
 fungal,Geotrichum clavatum,Voriconazole,withhold,majority_unclassifiable_no_standard,35,0
-fungal,Geotrichum silvicola,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Geotrichum silvicola,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Geotrichum silvicola,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Geotrichum silvicola,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Geotrichum silvicola,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1042,7 +1042,7 @@ fungal,Geotrichum silvicola,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Geotrichum silvicola,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Geotrichum silvicola,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Geotrichum silvicola,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Gibberella fujikuroi species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,37,0
+fungal,Gibberella fujikuroi species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,37,0
 fungal,Gibberella fujikuroi species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,37,0
 fungal,Gibberella fujikuroi species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,37,0
 fungal,Gibberella fujikuroi species complex,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,11,0
@@ -1051,7 +1051,7 @@ fungal,Gibberella fujikuroi species complex,Itraconazole,bounds_only,breakpoint_
 fungal,Gibberella fujikuroi species complex,Micafungin,withhold,majority_unclassifiable_no_standard,37,0
 fungal,Gibberella fujikuroi species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,37,0
 fungal,Gibberella fujikuroi species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,36,0
-fungal,Kluyveromyces marxianus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Kluyveromyces marxianus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Kluyveromyces marxianus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Kluyveromyces marxianus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Kluyveromyces marxianus,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1060,7 +1060,7 @@ fungal,Kluyveromyces marxianus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Kluyveromyces marxianus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Kluyveromyces marxianus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Kluyveromyces marxianus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Kodamaea ohmeri,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Kodamaea ohmeri,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Kodamaea ohmeri,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Kodamaea ohmeri,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Kodamaea ohmeri,Fluconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -1069,7 +1069,7 @@ fungal,Kodamaea ohmeri,Itraconazole,bounds_only,breakpoint_absent_drug_justice_s
 fungal,Kodamaea ohmeri,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Kodamaea ohmeri,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Kodamaea ohmeri,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Lichtheimia corymbifera,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Lichtheimia corymbifera,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Lichtheimia corymbifera,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Lichtheimia corymbifera,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Lichtheimia corymbifera,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1078,7 +1078,7 @@ fungal,Lichtheimia corymbifera,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Lichtheimia corymbifera,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Lichtheimia corymbifera,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Lichtheimia corymbifera,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Lichtheimia ramosa,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Lichtheimia ramosa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Lichtheimia ramosa,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Lichtheimia ramosa,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Lichtheimia ramosa,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1087,7 +1087,7 @@ fungal,Lichtheimia ramosa,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Lichtheimia ramosa,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Lichtheimia ramosa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Lichtheimia ramosa,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Lodderomyces elongisporus,Amphotericin B,withhold,majority_unclassifiable_no_standard,7,0
+fungal,Lodderomyces elongisporus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,7,0
 fungal,Lodderomyces elongisporus,Anidulafungin,withhold,majority_unclassifiable_no_standard,7,0
 fungal,Lodderomyces elongisporus,Caspofungin,withhold,majority_unclassifiable_no_standard,7,0
 fungal,Lodderomyces elongisporus,Fluconazole,withhold,majority_unclassifiable_no_standard,7,0
@@ -1097,7 +1097,7 @@ fungal,Lodderomyces elongisporus,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Lodderomyces elongisporus,Micafungin,withhold,majority_unclassifiable_no_standard,7,0
 fungal,Lodderomyces elongisporus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,7,0
 fungal,Lodderomyces elongisporus,Voriconazole,withhold,majority_unclassifiable_no_standard,7,0
-fungal,Lomentospora prolificans,Amphotericin B,withhold,majority_unclassifiable_no_standard,30,0
+fungal,Lomentospora prolificans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,30,0
 fungal,Lomentospora prolificans,Anidulafungin,withhold,majority_unclassifiable_no_standard,30,0
 fungal,Lomentospora prolificans,Caspofungin,withhold,majority_unclassifiable_no_standard,30,0
 fungal,Lomentospora prolificans,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1106,7 +1106,7 @@ fungal,Lomentospora prolificans,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Lomentospora prolificans,Micafungin,withhold,majority_unclassifiable_no_standard,30,0
 fungal,Lomentospora prolificans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,30,0
 fungal,Lomentospora prolificans,Voriconazole,withhold,majority_unclassifiable_no_standard,30,0
-fungal,Magnusiomyces capitatus,Amphotericin B,withhold,majority_unclassifiable_no_standard,26,0
+fungal,Magnusiomyces capitatus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,26,0
 fungal,Magnusiomyces capitatus,Anidulafungin,withhold,majority_unclassifiable_no_standard,26,0
 fungal,Magnusiomyces capitatus,Caspofungin,withhold,majority_unclassifiable_no_standard,25,0
 fungal,Magnusiomyces capitatus,Fluconazole,withhold,majority_unclassifiable_no_standard,26,0
@@ -1116,7 +1116,7 @@ fungal,Magnusiomyces capitatus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Magnusiomyces capitatus,Micafungin,withhold,majority_unclassifiable_no_standard,26,0
 fungal,Magnusiomyces capitatus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,26,0
 fungal,Magnusiomyces capitatus,Voriconazole,withhold,majority_unclassifiable_no_standard,26,0
-fungal,Malassezia pachydermatis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Malassezia pachydermatis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Malassezia pachydermatis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Malassezia pachydermatis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Malassezia pachydermatis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1125,7 +1125,7 @@ fungal,Malassezia pachydermatis,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Malassezia pachydermatis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Malassezia pachydermatis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Malassezia pachydermatis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Medicopsis romeroi,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Medicopsis romeroi,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Medicopsis romeroi,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Medicopsis romeroi,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Medicopsis romeroi,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1133,7 +1133,7 @@ fungal,Medicopsis romeroi,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Medicopsis romeroi,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Medicopsis romeroi,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Medicopsis romeroi,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Microascus cirrosus,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Microascus cirrosus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Microascus cirrosus,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Microascus cirrosus,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Microascus cirrosus,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1141,7 +1141,7 @@ fungal,Microascus cirrosus,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Microascus cirrosus,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Microascus cirrosus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Microascus cirrosus,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Monascus ruber,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Monascus ruber,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Monascus ruber,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Monascus ruber,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Monascus ruber,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1149,7 +1149,7 @@ fungal,Monascus ruber,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Monascus ruber,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Monascus ruber,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Monascus ruber,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Mucor circinelloides,Amphotericin B,withhold,majority_unclassifiable_no_standard,15,0
+fungal,Mucor circinelloides,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Mucor circinelloides,Anidulafungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Mucor circinelloides,Caspofungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Mucor circinelloides,Isavuconazole,withhold,majority_unclassifiable_no_standard,13,0
@@ -1157,7 +1157,7 @@ fungal,Mucor circinelloides,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Mucor circinelloides,Micafungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Mucor circinelloides,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Mucor circinelloides,Voriconazole,withhold,majority_unclassifiable_no_standard,15,0
-fungal,Mucor circinelloides/ Mucor ramosissimus,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Mucor circinelloides/ Mucor ramosissimus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Mucor circinelloides/ Mucor ramosissimus,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Mucor circinelloides/ Mucor ramosissimus,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Mucor circinelloides/ Mucor ramosissimus,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1165,7 +1165,7 @@ fungal,Mucor circinelloides/ Mucor ramosissimus,Itraconazole,bounds_only,breakpo
 fungal,Mucor circinelloides/ Mucor ramosissimus,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Mucor circinelloides/ Mucor ramosissimus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Mucor circinelloides/ Mucor ramosissimus,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Mucor indicus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Mucor indicus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Mucor indicus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Mucor indicus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Mucor indicus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1173,7 +1173,7 @@ fungal,Mucor indicus,Itraconazole,bounds_only,breakpoint_absent_drug_justice_sec
 fungal,Mucor indicus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Mucor indicus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Mucor indicus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Paecilomyces lilacinus,Amphotericin B,withhold,majority_unclassifiable_no_standard,19,0
+fungal,Paecilomyces lilacinus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,19,0
 fungal,Paecilomyces lilacinus,Anidulafungin,withhold,majority_unclassifiable_no_standard,18,0
 fungal,Paecilomyces lilacinus,Caspofungin,withhold,majority_unclassifiable_no_standard,17,0
 fungal,Paecilomyces lilacinus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
@@ -1182,7 +1182,7 @@ fungal,Paecilomyces lilacinus,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Paecilomyces lilacinus,Micafungin,withhold,majority_unclassifiable_no_standard,19,0
 fungal,Paecilomyces lilacinus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,19,0
 fungal,Paecilomyces lilacinus,Voriconazole,withhold,majority_unclassifiable_no_standard,19,0
-fungal,Paecilomyces variotii,Amphotericin B,withhold,majority_unclassifiable_no_standard,14,0
+fungal,Paecilomyces variotii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Paecilomyces variotii,Anidulafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Paecilomyces variotii,Caspofungin,withhold,majority_unclassifiable_no_standard,11,0
 fungal,Paecilomyces variotii,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
@@ -1191,7 +1191,7 @@ fungal,Paecilomyces variotii,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Paecilomyces variotii,Micafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Paecilomyces variotii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Paecilomyces variotii,Voriconazole,withhold,majority_unclassifiable_no_standard,14,0
-fungal,Penicillium chrysogenum,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Penicillium chrysogenum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Penicillium chrysogenum,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Penicillium chrysogenum,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Penicillium chrysogenum,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1199,7 +1199,7 @@ fungal,Penicillium chrysogenum,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Penicillium chrysogenum,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Penicillium chrysogenum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Penicillium chrysogenum,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Penicillium citrinum,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Penicillium citrinum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Penicillium citrinum,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Penicillium citrinum,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Penicillium citrinum,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1207,7 +1207,7 @@ fungal,Penicillium citrinum,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Penicillium citrinum,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Penicillium citrinum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Penicillium citrinum,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Penicillium georgiense,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Penicillium georgiense,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium georgiense,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium georgiense,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium georgiense,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1215,7 +1215,7 @@ fungal,Penicillium georgiense,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Penicillium georgiense,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium georgiense,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium georgiense,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Penicillium roqueforti group,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Penicillium roqueforti group,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium roqueforti group,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium roqueforti group,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium roqueforti group,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1223,7 +1223,7 @@ fungal,Penicillium roqueforti group,Itraconazole,bounds_only,breakpoint_absent_d
 fungal,Penicillium roqueforti group,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium roqueforti group,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium roqueforti group,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Penicillium subgenus aspergilloides,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Penicillium subgenus aspergilloides,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Penicillium subgenus aspergilloides,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus aspergilloides,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus aspergilloides,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
@@ -1231,7 +1231,7 @@ fungal,Penicillium subgenus aspergilloides,Itraconazole,bounds_only,breakpoint_a
 fungal,Penicillium subgenus aspergilloides,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus aspergilloides,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Penicillium subgenus aspergilloides,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Penicillium subgenus furcatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Penicillium subgenus furcatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium subgenus furcatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium subgenus furcatum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium subgenus furcatum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1239,7 +1239,7 @@ fungal,Penicillium subgenus furcatum,Itraconazole,bounds_only,breakpoint_absent_
 fungal,Penicillium subgenus furcatum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium subgenus furcatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium subgenus furcatum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Penicillium subgenus terverticillata,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Penicillium subgenus terverticillata,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Penicillium subgenus terverticillata,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus terverticillata,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus terverticillata,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
@@ -1247,7 +1247,7 @@ fungal,Penicillium subgenus terverticillata,Itraconazole,bounds_only,breakpoint_
 fungal,Penicillium subgenus terverticillata,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Penicillium subgenus terverticillata,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Penicillium subgenus terverticillata,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Penicillium variabile,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Penicillium variabile,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium variabile,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium variabile,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium variabile,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1255,7 +1255,7 @@ fungal,Penicillium variabile,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Penicillium variabile,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Penicillium variabile,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Penicillium variabile,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Phaeoacremonium parasiticum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Phaeoacremonium parasiticum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Phaeoacremonium parasiticum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phaeoacremonium parasiticum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phaeoacremonium parasiticum,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1263,7 +1263,7 @@ fungal,Phaeoacremonium parasiticum,Itraconazole,bounds_only,breakpoint_absent_dr
 fungal,Phaeoacremonium parasiticum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phaeoacremonium parasiticum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Phaeoacremonium parasiticum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Phialemonium curvatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Phialemonium curvatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Phialemonium curvatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phialemonium curvatum,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phialemonium curvatum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1271,7 +1271,7 @@ fungal,Phialemonium curvatum,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Phialemonium curvatum,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Phialemonium curvatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Phialemonium curvatum,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Pichia cactophila,Amphotericin B,withhold,majority_unclassifiable_no_standard,14,0
+fungal,Pichia cactophila,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Pichia cactophila,Anidulafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Pichia cactophila,Caspofungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Pichia cactophila,Fluconazole,withhold,majority_unclassifiable_no_standard,14,0
@@ -1280,7 +1280,7 @@ fungal,Pichia cactophila,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Pichia cactophila,Micafungin,withhold,majority_unclassifiable_no_standard,14,0
 fungal,Pichia cactophila,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,14,0
 fungal,Pichia cactophila,Voriconazole,withhold,majority_unclassifiable_no_standard,14,0
-fungal,Pichia kluyveri,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Pichia kluyveri,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Pichia kluyveri,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Pichia kluyveri,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Pichia kluyveri,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1289,7 +1289,7 @@ fungal,Pichia kluyveri,Itraconazole,bounds_only,breakpoint_absent_drug_justice_s
 fungal,Pichia kluyveri,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Pichia kluyveri,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Pichia kluyveri,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Pichia manshurica,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Pichia manshurica,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia manshurica,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia manshurica,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia manshurica,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1299,7 +1299,7 @@ fungal,Pichia manshurica,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Pichia manshurica,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia manshurica,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia manshurica,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Pichia myanmarensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Pichia myanmarensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia myanmarensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia myanmarensis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia myanmarensis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1308,7 +1308,7 @@ fungal,Pichia myanmarensis,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Pichia myanmarensis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia myanmarensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia myanmarensis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Pichia norvegensis,Amphotericin B,withhold,majority_unclassifiable_no_standard,4,0
+fungal,Pichia norvegensis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Pichia norvegensis,Anidulafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Pichia norvegensis,Caspofungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Pichia norvegensis,Fluconazole,withhold,majority_unclassifiable_no_standard,4,0
@@ -1317,7 +1317,7 @@ fungal,Pichia norvegensis,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Pichia norvegensis,Micafungin,withhold,majority_unclassifiable_no_standard,4,0
 fungal,Pichia norvegensis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,4,0
 fungal,Pichia norvegensis,Voriconazole,withhold,majority_unclassifiable_no_standard,4,0
-fungal,Pichia onychis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Pichia onychis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia onychis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia onychis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia onychis,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1326,7 +1326,7 @@ fungal,Pichia onychis,Itraconazole,bounds_only,breakpoint_absent_drug_justice_se
 fungal,Pichia onychis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pichia onychis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pichia onychis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Pleurostomophora richardsiae,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Pleurostomophora richardsiae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Pleurostomophora richardsiae,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Pleurostomophora richardsiae,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Pleurostomophora richardsiae,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1334,7 +1334,7 @@ fungal,Pleurostomophora richardsiae,Itraconazole,bounds_only,breakpoint_absent_d
 fungal,Pleurostomophora richardsiae,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Pleurostomophora richardsiae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Pleurostomophora richardsiae,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Pseudopithomyces sacchari,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Pseudopithomyces sacchari,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pseudopithomyces sacchari,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pseudopithomyces sacchari,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pseudopithomyces sacchari,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1342,7 +1342,7 @@ fungal,Pseudopithomyces sacchari,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Pseudopithomyces sacchari,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Pseudopithomyces sacchari,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Pseudopithomyces sacchari,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Purpureocillium lilacinum,Amphotericin B,withhold,majority_unclassifiable_no_standard,5,0
+fungal,Purpureocillium lilacinum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Purpureocillium lilacinum,Anidulafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Purpureocillium lilacinum,Caspofungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Purpureocillium lilacinum,Isavuconazole,withhold,majority_unclassifiable_no_standard,5,0
@@ -1350,7 +1350,7 @@ fungal,Purpureocillium lilacinum,Itraconazole,bounds_only,breakpoint_absent_drug
 fungal,Purpureocillium lilacinum,Micafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Purpureocillium lilacinum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Purpureocillium lilacinum,Voriconazole,withhold,majority_unclassifiable_no_standard,5,0
-fungal,Rasamsonia argillacea,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Rasamsonia argillacea,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Rasamsonia argillacea,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rasamsonia argillacea,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rasamsonia argillacea,Isavuconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -1358,7 +1358,7 @@ fungal,Rasamsonia argillacea,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Rasamsonia argillacea,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rasamsonia argillacea,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Rasamsonia argillacea,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Rasamsonia argillacea species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Rasamsonia argillacea species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Rasamsonia argillacea species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Rasamsonia argillacea species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Rasamsonia argillacea species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,5,0
@@ -1366,7 +1366,7 @@ fungal,Rasamsonia argillacea species complex,Itraconazole,bounds_only,breakpoint
 fungal,Rasamsonia argillacea species complex,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Rasamsonia argillacea species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Rasamsonia argillacea species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Rhizomucor miehei,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Rhizomucor miehei,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Rhizomucor miehei,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Rhizomucor miehei,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Rhizomucor miehei,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1375,7 +1375,7 @@ fungal,Rhizomucor miehei,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Rhizomucor miehei,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Rhizomucor miehei,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Rhizomucor miehei,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Rhizomucor pusillus,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Rhizomucor pusillus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Rhizomucor pusillus,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rhizomucor pusillus,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rhizomucor pusillus,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1384,7 +1384,7 @@ fungal,Rhizomucor pusillus,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Rhizomucor pusillus,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Rhizomucor pusillus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Rhizomucor pusillus,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Rhizopus microsporus,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Rhizopus microsporus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Rhizopus microsporus,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Rhizopus microsporus,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Rhizopus microsporus,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1392,7 +1392,7 @@ fungal,Rhizopus microsporus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Rhizopus microsporus,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Rhizopus microsporus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Rhizopus microsporus,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Rhizopus microsporus group,Amphotericin B,withhold,majority_unclassifiable_no_standard,41,0
+fungal,Rhizopus microsporus group,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,41,0
 fungal,Rhizopus microsporus group,Anidulafungin,withhold,majority_unclassifiable_no_standard,40,0
 fungal,Rhizopus microsporus group,Caspofungin,withhold,majority_unclassifiable_no_standard,40,0
 fungal,Rhizopus microsporus group,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
@@ -1401,7 +1401,7 @@ fungal,Rhizopus microsporus group,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Rhizopus microsporus group,Micafungin,withhold,majority_unclassifiable_no_standard,40,0
 fungal,Rhizopus microsporus group,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,41,0
 fungal,Rhizopus microsporus group,Voriconazole,withhold,majority_unclassifiable_no_standard,41,0
-fungal,Rhizopus oryzae,Amphotericin B,withhold,majority_unclassifiable_no_standard,20,0
+fungal,Rhizopus oryzae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Rhizopus oryzae,Anidulafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Rhizopus oryzae,Caspofungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Rhizopus oryzae,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1410,7 +1410,7 @@ fungal,Rhizopus oryzae,Itraconazole,bounds_only,breakpoint_absent_drug_justice_s
 fungal,Rhizopus oryzae,Micafungin,withhold,majority_unclassifiable_no_standard,20,0
 fungal,Rhizopus oryzae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Rhizopus oryzae,Voriconazole,withhold,majority_unclassifiable_no_standard,20,0
-fungal,Rhizopus oryzae species complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,10,0
+fungal,Rhizopus oryzae species complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Rhizopus oryzae species complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Rhizopus oryzae species complex,Caspofungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Rhizopus oryzae species complex,Isavuconazole,withhold,majority_unclassifiable_no_standard,7,0
@@ -1418,7 +1418,7 @@ fungal,Rhizopus oryzae species complex,Itraconazole,bounds_only,breakpoint_absen
 fungal,Rhizopus oryzae species complex,Micafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Rhizopus oryzae species complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Rhizopus oryzae species complex,Voriconazole,withhold,majority_unclassifiable_no_standard,10,0
-fungal,Rhodotorula mucilaginosa,Amphotericin B,withhold,majority_unclassifiable_no_standard,52,0
+fungal,Rhodotorula mucilaginosa,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,52,0
 fungal,Rhodotorula mucilaginosa,Anidulafungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Rhodotorula mucilaginosa,Caspofungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Rhodotorula mucilaginosa,Fluconazole,withhold,majority_unclassifiable_no_standard,51,0
@@ -1428,7 +1428,7 @@ fungal,Rhodotorula mucilaginosa,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Rhodotorula mucilaginosa,Micafungin,withhold,majority_unclassifiable_no_standard,52,0
 fungal,Rhodotorula mucilaginosa,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,51,0
 fungal,Rhodotorula mucilaginosa,Voriconazole,withhold,majority_unclassifiable_no_standard,52,0
-fungal,Saccharomyces cerevisiae,Amphotericin B,withhold,majority_unclassifiable_no_standard,92,0
+fungal,Saccharomyces cerevisiae,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,92,0
 fungal,Saccharomyces cerevisiae,Anidulafungin,withhold,majority_unclassifiable_no_standard,92,0
 fungal,Saccharomyces cerevisiae,Caspofungin,withhold,majority_unclassifiable_no_standard,91,0
 fungal,Saccharomyces cerevisiae,Fluconazole,withhold,majority_unclassifiable_no_standard,92,0
@@ -1438,7 +1438,7 @@ fungal,Saccharomyces cerevisiae,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Saccharomyces cerevisiae,Micafungin,withhold,majority_unclassifiable_no_standard,92,0
 fungal,Saccharomyces cerevisiae,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,92,0
 fungal,Saccharomyces cerevisiae,Voriconazole,withhold,majority_unclassifiable_no_standard,92,0
-fungal,Sarocladium kiliense,Amphotericin B,withhold,majority_unclassifiable_no_standard,20,0
+fungal,Sarocladium kiliense,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,20,0
 fungal,Sarocladium kiliense,Anidulafungin,withhold,majority_unclassifiable_no_standard,17,0
 fungal,Sarocladium kiliense,Caspofungin,withhold,majority_unclassifiable_no_standard,17,0
 fungal,Sarocladium kiliense,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,13,0
@@ -1447,7 +1447,7 @@ fungal,Sarocladium kiliense,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Sarocladium kiliense,Micafungin,withhold,majority_unclassifiable_no_standard,17,0
 fungal,Sarocladium kiliense,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,19,0
 fungal,Sarocladium kiliense,Voriconazole,withhold,majority_unclassifiable_no_standard,20,0
-fungal,Scedosporium apiospermum,Amphotericin B,withhold,majority_unclassifiable_no_standard,15,0
+fungal,Scedosporium apiospermum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Scedosporium apiospermum,Anidulafungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Scedosporium apiospermum,Caspofungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Scedosporium apiospermum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
@@ -1456,7 +1456,7 @@ fungal,Scedosporium apiospermum,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Scedosporium apiospermum,Micafungin,withhold,majority_unclassifiable_no_standard,15,0
 fungal,Scedosporium apiospermum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,15,0
 fungal,Scedosporium apiospermum,Voriconazole,withhold,majority_unclassifiable_no_standard,15,0
-fungal,Scedosporium apiospermum / Scedosporium boydii,Amphotericin B,withhold,majority_unclassifiable_no_standard,61,0
+fungal,Scedosporium apiospermum / Scedosporium boydii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,61,0
 fungal,Scedosporium apiospermum / Scedosporium boydii,Anidulafungin,withhold,majority_unclassifiable_no_standard,61,0
 fungal,Scedosporium apiospermum / Scedosporium boydii,Caspofungin,withhold,majority_unclassifiable_no_standard,60,0
 fungal,Scedosporium apiospermum / Scedosporium boydii,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
@@ -1465,7 +1465,7 @@ fungal,Scedosporium apiospermum / Scedosporium boydii,Itraconazole,bounds_only,b
 fungal,Scedosporium apiospermum / Scedosporium boydii,Micafungin,withhold,majority_unclassifiable_no_standard,60,0
 fungal,Scedosporium apiospermum / Scedosporium boydii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,61,0
 fungal,Scedosporium apiospermum / Scedosporium boydii,Voriconazole,withhold,majority_unclassifiable_no_standard,60,0
-fungal,Scedosporium aurantiacum,Amphotericin B,withhold,majority_unclassifiable_no_standard,19,0
+fungal,Scedosporium aurantiacum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,19,0
 fungal,Scedosporium aurantiacum,Anidulafungin,withhold,majority_unclassifiable_no_standard,19,0
 fungal,Scedosporium aurantiacum,Caspofungin,withhold,majority_unclassifiable_no_standard,19,0
 fungal,Scedosporium aurantiacum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1474,7 +1474,7 @@ fungal,Scedosporium aurantiacum,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Scedosporium aurantiacum,Micafungin,withhold,majority_unclassifiable_no_standard,19,0
 fungal,Scedosporium aurantiacum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,19,0
 fungal,Scedosporium aurantiacum,Voriconazole,withhold,majority_unclassifiable_no_standard,19,0
-fungal,Scedosporium boydii,Amphotericin B,withhold,majority_unclassifiable_no_standard,10,0
+fungal,Scedosporium boydii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Scedosporium boydii,Anidulafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Scedosporium boydii,Caspofungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Scedosporium boydii,Isavuconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -1482,7 +1482,7 @@ fungal,Scedosporium boydii,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Scedosporium boydii,Micafungin,withhold,majority_unclassifiable_no_standard,10,0
 fungal,Scedosporium boydii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,10,0
 fungal,Scedosporium boydii,Voriconazole,withhold,majority_unclassifiable_no_standard,10,0
-fungal,Scedosporium dehoogii,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Scedosporium dehoogii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Scedosporium dehoogii,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scedosporium dehoogii,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scedosporium dehoogii,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1490,7 +1490,7 @@ fungal,Scedosporium dehoogii,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Scedosporium dehoogii,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scedosporium dehoogii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Scedosporium dehoogii,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Scopulariopsis brevicaulis,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Scopulariopsis brevicaulis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Scopulariopsis brevicaulis,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scopulariopsis brevicaulis,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scopulariopsis brevicaulis,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1499,7 +1499,7 @@ fungal,Scopulariopsis brevicaulis,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Scopulariopsis brevicaulis,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scopulariopsis brevicaulis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Scopulariopsis brevicaulis,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1507,7 +1507,7 @@ fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Itraconazole,bounds_
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Scopulariopsis brevicaulis / Scopulariopsis brumptii,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Trichoderma longibrachiatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Trichoderma longibrachiatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichoderma longibrachiatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichoderma longibrachiatum,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichoderma longibrachiatum,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1516,7 +1516,7 @@ fungal,Trichoderma longibrachiatum,Itraconazole,bounds_only,breakpoint_absent_dr
 fungal,Trichoderma longibrachiatum,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichoderma longibrachiatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichoderma longibrachiatum,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Trichomonascus ciferrii complex,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Trichomonascus ciferrii complex,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichomonascus ciferrii complex,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichomonascus ciferrii complex,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichomonascus ciferrii complex,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1525,7 +1525,7 @@ fungal,Trichomonascus ciferrii complex,Itraconazole,bounds_only,breakpoint_absen
 fungal,Trichomonascus ciferrii complex,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichomonascus ciferrii complex,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichomonascus ciferrii complex,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Trichosporon asahii,Amphotericin B,withhold,majority_unclassifiable_no_standard,94,0
+fungal,Trichosporon asahii,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,94,0
 fungal,Trichosporon asahii,Anidulafungin,withhold,majority_unclassifiable_no_standard,94,0
 fungal,Trichosporon asahii,Caspofungin,withhold,majority_unclassifiable_no_standard,94,0
 fungal,Trichosporon asahii,Fluconazole,withhold,majority_unclassifiable_no_standard,94,0
@@ -1535,7 +1535,7 @@ fungal,Trichosporon asahii,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Trichosporon asahii,Micafungin,withhold,majority_unclassifiable_no_standard,94,0
 fungal,Trichosporon asahii,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,94,0
 fungal,Trichosporon asahii,Voriconazole,withhold,majority_unclassifiable_no_standard,94,0
-fungal,Trichosporon capitatum,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Trichosporon capitatum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichosporon capitatum,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon capitatum,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon capitatum,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1544,7 +1544,7 @@ fungal,Trichosporon capitatum,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Trichosporon capitatum,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon capitatum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichosporon capitatum,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Trichosporon inkin,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Trichosporon inkin,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichosporon inkin,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon inkin,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon inkin,Fluconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1553,7 +1553,7 @@ fungal,Trichosporon inkin,Itraconazole,bounds_only,breakpoint_absent_drug_justic
 fungal,Trichosporon inkin,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Trichosporon inkin,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Trichosporon inkin,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Trichosporon loubieri,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Trichosporon loubieri,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon loubieri,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon loubieri,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon loubieri,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1562,7 +1562,7 @@ fungal,Trichosporon loubieri,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Trichosporon loubieri,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon loubieri,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon loubieri,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Trichosporon montevideense,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Trichosporon montevideense,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon montevideense,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon montevideense,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon montevideense,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1571,7 +1571,7 @@ fungal,Trichosporon montevideense,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Trichosporon montevideense,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon montevideense,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon montevideense,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Trichosporon mucoides,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Trichosporon mucoides,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Trichosporon mucoides,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Trichosporon mucoides,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Trichosporon mucoides,Fluconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1580,7 +1580,7 @@ fungal,Trichosporon mucoides,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Trichosporon mucoides,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Trichosporon mucoides,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Trichosporon mucoides,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Trichosporon mycotoxinivorans,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Trichosporon mycotoxinivorans,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Trichosporon mycotoxinivorans,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Trichosporon mycotoxinivorans,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Trichosporon mycotoxinivorans,Fluconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -1590,7 +1590,7 @@ fungal,Trichosporon mycotoxinivorans,Itraconazole,bounds_only,breakpoint_absent_
 fungal,Trichosporon mycotoxinivorans,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Trichosporon mycotoxinivorans,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Trichosporon mycotoxinivorans,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Trichosporon ovoides,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Trichosporon ovoides,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon ovoides,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon ovoides,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon ovoides,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1599,7 +1599,7 @@ fungal,Trichosporon ovoides,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Trichosporon ovoides,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Trichosporon ovoides,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Trichosporon ovoides,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Aspergillus,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Unspeciated Aspergillus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Unspeciated Aspergillus,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Aspergillus,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Aspergillus,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1607,7 +1607,7 @@ fungal,Unspeciated Aspergillus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Aspergillus,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Aspergillus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Unspeciated Aspergillus,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Unspeciated Candida,Amphotericin B,withhold,majority_unclassifiable_no_standard,5,0
+fungal,Unspeciated Candida,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Unspeciated Candida,Anidulafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Unspeciated Candida,Caspofungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Unspeciated Candida,Fluconazole,withhold,majority_unclassifiable_no_standard,5,0
@@ -1616,7 +1616,7 @@ fungal,Unspeciated Candida,Itraconazole,bounds_only,breakpoint_absent_drug_justi
 fungal,Unspeciated Candida,Micafungin,withhold,majority_unclassifiable_no_standard,5,0
 fungal,Unspeciated Candida,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,5,0
 fungal,Unspeciated Candida,Voriconazole,withhold,majority_unclassifiable_no_standard,5,0
-fungal,Unspeciated Chaetomium,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Chaetomium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Chaetomium,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Chaetomium,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Chaetomium,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1624,7 +1624,7 @@ fungal,Unspeciated Chaetomium,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Unspeciated Chaetomium,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Chaetomium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Chaetomium,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Coprinellus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Coprinellus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Coprinellus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Coprinellus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Coprinellus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1632,7 +1632,7 @@ fungal,Unspeciated Coprinellus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Coprinellus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Coprinellus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Coprinellus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Corpinellus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Corpinellus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Corpinellus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Corpinellus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Corpinellus,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1640,7 +1640,7 @@ fungal,Unspeciated Corpinellus,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Corpinellus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Corpinellus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Corpinellus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Cunninghamella,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Unspeciated Cunninghamella,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Cunninghamella,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Cunninghamella,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Cunninghamella,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1648,7 +1648,7 @@ fungal,Unspeciated Cunninghamella,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Unspeciated Cunninghamella,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Cunninghamella,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Cunninghamella,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Unspeciated Curvularia,Amphotericin B,withhold,majority_unclassifiable_no_standard,9,0
+fungal,Unspeciated Curvularia,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Unspeciated Curvularia,Anidulafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Unspeciated Curvularia,Caspofungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Unspeciated Curvularia,Isavuconazole,withhold,majority_unclassifiable_no_standard,9,0
@@ -1656,7 +1656,7 @@ fungal,Unspeciated Curvularia,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Unspeciated Curvularia,Micafungin,withhold,majority_unclassifiable_no_standard,9,0
 fungal,Unspeciated Curvularia,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,9,0
 fungal,Unspeciated Curvularia,Voriconazole,withhold,majority_unclassifiable_no_standard,9,0
-fungal,Unspeciated Exophiala,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Exophiala,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Exophiala,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Exophiala,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Exophiala,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1664,7 +1664,7 @@ fungal,Unspeciated Exophiala,Itraconazole,bounds_only,breakpoint_absent_drug_jus
 fungal,Unspeciated Exophiala,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Exophiala,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Exophiala,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Fusarium,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Unspeciated Fusarium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Fusarium,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Fusarium,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Fusarium,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1672,7 +1672,7 @@ fungal,Unspeciated Fusarium,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Unspeciated Fusarium,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Fusarium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Fusarium,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Unspeciated Lichtheimia,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Unspeciated Lichtheimia,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Lichtheimia,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Lichtheimia,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Lichtheimia,Isavuconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -1680,7 +1680,7 @@ fungal,Unspeciated Lichtheimia,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Lichtheimia,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Lichtheimia,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Lichtheimia,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Unspeciated Mucor,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Unspeciated Mucor,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Mucor,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Mucor,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Mucor,Isavuconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -1688,7 +1688,7 @@ fungal,Unspeciated Mucor,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Unspeciated Mucor,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Mucor,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Mucor,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Unspeciated Paecilomyces,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Unspeciated Paecilomyces,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Paecilomyces,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Paecilomyces,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Paecilomyces,Isavuconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -1696,7 +1696,7 @@ fungal,Unspeciated Paecilomyces,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Unspeciated Paecilomyces,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Paecilomyces,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Paecilomyces,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Unspeciated Penicillium,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Penicillium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Penicillium,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Penicillium,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Penicillium,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1704,7 +1704,7 @@ fungal,Unspeciated Penicillium,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Penicillium,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Penicillium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Penicillium,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Phaeoacremonium,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Phaeoacremonium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Phaeoacremonium,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phaeoacremonium,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phaeoacremonium,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1712,7 +1712,7 @@ fungal,Unspeciated Phaeoacremonium,Itraconazole,bounds_only,breakpoint_absent_dr
 fungal,Unspeciated Phaeoacremonium,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phaeoacremonium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Phaeoacremonium,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Phialemoniopsis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Phialemoniopsis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Phialemoniopsis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phialemoniopsis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phialemoniopsis,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1720,7 +1720,7 @@ fungal,Unspeciated Phialemoniopsis,Itraconazole,bounds_only,breakpoint_absent_dr
 fungal,Unspeciated Phialemoniopsis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Phialemoniopsis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Phialemoniopsis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Rhizopus,Amphotericin B,withhold,majority_unclassifiable_no_standard,6,0
+fungal,Unspeciated Rhizopus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Rhizopus,Anidulafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Rhizopus,Caspofungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Rhizopus,Isavuconazole,withhold,majority_unclassifiable_no_standard,6,0
@@ -1728,7 +1728,7 @@ fungal,Unspeciated Rhizopus,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Unspeciated Rhizopus,Micafungin,withhold,majority_unclassifiable_no_standard,6,0
 fungal,Unspeciated Rhizopus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,6,0
 fungal,Unspeciated Rhizopus,Voriconazole,withhold,majority_unclassifiable_no_standard,6,0
-fungal,Unspeciated Rhodotorula,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Rhodotorula,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Rhodotorula,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Rhodotorula,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Rhodotorula,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1737,7 +1737,7 @@ fungal,Unspeciated Rhodotorula,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Rhodotorula,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Rhodotorula,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Rhodotorula,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Sarocladium,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Sarocladium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Sarocladium,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Sarocladium,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Sarocladium,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1745,7 +1745,7 @@ fungal,Unspeciated Sarocladium,Itraconazole,bounds_only,breakpoint_absent_drug_j
 fungal,Unspeciated Sarocladium,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Sarocladium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Sarocladium,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Scedosporium,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Scedosporium,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Scedosporium,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Scedosporium,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Scedosporium,Isavuconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1753,7 +1753,7 @@ fungal,Unspeciated Scedosporium,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Unspeciated Scedosporium,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Scedosporium,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Scedosporium,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Scopulariopsis,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Unspeciated Scopulariopsis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Unspeciated Scopulariopsis,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Scopulariopsis,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Scopulariopsis,Isavuconazole,withhold,majority_unclassifiable_no_standard,3,0
@@ -1761,7 +1761,7 @@ fungal,Unspeciated Scopulariopsis,Itraconazole,bounds_only,breakpoint_absent_dru
 fungal,Unspeciated Scopulariopsis,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Unspeciated Scopulariopsis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Unspeciated Scopulariopsis,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Unspeciated Syncephalastrum,Amphotericin B,withhold,majority_unclassifiable_no_standard,2,0
+fungal,Unspeciated Syncephalastrum,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Syncephalastrum,Anidulafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Syncephalastrum,Caspofungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Syncephalastrum,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1769,7 +1769,7 @@ fungal,Unspeciated Syncephalastrum,Itraconazole,bounds_only,breakpoint_absent_dr
 fungal,Unspeciated Syncephalastrum,Micafungin,withhold,majority_unclassifiable_no_standard,2,0
 fungal,Unspeciated Syncephalastrum,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,2,0
 fungal,Unspeciated Syncephalastrum,Voriconazole,withhold,majority_unclassifiable_no_standard,2,0
-fungal,Unspeciated Trichosporon,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Trichosporon,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Trichosporon,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Trichosporon,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Trichosporon,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1778,7 +1778,7 @@ fungal,Unspeciated Trichosporon,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Unspeciated Trichosporon,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Trichosporon,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Trichosporon,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Unspeciated Yeast,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Unspeciated Yeast,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Yeast,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Yeast,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Yeast,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1787,7 +1787,7 @@ fungal,Unspeciated Yeast,Itraconazole,bounds_only,breakpoint_absent_drug_justice
 fungal,Unspeciated Yeast,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Unspeciated Yeast,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Unspeciated Yeast,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Verruconis gallopava,Amphotericin B,withhold,majority_unclassifiable_no_standard,3,0
+fungal,Verruconis gallopava,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Verruconis gallopava,Anidulafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Verruconis gallopava,Caspofungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Verruconis gallopava,Isavuconazole,withhold,majority_unclassifiable_no_standard,2,0
@@ -1795,7 +1795,7 @@ fungal,Verruconis gallopava,Itraconazole,bounds_only,breakpoint_absent_drug_just
 fungal,Verruconis gallopava,Micafungin,withhold,majority_unclassifiable_no_standard,3,0
 fungal,Verruconis gallopava,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,3,0
 fungal,Verruconis gallopava,Voriconazole,withhold,majority_unclassifiable_no_standard,3,0
-fungal,Wangiella dermatitidis,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Wangiella dermatitidis,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Wangiella dermatitidis,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wangiella dermatitidis,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wangiella dermatitidis,Flucytosine,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
@@ -1803,7 +1803,7 @@ fungal,Wangiella dermatitidis,Itraconazole,bounds_only,breakpoint_absent_drug_ju
 fungal,Wangiella dermatitidis,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wangiella dermatitidis,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Wangiella dermatitidis,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Wickerhamomyces anomalus,Amphotericin B,withhold,majority_unclassifiable_no_standard,1,0
+fungal,Wickerhamomyces anomalus,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Wickerhamomyces anomalus,Anidulafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wickerhamomyces anomalus,Caspofungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wickerhamomyces anomalus,Fluconazole,withhold,majority_unclassifiable_no_standard,1,0
@@ -1812,7 +1812,7 @@ fungal,Wickerhamomyces anomalus,Itraconazole,bounds_only,breakpoint_absent_drug_
 fungal,Wickerhamomyces anomalus,Micafungin,withhold,majority_unclassifiable_no_standard,1,0
 fungal,Wickerhamomyces anomalus,Posaconazole,bounds_only,breakpoint_absent_drug_justice_section_4_4,1,0
 fungal,Wickerhamomyces anomalus,Voriconazole,withhold,majority_unclassifiable_no_standard,1,0
-fungal,Yarrowia lipolytica,Amphotericin B,withhold,majority_unclassifiable_no_standard,8,0
+fungal,Yarrowia lipolytica,Amphotericin B,bounds_only,breakpoint_absent_drug_justice_section_4_4,8,0
 fungal,Yarrowia lipolytica,Anidulafungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Yarrowia lipolytica,Caspofungin,withhold,majority_unclassifiable_no_standard,8,0
 fungal,Yarrowia lipolytica,Fluconazole,withhold,majority_unclassifiable_no_standard,8,0
