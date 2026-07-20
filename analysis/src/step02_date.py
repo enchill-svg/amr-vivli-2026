@@ -1,7 +1,7 @@
 """
 Step 2 - Date and year parsing.
 
-Issue (Justice's Section 5): SOAR 201910's Collection Date column mixes three
+Issue (the brief's Section 5): SOAR 201910's Collection Date column mixes three
 formats in the same column - Excel datetime objects, text dates such as
 "15-Dec-16", and plain four-digit years stored as integers (e.g. 2017).
 Treating those integers as Excel serial dates silently produces nonsense years

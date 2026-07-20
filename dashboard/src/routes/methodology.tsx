@@ -68,7 +68,7 @@ function MethodologyPage() {
 
       <GlassCard
         title="Design choices (documented)"
-        subtitle="Intentional scope boundaries aligned with Justice Section 7."
+        subtitle="Intentional scope boundaries aligned with the project brief's Section 7."
       >
         <ul className="space-y-2 text-xs leading-relaxed text-muted-foreground">
           <li>

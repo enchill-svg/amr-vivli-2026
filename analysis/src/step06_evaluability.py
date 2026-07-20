@@ -1,7 +1,7 @@
 """
 Step 6 - Quality and evaluability filtering.
 
-Issue (Justice's Section 5): SOAR 207965 carries an Evaluable flag; about 20%
+Issue (the brief's Section 5): SOAR 207965 carries an Evaluable flag; about 20%
 of isolates are marked "N".
 
 Action: exclude Evaluable = N isolates from resistance-rate denominators.
@@ -16,7 +16,7 @@ as a passthrough field, not consumed and discarded.
 Open risk, not resolved by this step (carried forward honestly, not silently
 assumed): what "Evaluable = N" actually means clinically or technically -
 e.g. a QC failure, an indeterminate reading, a specimen contamination flag -
-was never confirmed against SOAR 207965's own documentation. Justice's
+was never confirmed against SOAR 207965's own documentation. The brief's
 original Check text expects excluding these isolates to move resistance
 rates "only in the expected direction"; that half of the Check cannot be
 executed without knowing what the flag represents, so it is not attempted
@@ -118,7 +118,7 @@ def main():
             print(f"PASS: {name} has no Evaluable column - confirmed pass-through no-op.")
 
     print("NOTE: what 'Evaluable = N' means clinically/technically was never confirmed against SOAR 207965's "
-          "own documentation, so Justice's 'excluding these isolates should move rates only in the expected "
+          "own documentation, so the brief's 'excluding these isolates should move rates only in the expected "
           "direction' half of this Check is not attempted here (open risk, not silently resolved).")
 
     if failed:

@@ -1,7 +1,7 @@
 """
 Step 13 - Section 6 Stage 3: Clustering.
 
-Issue (Justice's Section 6 idea, plan doc Part 3.3, raw text lines 93-94):
+Issue (the brief's Section 6 idea, plan doc Part 3.3, raw text lines 93-94):
 "Unsupervised clustering on combined static-rate and evolutionary-trajectory
 feature vectors, run separately for bacteria and fungi."
 
@@ -24,7 +24,7 @@ Feature vector per (iso3_country, canonical_organism, canonical_drug):
 Only combinations present in BOTH Stage 1 and Stage 2 outputs enter clustering
 (the plan's "combined static-rate + evolutionary-trajectory" requirement).
 Bacterial dosing variants are pooled by n_isolates-weighted averages before
-clustering — Justice's clustering text names country-organism-drug, not dosing
+clustering — the brief's clustering text names country-organism-drug, not dosing
 variant.
 
 Fungal static burden uses Stage 1's ECV-tier WT-rate file (not the CLSI-

@@ -35,7 +35,7 @@ def main() -> int:
     all_ok = True
     print("Platform verification (integrity proof + gated deliverables)\n")
 
-    # EG-01, EG-02 from Justice ledger (unchanged by Layer A)
+    # EG-01, EG-02 from brief ledger (unchanged by Layer A)
     ledger_path = DELIVERABLES / "identifiability_ledger_v1.csv"
     if ledger_path.exists():
         ledger = pd.read_csv(ledger_path)
@@ -104,7 +104,7 @@ def main() -> int:
     else:
         all_ok &= check("sampling_validation_summary", False, "run step20")
 
-    # J-01–J-04 gated Justice deliverables
+    # J-01–J-04 gated brief deliverables
     gated_risk = DELIVERABLES / "country_risk_ranking_bacterial_gated_v1.csv"
     if gated_risk.exists():
         gr = pd.read_csv(gated_risk)

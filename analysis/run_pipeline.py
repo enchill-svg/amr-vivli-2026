@@ -1,7 +1,7 @@
 """
 Preprocessing-only runner (Section 5, Steps 1–10).
 
-For the full one-pipeline run — harmonize through Justice deliverables — use:
+For the full one-pipeline run — harmonize through brief deliverables — use:
   python run_all.py
 """
 import sys

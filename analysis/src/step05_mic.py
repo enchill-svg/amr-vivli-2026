@@ -1,7 +1,7 @@
 """
 Step 5 - MIC notation normalization.
 
-Issue (Justice's Section 5): three different MIC notations are in live use
+Issue (the brief's Section 5): three different MIC notations are in live use
 across the three SOAR files: "<=0.06" (201818), "</= 0.06" (201910, with an
 internal space), and "<0.008" (207965).
 
@@ -22,7 +22,7 @@ dual-rounding pairs (e.g. 0.03/0.032, 0.06/0.063) as equal within tolerance.
 Open risk carried forward unresolved (Appendix 4 A.6): no per-drug,
 per-cohort tested-dilution-range dictionary exists, so this Check can only
 validate against the generic log2 series, not each drug's specific tested
-range. That half of Justice's Check is not satisfiable with the inputs
+range. That half of the brief's Check is not satisfiable with the inputs
 available to this pipeline.
 
 Reconnaissance for this step also directly resolved an open gap noted in

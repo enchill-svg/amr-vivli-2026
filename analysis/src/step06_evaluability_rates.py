@@ -1,7 +1,7 @@
 """
 Step 6 supplemental - Evaluability impact on resistance-rate denominators.
 
-Issue (Justice's Section 5, Step 6 Check): excluding Evaluable=N isolates from
+Issue (the brief's Section 5, Step 6 Check): excluding Evaluable=N isolates from
 resistance-rate denominators should move rates only in the expected direction.
 The primary Step 6 script documents the exclusion log; this supplement quantifies
 the denominator impact using the assembled master table.

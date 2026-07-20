@@ -378,7 +378,7 @@ def _pick_vaccine_coverage(df: pd.DataFrame, antigen: str) -> pd.DataFrame:
 
 
 def load_vaccination_long() -> pd.DataFrame:
-    """Return HIB3 and PCVC coverage (bacteria-only covariates per Justice Stage 4)."""
+    """Return HIB3 and PCVC coverage (bacteria-only covariates per brief Stage 4)."""
     hib = pd.read_excel(_require(HIB3_COVERAGE_PATH), sheet_name="Sheet1")
     pcv = pd.read_excel(_require(PCV_COVERAGE_PATH), sheet_name="Sheet1")
     hib_long = _pick_vaccine_coverage(hib, "HIB3")
@@ -733,7 +733,7 @@ HUB_COMPOSITION_METHODOLOGY = (
     "Global Partnership, multi-country strings). data_status for geography is measured when "
     "≥95% of dollars are ssa or non_ssa, else partial_coverage. "
     "Denominator is sum of Amount USD over all Hub projects (not the agent-tag pro-rated "
-    "subset used for organism RD alignment). Hub excludes private/VC funding (Justice Section 8)."
+    "subset used for organism RD alignment). Hub excludes private/VC funding (brief Section 8)."
 )
 
 

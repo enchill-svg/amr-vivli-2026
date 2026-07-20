@@ -1,7 +1,7 @@
 """
 Step 1 - Country-name harmonization.
 
-Issue (Justice's Section 5): raw country strings vary across the four cohorts
+Issue (the brief's Section 5): raw country strings vary across the four cohorts
 (e.g. "Slovak Republic" vs "Slovakia") and are not on a common code.
 
 Action: apply the reviewed crosswalk (crosswalks/country_iso3_crosswalk_v1.csv,

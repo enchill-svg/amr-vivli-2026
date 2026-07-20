@@ -2,7 +2,7 @@
 Step 12 - Section 6 Stage 2: Evolutionary layer (Distance-to-Failure and
 Evolutionary Fitness Score).
 
-Issue (Justice's Section 6 idea, plan doc Part 3.2): compute an "Evolutionary
+Issue (the brief's Section 6 idea, plan doc Part 3.2): compute an "Evolutionary
 Fitness Score" and "Evolutionary Distance-to-Failure" from MIC distribution
 shifts, per (country, organism, drug) combination. Neither term is
 established terminology in any CLSI/EUCAST/WHO GLASS source (confirmed by
@@ -34,7 +34,7 @@ assumed:
    calendar years (not year-index), across every qualifying year for that
    combination.
 
-Justice's text names six SOAR longitudinal countries (Ukraine, Turkey,
+The brief's text names six SOAR longitudinal countries (Ukraine, Turkey,
 Tunisia, Pakistan, Kuwait, Vietnam) plus "SENTRY country-years with
 sufficient density" as the intended population. Per decision 2 above, this
 step does not gate the grid on that named list - every country/combination
@@ -85,7 +85,7 @@ versioned by year in this pipeline, so there is nothing to mix.
 amoxicillin/clavulanate's two dosing variants remain a separate grouping-key
 dimension for bacteria, per this pipeline's existing documented policy
 (reused from step11, never deduplicated). Fungal isolates carry no dosing
-variant and no body-site/specimen-source dimension - Justice's Stage 2 text
+variant and no body-site/specimen-source dimension - the brief's Stage 2 text
 names only country-organism-drug, unlike Stage 1's site-stratified spec, so
 none is added here. Isolates appearing in more than one source_cohort via the
 unresolved cross-cohort candidate-duplicate overlaps (Vietnam/Ukraine years,

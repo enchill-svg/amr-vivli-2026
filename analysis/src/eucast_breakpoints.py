@@ -76,7 +76,7 @@ ROOT = Path(__file__).resolve().parents[1]
 from _data_paths import COHORT_PATHS, EUCAST_VERSION_PATHS
 CROSSWALK_DIR = ROOT / "crosswalks"
 
-# Justice Step 7: apply breakpoints per cohort before merging. Each SOAR file
+# Brief Step 7: apply breakpoints per cohort before merging. Each SOAR file
 # maps to the EUCAST version whose validity window best covers that cohort's
 # documented collection years (Appendix 1). v6.0 (valid through 2016) is the
 # ideal table for SOAR_201818 but is no longer hosted as xlsx on eucast.org;
@@ -610,7 +610,7 @@ def eucast_version_for_cohort(source_cohort):
 def classify_bacterial(canonical_organism, canonical_drug, comparator, mic_value, source_cohort=None):
     """Return (basis, category) for one bacterial isolate-drug MIC reading.
 
-    source_cohort selects the EUCAST table version per Justice's Step 7 Action
+    source_cohort selects the EUCAST table version per the brief's Step 7 Action
     (breakpoints applied per cohort before merging).
     """
     if source_cohort is None:

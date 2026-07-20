@@ -89,7 +89,7 @@ function NewsPage() {
           description: str(r.description),
           sourceArtifact: str(r.source_artifact),
           nStrataOrRows: str(r.n_strata_or_rows),
-          justiceReference: str(r.justice_reference),
+          briefReference: str(r.brief_reference),
         }))
         .filter((r) => matchesPathogen(r.pathogenType, pathogen)),
     [bundle, pathogen],
@@ -98,8 +98,8 @@ function NewsPage() {
   const deliverables = useMemo(
     () =>
       (bundle?.deliverablesIndex ?? []).map((r) => ({
-        number: num(r.justice_output_number),
-        text: str(r.justice_output_text),
+        number: num(r.brief_output_number),
+        text: str(r.brief_output_text),
         file: str(r.deliverable_file),
         stage: str(r.source_stage),
       })),
@@ -270,7 +270,7 @@ function NewsPage() {
                   <div className="text-[10px] text-muted-foreground flex flex-wrap gap-x-3 gap-y-1">
                     <span className="font-mono">{r.sourceArtifact}</span>
                     {r.nStrataOrRows && <span>{r.nStrataOrRows}</span>}
-                    {r.justiceReference && <span className="italic">{r.justiceReference}</span>}
+                    {r.briefReference && <span className="italic">{r.briefReference}</span>}
                   </div>
                 </article>
               ))}

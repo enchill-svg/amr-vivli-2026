@@ -27,10 +27,10 @@ TODAY = dt.date.today().isoformat()
 
 LIMITATION_TEXT_BASE = (
   "Suggestive association only — life expectancy is a broad outcome influenced by "
-  "many factors beyond AMR; no causal attribution is claimed (Justice Section 8). "
+  "many factors beyond AMR; no causal attribution is claimed (brief Section 8). "
   "No published AMR precedent regresses life expectancy on surveillance burden; "
   "SDI and hospital beds included as health-system / development confounders per "
-  "Justice Stage 5."
+  "brief Stage 5."
 )
 
 

@@ -1,4 +1,4 @@
-"""Quality-gate rules for Justice policy deliverables (integrity layer)."""
+"""Quality-gate rules for project-brief policy deliverables (integrity layer)."""
 from __future__ import annotations
 
 from typing import Literal
@@ -16,7 +16,7 @@ INTERPRETABLE_BASES = frozenset(
     }
 )
 
-JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS = frozenset(
+BREAKPOINT_ABSENT_FUNGAL_DRUGS = frozenset(
     {
         "itraconazole",
         "posaconazole",
@@ -60,8 +60,8 @@ def gate_organism_drug_row(
 ) -> tuple[QualityGate, str]:
     """Assign quality_gate for one organism–drug combination from master basis counts."""
     drug = str(canonical_drug).strip().lower()
-    if pathogen_type == "fungal" and drug in JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS:
-        return "bounds_only", "breakpoint_absent_drug_justice_section_4_4"
+    if pathogen_type == "fungal" and drug in BREAKPOINT_ABSENT_FUNGAL_DRUGS:
+        return "bounds_only", "breakpoint_absent_drug_brief_section_4_4"
 
     total = int(sum(basis_counts.values()))
     if total == 0:

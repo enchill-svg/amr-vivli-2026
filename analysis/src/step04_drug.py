@@ -1,7 +1,7 @@
 """
 Step 4 - Antibiotic and antifungal code crosswalk.
 
-Issue (Justice's Section 5): SOAR 201910 uses 17 abbreviated drug codes where
+Issue (the brief's Section 5): SOAR 201910 uses 17 abbreviated drug codes where
 201818 and 207965 use full names. Fifteen resolve cleanly against the shared
 drug panel. CDN most likely maps to cefdinir but should be confirmed against
 the original data dictionary rather than assumed. DIN has no clear counterpart

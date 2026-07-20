@@ -1,6 +1,6 @@
 """Single entry point for the full AMR Life Expectancy pipeline.
 
-Harmonize → integrity → analytics → Justice §7 deliverables → verification.
+Harmonize → integrity → analytics → brief §7 deliverables → verification.
 Writes runs/<run_id>/pipeline_run_manifest_v1.json on every run.
 """
 import sys

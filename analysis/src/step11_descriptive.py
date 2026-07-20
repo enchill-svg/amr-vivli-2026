@@ -1,7 +1,7 @@
 """
 Step 11 - Section 6 Stage 1: Descriptive profiling.
 
-Issue (Justice's Section 6 idea, plan doc Part 3.1, raw text line 84):
+Issue (the brief's Section 6 idea, plan doc Part 3.1, raw text line 84):
 "Resistance rates by organism, drug class, country, year, and body site for
 bacteria; susceptibility rates by species, drug class, country, year, and
 specimen source for fungi."
@@ -23,8 +23,8 @@ assumed:
    appendix_1's independently verified figure).
 
 2. No drug-class field or crosswalk exists anywhere in this pipeline, and
-   Justice's text names "drug class" without specifying a taxonomy (no ATC,
-   AWaRe, or other standard named anywhere in his document). Per explicit
+   the brief's text names "drug class" without specifying a taxonomy (no ATC,
+   AWaRe, or other standard named anywhere in the brief). Per explicit
    user direction (asked directly, since this is a genuine gap this
    pipeline cannot resolve from its own data), this step authors
    crosswalks/drug_class_crosswalk_v1.csv from standard antimicrobial
@@ -32,7 +32,7 @@ assumed:
    cephalosporin generation, macrolide, fluoroquinolone, tetracycline,
    folate-pathway-inhibitor for bacteria; echinocandin, triazole, polyene,
    pyrimidine-analogue for fungi. This is domain nomenclature, not a fact
-   read from any project data file or from Justice's text, and is fully
+   read from any project data file or from the brief's text, and is fully
    revisable - see DRUG_CLASS_TABLE below.
 
 Action: apply appendix_5's Manski (1989) worst-case partial-identification
@@ -47,7 +47,7 @@ organism-drug stratum:
       drug (EUCAST_v8.1_breakpoint/EUCAST_v10.0_breakpoint basis for
       bacteria; CLSI_breakpoint basis for fungi).
   P = subset of T classified Resistant (bacteria) or Susceptible (fungi,
-      per Justice's "susceptibility rate" framing - only the positive
+      per the brief's "susceptibility rate" framing - only the positive
       event flips between the two pathogen types; N and T are defined
       identically).
 

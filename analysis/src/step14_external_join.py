@@ -1,7 +1,7 @@
 """
 Step 14 - Section 6 Stage 4: External data join.
 
-Issue (Justice's Section 6 idea, plan doc Part 3.4, raw text lines 95-96):
+Issue (the brief's Section 6 idea, plan doc Part 3.4, raw text lines 95-96):
 "Merge country-year resistance/susceptibility rates with life expectancy,
 antibiotic/antifungal consumption, vaccination coverage (bacteria only), and
 health-system indicators, using the ISO3 crosswalk from Step 1."
@@ -288,7 +288,7 @@ def main():
     print("PASS: antimicrobial_consumption_ddd is null throughout (documented gap, not fabricated).")
 
   if fung["hib3_coverage_pct"].notna().any() or fung["pcvc_coverage_pct"].notna().any():
-    print("FAIL: fungal panel must not carry vaccination values (bacteria-only per Justice).")
+    print("FAIL: fungal panel must not carry vaccination values (bacteria-only per the brief).")
     failed = True
   else:
     print("PASS: fungal panel leaves vaccination columns null by design.")

@@ -1,7 +1,7 @@
 """
 Pipeline-level acceptance checks (Plan Part 9, items 2-4).
 
-Not one of Justice's original 10 steps - this script verifies the three Part
+Not one of the brief's original 10 steps - this script verifies the three Part
 9 acceptance-criteria items that check consistency ACROSS what steps 1-10
 each already wrote to disk, rather than re-verifying any single step's own
 already-passing Check. Part 9 items 1, 5, 6, and 7 are satisfied by each
@@ -103,7 +103,7 @@ def main():
         n_organism_excluded = int((organism_exclusions["cohort"] == cohort_name).sum())
         n_evaluable_excluded = int((evaluable_excluded["cohort"] == cohort_name).sum())
         n_zero_measurement = int((zero_measurement["cohort"] == cohort_name).sum())
-        n_duplicates_removed = 0  # candidate duplicates are logged for manual review, never auto-removed (Justice's Action) - never silently folded into "expected" as if already resolved.
+        n_duplicates_removed = 0  # candidate duplicates are logged for manual review, never auto-removed (the brief's Action) - never silently folded into "expected" as if already resolved.
         expected = (
             n_analysis_ready + n_organism_excluded + n_evaluable_excluded
             + n_zero_measurement + n_duplicates_removed
@@ -119,7 +119,7 @@ def main():
                   f"{n_zero_measurement} + duplicates-removed {n_duplicates_removed}.")
     if confirmed_duplicates:
         print(f"  NOTE: {confirmed_duplicates} candidate duplicate(s) are logged for manual review and are not "
-              f"subtracted from any cohort's analysis-ready count above (Justice's Action never auto-removes them).")
+              f"subtracted from any cohort's analysis-ready count above (the brief's Action never auto-removes them).")
 
     # --- Item 3: no orphan codes. ---
     valid_iso3 = set(country_cw["iso3"]) - {""}

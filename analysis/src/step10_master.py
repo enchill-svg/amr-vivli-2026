@@ -1,7 +1,7 @@
 """
 Step 10 - Deduplication and master schema assembly.
 
-Issue (Justice's Section 5): the three SOAR cohorts use different isolate ID
+Issue (the brief's Section 5): the three SOAR cohorts use different isolate ID
 schemes (e.g. "LGC277703-05404" in 201910 vs a plain IHMA number in 207965),
 so accidental duplication across the one year of cohort overlap (Vietnam,
 2018) is unlikely but unverified.
@@ -28,7 +28,7 @@ text anticipated. Both boundary checks below use fingerprint matching only:
 This step additionally identifies, per the plan's own instruction, the
 Ukraine/2016 boundary (SOAR_201818's 2014-2016 window vs SOAR_201910's
 2016-2017 window) alongside the Vietnam/2018 boundary (SOAR_201910's
-2016-2018 window vs SOAR_207965's 2018-2021 window) Justice's text names
+2016-2018 window vs SOAR_207965's 2018-2021 window) the brief's text names
 directly.
 
 Bacterial resistance classification: applied per isolate-drug row via
@@ -483,7 +483,7 @@ def main():
     confirmed_duplicates = sum(1 for r in dedup_rows if r["resolution"] == "candidate_duplicate_found_needs_manual_review")
     if confirmed_duplicates:
         print(f"NOTE: {confirmed_duplicates} candidate duplicate(s) found - these isolates are NOT removed "
-              f"automatically; they are logged for manual review per Justice's Action, and are still counted "
+              f"automatically; they are logged for manual review per the brief's Action, and are still counted "
               f"once each in the master table below.")
 
     # --- Part (B): long-format master table assembly ---

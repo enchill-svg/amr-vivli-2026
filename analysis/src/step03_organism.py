@@ -1,7 +1,7 @@
 """
 Step 3 - Organism-name harmonization.
 
-Issue (Justice's Section 5): SOAR 207965 separates OriginalOrganismName from
+Issue (the brief's Section 5): SOAR 207965 separates OriginalOrganismName from
 FinalOrganismName and includes a long tail of additional species and quality
 categories beyond the two primary pathogens, including environmental/skin-
 flora organisms and at least one non-bacterial (fungal) isolate that does not
@@ -53,7 +53,7 @@ CROSS_DOMAIN_FUNGAL = {
 }
 
 # Rule 4: explicit "Unknown" string -> retained as the unidentified_pathogen
-# sentinel, per Justice's Check text treating it as distinct from exclusion.
+# sentinel, per the brief's Check text treating it as distinct from exclusion.
 SENTINEL_STRINGS = {"Unknown"}
 
 # Spelling/transliteration variants confirmed (by direct inspection of the raw

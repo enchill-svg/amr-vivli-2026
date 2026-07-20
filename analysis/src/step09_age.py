@@ -1,7 +1,7 @@
 """
 Step 9 - Age and demographic harmonization.
 
-Issue (Justice's Section 5): the three SOAR cohorts record continuous age;
+Issue (the brief's Section 5): the three SOAR cohorts record continuous age;
 SENTRY records four age bands (0-17, 18-30, 31-60, 61+).
 
 Action: bin SOAR ages into the same four bands for any analysis comparing age

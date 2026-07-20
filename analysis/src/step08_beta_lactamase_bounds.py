@@ -1,7 +1,7 @@
 """
 Step 8 - Genotype-field (Beta Lactamase) identifiability bounds.
 
-Issue (Justice's Section 5): the bacterial Beta Lactamase field is blank for a
+Issue (the brief's Section 5): the bacterial Beta Lactamase field is blank for a
 large share of isolates - a detection-only pattern where testing itself is
 non-random.
 

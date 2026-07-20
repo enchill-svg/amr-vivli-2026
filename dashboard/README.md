@@ -2,6 +2,8 @@
 
 Scientific decision-support UI for **AMR Life Expectancy Intelligence**. Core AMR views are wired to **published pipeline outputs**; some legacy routes still use Supabase or demo data.
 
+This file is developer-facing: how the app is wired, how to run it locally. For what the project is and what it found, see the [root README](../README.md) — that's the one judges should read.
+
 ## Primary data source (competition path)
 
 After `python analysis/run_all.py`, the pipeline publishes:
@@ -36,6 +38,7 @@ The app loads the bundle at runtime via `src/lib/published-data.ts` → `src/lib
 | `/policy` | Intervention table from gated CSV |
 | `/marketplace` | Funding gap explorer |
 | `/forecasting` | Cluster typology insights |
+| `/methodology` | Methods and provenance |
 
 ## Legacy / optional routes (not pipeline-backed)
 

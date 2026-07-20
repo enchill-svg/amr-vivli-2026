@@ -1,12 +1,12 @@
 """
 Step 18 - Section 7: Expected Outputs packaging.
 
-Compiles Justice's six Section 7 deliverables (_justice_idea_raw_dump.txt lines
-106-111) from Section 5 preprocessing artifacts and Section 6 Stages 1-7 outputs.
+Compiles the project brief's six Section 7 deliverables (internal brief, Section 7
+lines 106-111) from Section 5 preprocessing artifacts and Section 6 Stages 1-7 outputs.
 No new analysis beyond documented aggregation/ranking rules stated in output
 metadata. Consumption is omitted from the country risk ranking because no numeric
-local series exists (Justice Section 8; Stage 4 documented gap) — not imputed.
-Vaccination is deliberately excluded from the risk ranking per Justice's Output 4
+local series exists (brief Section 8; Stage 4 documented gap) — not imputed.
+Vaccination is deliberately excluded from the risk ranking per the brief's Output 4
 wording (line 109), which names burden, trajectory, consumption, and health-system
 capacity only.
 """
@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 from _section6_external import CONSUMPTION_DATA_AVAILABLE
-from evidence_gate_core.gate_rules import JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS
+from evidence_gate_core.gate_rules import BREAKPOINT_ABSENT_FUNGAL_DRUGS
 
 ROOT = Path(__file__).resolve().parents[1]
 BOUNDS_DIR = ROOT / "bounds"
@@ -36,7 +36,7 @@ RISK_RANKING_METHODOLOGY = (
   "and health-system capacity percentiles (same three components for all countries). "
   "Supplementary composite_risk_score_with_consumption adds ESAC-Net J01 antibiotic "
   "DDD percentile for matched European bacterial countries only. Vaccination excluded "
-  "— not named in Justice Output 4 (line 109). Legacy composite_risk_score aliases "
+  "— not named in the brief's Output 4 (line 109). Legacy composite_risk_score aliases "
   "composite_risk_score_core for dashboard compatibility."
 )
 
@@ -70,8 +70,8 @@ def percentile_rank(series: pd.Series) -> pd.Series:
 def build_deliverables_index() -> pd.DataFrame:
   rows = [
     {
-      "justice_output_number": 1,
-      "justice_output_text": (
+      "brief_output_number": 1,
+      "brief_output_text": (
         "Harmonized multi-cohort dual-pathogen AMR dataset with versioned crosswalks"
       ),
       "deliverable_file": "dataset_manifest_v1.csv",
@@ -81,8 +81,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "date_added": TODAY,
     },
     {
-      "justice_output_number": 2,
-      "justice_output_text": "Documented identifiability ledger for detection-only and breakpoint-absent gaps",
+      "brief_output_number": 2,
+      "brief_output_text": "Documented identifiability ledger for detection-only and breakpoint-absent gaps",
       "deliverable_file": "identifiability_ledger_v1.csv",
       "internal_audit_file": "",
       "source_stage": "Section 5 Steps 7-8 + master classification_basis",
@@ -90,8 +90,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "date_added": TODAY,
     },
     {
-      "justice_output_number": 3,
-      "justice_output_text": (
+      "brief_output_number": 3,
+      "brief_output_text": (
         "Cluster typology of high-risk and high-trajectory organism-drug-country combinations"
       ),
       "deliverable_file": "cluster_typology_bacterial_gated_v1.csv; cluster_typology_fungal_gated_v1.csv",
@@ -101,8 +101,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "date_added": TODAY,
     },
     {
-      "justice_output_number": 4,
-      "justice_output_text": (
+      "brief_output_number": 4,
+      "brief_output_text": (
         "Country risk ranking: burden, trajectory, consumption, health-system capacity"
       ),
       "deliverable_file": "country_risk_ranking_bacterial_gated_v1.csv; country_risk_ranking_fungal_gated_v1.csv",
@@ -112,8 +112,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "date_added": TODAY,
     },
     {
-      "justice_output_number": 5,
-      "justice_output_text": "Funding-gap summary: R&D Hub investment vs observed burden by pathogen type",
+      "brief_output_number": 5,
+      "brief_output_text": "Funding-gap summary: R&D Hub investment vs observed burden by pathogen type",
       "deliverable_file": "funding_gap_summary_v1.csv",
       "internal_audit_file": "",
       "source_stage": "Section 6 Stage 6 (step16_rd_alignment.py)",
@@ -121,8 +121,8 @@ def build_deliverables_index() -> pd.DataFrame:
       "date_added": TODAY,
     },
     {
-      "justice_output_number": 6,
-      "justice_output_text": (
+      "brief_output_number": 6,
+      "brief_output_text": (
         "Ranked intervention recommendations with estimated life-expectancy impact"
       ),
       "deliverable_file": "intervention_recommendations_ranked_gated_v1.csv",
@@ -151,7 +151,7 @@ def build_dataset_manifest() -> pd.DataFrame:
       "pathogen_type": "all",
       "record_count": len(isolates),
       "notes": (
-        f"Justice brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); "
+        f"Project brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); "
         f"this build has {n_bact_iso:,} bacterial + {n_fung_iso:,} fungal = "
         f"{len(isolates):,} total after preprocessing exclusions."
       ),
@@ -231,7 +231,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
       "field_or_drug": "Beta Lactamase (POS/NEG/blank)",
       "description": (
         "Blank beta-lactamase field means untested, not negative — prevalence reported "
-        "as Manski bounds, never a bare point estimate (Justice Section 5 Step 8). "
+        "as Manski bounds, never a bare point estimate (brief Section 5 Step 8). "
         "Caveat: SOAR_Hin's resistant-only ascertainment-bias validation (EG-07) reads "
         "+5.4pp against the +10pp target — real and correctly-signed, but weaker than "
         "PLEA_I's +11.9pp, due to BLNAR isolates sharing beta-lactamase-positive "
@@ -244,7 +244,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
       "bound_lower_example": float(bl["tier1_lower"].median()),
       "bound_upper_example": float(bl["tier1_upper"].median()),
       "assumption_or_caveat": bl["tier1_assumption"].iloc[0],
-      "justice_reference": "Section 5 Step 8; Section 4 profiling",
+      "brief_reference": "Section 5 Step 8; Section 4 profiling",
       "version": VERSION,
       "date_added": TODAY,
     }
@@ -278,7 +278,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
           "bound_lower_example": np.nan,
           "bound_upper_example": np.nan,
           "assumption_or_caveat": caveat,
-          "justice_reference": "Section 5 Step 7",
+          "brief_reference": "Section 5 Step 7",
           "version": VERSION,
           "date_added": TODAY,
         }
@@ -294,7 +294,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
       "field_or_drug": "species-drug pairs with n_unclassifiable>0",
       "description": (
         "Fungal pairs lacking both CLSI breakpoint and ECV reference — no point "
-        "susceptibility/resistance rate (Justice Section 4.4)."
+        "susceptibility/resistance rate (brief Section 4.4)."
       ),
       "source_artifact": "bounds/antifungal_ecv_classification_v1.csv",
       "n_strata_or_rows": len(unclass),
@@ -302,13 +302,13 @@ def build_identifiability_ledger() -> pd.DataFrame:
       "bound_lower_example": np.nan,
       "bound_upper_example": np.nan,
       "assumption_or_caveat": "Reported as identified range or excluded from tier rates.",
-      "justice_reference": "Section 4.4; Section 5 Step 7",
+      "brief_reference": "Section 4.4; Section 5 Step 7",
       "version": VERSION,
       "date_added": TODAY,
     }
   )
 
-  for drug in JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS:
+  for drug in BREAKPOINT_ABSENT_FUNGAL_DRUGS:
     drug_rows = master_basis[
       (master_basis["pathogen_type"] == "fungal")
       & (master_basis["canonical_drug"].str.lower() == drug.lower())
@@ -321,7 +321,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
         "gap_category": "breakpoint_absent_drug",
         "field_or_drug": drug,
         "description": (
-          "Justice Section 4.4: no usable CLSI category for most species — ECV or MIC "
+          "Brief Section 4.4: no usable CLSI category for most species — ECV or MIC "
           "distribution range only."
         ),
         "source_artifact": "master/master_table_v1.csv",
@@ -330,7 +330,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
         "bound_lower_example": np.nan,
         "bound_upper_example": np.nan,
         "assumption_or_caveat": "ECV tier used where reference exists; else unclassifiable.",
-        "justice_reference": "Section 4.4 Table 5",
+        "brief_reference": "Section 4.4 Table 5",
         "version": VERSION,
         "date_added": TODAY,
       }
@@ -347,7 +347,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
         "field_or_drug": "DIN (SOAR 201910)",
         "description": (
           "Drug code unresolved pending original SOAR data dictionary — excluded from "
-          "cross-cohort comparisons (Justice Section 8)."
+          "cross-cohort comparisons (brief Section 8)."
         ),
         "source_artifact": "crosswalks/drug_code_crosswalk_v1.csv",
         "n_strata_or_rows": len(din),
@@ -355,7 +355,7 @@ def build_identifiability_ledger() -> pd.DataFrame:
         "bound_lower_example": np.nan,
         "bound_upper_example": np.nan,
         "assumption_or_caveat": "Never guessed; not dropped from crosswalk.",
-        "justice_reference": "Section 8",
+        "brief_reference": "Section 8",
         "version": VERSION,
         "date_added": TODAY,
       }
@@ -400,8 +400,8 @@ def build_identifiability_ledger() -> pd.DataFrame:
       ),
       "bound_lower_example": np.nan,
       "bound_upper_example": np.nan,
-      "assumption_or_caveat": "Justice Section 8; plan Part 2.3",
-      "justice_reference": "Section 3.2; Section 8",
+      "assumption_or_caveat": "Brief Section 8; plan Part 2.3",
+      "brief_reference": "Section 3.2; Section 8",
       "version": VERSION,
       "date_added": TODAY,
     }
@@ -549,7 +549,7 @@ def build_country_risk_ranking(pathogen_type: str) -> pd.DataFrame:
   cy["pathogen_type"] = pathogen_type
   cy["methodology"] = RISK_RANKING_METHODOLOGY
   cy["vaccination_excluded_note"] = (
-    "Vaccination deliberately omitted — not named in Justice Section 7 Output 4 (line 109)."
+    "Vaccination deliberately omitted — not named in brief Section 7 Output 4 (line 109)."
   )
   cy["version"] = VERSION
   cy["date_added"] = TODAY
@@ -692,7 +692,7 @@ def build_q2_driver_evidence_summary() -> pd.DataFrame:
       "driver": "antimicrobial_overconsumption",
       "pathogen_type": "bacterial",
       "evidence_status": "partial_coverage" if CONSUMPTION_DATA_AVAILABLE else "no_data",
-      "justice_question": "Q2",
+      "brief_question": "Q2",
       "detail": (
         f"ESAC-Net J01 DDD joined on {bact_n} country-year row(s); Europe-only; "
         "not antifungal consumption."
@@ -704,7 +704,7 @@ def build_q2_driver_evidence_summary() -> pd.DataFrame:
       "driver": "health_system_capacity",
       "pathogen_type": "both",
       "evidence_status": "measured",
-      "justice_question": "Q2",
+      "brief_question": "Q2",
       "detail": "Health expenditure % GDP, hospital beds per 1,000, GBD SDI in Stage 5 OLS.",
       "version": VERSION,
       "date_added": TODAY,
@@ -713,7 +713,7 @@ def build_q2_driver_evidence_summary() -> pd.DataFrame:
       "driver": "vaccination_coverage",
       "pathogen_type": "bacterial",
       "evidence_status": "weak_or_confounded",
-      "justice_question": "Q2",
+      "brief_question": "Q2",
       "detail": "Hib/PCV in bacterial OLS; PCV implausible magnitude; Hib non-significant.",
       "version": VERSION,
       "date_added": TODAY,
@@ -722,8 +722,8 @@ def build_q2_driver_evidence_summary() -> pd.DataFrame:
       "driver": "vaccination_coverage",
       "pathogen_type": "fungal",
       "evidence_status": "not_applicable",
-      "justice_question": "Q2",
-      "detail": "No licensed fungal vaccination analog per Justice Stage 7.",
+      "brief_question": "Q2",
+      "detail": "No licensed fungal vaccination analog per the brief's Stage 7.",
       "version": VERSION,
       "date_added": TODAY,
     },
@@ -731,8 +731,8 @@ def build_q2_driver_evidence_summary() -> pd.DataFrame:
       "driver": "hospital_acquired_exposure",
       "pathogen_type": "both",
       "evidence_status": "no_dataset",
-      "justice_question": "Q2",
-      "detail": "Not named in Justice Section 3 external data sources.",
+      "brief_question": "Q2",
+      "detail": "Not named in brief Section 3 external data sources.",
       "version": VERSION,
       "date_added": TODAY,
     },
@@ -773,16 +773,16 @@ def main() -> None:
   q2_summary.to_csv(DELIVERABLES_DIR / "q2_driver_evidence_summary_v1.csv", index=False)
 
   print(f"Wrote Section 7 deliverables to {DELIVERABLES_DIR}/")
-  print(f"  index: 6 Justice outputs mapped")
+  print(f"  index: 6 brief outputs mapped")
   print(f"  identifiability ledger: {len(ledger)} rows")
   print(f"  cluster typology: {len(bact_typology)} bacterial, {len(fung_typology)} fungal")
   print(f"  country risk ranking: {len(bact_risk)} bacterial, {len(fung_risk)} fungal countries")
 
   if len(index) != 6:
-    print("FAIL: deliverables index must map exactly 6 Justice outputs.")
+    print("FAIL: deliverables index must map exactly 6 brief outputs.")
     failed = True
   else:
-    print("PASS: section7_deliverables_index_v1.csv maps all 6 Justice Section 7 outputs.")
+    print("PASS: section7_deliverables_index_v1.csv maps all 6 brief Section 7 outputs.")
 
   if "bacterial_beta_lactamase_detection_only" not in set(ledger["ledger_id"]):
     print("FAIL: identifiability ledger missing beta-lactamase entry.")
@@ -805,7 +805,7 @@ def main() -> None:
     print(f"PASS: {hi_both} organism-drug-country combination(s) labeled high_burden_high_trajectory.")
 
   if "vaccination" in bact_risk.columns or "hib3_coverage_pct" in bact_risk.columns:
-    print("FAIL: country risk ranking must not include vaccination (Justice Output 4).")
+    print("FAIL: country risk ranking must not include vaccination (brief Output 4).")
     failed = True
   elif CONSUMPTION_DATA_AVAILABLE:
     if not bact_risk["consumption_included"].any():

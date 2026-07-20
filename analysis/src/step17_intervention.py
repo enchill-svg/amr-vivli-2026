@@ -25,7 +25,7 @@ TODAY = dt.date.today().isoformat()
 
 ASSOCIATIONAL_CAVEAT = (
   "Illustrative projection from Stage 5 pooled OLS — suggestive association only, "
-  "not causal attribution (Justice Section 8). Hib evidence base thinner than PCV "
+  "not causal attribution (brief Section 8). Hib evidence base thinner than PCV "
   "(Iwu-Jaja et al. 2026 scoping review; plan Part 3.7)."
 )
 
@@ -301,7 +301,7 @@ def build_category_summary(
       "coefficient_p_value": np.nan,
       "scenario_coverage_increase_pp": np.nan,
       "scenario_coverage_increase_pp_secondary": np.nan,
-      "evidence_caveat": "No licensed Candida or Aspergillus vaccine (Justice Section 6 Stage 7).",
+      "evidence_caveat": "No licensed Candida or Aspergillus vaccine (brief Section 6 Stage 7).",
       "model_sample_warning": "",
       "version": "v1",
       "date_added": TODAY,
@@ -326,7 +326,7 @@ def build_category_summary(
         "scenario_coverage_increase_pp_secondary": np.nan,
         "evidence_caveat": (
           f"Stage 6 total prorated funding USD {rd_row['total_rd_funding_usd_prorated']:,.0f}; "
-          "no local R&D-to-burden-to-LE model exists. Hub excludes private/VC funding (Justice Section 8)."
+          "no local R&D-to-burden-to-LE model exists. Hub excludes private/VC funding (brief Section 8)."
         ),
         "model_sample_warning": "",
         "version": "v1",

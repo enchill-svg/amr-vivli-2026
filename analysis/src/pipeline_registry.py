@@ -28,7 +28,7 @@ PHASES: tuple[PipelinePhase, ...] = (
     PipelinePhase("preprocessing", "Section 5 — Harmonize SOAR + SENTRY (Steps 1–10)", "03"),
     PipelinePhase("integrity", "Integrity layer — ledger, bounds, validation proof", "04"),
     PipelinePhase("analytics", "Section 6 — Burden, trajectory, LE, interventions (Stages 1–7)", "05"),
-    PipelinePhase("deliverables", "Section 7 — Justice expected outputs + gating", "08"),
+    PipelinePhase("deliverables", "Section 7 — brief expected outputs + gating", "08"),
     PipelinePhase("verification", "Post-run verification", "08"),
 )
 
@@ -70,7 +70,7 @@ POST_PREPROCESSING_STAGES: tuple[PipelineStage, ...] = (
 
 FULL_PIPELINE_STAGES: tuple[PipelineStage, ...] = PREPROCESSING_STAGES + POST_PREPROCESSING_STAGES
 
-JUSTICE_DELIVERABLE_FILES: tuple[tuple[int, str], ...] = (
+BRIEF_DELIVERABLE_FILES: tuple[tuple[int, str], ...] = (
     (1, "deliverables/dataset_manifest_v1.csv"),
     (2, "deliverables/identifiability_ledger_v1.csv"),
     (3, "deliverables/cluster_typology_bacterial_v1.csv"),

@@ -24,12 +24,12 @@ Ireland,IRL,Ireland,high,SENTRY_INFERRED,Elimination-derived. Row count not capt
 Israel,ISR,Israel,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
 Italy,ITA,Italy,high,SOAR_207965+SENTRY,"Listed among SOAR 207965's 10 countries (no per-country count captured there); directly confirmed in SENTRY's top 5 with 2,298 rows.",v1,2026-07-06
 Japan,JPN,Japan,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
-Kenya,KEN,Kenya,high,SOAR_201910,"44 rows. One of the African countries in this cohort Justice's original text omitted when describing non-Latin-American countries as ""Europe, Middle East, Asia"".",v1,2026-07-06
+Kenya,KEN,Kenya,high,SOAR_201910,"44 rows. One of the African countries in this cohort the project brief's original text omitted when describing non-Latin-American countries as ""Europe, Middle East, Asia"".",v1,2026-07-06
 Korea,KOR,"Korea, Republic of (South Korea)",flagged,SENTRY_INFERRED,"""Korea"" alone is ambiguous between Republic of Korea (KOR) and DPRK (PRK). Resolved as Republic of Korea by explicit, stated contextual assumption (GSK/Vivli AMR surveillance data). Revisit if any source ever turns out to include DPRK data under this string. Row count not captured.",v1,2026-07-06
 Kuwait,KWT,Kuwait,high,SOAR_201910+SOAR_207965,Listed in both cohorts' country lists; no per-country count captured for either.,v1,2026-07-06
 Lebanon,LBN,Lebanon,high,SOAR_201910,21 rows.,v1,2026-07-06
 Mexico,MEX,Mexico,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
-Morocco,MAR,Morocco,high,SOAR_201910,23 rows. One of the African countries in this cohort Justice's original text omitted.,v1,2026-07-06
+Morocco,MAR,Morocco,high,SOAR_201910,23 rows. One of the African countries in this cohort the project brief's original text omitted.,v1,2026-07-06
 New Zealand,NZL,New Zealand,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
 Nigeria,NGA,Nigeria,high,SOAR_201910,"Only 4 rows - thinnest country group in SOAR 201910 alongside Ghana's 2. Same small-base caveat applies.",v1,2026-07-06
 Pakistan,PAK,Pakistan,high,SOAR_201910+SOAR_207965,Listed in both cohorts' country lists; no per-country count captured for either.,v1,2026-07-06
@@ -51,10 +51,10 @@ Sweden,SWE,Sweden,high,SENTRY_INFERRED,Elimination-derived. Row count not captur
 Switzerland,CHE,Switzerland,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
 Taiwan,TWN,"Taiwan, Province of China",flagged,SENTRY_INFERRED,"Not a UN member state. TWN is nonetheless the standard, stable code used routinely in surveillance data; recorded as a data-harmonization fact, not a political position. Row count not captured.",v1,2026-07-06
 Thailand,THA,Thailand,high,SENTRY_INFERRED,Elimination-derived. Row count not captured.,v1,2026-07-06
-Tunisia,TUN,Tunisia,high,SOAR_201910+SOAR_207965,"153 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). One of the African countries in SOAR 201910 Justice's original text omitted.",v1,2026-07-06
+Tunisia,TUN,Tunisia,high,SOAR_201910+SOAR_207965,"153 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). One of the African countries in SOAR 201910 the project brief's original text omitted.",v1,2026-07-06
 Turkey,TUR,Türkiye,high,SOAR_201910+SOAR_207965,"418 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). UN/ISO short-name update 2022; alpha-3 code unchanged at TUR. Transcontinental (Europe/Asia); treated here as a single country.",v1,2026-07-06
 UK,GBR,United Kingdom,high,SENTRY_INFERRED,"Deliberately collides with the separate ""Scotland"" raw string on the same GBR code - see Collision 2 in Appendix 2 Section 3. Row count not captured.",v1,2026-07-06
 Ukraine,UKR,Ukraine,high,SOAR_201818+SOAR_201910+SOAR_207965,"196 rows in SOAR 201818 (2014-2016 window); 177 rows in SOAR 201910 (2015-2018 window); also listed in SOAR 207965 (2018-2021 window). The only raw string confirmed present in all three SOAR cohorts.",v1,2026-07-06
 United Arab Emirates,ARE,United Arab Emirates,high,SOAR_207965,Listed; row count not captured.,v1,2026-07-06
 USA,USA,United States of America,high,SENTRY,"7,257 rows - largest single country across all 4 files, confirmed directly in SENTRY's top 5.",v1,2026-07-06
-Vietnam,VNM,Viet Nam,high,SOAR_201910+SOAR_207965,"250 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). ISO's official short name is two words (""Viet Nam""); ""Vietnam"" one word is the common raw-data spelling. This is the cohort-overlap pair Justice's Step 10 text names explicitly (Vietnam, 2018).",v1,2026-07-06
+Vietnam,VNM,Viet Nam,high,SOAR_201910+SOAR_207965,"250 rows in SOAR 201910; also listed in SOAR 207965 (no per-country count captured there). ISO's official short name is two words (""Viet Nam""); ""Vietnam"" one word is the common raw-data spelling. This is the cohort-overlap pair the project brief's Step 10 text names explicitly (Vietnam, 2018).",v1,2026-07-06

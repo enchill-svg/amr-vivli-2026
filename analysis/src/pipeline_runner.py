@@ -13,9 +13,9 @@ from pathlib import Path
 import pandas as pd
 
 from pipeline_registry import (
+    BRIEF_DELIVERABLE_FILES,
     FULL_PIPELINE_STAGES,
     GATED_DELIVERABLE_FILES,
-    JUSTICE_DELIVERABLE_FILES,
     PHASE_BY_ID,
     PREPROCESSING_STAGES,
     PipelineStage,
@@ -121,7 +121,7 @@ def _artifact_presence(relative_paths: tuple[str, ...]) -> list[dict]:
             number, rel_path = item
             rows.append(
                 {
-                    "justice_output_number": number,
+                    "brief_output_number": number,
                     "path": rel_path,
                     "present": (ROOT / rel_path).exists(),
                 }
@@ -195,13 +195,13 @@ def write_run_manifest(
             }
         )
 
-    justice_deliverables = _artifact_presence(JUSTICE_DELIVERABLE_FILES)
+    brief_deliverables = _artifact_presence(BRIEF_DELIVERABLE_FILES)
     gated_deliverables = _artifact_presence(GATED_DELIVERABLE_FILES)
     # "status" reflects only whether every stage exited 0; a stage can exit 0
     # while silently failing to write an expected deliverable (empty result,
     # wrong path, etc.), so surface deliverable presence as its own signal
     # rather than folding it into "status" and changing existing semantics.
-    deliverables_complete = all(row["present"] for row in justice_deliverables) and all(
+    deliverables_complete = all(row["present"] for row in brief_deliverables) and all(
         row["present"] for row in gated_deliverables
     )
 
@@ -217,7 +217,7 @@ def write_run_manifest(
         "halted_at_stage": halted_at_stage,
         "stage_count": len(stage_results),
         "phases": phases,
-        "justice_deliverables": justice_deliverables,
+        "brief_deliverables": brief_deliverables,
         "gated_deliverables": gated_deliverables,
         "section7_index": {
             "path": "deliverables/section7_deliverables_index_v1.csv",

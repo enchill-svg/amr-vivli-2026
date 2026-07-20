@@ -1,16 +1,16 @@
 """
 Step 7 - Resistance and susceptibility classification.
 
-Issue (Justice's Section 5): bacterial isolates need EUCAST/CLSI breakpoints
+Issue (the brief's Section 5): bacterial isolates need EUCAST/CLSI breakpoints
 applied per organism-drug pair. Fungal isolates have a structurally different
-problem: Justice's text names four antifungals (itraconazole, posaconazole,
+problem: the brief's text names four antifungals (itraconazole, posaconazole,
 flucytosine, amphotericin B) as having no usable CLSI category in this
 dataset. Direct inspection of the live data confirms this for three of the
 four - itraconazole, posaconazole, and flucytosine are 100% null in their
 "(CLSI)_I" columns - but not for amphotericin B, which carries 122 real
 Susceptible/Resistant CLSI calls (67 Susceptible, 55 Resistant) alongside
 26,800 nulls. BREAKPOINT_ABSENT_DRUGS below reflects the live data, not
-Justice's text: it omits amphotericin B, which is classified via Tier 1
+the brief's text: it omits amphotericin B, which is classified via Tier 1
 (CLSI) wherever a real call exists, falling through to Tier 2/3 only for its
 null rows like any other drug.
 
@@ -192,7 +192,7 @@ SPECIES_ALIASES = {
     "Cryptococcus gattii species complex": "Cryptococcus gattii",
 }
 
-# The four drugs Justice's issue text names as breakpoint-absent, plus the
+# The four drugs the brief's issue text names as breakpoint-absent, plus the
 # other six SENTRY antifungals covered by this file's CLSI columns.
 FUNGAL_DRUGS = [
     "Anidulafungin", "Caspofungin", "Micafungin", "Isavuconazole",

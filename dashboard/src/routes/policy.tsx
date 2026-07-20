@@ -37,7 +37,7 @@ function InterventionPage() {
     >
       <GlassCard
         title="Intervention deliverable"
-        subtitle="Stage 7 categories per Justice brief; LE gain only where defensible."
+        subtitle="Stage 7 categories per the project brief; LE gain only where defensible."
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">

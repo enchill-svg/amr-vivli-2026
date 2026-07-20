@@ -1,6 +1,6 @@
 """Run integrity proof pipeline (ATLAS/PLEA bounds, validation, allocator, validator).
 
-Justice harmonization (Steps 1–10) and gated policy deliverables (Steps 11–18b)
+Brief harmonization (Steps 1–10) and gated policy deliverables (Steps 11–18b)
 are orchestrated by run_all.py. This runner is for integrity proof only.
 """
 import subprocess

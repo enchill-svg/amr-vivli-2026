@@ -143,7 +143,7 @@ export async function mapCountryTrends(
     }
   }
 
-  // Justice's Q3 methodology (funding_gap_summary_v1.csv) is organism-level only.
+  // The brief's Q3 methodology (funding_gap_summary_v1.csv) is organism-level only.
   // Country-level fundingMismatch is a dominant-organism proxy joined below; no
   // match (e.g. Candida/Aspergillus-dominant countries) falls back to null.
   const fundingGapByOrganism = new Map<string, number>();
