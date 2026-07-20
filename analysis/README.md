@@ -41,13 +41,13 @@ The output is one combined table where each row is "one patient sample tested ag
 From the **repository root** (`amr-vivli-2026/`):
 
 ```bash
-python preprocessing_pipeline/run_pipeline.py
+python analysis/run_pipeline.py
 ```
 
 Or from inside the pipeline folder:
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python run_pipeline.py
 ```
 
@@ -211,7 +211,7 @@ Every exclusion is logged — nothing is silently dropped.
 ## 5. Repository Layout
 
 ```
-preprocessing_pipeline/
+analysis/
 ├── README.md                 ← this file
 ├── run_pipeline.py           ← top-level runner
 ├── raw_inputs/               ← source files (not modified by pipeline)
@@ -453,7 +453,7 @@ When building analysis on the master table:
 
 - **Python 3** with `pandas` and `openpyxl` (for `.xlsx` reading).
 - All six raw input files present under `raw_inputs/` (see [`raw_inputs/README.md`](raw_inputs/README.md)).
-- Run from repository root or any directory; `run_pipeline.py` resolves paths relative to `preprocessing_pipeline/`.
+- Run from repository root or any directory; `run_pipeline.py` resolves paths relative to `analysis/`.
 
 ---
 
@@ -470,7 +470,7 @@ See also [`docs/appendix_5_identifiability_bounds_methodology.md`](docs/appendix
 Sections 1–14 above document the **Section 5 preprocessing pipeline** (Steps 1–10, run automatically by `run_pipeline.py`). This section documents a separate, later addition: the first stage of **Section 6, "Analytic Methodology"** — a distinct analytic layer that consumes the finished master table rather than building it. Per `docs/SECTION_6_ANALYTIC_METHODOLOGY_PLAN.md`, Section 6 stages "run once the Section 5 preprocessing pipeline has produced the master isolate-drug table." Accordingly, `step11_descriptive.py` is **not** wired into `run_pipeline.py`'s Tier A–D sequence — it is run manually, after a successful full pipeline run:
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step11_descriptive.py
 ```
 
@@ -478,14 +478,14 @@ It follows the same Issue → Action → Check pattern, path conventions, and ve
 
 ### 15.1 What it does
 
-Computes resistance rates (bacteria) and susceptibility rates (fungi), per Justice's Section 6 Stage 1 spec: "resistance rates by organism, drug class, country, year, and body site for bacteria; susceptibility rates by species, drug class, country, year, and specimen source for fungi." Because the master table under-determines every rate (only some isolates are ever tested against any given drug), every rate is reported as a Manski (1989) worst-case partial-identification bound, following the same Case A/B methodology as Step 8 (`docs/appendix_5_identifiability_bounds_methodology.md`) — never as a bare point estimate.
+Computes resistance rates (bacteria) and susceptibility rates (fungi), per the project brief's Section 6 Stage 1 spec: "resistance rates by organism, drug class, country, year, and body site for bacteria; susceptibility rates by species, drug class, country, year, and specimen source for fungi." Because the master table under-determines every rate (only some isolates are ever tested against any given drug), every rate is reported as a Manski (1989) worst-case partial-identification bound, following the same Case A/B methodology as Step 8 (`docs/appendix_5_identifiability_bounds_methodology.md`) — never as a bare point estimate.
 
 ### 15.2 Two gaps this step had to close
 
 Neither of these is derivable from any existing pipeline output — both required new work:
 
 1. **Body site / specimen source** — absent from `master_table_v1.csv` and `isolate_registry_v1.csv`. Re-joined directly from the four raw cohort files (`BODYLOCATION` in SOAR_201818, `BodyLocation` in SOAR_201910/SOAR_207965, `Source` in SENTRY), keyed on `(source_cohort, isolate_id)` using the same `normalize_isolate_id()` function `step10_master.py` uses to build the master table. The join rate is checked and must be 100% (Check a).
-2. **Drug class** — no drug-class field or taxonomy exists anywhere in the pipeline, and Justice's text does not name a standard to use. This was surfaced to the user rather than assumed; per the user's explicit decision, a new pharmacological/chemical-class taxonomy was authored for this project. **It is not derived from any project data file or from Justice's text** — it is a standard antimicrobial classification (e.g. Aminopenicillin, Cephalosporin 2nd/3rd generation, Fluoroquinolone, Macrolide for bacteria; Echinocandin, Triazole, Polyene, Pyrimidine analogue for fungi) covering all 30 real `canonical_drug` values. It is written out as `crosswalks/drug_class_crosswalk_v1.csv` so it is inspectable and versioned like every other crosswalk in this pipeline, not buried in code.
+2. **Drug class** — no drug-class field or taxonomy exists anywhere in the pipeline, and the project brief's text does not name a standard to use. This was surfaced to the user rather than assumed; per the user's explicit decision, a new pharmacological/chemical-class taxonomy was authored for this project. **It is not derived from any project data file or from the project brief's text** — it is a standard antimicrobial classification (e.g. Aminopenicillin, Cephalosporin 2nd/3rd generation, Fluoroquinolone, Macrolide for bacteria; Echinocandin, Triazole, Polyene, Pyrimidine analogue for fungi) covering all 30 real `canonical_drug` values. It is written out as `crosswalks/drug_class_crosswalk_v1.csv` so it is inspectable and versioned like every other crosswalk in this pipeline, not buried in code.
 
 ### 15.3 N / T / P bounds methodology
 
@@ -493,7 +493,7 @@ For each stratum (organism × drug [× dosing_variant] × country × year × bod
 
 - **N** = all isolates of that organism/species in that country-year-site combination, regardless of whether the specific drug was tested.
 - **T** = subset of N with an interpretable classification for that specific drug (`classification_basis` is a real breakpoint/ECV basis, not a non-result reason).
-- **P** = subset of T with the "positive event" — Resistant for bacteria, Susceptible for fungi (Justice's fungal framing is a susceptibility rate, the flipped direction from the bacterial resistance rate).
+- **P** = subset of T with the "positive event" — Resistant for bacteria, Susceptible for fungi (the project brief's fungal framing is a susceptibility rate, the flipped direction from the bacterial resistance rate).
 
 | Bound | Formula | Reported |
 |-------|---------|----------|
@@ -532,7 +532,7 @@ Beyond the step's own Checks, two independent from-scratch recomputations — no
 
 ### 15.6 Downstream usage notes specific to this step
 
-1. **The drug-class crosswalk is authored, not sourced.** It is a standard pharmacological classification written for this project, not extracted from any Vivli file or from Justice's text. Treat it with the same scrutiny as any other analyst-authored taxonomy, and revise its `version` if the classification scheme changes.
+1. **The drug-class crosswalk is authored, not sourced.** It is a standard pharmacological classification written for this project, not extracted from any Vivli file or from the project brief's text. Treat it with the same scrutiny as any other analyst-authored taxonomy, and revise its `version` if the classification scheme changes.
 2. **Never merge the CLSI and ECV fungal files.** `descriptive_fungal_susceptibility_v1.csv` and `descriptive_fungal_ecv_wt_rate_v1.csv` answer different questions (clinical outcome vs. population membership) and use different denominators.
 3. **A `[0%, 100%]` Tier 1 bound with `n_tested=0` is a real, reportable finding** — no isolates were ever tested against that drug in that stratum — not an error or a missing row.
 4. **`dosing_variant` follows the master table's own convention:** empty string for all drugs except amoxicillin/clavulanate, never a sentinel value. Read with `dtype=str` (or an explicit `keep_default_na=False`) to avoid pandas silently parsing a blank cell as NaN and misgrouping rows in a `groupby`/`merge`.
@@ -544,7 +544,7 @@ Beyond the step's own Checks, two independent from-scratch recomputations — no
 Like Stage 1, this is part of the separate **Section 6 analytic layer** (§15's opening paragraph), not the automatic Section 5 pipeline. It is run manually, after Stage 1 (it does not depend on Stage 1's output, but follows the same numbering convention):
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step12_evolutionary.py
 ```
 
@@ -552,13 +552,13 @@ It follows the same Issue → Action → Check pattern, path conventions, and ve
 
 ### 16.1 What it does
 
-Computes an **Evolutionary Distance-to-Failure** and **Evolutionary Fitness Score** per Justice's Section 6 Stage 2 spec, tracking how far a country-organism-drug combination's typical MIC sits from a resistance/non-wild-type threshold, and whether that margin is growing or shrinking year over year. Neither term is established terminology in any CLSI/EUCAST/WHO GLASS source (confirmed by research recorded in `docs/SECTION_6_ANALYTIC_METHODOLOGY_PLAN.md`) — this step's operational definitions were resolved via three explicit decisions put to the user, since the plan document itself flags them as requiring sign-off rather than an assumption:
+Computes an **Evolutionary Distance-to-Failure** and **Evolutionary Fitness Score** per the project brief's Section 6 Stage 2 spec, tracking how far a country-organism-drug combination's typical MIC sits from a resistance/non-wild-type threshold, and whether that margin is growing or shrinking year over year. Neither term is established terminology in any CLSI/EUCAST/WHO GLASS source (confirmed by research recorded in `docs/SECTION_6_ANALYTIC_METHODOLOGY_PLAN.md`) — this step's operational definitions were resolved via three explicit decisions put to the user, since the plan document itself flags them as requiring sign-off rather than an assumption:
 
 1. **Anchor point (what "failure" means):** hybrid — the EUCAST clinical resistance breakpoint (`R >`) for bacteria, the published ECV for fungi. No ECOFF table exists locally for either pathogen type (confirmed by direct inspection of `crosswalks/eucast_breakpoint_table_v1.csv` and the raw EUCAST workbooks), and no numeric fungal CLSI breakpoint value is stored locally at all — SENTRY supplies a pre-computed CLSI category directly, never a parseable threshold — so ECV is the only numerically groundable fungal anchor, not merely the preferred one.
 2. **Density threshold:** no fixed cutoff. Every (country, organism, drug[, dosing_variant]) combination with ≥2 distinct qualifying years is computed; low-density years/trends are annotated (`low_n_flag` / `low_density_flag`), never excluded — reusing Stage 1's `MIN_N_FOR_RELIABLE_RATE` constant and "annotate, don't suppress" precedent directly.
 3. **Score formula:** Distance-to-Failure = median `log2(anchor) − log2(mic_value)` across isolates in a (country, organism, drug[, dosing_variant], year) cell; Evolutionary Fitness Score = the year-over-year OLS slope of that yearly median, fit against real calendar years.
 
-Justice's text names six SOAR longitudinal countries (Ukraine, Turkey, Tunisia, Pakistan, Kuwait, Vietnam) plus "SENTRY country-years with sufficient density." Per decision 2, this step does not gate the grid on that named list — every combination meeting the ≥2-year threshold is computed uniformly, SOAR or SENTRY alike.
+The project brief's text names six SOAR longitudinal countries (Ukraine, Turkey, Tunisia, Pakistan, Kuwait, Vietnam) plus "SENTRY country-years with sufficient density." Per decision 2, this step does not gate the grid on that named list — every combination meeting the ≥2-year threshold is computed uniformly, SOAR or SENTRY alike.
 
 ### 16.2 Anchor resolution (reused, not re-derived)
 
@@ -596,18 +596,18 @@ Beyond the step's own Checks, two independent from-scratch recomputations — re
 1. **A missing Distance-to-Failure for Anidulafungin/Caspofungin/Micafungin is a structural data gap, not an omission** — no numeric anchor (ECV or CLSI) exists locally for any echinocandin. Do not interpret their absence from the output as "no resistance trend."
 2. **`mixed_breakpoint_versions_in_cell` currently always reads `False`.** That reflects the current data (0 of 2,049 cells), not a guarantee — re-check this flag after any raw-data refresh that could change cohort/year overlap.
 3. **A `pearson_r` of `NaN` means a degenerate fit** (zero variance in years or in yearly medians), not a failed computation — check `evolutionary_fitness_score_slope` and `n_years` directly in that case.
-4. **This stage does not stratify by body site/specimen source** — Justice's Stage 2 spec names only country-organism-drug, unlike Stage 1. Isolates carrying more than one dosing variant or appearing via unresolved cross-cohort overlaps are handled identically to Stage 1 (dosing variant kept as a grouping key; overlaps never deduplicated).
+4. **This stage does not stratify by body site/specimen source** — the project brief's Stage 2 spec names only country-organism-drug, unlike Stage 1. Isolates carrying more than one dosing variant or appearing via unresolved cross-cohort overlaps are handled identically to Stage 1 (dosing variant kept as a grouping key; overlaps never deduplicated).
 
 ---
 
 ## 17. Section 6 Stage 3 — Clustering (`step13_clustering.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step13_clustering.py
 ```
 
-Unsupervised clustering on combined static-burden + evolutionary-trajectory feature vectors, run separately for bacteria and fungi (Justice Section 6, Stage 3). Features per (country, organism, drug): volume-weighted Tier-1 bound midpoint (bacterial resistance; fungal `1 − WT` midpoint from the ECV tier to align with ECV-anchored Stage 2 distances) and the Stage 2 Evolutionary Fitness Score slope. Ward hierarchical clustering on standardized features; k selected by maximum mean silhouette over k ∈ {2, …, 8}.
+Unsupervised clustering on combined static-burden + evolutionary-trajectory feature vectors, run separately for bacteria and fungi (per the project brief's Section 6, Stage 3). Features per (country, organism, drug): volume-weighted Tier-1 bound midpoint (bacterial resistance; fungal `1 − WT` midpoint from the ECV tier to align with ECV-anchored Stage 2 distances) and the Stage 2 Evolutionary Fitness Score slope. Ward hierarchical clustering on standardized features; k selected by maximum mean silhouette over k ∈ {2, …, 8}.
 
 | File | Rows (latest run) | Grain |
 |------|-------------------:|-------|
@@ -622,7 +622,7 @@ Selected k (latest run): bacterial k=4 (mean silhouette 0.584), fungal k=2 (mean
 ## 18. Section 6 Stage 4 — External Data Join (`step14_external_join.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step14_external_join.py
 ```
 
@@ -650,11 +650,11 @@ Fungal burden uses ECV-tier WT/NWT rates to pair with ECV-based distance. `n_iso
 ## 19. Section 6 Stage 5 — Association Analysis (`step15_association.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step15_association.py
 ```
 
-Pooled country-year OLS of life expectancy on burden, `mean_evolutionary_fitness_slope`, health expenditure, hospital beds, GBD SDI, and (bacteria only) Hib3 + PCVC coverage (+ ESAC-Net consumption where non-null), with year as a control. Cluster-robust standard errors, clustered by `iso3_country`, to correct for within-country serial correlation in this country-year panel (HC1 alone materially understates the SEs on `health_expenditure_pct_gdp` and `hospital_beds_per_1000` — both look significant under HC1 and are not distinguishable from zero once clustered; `gbd_sdi` stays significant under either method). **Read as suggestive association only** — Justice Section 8; no causal attribution.
+Pooled country-year OLS of life expectancy on burden, `mean_evolutionary_fitness_slope`, health expenditure, hospital beds, GBD SDI, and (bacteria only) Hib3 + PCVC coverage (+ ESAC-Net consumption where non-null), with year as a control. Cluster-robust standard errors, clustered by `iso3_country`, to correct for within-country serial correlation in this country-year panel (HC1 alone materially understates the SEs on `health_expenditure_pct_gdp` and `hospital_beds_per_1000` — both look significant under HC1 and are not distinguishable from zero once clustered; `gbd_sdi` stays significant under either method). **Read as suggestive association only** — per the project brief's Section 8; no causal attribution.
 
 | File | Contents |
 |------|----------|
@@ -668,7 +668,7 @@ Latest complete-case n (primary spec): bacterial 16 (5 countries — flagged `sm
 ## 20. Section 6 Stage 6 — R&D Alignment Check (`step16_rd_alignment.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step16_rd_alignment.py
 ```
 
@@ -685,7 +685,7 @@ Compares Global AMR R&D Hub funding (pro-rated `Amount USD` per infectious-agent
 ## 21. Section 6 Stage 7 — Intervention Impact (`step17_intervention.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step17_intervention.py
 ```
 
@@ -701,13 +701,13 @@ Illustrative intervention scenarios from Stage 5 OLS coefficients (vaccination L
 ## 22. Section 7 — Expected Outputs (`step18_section7_deliverables.py`)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step18_section7_deliverables.py
 ```
 
-Packages Justice's six Section 7 deliverables (`docs/_justice_idea_raw_dump.txt` lines 106–111) from Section 5 artifacts and Section 6 Stages 1–7 outputs. No new modeling — only documented aggregation, compilation, and ranking rules recorded in each file's `methodology` column.
+Packages the project brief's six Section 7 deliverables from Section 5 artifacts and Section 6 Stages 1–7 outputs. No new modeling — only documented aggregation, compilation, and ranking rules recorded in each file's `methodology` column.
 
-| Justice # | Deliverable | Output file(s) |
+| Brief # | Deliverable | Output file(s) |
 |-----------|-------------|----------------|
 | 1 | Harmonized dual-pathogen dataset + crosswalks | `deliverables/dataset_manifest_v1.csv` |
 | 2 | Identifiability ledger | `deliverables/identifiability_ledger_v1.csv` |
@@ -719,14 +719,14 @@ Packages Justice's six Section 7 deliverables (`docs/_justice_idea_raw_dump.txt`
 Index mapping all six outputs: `deliverables/section7_deliverables_index_v1.csv`.
 
 **Methodology notes (no hallucinated data):**
-- Country risk ranking uses burden, evolutionary trajectory, and health expenditure only — **consumption omitted** (no numeric ESAC-Net series locally) and **vaccination omitted** (not named in Justice Output 4, line 109).
+- Country risk ranking uses burden, evolutionary trajectory, and health expenditure only — **consumption omitted** (no numeric ESAC-Net series locally) and **vaccination omitted** (not named in the project brief's Output 4).
 - Cluster typology labels combinations in the top quartile of static burden and/or negative fitness-slope risk.
 - Intervention ranking covers only measured vaccination scenarios; stewardship/diagnostics/WASH/IPC gaps carry null rank.
 
 **Full Section 6 + 7 manual run order** (after a successful `run_pipeline.py`):
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python src/step11_descriptive.py
 python src/step12_evolutionary.py
 python src/step13_clustering.py
@@ -743,14 +743,14 @@ See also [`deliverables/README.md`](deliverables/README.md).
 
 ## 23. Integrity layer
 
-**Role:** Prerequisite for Justice’s policy outputs — bounds detection-only genotype fields and fungal breakpoint gaps; validates sampling bias on PLEA/SOAR; gates public rankings.
+**Role:** Prerequisite for the project brief's policy outputs — bounds detection-only genotype fields and fungal breakpoint gaps; validates sampling bias on PLEA/SOAR; gates public rankings.
 
-**Not a separate product:** Justice Steps 7–8 already implement identifiability on SOAR/SENTRY. ATLAS/PLEA extend this as **scale proof** and **method calibration** (`run_evidence_gate.py`). **Gated deliverables** (`step18b_gated_deliverables.py`) apply `quality_gate` before dashboard publish.
+**Not a separate product:** The project brief's Steps 7–8 already implement identifiability on SOAR/SENTRY. ATLAS/PLEA extend this as **scale proof** and **method calibration** (`run_evidence_gate.py`). **Gated deliverables** (`step18b_gated_deliverables.py`) apply `quality_gate` before dashboard publish.
 
 ### Full platform (one command)
 
 ```bash
-cd preprocessing_pipeline
+cd analysis
 python run_all.py
 ```
 

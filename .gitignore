@@ -258,3 +258,7 @@ dashboard/.env
 dashboard/.env.*
 !dashboard/.env.example
 dashboard/.dev.vars
+dashboard/.lovable/
+
+# Editor / AI tool config (local only; not part of the submission)
+.cursor/
