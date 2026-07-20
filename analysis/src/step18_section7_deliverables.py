@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 
 from _section6_external import CONSUMPTION_DATA_AVAILABLE
+from evidence_gate_core.gate_rules import JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS
 
 ROOT = Path(__file__).resolve().parents[1]
 BOUNDS_DIR = ROOT / "bounds"
@@ -29,13 +30,6 @@ CROSSWALK_DIR = ROOT / "crosswalks"
 
 TODAY = dt.date.today().isoformat()
 VERSION = "v1"
-
-JUSTICE_BREAKPOINT_ABSENT_FUNGAL_DRUGS = (
-  "itraconazole",
-  "posaconazole",
-  "flucytosine",
-  "amphotericin B",
-)
 
 RISK_RANKING_METHODOLOGY = (
   "Primary rank (composite_risk_score_core): equal-weight mean of burden, trajectory, "

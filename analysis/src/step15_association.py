@@ -89,7 +89,7 @@ def fit_ols(df: pd.DataFrame, pathogen_type: str) -> tuple[pd.DataFrame, pd.Data
     )
     return coef, meta
 
-  result = sm.OLS(y, x).fit(cov_type="HC1")
+  result = sm.OLS(y, x).fit(cov_type="cluster", cov_kwds={"groups": model_df["iso3_country"]})
   coef = pd.DataFrame(
     {
       "term": result.params.index,
@@ -184,7 +184,7 @@ def fit_ols_variant(
 
   y = model_df["life_expectancy"]
   x = sm.add_constant(model_df[predictors])
-  result = sm.OLS(y, x).fit(cov_type="HC1")
+  result = sm.OLS(y, x).fit(cov_type="cluster", cov_kwds={"groups": model_df["iso3_country"]})
   warning = ""
   if n_obs < 30 or (isinstance(n_countries, int) and n_countries < 10):
     warning = "small_sample_not_for_causal_claims"

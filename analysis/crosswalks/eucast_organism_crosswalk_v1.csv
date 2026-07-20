@@ -1,50 +1,50 @@
 canonical_organism,eucast_sheet,matched,reason,version,date_added
-Acinetobacter baumannii,Acinetobacter,True,named in the Acinetobacter spp. sheet's own genus-scope note (A. baumannii group),v1,2026-07-18
-Acinetobacter lwoffii,Acinetobacter,True,explicitly named in the Acinetobacter spp. sheet's own genus-scope note,v1,2026-07-18
-Acinetobacter sp,Acinetobacter,True,sheet's own note: 'In the EUCAST tables Acinetobacter are referred to as Acinetobacter spp.',v1,2026-07-18
-Achromobacter sp,,False,only a species-specific A. xylosoxidans sheet exists; unspecified Achromobacter species cannot be safely assumed to be A. xylosoxidans,v1,2026-07-18
-Corynebacterium sp,Corynebacterium,True,sheet is explicitly titled 'Corynebacterium spp. other than C. diphtheriae and C. ulcerans' - a genus-level sheet by design,v1,2026-07-18
-Enterococcus faecalis,Enterococcus,True,direct species match,v1,2026-07-18
-Enterococcus faecium,Enterococcus,True,direct species match,v1,2026-07-18
-Escherichia coli,Enterobacterales,True,sheet's own note: 'Breakpoints in this table apply to all members of the Enterobacterales',v1,2026-07-18
-Haemophilus haemolyticus,,False,H.influenzae sheet's own note limits extrapolation to H. parainfluenzae only ('Clinical data for other Haemophilus species are scarce'),v1,2026-07-18
-Haemophilus hemolyticus,,False,same as Haemophilus haemolyticus (alternate spelling) - not covered by the H.influenzae sheet's extrapolation note,v1,2026-07-18
-Haemophilus influenzae,H.influenzae,True,direct species match,v1,2026-07-18
-Haemophilus parahaemolyticus,,False,H.influenzae sheet's own note limits extrapolation to H. parainfluenzae only,v1,2026-07-18
-Haemophilus parainfluenzae,H.influenzae,True,"sheet's own note: 'In the absence of specific breakpoints, the H. influenzae MIC breakpoints can be applied to H. parainfluenzae'",v1,2026-07-18
-Klebsiella pneumoniae,Enterobacterales,True,sheet's own note: applies to all members of the Enterobacterales,v1,2026-07-18
-Kocuria rhizophila,,False,no EUCAST sheet exists for this genus,v1,2026-07-18
-Microbacterium sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-18
-Moraxella catarrhalis,M.catarrhalis,True,direct species match,v1,2026-07-18
-Moraxella osloensis,,False,"the M.catarrhalis sheet is species-specific (titled 'Moraxella catarrhalis', no genus-scope extrapolation note, unlike Acinetobacter/Corynebacterium)",v1,2026-07-18
-Moraxella sp,,False,same - M.catarrhalis sheet does not extrapolate to other Moraxella species,v1,2026-07-18
-Pantoea septica,Enterobacterales,True,"Pantoea is taxonomically within the order Enterobacterales, covered by the sheet's genus-wide note",v1,2026-07-18
-Pasteurella multocida,P.multocida,True,sheet's own note: 'EUCAST breakpoints are based mainly on data for Pasteurella multocida',v1,2026-07-18
-Pseudomonas aeruginosa,Pseudomonas,True,sheet's own note names P. aeruginosa as the most frequent species covered,v1,2026-07-18
-Pseudomonas monteilii,Pseudomonas,True,"sheet's own note covers 'less frequent Pseudomonas species' including the P. putida group, which P. monteilii is taxonomically part of (not individually named by EUCAST - documented extrapolation, not a fabricated value)",v1,2026-07-18
-Pseudomonas stutzeri,Pseudomonas,True,explicitly named in the sheet's own note ('P. stutzeri group'),v1,2026-07-18
-Roseomonas sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-18
-Rothia sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-18
-S. mitis group,Viridans group streptococci,True,explicitly named as a named subgroup in the sheet's own scope note,v1,2026-07-18
-Staphylococcus aureus,Staphylococcus,True,"direct species match, sheet's own genus-scope note",v1,2026-07-18
-Staphylococcus cohnii,Staphylococcus,True,explicitly named as a coagulase-negative staphylococcus in the sheet's own scope note,v1,2026-07-18
-Staphylococcus epidermidis,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-18
-Staphylococcus haemolyticus,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-18
-Staphylococcus hominis,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-18
-Staphylococcus lugdunensis,Staphylococcus,True,explicitly named in the sheet's own scope note; also carries its own species-specific rows for some drugs,v1,2026-07-18
-Staphylococcus pasteuri,Staphylococcus,True,"not individually named, but sheet's own note: 'Unless otherwise indicated, breakpoints apply to all members of the Staphylococcus genus'",v1,2026-07-18
-Staphylococcus sp,Staphylococcus,True,genus-wide rule per the sheet's own scope note,v1,2026-07-18
-Staphylococcus warneri,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-18
-Stenotrophomonas maltophilia,S.maltophilia,True,direct species match,v1,2026-07-18
-Streptococcus anginosus,Viridans group streptococci,True,named subgroup ('S. anginosus group') in the sheet's own scope note,v1,2026-07-18
-Streptococcus gordonii,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus mitis,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus oralis,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus parasanguinis,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus pneumoniae,S.pneumoniae,True,direct species match,v1,2026-07-18
-Streptococcus pseudopneumoniae,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus pyogenes,"Streptococcus A,B,C,G",True,sheet's own scope note: 'Group A: S. pyogenes',v1,2026-07-18
-Streptococcus salivarius,Viridans group streptococci,True,named in the 'S. salivarius group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus sanguinis,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-18
-Streptococcus sp,,False,"genuinely ambiguous - S. pneumoniae, S. pyogenes and the viridans group each have materially different EUCAST breakpoints and no genus-wide sheet exists to resolve an unspecified Streptococcus",v1,2026-07-18
-unidentified_pathogen,,False,not a real organism,v1,2026-07-18
+Acinetobacter baumannii,Acinetobacter,True,named in the Acinetobacter spp. sheet's own genus-scope note (A. baumannii group),v1,2026-07-20
+Acinetobacter lwoffii,Acinetobacter,True,explicitly named in the Acinetobacter spp. sheet's own genus-scope note,v1,2026-07-20
+Acinetobacter sp,Acinetobacter,True,sheet's own note: 'In the EUCAST tables Acinetobacter are referred to as Acinetobacter spp.',v1,2026-07-20
+Achromobacter sp,,False,only a species-specific A. xylosoxidans sheet exists; unspecified Achromobacter species cannot be safely assumed to be A. xylosoxidans,v1,2026-07-20
+Corynebacterium sp,Corynebacterium,True,sheet is explicitly titled 'Corynebacterium spp. other than C. diphtheriae and C. ulcerans' - a genus-level sheet by design,v1,2026-07-20
+Enterococcus faecalis,Enterococcus,True,direct species match,v1,2026-07-20
+Enterococcus faecium,Enterococcus,True,direct species match,v1,2026-07-20
+Escherichia coli,Enterobacterales,True,sheet's own note: 'Breakpoints in this table apply to all members of the Enterobacterales',v1,2026-07-20
+Haemophilus haemolyticus,,False,H.influenzae sheet's own note limits extrapolation to H. parainfluenzae only ('Clinical data for other Haemophilus species are scarce'),v1,2026-07-20
+Haemophilus hemolyticus,,False,same as Haemophilus haemolyticus (alternate spelling) - not covered by the H.influenzae sheet's extrapolation note,v1,2026-07-20
+Haemophilus influenzae,H.influenzae,True,direct species match,v1,2026-07-20
+Haemophilus parahaemolyticus,,False,H.influenzae sheet's own note limits extrapolation to H. parainfluenzae only,v1,2026-07-20
+Haemophilus parainfluenzae,H.influenzae,True,"sheet's own note: 'In the absence of specific breakpoints, the H. influenzae MIC breakpoints can be applied to H. parainfluenzae'",v1,2026-07-20
+Klebsiella pneumoniae,Enterobacterales,True,sheet's own note: applies to all members of the Enterobacterales,v1,2026-07-20
+Kocuria rhizophila,,False,no EUCAST sheet exists for this genus,v1,2026-07-20
+Microbacterium sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-20
+Moraxella catarrhalis,M.catarrhalis,True,direct species match,v1,2026-07-20
+Moraxella osloensis,,False,"the M.catarrhalis sheet is species-specific (titled 'Moraxella catarrhalis', no genus-scope extrapolation note, unlike Acinetobacter/Corynebacterium)",v1,2026-07-20
+Moraxella sp,,False,same - M.catarrhalis sheet does not extrapolate to other Moraxella species,v1,2026-07-20
+Pantoea septica,Enterobacterales,True,"Pantoea is taxonomically within the order Enterobacterales, covered by the sheet's genus-wide note",v1,2026-07-20
+Pasteurella multocida,P.multocida,True,sheet's own note: 'EUCAST breakpoints are based mainly on data for Pasteurella multocida',v1,2026-07-20
+Pseudomonas aeruginosa,Pseudomonas,True,sheet's own note names P. aeruginosa as the most frequent species covered,v1,2026-07-20
+Pseudomonas monteilii,Pseudomonas,True,"sheet's own note covers 'less frequent Pseudomonas species' including the P. putida group, which P. monteilii is taxonomically part of (not individually named by EUCAST - documented extrapolation, not a fabricated value)",v1,2026-07-20
+Pseudomonas stutzeri,Pseudomonas,True,explicitly named in the sheet's own note ('P. stutzeri group'),v1,2026-07-20
+Roseomonas sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-20
+Rothia sp,,False,no EUCAST sheet exists for this genus,v1,2026-07-20
+S. mitis group,Viridans group streptococci,True,explicitly named as a named subgroup in the sheet's own scope note,v1,2026-07-20
+Staphylococcus aureus,Staphylococcus,True,"direct species match, sheet's own genus-scope note",v1,2026-07-20
+Staphylococcus cohnii,Staphylococcus,True,explicitly named as a coagulase-negative staphylococcus in the sheet's own scope note,v1,2026-07-20
+Staphylococcus epidermidis,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-20
+Staphylococcus haemolyticus,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-20
+Staphylococcus hominis,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-20
+Staphylococcus lugdunensis,Staphylococcus,True,explicitly named in the sheet's own scope note; also carries its own species-specific rows for some drugs,v1,2026-07-20
+Staphylococcus pasteuri,Staphylococcus,True,"not individually named, but sheet's own note: 'Unless otherwise indicated, breakpoints apply to all members of the Staphylococcus genus'",v1,2026-07-20
+Staphylococcus sp,Staphylococcus,True,genus-wide rule per the sheet's own scope note,v1,2026-07-20
+Staphylococcus warneri,Staphylococcus,True,explicitly named in the sheet's own scope note,v1,2026-07-20
+Stenotrophomonas maltophilia,S.maltophilia,True,direct species match,v1,2026-07-20
+Streptococcus anginosus,Viridans group streptococci,True,named subgroup ('S. anginosus group') in the sheet's own scope note,v1,2026-07-20
+Streptococcus gordonii,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus mitis,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus oralis,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus parasanguinis,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus pneumoniae,S.pneumoniae,True,direct species match,v1,2026-07-20
+Streptococcus pseudopneumoniae,Viridans group streptococci,True,named in the 'S. mitis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus pyogenes,"Streptococcus A,B,C,G",True,sheet's own scope note: 'Group A: S. pyogenes',v1,2026-07-20
+Streptococcus salivarius,Viridans group streptococci,True,named in the 'S. salivarius group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus sanguinis,Viridans group streptococci,True,named in the 'S. sanguinis group' in the sheet's own scope note,v1,2026-07-20
+Streptococcus sp,,False,"genuinely ambiguous - S. pneumoniae, S. pyogenes and the viridans group each have materially different EUCAST breakpoints and no genus-wide sheet exists to resolve an unspecified Streptococcus",v1,2026-07-20
+unidentified_pathogen,,False,not a real organism,v1,2026-07-20

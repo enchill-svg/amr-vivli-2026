@@ -45,7 +45,11 @@ def validate_export(df: pd.DataFrame, *, name: str = "export") -> dict:
 
 
 def validate_gated_deliverable(
-    df: pd.DataFrame, *, name: str = "gated_export", rank_col: str | None = None
+    df: pd.DataFrame,
+    *,
+    name: str = "gated_export",
+    rank_col: str | None = None,
+    score_cols: list[str] | None = None,
 ) -> dict:
     """Structural integrity check for a Section 7 gated deliverable table.
 
@@ -53,8 +57,11 @@ def validate_gated_deliverable(
     (denominator reconstructability); this checks the pipeline's later,
     published-facing output — every gated table gate_rules.py produces must
     carry a fully-populated quality_gate column drawn only from the known
-    pass/bounds_only/withhold vocabulary, and (when rank_col is given) must
-    never carry a rank for a row whose quality_gate isn't "pass".
+    pass/bounds_only/withhold vocabulary, must never carry a rank (when
+    rank_col is given) for a row whose quality_gate isn't "pass", and must
+    never carry a live score (when score_cols is given) for such a row
+    either — a raw score is just as reconstructable into a ranking as the
+    rank itself, so it's gated identically.
     """
     flags: list[str] = []
     status = "PASS"
@@ -82,6 +89,13 @@ def validate_gated_deliverable(
         if len(mis_ranked):
             flags.append(f"rank_without_pass_gate:{len(mis_ranked)}_row(s)")
             status = "FAIL"
+
+    for score_col in score_cols or []:
+        if score_col in df.columns:
+            leaked = df[(df["quality_gate"] != "pass") & df[score_col].notna()]
+            if len(leaked):
+                flags.append(f"score_without_pass_gate:{score_col}:{len(leaked)}_row(s)")
+                status = "FAIL"
 
     reason = "quality_gate_populated_and_consistent" if status == "PASS" else "gate_integrity_violation"
     return {"file": name, "status": status, "flags": flags, "reason": reason}

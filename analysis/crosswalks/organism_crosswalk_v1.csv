@@ -1,62 +1,62 @@
 raw_string,canonical_organism,pathogen_type,exclusion_reason,note,cohorts_observed,row_count,version,date_added
-<null>,unidentified_pathogen,bacterial,,null_no_identification_attempted,SOAR_207965,20,v1,2026-07-18
-Achromobacter sp,Achromobacter sp,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Acinetobacter baumannii,Acinetobacter baumannii,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Acinetobacter lwoffii,Acinetobacter lwoffii,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Acinetobacter sp,Acinetobacter sp,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Bacillus cereus,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-18
-Bacillus circulans,excluded,,environmental_contaminant,,SOAR_207965,4,v1,2026-07-18
-Bacillus licheniformis,excluded,,environmental_contaminant,,SOAR_207965,2,v1,2026-07-18
-Bacillus megaterium,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-18
-Bacillus sp,excluded,,environmental_contaminant,,SOAR_207965,3,v1,2026-07-18
-Bacillus sp Strain #1,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-18
-Corynebacterium sp,Corynebacterium sp,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Enterococcus faecalis,Enterococcus faecalis,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Enterococcus faecium,Enterococcus faecium,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Escherichia coli,Escherichia coli,bacterial,,,SOAR_201910,106,v1,2026-07-18
-Haemophilus haemolyticus,Haemophilus haemolyticus,bacterial,,,SOAR_207965,9,v1,2026-07-18
-Haemophilus hemolyticus,Haemophilus haemolyticus,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Haemophilus influenzae,Haemophilus influenzae,bacterial,,,SOAR_201818+SOAR_201910+SOAR_207965,3674,v1,2026-07-18
-Haemophilus parahaemolyticus,Haemophilus parahaemolyticus,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Haemophilus parainfluenzae,Haemophilus parainfluenzae,bacterial,,,SOAR_207965,22,v1,2026-07-18
-Klebsiella pneumoniae,Klebsiella pneumoniae,bacterial,,,SOAR_201910+SOAR_207965,74,v1,2026-07-18
-Kocuria rhizophila,Kocuria rhizophila,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Microbacterium sp,Microbacterium sp,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Micrococcus luteus,excluded,,environmental_contaminant,,SOAR_207965,11,v1,2026-07-18
-Microsporum canis,excluded,,cross_domain_fungal_wrong_drug_panel,,SOAR_207965,1,v1,2026-07-18
-Moraxella catarrhalis,Moraxella catarrhalis,bacterial,,,SOAR_207965,5,v1,2026-07-18
-Moraxella osloensis,Moraxella osloensis,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Moraxella sp,Moraxella sp,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Naganishia liquefaciens,excluded,,cross_domain_fungal_wrong_drug_panel,,SOAR_207965,1,v1,2026-07-18
-No Growth,excluded,,no_growth,,SOAR_207965,2,v1,2026-07-18
-Paenibacillus sp,excluded,,environmental_contaminant,,SOAR_207965,2,v1,2026-07-18
-Pantoea septica,Pantoea septica,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Pasteurella multocida,Pasteurella multocida,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Pseudomonas aeruginosa,Pseudomonas aeruginosa,bacterial,,,SOAR_207965,3,v1,2026-07-18
-Pseudomonas monteilii,Pseudomonas monteilii,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Pseudomonas stutzeri,Pseudomonas stutzeri,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Roseomonas sp,Roseomonas sp,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Rothia sp,Rothia sp,bacterial,,,SOAR_207965,2,v1,2026-07-18
-S. mitis group,S. mitis group,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Staphylococcus aureus,Staphylococcus aureus,bacterial,,,SOAR_207965,8,v1,2026-07-18
-Staphylococcus cohnii,Staphylococcus cohnii,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Staphylococcus epidermidis,Staphylococcus epidermidis,bacterial,,,SOAR_207965,27,v1,2026-07-18
-Staphylococcus haemolyticus,Staphylococcus haemolyticus,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Staphylococcus hominis,Staphylococcus hominis,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Staphylococcus lugdunensis,Staphylococcus lugdunensis,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Staphylococcus pasteuri,Staphylococcus pasteuri,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Staphylococcus sp,Staphylococcus sp,bacterial,,,SOAR_207965,43,v1,2026-07-18
-Staphylococcus warneri,Staphylococcus warneri,bacterial,,,SOAR_207965,10,v1,2026-07-18
-Stenotrophomonas maltophilia,Stenotrophomonas maltophilia,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Streptococcus anginosus,Streptococcus anginosus,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Streptococcus gordonii,Streptococcus gordonii,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Streptococcus mitis,Streptococcus mitis,bacterial,,,SOAR_207965,18,v1,2026-07-18
-Streptococcus oralis,Streptococcus oralis,bacterial,,,SOAR_207965,10,v1,2026-07-18
-Streptococcus parasanguinis,Streptococcus parasanguinis,bacterial,,,SOAR_207965,4,v1,2026-07-18
-Streptococcus pneumoniae,Streptococcus pneumoniae,bacterial,,,SOAR_201818+SOAR_201910+SOAR_207965,3415,v1,2026-07-18
-Streptococcus pseudopneumoniae,Streptococcus pseudopneumoniae,bacterial,,,SOAR_207965,3,v1,2026-07-18
-Streptococcus pyogenes,Streptococcus pyogenes,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Streptococcus salivarius,Streptococcus salivarius,bacterial,,,SOAR_207965,2,v1,2026-07-18
-Streptococcus sanguinis,Streptococcus sanguinis,bacterial,,,SOAR_207965,1,v1,2026-07-18
-Streptococcus sp,Streptococcus sp,bacterial,,,SOAR_207965,107,v1,2026-07-18
-Unknown,unidentified_pathogen,bacterial,,explicit_unknown_string,SOAR_207965,220,v1,2026-07-18
+<null>,unidentified_pathogen,bacterial,,null_no_identification_attempted,SOAR_207965,20,v1,2026-07-20
+Achromobacter sp,Achromobacter sp,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Acinetobacter baumannii,Acinetobacter baumannii,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Acinetobacter lwoffii,Acinetobacter lwoffii,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Acinetobacter sp,Acinetobacter sp,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Bacillus cereus,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-20
+Bacillus circulans,excluded,,environmental_contaminant,,SOAR_207965,4,v1,2026-07-20
+Bacillus licheniformis,excluded,,environmental_contaminant,,SOAR_207965,2,v1,2026-07-20
+Bacillus megaterium,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-20
+Bacillus sp,excluded,,environmental_contaminant,,SOAR_207965,3,v1,2026-07-20
+Bacillus sp Strain #1,excluded,,environmental_contaminant,,SOAR_207965,1,v1,2026-07-20
+Corynebacterium sp,Corynebacterium sp,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Enterococcus faecalis,Enterococcus faecalis,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Enterococcus faecium,Enterococcus faecium,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Escherichia coli,Escherichia coli,bacterial,,,SOAR_201910,106,v1,2026-07-20
+Haemophilus haemolyticus,Haemophilus haemolyticus,bacterial,,,SOAR_207965,9,v1,2026-07-20
+Haemophilus hemolyticus,Haemophilus haemolyticus,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Haemophilus influenzae,Haemophilus influenzae,bacterial,,,SOAR_201818+SOAR_201910+SOAR_207965,3674,v1,2026-07-20
+Haemophilus parahaemolyticus,Haemophilus parahaemolyticus,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Haemophilus parainfluenzae,Haemophilus parainfluenzae,bacterial,,,SOAR_207965,22,v1,2026-07-20
+Klebsiella pneumoniae,Klebsiella pneumoniae,bacterial,,,SOAR_201910+SOAR_207965,74,v1,2026-07-20
+Kocuria rhizophila,Kocuria rhizophila,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Microbacterium sp,Microbacterium sp,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Micrococcus luteus,excluded,,environmental_contaminant,,SOAR_207965,11,v1,2026-07-20
+Microsporum canis,excluded,,cross_domain_fungal_wrong_drug_panel,,SOAR_207965,1,v1,2026-07-20
+Moraxella catarrhalis,Moraxella catarrhalis,bacterial,,,SOAR_207965,5,v1,2026-07-20
+Moraxella osloensis,Moraxella osloensis,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Moraxella sp,Moraxella sp,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Naganishia liquefaciens,excluded,,cross_domain_fungal_wrong_drug_panel,,SOAR_207965,1,v1,2026-07-20
+No Growth,excluded,,no_growth,,SOAR_207965,2,v1,2026-07-20
+Paenibacillus sp,excluded,,environmental_contaminant,,SOAR_207965,2,v1,2026-07-20
+Pantoea septica,Pantoea septica,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Pasteurella multocida,Pasteurella multocida,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Pseudomonas aeruginosa,Pseudomonas aeruginosa,bacterial,,,SOAR_207965,3,v1,2026-07-20
+Pseudomonas monteilii,Pseudomonas monteilii,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Pseudomonas stutzeri,Pseudomonas stutzeri,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Roseomonas sp,Roseomonas sp,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Rothia sp,Rothia sp,bacterial,,,SOAR_207965,2,v1,2026-07-20
+S. mitis group,S. mitis group,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Staphylococcus aureus,Staphylococcus aureus,bacterial,,,SOAR_207965,8,v1,2026-07-20
+Staphylococcus cohnii,Staphylococcus cohnii,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Staphylococcus epidermidis,Staphylococcus epidermidis,bacterial,,,SOAR_207965,27,v1,2026-07-20
+Staphylococcus haemolyticus,Staphylococcus haemolyticus,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Staphylococcus hominis,Staphylococcus hominis,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Staphylococcus lugdunensis,Staphylococcus lugdunensis,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Staphylococcus pasteuri,Staphylococcus pasteuri,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Staphylococcus sp,Staphylococcus sp,bacterial,,,SOAR_207965,43,v1,2026-07-20
+Staphylococcus warneri,Staphylococcus warneri,bacterial,,,SOAR_207965,10,v1,2026-07-20
+Stenotrophomonas maltophilia,Stenotrophomonas maltophilia,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Streptococcus anginosus,Streptococcus anginosus,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Streptococcus gordonii,Streptococcus gordonii,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Streptococcus mitis,Streptococcus mitis,bacterial,,,SOAR_207965,18,v1,2026-07-20
+Streptococcus oralis,Streptococcus oralis,bacterial,,,SOAR_207965,10,v1,2026-07-20
+Streptococcus parasanguinis,Streptococcus parasanguinis,bacterial,,,SOAR_207965,4,v1,2026-07-20
+Streptococcus pneumoniae,Streptococcus pneumoniae,bacterial,,,SOAR_201818+SOAR_201910+SOAR_207965,3415,v1,2026-07-20
+Streptococcus pseudopneumoniae,Streptococcus pseudopneumoniae,bacterial,,,SOAR_207965,3,v1,2026-07-20
+Streptococcus pyogenes,Streptococcus pyogenes,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Streptococcus salivarius,Streptococcus salivarius,bacterial,,,SOAR_207965,2,v1,2026-07-20
+Streptococcus sanguinis,Streptococcus sanguinis,bacterial,,,SOAR_207965,1,v1,2026-07-20
+Streptococcus sp,Streptococcus sp,bacterial,,,SOAR_207965,107,v1,2026-07-20
+Unknown,unidentified_pathogen,bacterial,,explicit_unknown_string,SOAR_207965,220,v1,2026-07-20

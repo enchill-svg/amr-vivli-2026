@@ -41,12 +41,14 @@ def gate_cluster_typology(pathogen_type: str, org_drug_gates: pd.DataFrame) -> p
     merged["quality_gate"] = merged["quality_gate"].fillna("withhold")
     merged["gate_reason"] = merged["gate_reason"].fillna("missing_organism_drug_gate")
     merged["typology_rank_ungated"] = merged["typology_rank"]
+    merged["composite_priority_score_ungated"] = merged["composite_priority_score"]
     rankable = merged[merged["quality_gate"] == "pass"].sort_values(
         "composite_priority_score", ascending=False
     )
     merged["typology_rank"] = np.nan
     for i, idx in enumerate(rankable.index, start=1):
         merged.at[idx, "typology_rank"] = i
+    merged.loc[merged["quality_gate"] != "pass", "composite_priority_score"] = np.nan
     merged["methodology"] = (
         str(merged["methodology"].iloc[0]) if len(merged) else ""
     ) + f" {GATE_METHODOLOGY}"
@@ -62,6 +64,8 @@ def gate_country_risk_ranking(pathogen_type: str, country_gates: pd.DataFrame) -
     merged["quality_gate"] = merged["quality_gate"].fillna("withhold")
     merged["gate_reason"] = merged["gate_reason"].fillna("missing_country_gate")
     merged["risk_rank_ungated"] = merged["risk_rank"]
+    merged["composite_risk_score_ungated"] = merged["composite_risk_score"]
+    merged["composite_risk_score_core_ungated"] = merged["composite_risk_score_core"]
     rankable = merged[merged["quality_gate"] == "pass"].sort_values(
         ["composite_risk_score_core", "composite_risk_score", "iso3_country"],
         ascending=[False, False, True],
@@ -69,6 +73,9 @@ def gate_country_risk_ranking(pathogen_type: str, country_gates: pd.DataFrame) -
     merged["risk_rank"] = np.nan
     for i, idx in enumerate(rankable.index, start=1):
         merged.at[idx, "risk_rank"] = i
+    non_pass = merged["quality_gate"] != "pass"
+    merged.loc[non_pass, "composite_risk_score"] = np.nan
+    merged.loc[non_pass, "composite_risk_score_core"] = np.nan
     merged["methodology"] = str(merged["methodology"].iloc[0]) + f" {GATE_METHODOLOGY}"
     merged["version"] = VERSION
     merged["date_added"] = TODAY
@@ -174,15 +181,17 @@ def main() -> None:
     print(f"  gating_comparison: {len(comparison)} summary rows")
 
     gate_checks = [
-        ("cluster_typology_bacterial_gated_v1.csv", bact_typ, "typology_rank"),
-        ("cluster_typology_fungal_gated_v1.csv", fung_typ, "typology_rank"),
-        ("country_risk_ranking_bacterial_gated_v1.csv", bact_risk, "risk_rank"),
-        ("country_risk_ranking_fungal_gated_v1.csv", fung_risk, "risk_rank"),
-        ("intervention_recommendations_ranked_gated_v1.csv", interventions, "priority_rank"),
+        ("cluster_typology_bacterial_gated_v1.csv", bact_typ, "typology_rank", ["composite_priority_score"]),
+        ("cluster_typology_fungal_gated_v1.csv", fung_typ, "typology_rank", ["composite_priority_score"]),
+        ("country_risk_ranking_bacterial_gated_v1.csv", bact_risk, "risk_rank",
+         ["composite_risk_score", "composite_risk_score_core"]),
+        ("country_risk_ranking_fungal_gated_v1.csv", fung_risk, "risk_rank",
+         ["composite_risk_score", "composite_risk_score_core"]),
+        ("intervention_recommendations_ranked_gated_v1.csv", interventions, "priority_rank", []),
     ]
     gate_failures = []
-    for file_name, table, rank_col in gate_checks:
-        report = validate_gated_deliverable(table, name=file_name, rank_col=rank_col)
+    for file_name, table, rank_col, score_cols in gate_checks:
+        report = validate_gated_deliverable(table, name=file_name, rank_col=rank_col, score_cols=score_cols)
         if report["status"] != "PASS":
             gate_failures.append(report)
     if gate_failures:
@@ -191,7 +200,7 @@ def main() -> None:
         failed = True
     else:
         print(f"PASS: all {len(gate_checks)} gated tables carry a fully-populated, "
-              "valid-vocabulary quality_gate and no rank without a pass gate.")
+              "valid-vocabulary quality_gate and no rank or score without a pass gate.")
 
     withhold_typ = int((bact_typ["quality_gate"] == "withhold").sum() + (fung_typ["quality_gate"] == "withhold").sum())
     bounds_typ = int((bact_typ["quality_gate"] == "bounds_only").sum() + (fung_typ["quality_gate"] == "bounds_only").sum())

@@ -611,11 +611,11 @@ Unsupervised clustering on combined static-burden + evolutionary-trajectory feat
 
 | File | Rows (latest run) | Grain |
 |------|-------------------:|-------|
-| `bounds/cluster_bacterial_assignments_v1.csv` | 620 | country × organism × drug |
+| `bounds/cluster_bacterial_assignments_v1.csv` | 640 | country × organism × drug |
 | `bounds/cluster_fungal_assignments_v1.csv` | 1,288 | country × organism × drug |
 | `bounds/cluster_diagnostics_v1.csv` | — | silhouette by k (both pathogen types) |
 
-Selected k (latest run): bacterial k=5, fungal k=4.
+Selected k (latest run): bacterial k=4 (mean silhouette 0.584), fungal k=2 (mean silhouette 0.847).
 
 ---
 
@@ -632,10 +632,13 @@ Merges country-year AMR burden and evolutionary trajectory (from Stages 1–2) w
 |--------|----------|-------|
 | World Bank WDI | `life_expectancy` | 217 Region-filtered countries |
 | World Bank WDI | `health_expenditure_pct_gdp` | `SH.XPD.CHEX.GD.ZS` only |
+| World Bank WDI | `hospital_beds_per_1000` | Bacterial 85/99 rows, fungal 350/413 rows populated |
 | WHO/UNICEF | `hib3_coverage_pct`, `pcvc_coverage_pct` | Bacteria only; WUENIC > OFFICIAL > ADMIN |
-| ESAC-Net | `antimicrobial_consumption_ddd` | **Null throughout** — only metadata exists locally |
+| ESAC-Net | `antimicrobial_consumption_ddd` | Europe only — bacterial 21/99 rows populated; fungal null throughout |
+| GBD 2021 | `gbd_sdi` | Bacterial 99/99 rows, fungal 385/413 rows populated |
+| GBD 2021 | `gbd_lri_surveillance_pathogen_incidence` | Joined for audit only, not used in any regression or ranking model; bacterial 26/99 rows, fungal 84/413 rows populated |
 
-GBD SDI and GBD 2021 LRI are **not** joined (scope flags in plan — not user-approved). Fungal burden uses ECV-tier WT/NWT rates to pair with ECV-based distance. `n_isolates_in_stratum` is deduplicated (summed once per organism-site stratum, not per drug row). Trajectory covariate is `mean_evolutionary_fitness_slope` (Stage 2 fitness slope — same definition as Stage 3 clustering).
+Fungal burden uses ECV-tier WT/NWT rates to pair with ECV-based distance. `n_isolates_in_stratum` is deduplicated (summed once per organism-site stratum, not per drug row). Trajectory covariate is `mean_evolutionary_fitness_slope` (Stage 2 fitness slope — same definition as Stage 3 clustering).
 
 | File | Rows (latest run) |
 |------|-------------------:|
@@ -651,14 +654,14 @@ cd preprocessing_pipeline
 python src/step15_association.py
 ```
 
-Pooled country-year OLS of life expectancy on burden, `mean_evolutionary_fitness_slope`, health expenditure, and (bacteria only) Hib3 + PCVC coverage, with year as a control. Consumption omitted (no numeric series). HC1 robust standard errors. **Read as suggestive association only** — Justice Section 8; no causal attribution.
+Pooled country-year OLS of life expectancy on burden, `mean_evolutionary_fitness_slope`, health expenditure, hospital beds, GBD SDI, and (bacteria only) Hib3 + PCVC coverage (+ ESAC-Net consumption where non-null), with year as a control. Cluster-robust standard errors, clustered by `iso3_country`, to correct for within-country serial correlation in this country-year panel (HC1 alone materially understates the SEs on `health_expenditure_pct_gdp` and `hospital_beds_per_1000` — both look significant under HC1 and are not distinguishable from zero once clustered; `gbd_sdi` stays significant under either method). **Read as suggestive association only** — Justice Section 8; no causal attribution.
 
 | File | Contents |
 |------|----------|
-| `bounds/association_ols_coefficients_v1.csv` | Term-level coefficients, robust SEs, p-values |
+| `bounds/association_ols_coefficients_v1.csv` | Term-level coefficients, cluster-robust SEs, p-values |
 | `bounds/association_model_metadata_v1.csv` | n, R², limitation text |
 
-Latest complete-case n (post-audit fix): bacterial 67, fungal 291.
+Latest complete-case n (primary spec): bacterial 16 (5 countries — flagged `small_sample_not_for_causal_claims`, R² > 0.99 overfitting signature), fungal 269 (36 countries). Sensitivity variants in `bounds/association_sensitivity_manifest_v1.csv` relax consumption/vaccination inclusion to reach bacterial n=57 (19 countries, no consumption) or n=21 (7 countries, no vaccination).
 
 ---
 

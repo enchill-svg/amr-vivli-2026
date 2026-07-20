@@ -21,11 +21,37 @@ BETA_LACTAMASE_BOUNDS = BOUNDS / "beta_lactamase_bounds_v1.csv"
 VERSION = "v1"
 TODAY = dt.date.today().isoformat()
 
+# The shared crosswalk was built for the SOAR/SENTRY cohorts and doesn't cover
+# every ATLAS-vocabulary country spelling, dropping real SSA isolates from the
+# ATLAS_Kp_SSA stratum with no warning. Mirrors _section6_external.py's
+# GBD_LOCATION_ALIASES pattern.
+ATLAS_COUNTRY_ALIASES = {
+    "cameroon": "CMR",
+    "ivory coast": "CIV",
+    "uganda": "UGA",
+    "malawi": "MWI",
+    "namibia": "NAM",
+    "mauritius": "MUS",
+}
+
+
+def _build_country_lookup(crosswalk: pd.DataFrame) -> dict[str, str]:
+    lookup: dict[str, str] = {}
+    for iso3, canonical, raw in zip(
+        crosswalk["iso3"].astype(str),
+        crosswalk["canonical_name"].astype(str),
+        crosswalk["raw_string"].astype(str),
+    ):
+        lookup[canonical.lower().strip()] = iso3
+        lookup[raw.lower().strip()] = iso3
+    lookup.update(ATLAS_COUNTRY_ALIASES)
+    return lookup
+
 
 def _country_to_iso3(country: str, lookup: dict[str, str]) -> str:
     if pd.isna(country):
         return "UNMAPPED"
-    return lookup.get(str(country).strip(), "UNMAPPED")
+    return lookup.get(str(country).strip().lower(), "UNMAPPED")
 
 
 def atlas_kp_bounds(kp: pd.DataFrame, country_lookup: dict[str, str]) -> list[dict]:
@@ -87,7 +113,7 @@ def main():
 
     kp = pd.read_csv(ATLAS_KP_CLEAN)
     cw = pd.read_csv(COUNTRY_CROSSWALK)
-    country_lookup = dict(zip(cw["raw_string"], cw["iso3"]))
+    country_lookup = _build_country_lookup(cw)
 
     rows = atlas_kp_bounds(kp, country_lookup) + soar_beta_lactamase_unified()
     out = pd.DataFrame(rows)
