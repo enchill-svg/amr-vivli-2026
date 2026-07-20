@@ -20,7 +20,9 @@ const severityColor = (severity: string) =>
       ? "#ff8a3d"
       : severity === "moderate"
         ? "#f5c451"
-        : "#3ee6a8";
+        : severity === "insufficient evidence"
+          ? "var(--muted-foreground)"
+          : "#3ee6a8";
 
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
@@ -31,15 +33,22 @@ export function NotificationBell() {
     queryFn: async (): Promise<Alert[]> => {
       const rows = await getLiveCountryTrends("all");
       return rows
-        .filter((row) => row.riskScore >= 75 || row.trendLabel === "surging")
-        .sort((a, b) => b.riskScore - a.riskScore)
+        .filter((row) => (row.riskScore ?? 0) >= 75 || row.trendLabel === "surging")
+        .sort((a, b) => (b.riskScore ?? 0) - (a.riskScore ?? 0))
         .slice(0, 10)
         .map((row) => ({
           id: `${row.iso3}-${row.pathogenType}`,
           title: `${row.trendLabel.toUpperCase()} AMR signal`,
           country: row.country,
           signal: `${row.dominantOrganism} · ${row.dominantDrug}`,
-          severity: row.riskScore >= 88 ? "critical" : row.riskScore >= 78 ? "high" : "moderate",
+          severity:
+            row.riskScore == null
+              ? "insufficient evidence"
+              : row.riskScore >= 88
+                ? "critical"
+                : row.riskScore >= 78
+                  ? "high"
+                  : "moderate",
           detected_at: `${row.latestYear}-12-31T00:00:00Z`,
         }));
     },

@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Bot, Send, Sparkles, User as UserIcon, X } from "lucide-react";
+import { toast } from "sonner";
 
 export function FloatingCopilot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
+    onError: (err) => toast.error(err instanceof Error ? err.message : "AI assistant unavailable"),
   });
   const busy = status === "submitted" || status === "streaming";
 
@@ -93,6 +95,11 @@ export function FloatingCopilot() {
             {busy && (
               <div className="animate-pulse pl-8 text-xs text-muted-foreground">
                 Analyzing AMR evidence…
+              </div>
+            )}
+            {error && (
+              <div className="rounded-md border border-[color:var(--status-alert)]/40 bg-[color:var(--status-alert)]/10 px-3 py-2 text-xs text-[color:var(--status-alert)]">
+                {error.message || "AI assistant unavailable. Please try again."}
               </div>
             )}
           </div>

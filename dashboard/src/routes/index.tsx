@@ -30,10 +30,12 @@ import { AMRHeroBanner } from "@/components/amr/AMRHeroBanner";
 import { ClientAMRWorldMap } from "@/components/amr/ClientAMRWorldMap";
 import { RiskPill, StatCard, TinyBar } from "@/components/amr/AMRDataCards";
 import {
+  formatLifeGain,
   getExecutiveKpis,
   getLiveCountryTrends,
   getPathogenSignals,
   getResistanceSeries,
+  lifeGainDisplay,
 } from "@/lib/amr-data.functions";
 import { getFundingGapRows } from "@/lib/amr-data.functions";
 
@@ -76,7 +78,14 @@ function Index() {
     queryFn: getFundingGapRows,
   });
 
-  const highRisk = [...countries].sort((a, b) => b.riskScore - a.riskScore).slice(0, 6);
+  const highRisk = [...countries]
+    .sort((a, b) => {
+      if (a.riskScore == null && b.riskScore == null) return 0;
+      if (a.riskScore == null) return 1;
+      if (b.riskScore == null) return -1;
+      return b.riskScore - a.riskScore;
+    })
+    .slice(0, 6);
   const topSignals = [...signals]
     .sort((a, b) => b.evolutionaryFitness - a.evolutionaryFitness)
     .slice(0, 5);
@@ -85,7 +94,8 @@ function Index() {
     highRisk: 0,
     rising: 0,
     avgResistance: 0,
-    avgLifeGain: 0,
+    avgLifeGain: null as number | null,
+    lifeGainSampleCount: 0,
     fundingGap: 0,
     isolates: 0,
   };
@@ -126,8 +136,12 @@ function Index() {
         <StatCard
           icon={HeartPulse}
           label="Predicted gain"
-          value={`+${summary.avgLifeGain.toFixed(2)}y`}
-          sub="Average intervention gain"
+          value={formatLifeGain(summary.avgLifeGain)}
+          sub={
+            summary.avgLifeGain == null
+              ? lifeGainDisplay(null, summary.lifeGainSampleCount)
+              : "Average intervention gain"
+          }
           color="var(--status-ok)"
         />
         <StatCard
@@ -173,8 +187,14 @@ function Index() {
                   </div>
                   <div className="mt-2">
                     <TinyBar
-                      value={row.riskScore}
-                      color={row.riskScore > 85 ? "var(--status-alert)" : "var(--status-warn)"}
+                      value={row.riskScore ?? 0}
+                      color={
+                        row.riskScore == null
+                          ? "var(--muted-foreground)"
+                          : row.riskScore > 85
+                            ? "var(--status-alert)"
+                            : "var(--status-warn)"
+                      }
                     />
                   </div>
                   <div className="mt-2 flex items-center justify-between text-[10px] text-muted-foreground">

@@ -48,7 +48,18 @@ export function TinyBar({ value, color = "var(--accent)" }: { value: number; col
   );
 }
 
-export function RiskPill({ value }: { value: number }) {
+export function RiskPill({ value }: { value: number | null }) {
+  if (value == null) {
+    return (
+      <span
+        className="rounded-full px-2 py-0.5 text-[10px] font-mono text-muted-foreground"
+        style={{ background: "color-mix(in srgb, var(--muted-foreground) 12%, transparent)" }}
+        title="Withheld or bounds-only — insufficient evidence for a scored ranking"
+      >
+        N/A
+      </span>
+    );
+  }
   const color =
     value >= 85 ? "var(--status-alert)" : value >= 70 ? "var(--status-warn)" : "var(--status-ok)";
   return (

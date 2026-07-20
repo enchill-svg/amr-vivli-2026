@@ -11,6 +11,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import { AuthGate } from "@/components/vt/AuthGate";
 import { InsightPanel } from "@/components/vt/KpiStrip";
 import { AnomalyExplanationCard, DEMO_ANOMALIES } from "@/components/vt/AnomalyExplanation";
@@ -190,6 +191,7 @@ function EnvironmentPage() {
         },
       ]}
     >
+      <LegacyDemoBanner detail="Site counts, risk scores, anomalies, and signal charts below are randomly generated sample data." />
       <AuthGate message="Sign in to view environmental surveillance signals.">
         <div className="grid lg:grid-cols-3 gap-4">
           <GlassCard

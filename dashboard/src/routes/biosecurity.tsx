@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldAlert } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 
 export const Route = createFileRoute("/biosecurity")({
   component: BioPage,
@@ -63,6 +64,7 @@ function BioPage() {
         { label: "Response readiness", value: "73%", color: "var(--status-ok)" },
       ]}
     >
+      <LegacyDemoBanner detail="The threat board and KPI figures above are hardcoded sample values." />
       <GlassCard title="Active threat board">
         <ul className="space-y-2">
           {threats.map((t) => (

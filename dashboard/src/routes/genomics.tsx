@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { PageShell, SectionCard } from "@/components/vt/PageShell";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import { AuthGate } from "@/components/vt/AuthGate";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -41,6 +42,7 @@ function GenomicsPage() {
   return (
     <PageShell>
       <div className="space-y-5">
+        <LegacyDemoBanner detail="The NCBI search below queries the live NCBI Entrez API; the mutation/quality charts and insight panel are illustrative." />
         <header className="flex items-center gap-3">
           <Dna className="w-6 h-6 text-[color:var(--accent)]" />
           <div>

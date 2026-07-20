@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Moon, Sun, Globe2, Code2, Sparkles } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { SearchBar } from "./SearchBar";
+import { NotificationBell } from "./NotificationBell";
 
 export function AppHeader() {
   const { theme, toggle } = useTheme();
@@ -40,6 +41,7 @@ export function AppHeader() {
         >
           <Sparkles className="h-3.5 w-3.5" /> Assistant
         </Link>
+        <NotificationBell />
         <button
           onClick={toggle}
           className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary/40 hover:text-foreground"

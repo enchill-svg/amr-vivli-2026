@@ -70,8 +70,56 @@ function num(v: unknown, fallback = 0): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
+function numOrNull(v: unknown): number | null {
+  if (v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
 function str(v: unknown, fallback = ""): string {
   return v == null ? fallback : String(v);
+}
+
+/** Minimum measured, quality_gate==pass intervention samples before a pathogen
+ * type may show a predicted life-gain average. Below this, gain stays null. */
+export const MIN_INTERVENTION_SAMPLES = 3;
+
+export type InterventionGainSummary = {
+  gain: number | null;
+  sampleCount: number;
+};
+
+/**
+ * Per-pathogen average of estimated_le_gain_years from rows that clear both:
+ * (1) quality_gate === "pass", and (2) a finite measured gain.
+ * Fewer than MIN_INTERVENTION_SAMPLES → gain null (never a fabricated number).
+ */
+export function getInterventionGainSummary(
+  bundle: DashboardBundle | null | undefined,
+): Map<string, InterventionGainSummary> {
+  const out = new Map<string, InterventionGainSummary>();
+  if (!bundle) return out;
+
+  const sampleCount = new Map<string, number>();
+  const gainSum = new Map<string, number>();
+  for (const row of bundle.interventions) {
+    if (str(row.quality_gate) !== "pass") continue;
+    if (row.estimated_le_gain_years == null) continue;
+    const gain = num(row.estimated_le_gain_years, NaN);
+    if (!Number.isFinite(gain)) continue;
+    const pathogen = str(row.pathogen_type);
+    if (!pathogen) continue;
+    sampleCount.set(pathogen, (sampleCount.get(pathogen) ?? 0) + 1);
+    gainSum.set(pathogen, (gainSum.get(pathogen) ?? 0) + gain);
+  }
+
+  for (const [pathogen, count] of sampleCount) {
+    out.set(pathogen, {
+      sampleCount: count,
+      gain: count >= MIN_INTERVENTION_SAMPLES ? gainSum.get(pathogen)! / count : null,
+    });
+  }
+  return out;
 }
 
 export async function mapCountryTrends(
@@ -107,31 +155,7 @@ export async function mapCountryTrends(
     );
   }
 
-  // estimated_le_gain_years is pathogen-type-level only (no country/organism
-  // key), and today's published data has just 2 non-null bacterial samples
-  // (one negative) and 0 fungal samples. Broadcasting a 1-2 sample mean
-  // identically across every country would read as spurious precision, so
-  // require at least 3 measured samples per pathogen type before showing a
-  // number; below that, predictedLifeGain stays null ("not enough data yet")
-  // rather than fabricated or overclaimed.
-  const MIN_INTERVENTION_SAMPLES = 3;
-  const interventionGainSampleCount = new Map<string, number>();
-  const interventionGainSum = new Map<string, number>();
-  for (const row of bundle.interventions) {
-    if (row.estimated_le_gain_years == null) continue;
-    const gain = num(row.estimated_le_gain_years, NaN);
-    if (!Number.isFinite(gain)) continue;
-    const pathogen = str(row.pathogen_type);
-    interventionGainSampleCount.set(pathogen, (interventionGainSampleCount.get(pathogen) ?? 0) + 1);
-    interventionGainSum.set(pathogen, (interventionGainSum.get(pathogen) ?? 0) + gain);
-  }
-  const interventionGainByPathogen = new Map<string, number | null>();
-  for (const [pathogen, count] of interventionGainSampleCount) {
-    interventionGainByPathogen.set(
-      pathogen,
-      count >= MIN_INTERVENTION_SAMPLES ? interventionGainSum.get(pathogen)! / count : null,
-    );
-  }
+  const interventionGainByPathogen = getInterventionGainSummary(bundle);
 
   const rows: AMRCountryTrend[] = [];
   const tables: Array<{ pathogen: "bacterial" | "fungal"; data: Record<string, unknown>[] }> = [
@@ -167,7 +191,7 @@ export async function mapCountryTrends(
         longitude: geo.longitude,
         pathogenType: pathogen,
         latestYear: new Date().getFullYear() - 1,
-        riskScore: num(row.composite_risk_score_core ?? row.composite_risk_score),
+        riskScore: numOrNull(row.composite_risk_score_core ?? row.composite_risk_score),
         earlyWarningScore: trajectory,
         resistanceRate: Math.min(1, Math.max(0, burden)),
         trendLabel,
@@ -175,8 +199,8 @@ export async function mapCountryTrends(
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch,
-        predictedLifeGain: interventionGainByPathogen.get(pathogen) ?? null,
-        predictedLifeGainSampleCount: interventionGainSampleCount.get(pathogen) ?? 0,
+        predictedLifeGain: interventionGainByPathogen.get(pathogen)?.gain ?? null,
+        predictedLifeGainSampleCount: interventionGainByPathogen.get(pathogen)?.sampleCount ?? 0,
         recommendedIntervention:
           gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
         confidence: dataQuality,

@@ -48,6 +48,16 @@ function severityColor(value: number) {
   return "#3ee6a8";
 }
 
+/** Withheld/bounds-only rows carry a null score — render as neutral, not a
+ * fabricated "safe" color. */
+function severityColorMaybe(value: number | null) {
+  return value == null ? "var(--muted-foreground)" : severityColor(value);
+}
+
+function scoreDisplay(value: number | null) {
+  return value == null ? "N/A" : value.toFixed(0);
+}
+
 /** Inverted scale — unlike the other (higher-is-worse) metrics, a low life
  * expectancy is the hotspot. */
 function lifeExpectancyColor(value: number) {
@@ -220,7 +230,7 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
   const rising = data.filter(
     (row) => row.trendLabel === "surging" || row.trendLabel === "rising",
   ).length;
-  const highRisk = data.filter((row) => row.riskScore >= 80).length;
+  const highRisk = data.filter((row) => row.riskScore != null && row.riskScore >= 80).length;
   const heatPoints = data
     .map((row) => {
       const value = metricValue(row, metric, yearCtx);
@@ -262,7 +272,7 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
           <MapKpi
             icon={Globe2}
             label="Countries"
-            value={String(data.length)}
+            value={String(new Set(data.map((row) => row.iso3)).size)}
             color="var(--accent)"
           />
           <MapKpi
@@ -349,8 +359,8 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                 <div
                   className="grid h-7 w-7 place-items-center rounded-md font-mono text-xs"
                   style={{
-                    background: `${severityColor(row.riskScore)}22`,
-                    color: severityColor(row.riskScore),
+                    background: `${severityColorMaybe(row.riskScore)}22`,
+                    color: severityColorMaybe(row.riskScore),
                   }}
                 >
                   {index + 1}
@@ -364,9 +374,9 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                 <div className="text-right">
                   <div
                     className="font-mono text-xs"
-                    style={{ color: severityColor(row.riskScore) }}
+                    style={{ color: severityColorMaybe(row.riskScore) }}
                   >
-                    {row.riskScore}
+                    {scoreDisplay(row.riskScore)}
                   </div>
                   <div className="flex items-center justify-end gap-1 text-[10px] text-muted-foreground">
                     {trendIcon(row.trendLabel)} {row.trendLabel}
@@ -462,7 +472,7 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                   <div className="font-medium">
                     {row.country} · {row.pathogenType}
                   </div>
-                  <div>Risk score: {row.riskScore}</div>
+                  <div>Risk score: {scoreDisplay(row.riskScore)}</div>
                   <div>Resistance: {formatPercent(row.resistanceRate)}</div>
                   {gated && (
                     <div
@@ -491,7 +501,7 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                     {row.dominantOrganism} · {row.dominantDrug}
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2">
-                    <PopupStat label="Risk" value={row.riskScore.toFixed(0)} />
+                    <PopupStat label="Risk" value={scoreDisplay(row.riskScore)} />
                     <PopupStat label="Warning" value={row.earlyWarningScore.toFixed(0)} />
                     <PopupStat label="Resistance" value={formatPercent(row.resistanceRate)} />
                     <PopupStat label="Life exp." value={`${row.lifeExpectancy.toFixed(1)}y`} />
@@ -539,8 +549,8 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
             <MetricTile
               icon={Crosshair}
               label="Risk score"
-              value={selected.riskScore.toFixed(0)}
-              color={severityColor(selected.riskScore)}
+              value={scoreDisplay(selected.riskScore)}
+              color={severityColorMaybe(selected.riskScore)}
             />
             <MetricTile
               icon={Brain}

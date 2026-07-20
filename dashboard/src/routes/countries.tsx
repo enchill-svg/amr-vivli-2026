@@ -40,7 +40,12 @@ function CountriesPage() {
             .toLowerCase()
             .includes(query.toLowerCase()),
         )
-        .sort((a, b) => b.riskScore - a.riskScore),
+        .sort((a, b) => {
+          if (a.riskScore == null && b.riskScore == null) return 0;
+          if (a.riskScore == null) return 1;
+          if (b.riskScore == null) return -1;
+          return b.riskScore - a.riskScore;
+        }),
     [data, query],
   );
   const top = rows[0];
@@ -49,6 +54,7 @@ function CountriesPage() {
     risk: r.riskScore,
     gain: r.predictedLifeGain == null ? 0 : Number((r.predictedLifeGain * 100).toFixed(0)),
   }));
+  const scoredRows = rows.filter((r) => r.riskScore != null);
   const knownGainRows = rows.filter((r) => r.predictedLifeGain != null);
   const avgGain = knownGainRows.length
     ? knownGainRows.reduce((s, r) => s + (r.predictedLifeGain as number), 0) / knownGainRows.length
@@ -74,7 +80,11 @@ function CountriesPage() {
       title="Compare national AMR risk and life-expectancy impact"
       subtitle="Country-level analytical workspace for WHO-style ranking, prioritization, evidence quality, and intervention targeting."
       kpis={[
-        { label: "Countries", value: String(rows.length), color: "var(--accent)" },
+        {
+          label: "Countries",
+          value: String(new Set(rows.map((r) => r.iso3)).size),
+          color: "var(--accent)",
+        },
         {
           label: "Highest risk",
           value: top?.iso3 ?? "—",
@@ -83,8 +93,10 @@ function CountriesPage() {
         },
         {
           label: "Mean risk",
-          value: rows.length
-            ? Math.round(rows.reduce((s, r) => s + r.riskScore, 0) / rows.length).toString()
+          value: scoredRows.length
+            ? Math.round(
+                scoredRows.reduce((s, r) => s + (r.riskScore as number), 0) / scoredRows.length,
+              ).toString()
             : "—",
           color: "var(--status-warn)",
         },

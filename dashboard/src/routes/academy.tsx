@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { GraduationCap, BookOpen, Beaker, Cpu, Check } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/academy")({
@@ -88,6 +89,7 @@ function AcademyPage() {
         { label: "Partner unis", value: "23", color: "var(--status-ok)" },
       ]}
     >
+      <LegacyDemoBanner detail="Enrolment is recorded locally in this session only; learner/certification counts below are illustrative." />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
         {tracks.map((t) => (
           <GlassCard key={t.title}>

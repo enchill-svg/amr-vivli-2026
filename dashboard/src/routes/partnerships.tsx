@@ -6,55 +6,63 @@ export const Route = createFileRoute("/partnerships")({
   component: PartnersPage,
   head: () => ({
     meta: [
-      { title: "Funding & Partnerships — AMR Life Expectancy Intelligence" },
+      { title: "Data sources & acknowledgments — AMR Life Expectancy Intelligence" },
       {
         name: "description",
-        content: "Institutional partners, funders, and consortia powering the network.",
+        content:
+          "Surveillance and reference inputs used by the Vivli 2026 AMR Surveillance Data Challenge submission.",
       },
     ],
   }),
 });
 
-const partners = [
-  "Africa CDC",
-  "WHO AFRO",
-  "Wellcome Trust",
-  "Gates Foundation",
-  "EDCTP3",
-  "PEPFAR",
-  "ANDI",
-  "GISAID",
-  "Institut Pasteur",
-  "ILRI",
-  "KEMRI-Wellcome",
-  "NICD South Africa",
+const DATA_SOURCES = [
+  "ATLAS",
+  "PLEA",
+  "SOAR",
+  "SENTRY",
+  "GBD 2021 / 2023",
+  "World Bank WDI",
+  "WHO/UNICEF WUENIC",
+  "ESAC-Net",
+  "EUCAST",
+  "CLSI",
+  "Global AMR R&D Hub",
 ];
 
 function PartnersPage() {
   return (
     <CommandPage
       icon={Handshake}
-      eyebrow="Network"
-      title="Funding & Partnerships"
-      subtitle="Institutions, agencies, and consortia that sustain pan-African genomic surveillance."
+      eyebrow="Acknowledgments"
+      title="Data sources & acknowledgments"
+      subtitle="This submission does not claim institutional partnerships beyond the data providers named below. Every dashboard figure traces to these inputs."
       kpis={[
-        { label: "Partner institutions", value: String(partners.length), color: "var(--accent)" },
-        { label: "Active grants", value: "23", color: "var(--status-info)" },
-        { label: "Funding pipeline", value: "$48M", color: "var(--status-ok)" },
-        { label: "MoUs in review", value: "7", color: "var(--status-warn)" },
+        { label: "Named data sources", value: String(DATA_SOURCES.length), color: "var(--accent)" },
+        { label: "Challenge", value: "Vivli 2026", color: "var(--status-info)" },
+        { label: "Pipeline", value: "Evidence-gated", color: "var(--status-ok)" },
+        { label: "Public API", value: "None (static)", color: "var(--status-warn)" },
       ]}
     >
-      <GlassCard title="Partners">
+      <GlassCard title="Surveillance & reference inputs">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {partners.map((p) => (
+          {DATA_SOURCES.map((p) => (
             <div
               key={p}
-              className="rounded-lg border border-border/60 bg-secondary/20 p-4 text-sm text-center hover:border-[color:var(--accent)]/60"
+              className="rounded-lg border border-border/60 bg-secondary/20 p-4 text-sm text-center"
             >
               {p}
             </div>
           ))}
         </div>
+      </GlassCard>
+      <GlassCard title="Challenge context">
+        <p className="text-sm text-foreground/85 leading-relaxed">
+          Built for the Vivli 2026 AMR Surveillance Data Challenge. Access to ATLAS, PLEA, SOAR, and
+          SENTRY isolate-level data was provided through Vivli under challenge terms. External
+          covariates (WDI, WUENIC, GBD SDI, ESAC-Net, Global AMR R&D Hub) are joined from public
+          releases cited in the pipeline README.
+        </p>
       </GlassCard>
     </CommandPage>
   );

@@ -31,6 +31,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { PageShell } from "@/components/vt/PageShell";
 import { AuthGate } from "@/components/vt/AuthGate";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { savePhyloSnapshot } from "@/components/vt/MapSelection";
@@ -308,8 +309,10 @@ function PhylogenyPage() {
     messages: copilotMessages,
     sendMessage: sendCopilotMessage,
     status: copilotStatus,
+    error: copilotError,
   } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
+    onError: (err) => toast.error(err instanceof Error ? err.message : "AI copilot unavailable"),
   });
   const copilotBusy = copilotStatus === "submitted" || copilotStatus === "streaming";
   const [pubStyle, setPubStyle] = useState<
@@ -536,6 +539,7 @@ function PhylogenyPage() {
   return (
     <PageShell>
       <div className="space-y-4">
+        <LegacyDemoBanner detail="The default tree is a hand-authored Newick demo; upload your own .nwk to explore the renderer. No AMR isolate phylogeny is inferred from this submission's pipeline." />
         <header className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
             <div className="rounded-lg p-2 bg-gradient-to-br from-[color:var(--accent)]/30 to-[color:var(--accent)]/5">
@@ -694,6 +698,11 @@ function PhylogenyPage() {
                   ))}
                   {copilotBusy && (
                     <div className="text-[11px] text-muted-foreground animate-pulse">Thinking…</div>
+                  )}
+                  {copilotError && (
+                    <div className="text-[11px] rounded-md border border-[color:var(--status-alert)]/40 bg-[color:var(--status-alert)]/10 p-1.5 text-[color:var(--status-alert)]">
+                      {copilotError.message || "AI copilot unavailable. Please try again."}
+                    </div>
                   )}
                 </div>
                 <div className="flex gap-1">

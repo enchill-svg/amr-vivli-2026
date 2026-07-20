@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Fragment } from "react";
 import { Atom, ShieldAlert } from "lucide-react";
 import { PageShell, SectionCard } from "@/components/vt/PageShell";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import { AuthGate } from "@/components/vt/AuthGate";
 import { KpiStrip, InsightPanel } from "@/components/vt/KpiStrip";
 import { supabase } from "@/integrations/supabase/client";
@@ -76,6 +77,7 @@ function VariantsPage() {
   return (
     <PageShell>
       <div className="space-y-5">
+        <LegacyDemoBanner detail="Variant trend, radar, and mutation-heatmap figures below are randomly generated sample data." />
         <header className="flex items-center gap-3">
           <Atom className="w-6 h-6 text-[color:var(--accent)]" />
           <div>

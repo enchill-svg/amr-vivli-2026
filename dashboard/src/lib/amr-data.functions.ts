@@ -6,6 +6,7 @@ import {
   type PathogenType,
 } from "./amr-demo-data";
 import {
+  getInterventionGainSummary,
   isUsingPublishedData,
   loadDashboardBundle,
   mapClusterRows,
@@ -203,7 +204,7 @@ export async function getPathogenComparisonStats(
 export async function getExecutiveKpis() {
   const countries = await getLiveCountryTrends("all");
   const bundle = await loadDashboardBundle();
-  const highRisk = countries.filter((c) => c.riskScore >= 80).length;
+  const highRisk = countries.filter((c) => c.riskScore != null && c.riskScore >= 80).length;
   const rising = countries.filter(
     (c) => c.trendLabel === "rising" || c.trendLabel === "surging",
   ).length;
@@ -211,17 +212,31 @@ export async function getExecutiveKpis() {
     countries.length > 0
       ? countries.reduce((s, c) => s + c.resistanceRate, 0) / countries.length
       : 0;
+  const scoredRiskScores = countries.map((c) => c.riskScore).filter((v): v is number => v != null);
   const avgRiskScore =
-    countries.length > 0 ? countries.reduce((s, c) => s + c.riskScore, 0) / countries.length : 0;
+    scoredRiskScores.length > 0
+      ? scoredRiskScores.reduce((s, n) => s + n, 0) / scoredRiskScores.length
+      : 0;
   const funding = await mapFundingRows();
   const maxGap = funding.length ? Math.max(...funding.map((f) => Math.abs(f.gap))) : 0;
   const summary = bundle?.pipelineSummary;
   const isolates = summary?.master_isolate_count ?? summary?.raw_isolate_count ?? (bundle ? 0 : 0);
-  const measuredGains = (bundle?.interventions ?? [])
-    .map((row) => Number(row.estimated_le_gain_years))
-    .filter((n) => Number.isFinite(n) && n > 0);
+
+  // Same gate as mapCountryTrends: quality_gate==pass + MIN_INTERVENTION_SAMPLES.
+  // Never average withheld/positive-only rows into a homepage "Predicted gain".
+  const gainByPathogen = getInterventionGainSummary(bundle);
+  const clearedGains: number[] = [];
+  let lifeGainSampleCount = 0;
+  for (const summaryRow of gainByPathogen.values()) {
+    if (summaryRow.gain == null) continue;
+    clearedGains.push(summaryRow.gain);
+    lifeGainSampleCount += summaryRow.sampleCount;
+  }
   const avgLifeGain =
-    measuredGains.length > 0 ? measuredGains.reduce((s, n) => s + n, 0) / measuredGains.length : 0;
+    clearedGains.length > 0 ? clearedGains.reduce((s, n) => s + n, 0) / clearedGains.length : null;
+  if (avgLifeGain == null) {
+    lifeGainSampleCount = [...gainByPathogen.values()].reduce((s, r) => s + r.sampleCount, 0);
+  }
 
   return {
     countries: new Set(countries.map((c) => c.iso3)).size,
@@ -230,6 +245,7 @@ export async function getExecutiveKpis() {
     avgResistance,
     avgRiskScore,
     avgLifeGain,
+    lifeGainSampleCount,
     fundingGap: Math.round(maxGap * 100),
     isolates,
     dataSource: isUsingPublishedData() ? "published" : "demo",

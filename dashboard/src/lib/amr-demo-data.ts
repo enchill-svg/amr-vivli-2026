@@ -9,7 +9,7 @@ export type AMRCountryTrend = {
   longitude: number;
   pathogenType: "bacterial" | "fungal";
   latestYear: number;
-  riskScore: number;
+  riskScore: number | null;
   earlyWarningScore: number;
   resistanceRate: number;
   trendLabel: TrendLabel;

@@ -151,8 +151,8 @@ function LoginPage() {
         </div>
 
         <div className="relative text-[11px] text-white/40">
-          © {new Date().getFullYear()} AMR Life Expectancy Intelligence · Africa CDC · WHO AFRO
-          partners
+          © {new Date().getFullYear()} AMR Life Expectancy Intelligence · Vivli 2026 AMR
+          Surveillance Data Challenge
         </div>
       </div>
 

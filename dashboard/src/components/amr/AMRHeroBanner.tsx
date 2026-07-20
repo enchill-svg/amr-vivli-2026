@@ -24,7 +24,8 @@ export function AMRHeroBanner() {
     rising: 0,
     avgResistance: 0,
     avgRiskScore: 0,
-    avgLifeGain: 0,
+    avgLifeGain: null as number | null,
+    lifeGainSampleCount: 0,
     fundingGap: 0,
     isolates: 0,
   };
@@ -137,8 +138,10 @@ export function AMRHeroBanner() {
             Equal-weight average of resistance burden, evolutionary trajectory, and health-system
             capacity percentiles, across all countries.
           </p>
-          <div className="mt-4 rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs">
-            <b>Best current lever:</b> diagnostics + stewardship in high-trajectory countries.
+          <div className="mt-4 rounded-xl border border-border/60 bg-secondary/20 p-3 text-xs text-muted-foreground">
+            <b className="text-foreground">Illustrative framing:</b> diagnostics and stewardship
+            remain the usual first levers in high-trajectory settings — not a ranked claim from this
+            run&apos;s gated intervention table (all measured LE scenarios are currently withheld).
           </div>
         </div>
       </div>
