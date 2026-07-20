@@ -225,7 +225,17 @@ export async function mapPathogenSignals(): Promise<PathogenSignal[]> {
 
   const signals: PathogenSignal[] = [];
   for (const table of [bundle.clusterTypologyBacterial, bundle.clusterTypologyFungal]) {
-    for (const row of table.slice(0, 80)) {
+    // Non-pass rows carry a null composite_priority_score (A1 gate fix), so
+    // this sort surfaces every available pass-gate row before any
+    // bounds_only/withhold row backfills the remaining slots — a table that
+    // isn't already priority-sorted upstream (e.g. fungal) can't silently
+    // flood the top-80 slice with low-sample, unlabeled signals.
+    const sorted = [...table].sort((a, b) => {
+      const scoreA = numOrNull(a.composite_priority_score) ?? -Infinity;
+      const scoreB = numOrNull(b.composite_priority_score) ?? -Infinity;
+      return scoreB - scoreA;
+    });
+    for (const row of sorted.slice(0, 80)) {
       const iso = str(row.iso3_country);
       signals.push({
         id: `${row.pathogen_type}-${iso}-${row.canonical_organism}-${row.canonical_drug}`,

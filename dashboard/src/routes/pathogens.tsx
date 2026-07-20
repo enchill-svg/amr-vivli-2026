@@ -129,38 +129,54 @@ function ResistancePage() {
         subtitle="Every signal carries a recommendation and confidence score."
       >
         <div className="grid gap-3 lg:grid-cols-2">
-          {rows.map((r) => (
-            <div key={r.id} className="rounded-xl border border-border/60 bg-card/45 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-medium">{r.organism}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {r.country} · {r.drug} · {r.pathogenType}
+          {rows.map((r) => {
+            const withheld = r.qualityGate === "withhold";
+            const gated = withheld || r.qualityGate === "bounds_only";
+            const gateColor = withheld ? "var(--status-alert)" : "var(--status-warn)";
+            const gateLabel = withheld ? "Withheld" : "Bounds only";
+            return (
+              <div key={r.id} className="rounded-xl border border-border/60 bg-card/45 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm font-medium">{r.organism}</div>
+                      {gated && (
+                        <span
+                          className="rounded-full border px-2 py-0.5 text-[9px] font-medium uppercase tracking-wide"
+                          style={{ borderColor: `${gateColor}80`, color: gateColor }}
+                        >
+                          {gateLabel}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {r.country} · {r.drug} · {r.pathogenType}
+                    </div>
+                  </div>
+                  <div className="text-right font-mono text-sm text-[color:var(--status-alert)]">
+                    {Math.round(r.resistanceRate * 100)}%
                   </div>
                 </div>
-                <div className="text-right font-mono text-sm text-[color:var(--status-alert)]">
-                  {Math.round(r.resistanceRate * 100)}%
+                <div className="mt-3 grid grid-cols-3 gap-3 text-[10px] text-muted-foreground">
+                  <div>
+                    EFS <b className="text-foreground">{r.evolutionaryFitness}</b>
+                  </div>
+                  <div>
+                    MIC shift <b className="text-foreground">{r.micShift.toFixed(1)}</b>
+                  </div>
+                  <div>
+                    Confidence <b className="text-foreground">{Math.round(r.confidence * 100)}%</b>
+                  </div>
                 </div>
+                <div className="mt-2">
+                  <TinyBar value={r.evolutionaryFitness} color="var(--status-warn)" />
+                </div>
+                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                  {r.recommendation}
+                </p>
               </div>
-              <div className="mt-3 grid grid-cols-3 gap-3 text-[10px] text-muted-foreground">
-                <div>
-                  EFS <b className="text-foreground">{r.evolutionaryFitness}</b>
-                </div>
-                <div>
-                  MIC shift <b className="text-foreground">{r.micShift.toFixed(1)}</b>
-                </div>
-                <div>
-                  Confidence <b className="text-foreground">{Math.round(r.confidence * 100)}%</b>
-                </div>
-              </div>
-              <div className="mt-2">
-                <TinyBar value={r.evolutionaryFitness} color="var(--status-warn)" />
-              </div>
-              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                {r.recommendation}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </GlassCard>
     </CommandPage>
