@@ -150,7 +150,25 @@ You can reproduce our tables from `data/published/` and our code without the raw
 
 ## Team
 
-Five member team, 2026 Vivli AMR Surveillance Data Challenge.
+2026 Vivli AMR Surveillance Data Challenge submission team:
+
+| Name | Affiliation | Contact |
+|------|-------------|---------|
+| Erica Akanko | WACCBIP | eakanko15@gmail.com |
+| Yewku Enchill-Yawson | NMIMR | enchillyawson@gmail.com |
+| William Boateng | NMIMR | boatengwilliam72@gmail.com |
+| Justice Ohene Amofa | NMIMR | justiceoheneamofa@gmail.com |
+| Humphrey P. K. Addy | KNUST | addy.p.humphrey@gmail.com |
+
+## Citation
+
+If you reuse this work, please cite:
+
+```
+Akanko, E., Enchill-Yawson, Y., Boateng, W., Ohene Amofa, J., & Addy, H. P. K. (2026).
+AMR, Life Expectancy, and Intervention Impact. 2026 Vivli AMR Surveillance Data Challenge.
+GitHub: https://github.com/enchill-svg/amr-vivli-2026
+```
 
 ## License
 

@@ -1,5 +1,5 @@
 artifact_type,artifact_path,pathogen_type,record_count,notes,version,date_added
-isolate_registry,master/isolate_registry_v1.csv,all,34787,"Justice brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); this build has 7,836 bacterial + 26,922 fungal = 34,787 total after preprocessing exclusions.",v1,2026-07-20
+isolate_registry,master/isolate_registry_v1.csv,all,34787,"Project brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); this build has 7,836 bacterial + 26,922 fungal = 34,758 classified + 29 unclassified (excluded at organism-crosswalk matching, no pathogen_type assigned) = 34,787 total after preprocessing exclusions.",v1,2026-07-20
 master_table,master/master_table_v1.csv,all,343236,Long format: one row per isolate-drug pair (not one row per isolate).,v1,2026-07-20
 country_crosswalk,crosswalks/country_iso3_crosswalk_v1.csv,all,59,ISO3 harmonization for all cohorts and external joins.,v1,2026-07-20
 organism_crosswalk,crosswalks/organism_crosswalk_v1.csv,all,61,Canonical organism names across cohorts.,v1,2026-07-20

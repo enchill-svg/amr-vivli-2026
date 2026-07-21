@@ -144,17 +144,25 @@ def build_dataset_manifest() -> pd.DataFrame:
   )
   n_bact_iso = int((isolates["pathogen_type"] == "bacterial").sum())
   n_fung_iso = int((isolates["pathogen_type"] == "fungal").sum())
+  n_unclassified_iso = len(isolates) - n_bact_iso - n_fung_iso
+  notes = (
+    f"Project brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); "
+    f"this build has {n_bact_iso:,} bacterial + {n_fung_iso:,} fungal = "
+    f"{n_bact_iso + n_fung_iso:,} classified"
+  )
+  if n_unclassified_iso:
+    notes += (
+      f" + {n_unclassified_iso:,} unclassified (excluded at organism-crosswalk "
+      f"matching, no pathogen_type assigned)"
+    )
+  notes += f" = {len(isolates):,} total after preprocessing exclusions."
   rows = [
     {
       "artifact_type": "isolate_registry",
       "artifact_path": "master/isolate_registry_v1.csv",
       "pathogen_type": "all",
       "record_count": len(isolates),
-      "notes": (
-        f"Project brief cites ~34,800 isolates (~7,865 bacterial + 26,922 fungal); "
-        f"this build has {n_bact_iso:,} bacterial + {n_fung_iso:,} fungal = "
-        f"{len(isolates):,} total after preprocessing exclusions."
-      ),
+      "notes": notes,
       "version": VERSION,
       "date_added": TODAY,
     },
