@@ -262,3 +262,8 @@ dashboard/.lovable/
 
 # Editor / AI tool config (local only; not part of the submission)
 .cursor/
+
+# Internal submission working files (not for public GitHub browse)
+docs/VIVLI_SUBMISSION_REPORT_v1.md
+docs/SUBMISSION_CHECKLIST_internal.md
+docs/VIVLI_SUBMISSION_REPORT_v1.html
