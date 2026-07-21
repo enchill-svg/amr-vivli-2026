@@ -9,6 +9,7 @@ Working notes for turning `VIVLI_SUBMISSION_REPORT_v1.md` into the actual PDF su
 - Do not attach appendices.
 
 ## Cover Page Form
+- AMR Register Data Request ID: **00013346** (also written into the report Methods / header).
 - Submit the separate Vivli Cover Page Form via the AMR Register data-request chat.
 - Past-winner submissions (Team Neha 2024, aj-clements/LSHTM 2023) both included a per-person "Role in the Data Challenge" column on their form (CRediT-style: conceptualisation, writing original draft, data curation, review and editing). If the 2026 form uses the same template, have each team member's role ready — not yet filled in anywhere in this repo (README's Team table only has Name/Affiliation/Contact).
 
