@@ -157,7 +157,7 @@ function CountriesPage() {
                       <RiskPill value={r.riskScore} />
                     </td>
                     <td className="capitalize">{r.trendLabel}</td>
-                    <td>{r.lifeExpectancy.toFixed(1)}y</td>
+                    <td>{r.lifeExpectancy == null ? "—" : `${r.lifeExpectancy.toFixed(1)}y`}</td>
                     <td
                       className={
                         r.predictedLifeGain == null

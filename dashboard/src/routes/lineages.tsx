@@ -41,7 +41,7 @@ function EvolutionPage() {
       kpis={[
         {
           label: "Top EFS",
-          value: best ? String(best.evolutionaryFitness) : "—",
+          value: best ? best.evolutionaryFitness.toFixed(1) : "—",
           color: "var(--status-alert)",
           sub: best?.organism,
         },
@@ -58,7 +58,7 @@ function EvolutionPage() {
       <div className="grid gap-4 xl:grid-cols-2">
         <GlassCard
           title="Resistance trajectory stream"
-          subtitle="Bacterial and fungal AMR burden trend; line should be replaced by live country–organism–drug time series after loading data."
+          subtitle="Yearly-averaged bacterial vs fungal AMR burden from the published country–year panel."
         >
           <div className="h-80">
             <ResponsiveContainer>
@@ -106,7 +106,7 @@ function EvolutionPage() {
                     </div>
                   </div>
                   <div className="font-mono text-lg text-[color:var(--status-alert)]">
-                    {r.evolutionaryFitness}
+                    {r.evolutionaryFitness.toFixed(1)}
                   </div>
                 </div>
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">

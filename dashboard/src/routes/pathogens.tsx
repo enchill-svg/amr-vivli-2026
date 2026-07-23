@@ -102,13 +102,22 @@ function ResistancePage() {
               <ScatterChart>
                 <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
                 <XAxis
+                  type="number"
                   dataKey="resistance"
                   name="Resistance"
                   unit="%"
+                  domain={[0, 100]}
                   stroke="#94a3b8"
                   fontSize={10}
                 />
-                <YAxis dataKey="fitness" name="EFS" stroke="#94a3b8" fontSize={10} />
+                <YAxis
+                  type="number"
+                  dataKey="fitness"
+                  name="EFS"
+                  domain={["auto", "auto"]}
+                  stroke="#94a3b8"
+                  fontSize={10}
+                />
                 <ZAxis dataKey="confidence" range={[60, 300]} />
                 <Tooltip
                   cursor={{ strokeDasharray: "3 3" }}
@@ -159,7 +168,7 @@ function ResistancePage() {
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-3 text-[10px] text-muted-foreground">
                   <div>
-                    EFS <b className="text-foreground">{r.evolutionaryFitness}</b>
+                    EFS <b className="text-foreground">{r.evolutionaryFitness.toFixed(1)}</b>
                   </div>
                   <div>
                     MIC shift <b className="text-foreground">{r.micShift.toFixed(1)}</b>

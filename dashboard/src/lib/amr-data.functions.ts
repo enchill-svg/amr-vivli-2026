@@ -88,7 +88,7 @@ export async function getResistanceSeries() {
   for (const r of rows) {
     if (!byYear.has(r.year)) byYear.set(r.year, { bacterial: [], fungal: [], life: [] });
     const bucket = byYear.get(r.year)!;
-    bucket.life.push(r.lifeExpectancy);
+    if (r.lifeExpectancy != null) bucket.life.push(r.lifeExpectancy);
     if (r.burden != null) {
       if (r.pathogenType === "bacterial") bucket.bacterial.push(r.burden);
       if (r.pathogenType === "fungal") bucket.fungal.push(r.burden);

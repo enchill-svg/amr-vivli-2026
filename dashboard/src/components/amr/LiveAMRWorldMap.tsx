@@ -15,6 +15,7 @@ import {
   FlaskConical,
   Globe2,
   Layers,
+  Minus,
   Radio,
   ShieldCheck,
   TrendingUp,
@@ -123,6 +124,8 @@ function trendIcon(label: AMRCountryTrend["trendLabel"]) {
     return <ArrowDownRight className="w-3.5 h-3.5 text-[color:var(--status-ok)]" />;
   if (label === "stable")
     return <Activity className="w-3.5 h-3.5 text-[color:var(--status-info)]" />;
+  if (label === "unknown")
+    return <Minus className="w-3.5 h-3.5 text-[color:var(--muted-foreground)]" />;
   return <ArrowUpRight className="w-3.5 h-3.5 text-[color:var(--status-alert)]" />;
 }
 
@@ -502,9 +505,14 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2">
                     <PopupStat label="Risk" value={scoreDisplay(row.riskScore)} />
-                    <PopupStat label="Warning" value={row.earlyWarningScore.toFixed(0)} />
+                    <PopupStat label="Warning" value={scoreDisplay(row.earlyWarningScore)} />
                     <PopupStat label="Resistance" value={formatPercent(row.resistanceRate)} />
-                    <PopupStat label="Life exp." value={`${row.lifeExpectancy.toFixed(1)}y`} />
+                    <PopupStat
+                      label="Life exp."
+                      value={
+                        row.lifeExpectancy == null ? "N/A" : `${row.lifeExpectancy.toFixed(1)}y`
+                      }
+                    />
                   </div>
                   <div className="mt-3 rounded border border-slate-600/40 bg-slate-900/50 p-2">
                     <div className="font-medium">Recommended intervention</div>
@@ -555,8 +563,8 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
             <MetricTile
               icon={Brain}
               label="Early warning"
-              value={selected.earlyWarningScore.toFixed(0)}
-              color={severityColor(selected.earlyWarningScore)}
+              value={scoreDisplay(selected.earlyWarningScore)}
+              color={severityColorMaybe(selected.earlyWarningScore)}
             />
             <MetricTile
               icon={FlaskConical}

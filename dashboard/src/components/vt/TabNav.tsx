@@ -11,7 +11,6 @@ import {
   HeartPulse,
   LineChart,
   Landmark,
-  Upload,
 } from "lucide-react";
 
 const tabs = [
@@ -23,7 +22,6 @@ const tabs = [
   { to: "/epidemiology", icon: HeartPulse, label: "Life Exp." },
   { to: "/marketplace", icon: LineChart, label: "Funding" },
   { to: "/forecasting", icon: Brain, label: "ML" },
-  { to: "/ingest", icon: Upload, label: "Ingest" },
   { to: "/reports", icon: FileText, label: "Reports" },
   { to: "/methodology", icon: Database, label: "Methods" },
 ] as const;
@@ -31,7 +29,7 @@ const tabs = [
 export function TabNav() {
   return (
     <nav className="px-6 pb-4">
-      <div className="vt-glass grid grid-cols-4 gap-1 rounded-2xl p-1.5 md:grid-cols-11">
+      <div className="vt-glass grid grid-cols-4 gap-1 rounded-2xl p-1.5 md:grid-cols-10">
         {tabs.map((t) => (
           <Link
             key={t.to}

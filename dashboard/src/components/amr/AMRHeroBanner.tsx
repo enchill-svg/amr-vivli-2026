@@ -8,7 +8,6 @@ import {
   FileText,
   Globe2,
   ShieldAlert,
-  Upload,
 } from "lucide-react";
 import { getExecutiveKpis } from "@/lib/amr-data.functions";
 
@@ -71,12 +70,6 @@ export function AMRHeroBanner() {
               className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--accent)] px-4 py-2 text-xs font-medium text-[color:var(--accent-foreground)] hover:opacity-90"
             >
               <Globe2 className="h-3.5 w-3.5" /> Open live map
-            </Link>
-            <Link
-              to="/ingest"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-4 py-2 text-xs font-medium hover:border-[color:var(--accent)]/60"
-            >
-              <Upload className="h-3.5 w-3.5" /> Upload datasets
             </Link>
             <Link
               to="/policy"

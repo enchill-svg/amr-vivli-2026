@@ -218,27 +218,43 @@ function Index() {
             }
           >
             <div className="space-y-2">
-              {topSignals.map((row) => (
-                <div
-                  key={row.id}
-                  className="rounded-lg border border-border/60 bg-background/30 p-3"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="truncate text-xs font-medium">{row.organism}</div>
-                      <div className="truncate text-[10px] text-muted-foreground">
-                        {row.country} · {row.drug}
+              {topSignals.map((row) => {
+                const withheld = row.qualityGate === "withhold";
+                const gated = withheld || row.qualityGate === "bounds_only";
+                const gateColor = withheld ? "var(--status-alert)" : "var(--status-warn)";
+                const gateLabel = withheld ? "Withheld" : "Bounds only";
+                return (
+                  <div
+                    key={row.id}
+                    className="rounded-lg border border-border/60 bg-background/30 p-3"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <div className="truncate text-xs font-medium">{row.organism}</div>
+                          {gated && (
+                            <span
+                              className="shrink-0 rounded-full border px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-wide"
+                              style={{ borderColor: `${gateColor}80`, color: gateColor }}
+                            >
+                              {gateLabel}
+                            </span>
+                          )}
+                        </div>
+                        <div className="truncate text-[10px] text-muted-foreground">
+                          {row.country} · {row.drug}
+                        </div>
                       </div>
+                      <span className="font-mono text-xs text-[color:var(--status-alert)]">
+                        {row.evolutionaryFitness.toFixed(1)}
+                      </span>
                     </div>
-                    <span className="font-mono text-xs text-[color:var(--status-alert)]">
-                      {row.evolutionaryFitness}
-                    </span>
+                    <div className="mt-2">
+                      <TinyBar value={row.evolutionaryFitness} color="var(--status-alert)" />
+                    </div>
                   </div>
-                  <div className="mt-2">
-                    <TinyBar value={row.evolutionaryFitness} color="var(--status-alert)" />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Panel>
         </aside>

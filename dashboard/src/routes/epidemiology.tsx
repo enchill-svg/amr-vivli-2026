@@ -58,13 +58,15 @@ function LifeExpectancyPage() {
     queryKey: ["pathogen-compare", "fungal"],
     queryFn: () => getPathogenComparisonStats("fungal"),
   });
-  const scatter = countries.map((r) => ({
-    country: r.country,
-    resistance: Math.round(r.resistanceRate * 100),
-    life: r.lifeExpectancy,
-    risk: r.riskScore,
-    gain: r.predictedLifeGain,
-  }));
+  const scatter = countries
+    .filter((r) => r.lifeExpectancy != null)
+    .map((r) => ({
+      country: r.country,
+      resistance: Math.round(r.resistanceRate * 100),
+      life: r.lifeExpectancy as number,
+      risk: r.riskScore,
+      gain: r.predictedLifeGain,
+    }));
   const strongest = [...countries]
     .filter((r) => r.predictedLifeGain != null)
     .sort((a, b) => (b.predictedLifeGain as number) - (a.predictedLifeGain as number))[0];
@@ -111,16 +113,20 @@ function LifeExpectancyPage() {
               <ScatterChart>
                 <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
                 <XAxis
+                  type="number"
                   dataKey="resistance"
                   name="Resistance"
                   unit="%"
+                  domain={[0, 100]}
                   stroke="#94a3b8"
                   fontSize={10}
                 />
                 <YAxis
+                  type="number"
                   dataKey="life"
                   name="Life expectancy"
                   unit="y"
+                  domain={["auto", "auto"]}
                   stroke="#94a3b8"
                   fontSize={10}
                 />

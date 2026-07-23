@@ -1,6 +1,6 @@
 export type PathogenType = "all" | "bacterial" | "fungal";
 
-export type TrendLabel = "declining" | "stable" | "rising" | "surging";
+export type TrendLabel = "declining" | "stable" | "rising" | "surging" | "unknown";
 
 export type AMRCountryTrend = {
   iso3: string;
@@ -10,10 +10,10 @@ export type AMRCountryTrend = {
   pathogenType: "bacterial" | "fungal";
   latestYear: number;
   riskScore: number | null;
-  earlyWarningScore: number;
+  earlyWarningScore: number | null;
   resistanceRate: number;
   trendLabel: TrendLabel;
-  lifeExpectancy: number;
+  lifeExpectancy: number | null;
   dominantOrganism: string;
   dominantDrug: string;
   fundingMismatch: number | null;
@@ -77,7 +77,7 @@ export type CountryYearRow = {
   pathogenType: "bacterial" | "fungal";
   iso3: string;
   year: number;
-  lifeExpectancy: number;
+  lifeExpectancy: number | null;
   burden: number | null;
   qualityGate: string;
 };

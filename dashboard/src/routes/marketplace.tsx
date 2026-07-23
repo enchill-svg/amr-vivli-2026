@@ -57,7 +57,7 @@ function FundingPage() {
     .sort((a, b) => b.shareOfHubTotal - a.shareOfHubTotal);
   const hubTotal = hubGeography.reduce((s, r) => s + r.amountUsd, 0);
   const chart = fundingRows.map((r) => ({
-    organism: r.organism.split(" ").slice(0, 2).join(" "),
+    organism: r.organism.replace(/^(\w)\w+/, "$1."),
     burden: Math.round(r.burdenShare * 1000) / 10,
     funding: Math.round(r.fundingShare * 1000) / 10,
     gap: Math.round(r.gap * 1000) / 10,

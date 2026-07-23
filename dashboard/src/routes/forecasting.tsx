@@ -28,13 +28,15 @@ function MLInsightsPage() {
     queryKey: ["cluster-typology"],
     queryFn: getClusterTypology,
   });
-  const scatter = data.map((r) => ({
-    country: r.country,
-    x: r.resistanceRate * 100,
-    y: r.earlyWarningScore,
-    z: r.riskScore,
-    cluster: r.trendLabel,
-  }));
+  const scatter = data
+    .filter((r) => r.earlyWarningScore != null)
+    .map((r) => ({
+      country: r.country,
+      x: r.resistanceRate * 100,
+      y: r.earlyWarningScore as number,
+      z: r.riskScore,
+      cluster: r.trendLabel,
+    }));
   return (
     <CommandPage
       icon={Brain}
@@ -82,8 +84,23 @@ function MLInsightsPage() {
             <ResponsiveContainer>
               <ScatterChart>
                 <CartesianGrid stroke="oklch(0.3 0.04 250 / 0.3)" />
-                <XAxis dataKey="x" name="Burden" unit="%" stroke="#94a3b8" fontSize={10} />
-                <YAxis dataKey="y" name="Trajectory" stroke="#94a3b8" fontSize={10} />
+                <XAxis
+                  type="number"
+                  dataKey="x"
+                  name="Burden"
+                  unit="%"
+                  domain={[0, 100]}
+                  stroke="#94a3b8"
+                  fontSize={10}
+                />
+                <YAxis
+                  type="number"
+                  dataKey="y"
+                  name="Trajectory"
+                  domain={[0, 100]}
+                  stroke="#94a3b8"
+                  fontSize={10}
+                />
                 <ZAxis dataKey="z" range={[70, 400]} />
                 <Tooltip
                   cursor={{ strokeDasharray: "3 3" }}

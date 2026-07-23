@@ -6,6 +6,7 @@ import type {
   FundingRow,
   InterventionRow,
   PathogenSignal,
+  TrendLabel,
 } from "./amr-demo-data";
 
 export type DashboardBundle = {
@@ -168,16 +169,18 @@ export async function mapCountryTrends(
       const iso = str(row.iso3_country);
       const geo = geocodes[iso] ?? { country: iso, latitude: 0, longitude: 0 };
       const dom = dominant.get(`${pathogen}:${iso}`);
-      const trajectory = num(row.trajectory_risk_percentile);
+      const trajectory = numOrNull(row.trajectory_risk_percentile);
       const burden = num(row.burden_midpoint_weighted);
-      const trendLabel =
-        trajectory >= 75
-          ? "surging"
-          : trajectory >= 55
-            ? "rising"
-            : trajectory <= 25
-              ? "declining"
-              : "stable";
+      const trendLabel: TrendLabel =
+        trajectory == null
+          ? "unknown"
+          : trajectory >= 75
+            ? "surging"
+            : trajectory >= 55
+              ? "rising"
+              : trajectory <= 25
+                ? "declining"
+                : "stable";
       const gate = str(row.quality_gate, "pass");
       const dataQuality = gate === "pass" ? 0.85 : gate === "bounds_only" ? 0.45 : 0.2;
       const fundingMismatch = dom
@@ -195,7 +198,7 @@ export async function mapCountryTrends(
         earlyWarningScore: trajectory,
         resistanceRate: Math.min(1, Math.max(0, burden)),
         trendLabel,
-        lifeExpectancy: num(row.life_expectancy),
+        lifeExpectancy: numOrNull(row.life_expectancy),
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch,
@@ -329,7 +332,7 @@ export async function mapCountryYearPanel(): Promise<CountryYearRow[]> {
         pathogenType: pathogen,
         iso3: str(row.iso3_country),
         year: num(row.parsed_year),
-        lifeExpectancy: num(row.life_expectancy),
+        lifeExpectancy: numOrNull(row.life_expectancy),
         burden: row.burden_midpoint_weighted == null ? null : num(row.burden_midpoint_weighted),
         qualityGate: str(row.quality_gate, "withhold"),
       });

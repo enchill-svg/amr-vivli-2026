@@ -24,7 +24,6 @@ import {
   LineChart,
   Map,
   Sparkles,
-  Upload,
 } from "lucide-react";
 
 type Item = {
@@ -45,7 +44,6 @@ const ITEMS: Item[] = [
   { label: "Intervention Policy", to: "/policy", icon: GitCompare, group: "Policy" },
   { label: "Funding Gap Explorer", to: "/marketplace", icon: Landmark, group: "Policy" },
   { label: "Machine Learning Insights", to: "/forecasting", icon: Brain, group: "Modeling" },
-  { label: "Data Ingestion", to: "/ingest", icon: Upload, group: "Workflow" },
   { label: "Reports and Downloads", to: "/reports", icon: FileText, group: "Workflow" },
   { label: "Methodology", to: "/methodology", icon: Database, group: "Workflow" },
   { label: "AI Assistant", to: "/assistant", icon: Bot, group: "Workflow" },
