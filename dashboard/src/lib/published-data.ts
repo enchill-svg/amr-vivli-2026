@@ -7,7 +7,7 @@ import type {
   InterventionRow,
   PathogenSignal,
   TrendLabel,
-} from "./amr-demo-data";
+} from "./amr-types";
 
 export type DashboardBundle = {
   bundle_version: string;
@@ -41,12 +41,43 @@ let loadError: string | null = null;
 
 const BUNDLE_URL = "/data/published/dashboard_bundle_v1.json";
 
+// A relative URL only resolves in the browser. Server handlers (e.g. the chat
+// tools) must supply the request origin; on Cloudflare, prefer the ASSETS binding.
+let serverOrigin: string | null = null;
+
+type AssetFetcher = { fetch: (input: RequestInfo | URL) => Promise<Response> };
+
+export function setServerOrigin(origin: string) {
+  serverOrigin = origin;
+}
+
+function resolveAssetsFetcher(): AssetFetcher | null {
+  // Nitro's Cloudflare entry stores Worker bindings on globalThis.__env__.
+  // Our TanStack SSR wrapper never receives env.ASSETS directly.
+  const nitroEnv = (globalThis as { __env__?: { ASSETS?: AssetFetcher } }).__env__;
+  return nitroEnv?.ASSETS ?? null;
+}
+
 export async function loadDashboardBundle(): Promise<DashboardBundle | null> {
   if (cachedBundle) return cachedBundle;
+  const onServer = typeof window === "undefined";
+  const origin = serverOrigin ?? "https://internal";
+  const url = onServer ? origin + BUNDLE_URL : BUNDLE_URL;
   try {
-    const res = await fetch(BUNDLE_URL, { cache: "no-cache" });
+    let res: Response;
+    const assets = onServer ? resolveAssetsFetcher() : null;
+    if (assets) {
+      // Worker self-fetch of a static path loops into the app router and 404s.
+      // Read pipeline outputs through the Cloudflare ASSETS binding instead.
+      res = await assets.fetch(new Request(url));
+    } else {
+      // Local vite / browser: normal HTTP fetch of the published JSON.
+      if (onServer) console.warn("[published-data] ASSETS binding missing; falling back to HTTP fetch");
+      res = await fetch(url, onServer ? undefined : { cache: "no-cache" });
+    }
     if (!res.ok) {
       loadError = `HTTP ${res.status}`;
+      if (onServer) console.warn(`[published-data] ${url} -> ${loadError}`);
       return null;
     }
     cachedBundle = (await res.json()) as DashboardBundle;
@@ -54,6 +85,7 @@ export async function loadDashboardBundle(): Promise<DashboardBundle | null> {
     return cachedBundle;
   } catch (err) {
     loadError = err instanceof Error ? err.message : "fetch failed";
+    if (onServer) console.warn(`[published-data] ${url} failed: ${loadError}`);
     return null;
   }
 }
@@ -158,6 +190,19 @@ export async function mapCountryTrends(
 
   const interventionGainByPathogen = getInterventionGainSummary(bundle);
 
+  // Latest surveillance year per country from the gated country-year panels
+  // (never invent a calendar year from Date.now()).
+  const latestYearByIso = new Map<string, number>();
+  for (const table of [bundle.countryYearBacterial, bundle.countryYearFungal]) {
+    for (const row of table) {
+      const iso = str(row.iso3_country);
+      const year = numOrNull(row.parsed_year);
+      if (!iso || year == null) continue;
+      const prev = latestYearByIso.get(iso);
+      if (prev == null || year > prev) latestYearByIso.set(iso, year);
+    }
+  }
+
   const rows: AMRCountryTrend[] = [];
   const tables: Array<{ pathogen: "bacterial" | "fungal"; data: Record<string, unknown>[] }> = [
     { pathogen: "bacterial", data: bundle.countryRiskBacterial },
@@ -181,11 +226,13 @@ export async function mapCountryTrends(
               : trajectory <= 25
                 ? "declining"
                 : "stable";
-      const gate = str(row.quality_gate, "pass");
+      // Missing gate is withhold, not pass — never optimistic-default public scores.
+      const gate = str(row.quality_gate, "withhold");
       const dataQuality = gate === "pass" ? 0.85 : gate === "bounds_only" ? 0.45 : 0.2;
       const fundingMismatch = dom
         ? (fundingGapByOrganism.get(`${pathogen}:${dom.organism}`) ?? null)
         : null;
+      const pathogenGain = interventionGainByPathogen.get(pathogen);
 
       rows.push({
         iso3: iso,
@@ -193,7 +240,7 @@ export async function mapCountryTrends(
         latitude: geo.latitude,
         longitude: geo.longitude,
         pathogenType: pathogen,
-        latestYear: new Date().getFullYear() - 1,
+        latestYear: latestYearByIso.get(iso) ?? 0,
         riskScore: numOrNull(row.composite_risk_score_core ?? row.composite_risk_score),
         earlyWarningScore: trajectory,
         resistanceRate: Math.min(1, Math.max(0, burden)),
@@ -202,8 +249,10 @@ export async function mapCountryTrends(
         dominantOrganism: dom?.organism ?? "—",
         dominantDrug: dom?.drug ?? "—",
         fundingMismatch,
-        predictedLifeGain: interventionGainByPathogen.get(pathogen)?.gain ?? null,
-        predictedLifeGainSampleCount: interventionGainByPathogen.get(pathogen)?.sampleCount ?? 0,
+        // Pathogen-arm scenario averages are not country-specific — keep null here
+        // so map/explorer never present them as national LE gains.
+        predictedLifeGain: null,
+        predictedLifeGainSampleCount: pathogenGain?.sampleCount ?? 0,
         recommendedIntervention:
           gate === "withhold" ? "Withheld — see ledger" : "See policy deliverable",
         confidence: dataQuality,

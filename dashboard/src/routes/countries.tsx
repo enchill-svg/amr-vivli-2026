@@ -18,7 +18,7 @@ import {
 } from "recharts";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
 import { RiskPill, TinyBar } from "@/components/amr/AMRDataCards";
-import { formatLifeGain, getLiveCountryTrends } from "@/lib/amr-data.functions";
+import { getLiveCountryTrends } from "@/lib/amr-data.functions";
 
 export const Route = createFileRoute("/countries")({
   component: CountriesPage,
@@ -52,13 +52,8 @@ function CountriesPage() {
   const chartRows = rows.slice(0, 10).map((r) => ({
     country: r.iso3,
     risk: r.riskScore,
-    gain: r.predictedLifeGain == null ? 0 : Number((r.predictedLifeGain * 100).toFixed(0)),
   }));
   const scoredRows = rows.filter((r) => r.riskScore != null);
-  const knownGainRows = rows.filter((r) => r.predictedLifeGain != null);
-  const avgGain = knownGainRows.length
-    ? knownGainRows.reduce((s, r) => s + (r.predictedLifeGain as number), 0) / knownGainRows.length
-    : null;
   const radar = top
     ? [
         { metric: "Risk", value: top.riskScore },
@@ -101,9 +96,10 @@ function CountriesPage() {
           color: "var(--status-warn)",
         },
         {
-          label: "Avg gain",
-          value: formatLifeGain(avgGain),
+          label: "Scored rows",
+          value: String(scoredRows.length),
           color: "var(--status-ok)",
+          sub: "Risk score present",
         },
       ]}
     >
@@ -133,7 +129,6 @@ function CountriesPage() {
                   <th>Risk</th>
                   <th>Trend</th>
                   <th>Life exp.</th>
-                  <th>Gain</th>
                   <th className="pr-3">Quality</th>
                 </tr>
               </thead>
@@ -158,15 +153,6 @@ function CountriesPage() {
                     </td>
                     <td className="capitalize">{r.trendLabel}</td>
                     <td>{r.lifeExpectancy == null ? "—" : `${r.lifeExpectancy.toFixed(1)}y`}</td>
-                    <td
-                      className={
-                        r.predictedLifeGain == null
-                          ? "text-muted-foreground"
-                          : "text-[color:var(--status-ok)]"
-                      }
-                    >
-                      {formatLifeGain(r.predictedLifeGain)}
-                    </td>
                     <td className="pr-3">
                       <TinyBar value={r.dataQuality * 100} color="var(--accent)" />
                     </td>
@@ -216,8 +202,8 @@ function CountriesPage() {
       </div>
 
       <GlassCard
-        title="Risk and intervention opportunity"
-        subtitle="Top ten countries by risk score; green line indicates model-predicted life-expectancy gain ×100."
+        title="Country risk ranking"
+        subtitle="Top ten countries by composite risk score from the published gated ranking."
       >
         <div className="h-80">
           <ResponsiveContainer>
@@ -233,7 +219,6 @@ function CountriesPage() {
                 }}
               />
               <Bar dataKey="risk" fill="oklch(0.68 0.24 25)" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="gain" fill="oklch(0.78 0.17 155)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

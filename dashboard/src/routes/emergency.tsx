@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Siren, PhoneCall, Plane, Truck } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 
 export const Route = createFileRoute("/emergency")({
   component: EmergencyPage,
@@ -30,6 +31,7 @@ function EmergencyPage() {
         { label: "Avg dispatch", value: "<6h", color: "var(--status-ok)" },
       ]}
     >
+      <LegacyDemoBanner detail="KPI figures and activation rows below are hardcoded sample values." />
       <div className="grid md:grid-cols-2 gap-3">
         <GlassCard title="Active activations">
           <ul className="space-y-2">

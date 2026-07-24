@@ -12,11 +12,12 @@ import {
 import { getExecutiveKpis } from "@/lib/amr-data.functions";
 
 export function AMRHeroBanner() {
-  const { data } = useQuery({
+  const { data, isLoading, isFetched } = useQuery({
     queryKey: ["amr-executive-kpis"],
     queryFn: getExecutiveKpis,
     refetchInterval: 60_000,
   });
+  const unavailable = isFetched && data?.dataSource === "unavailable";
   const kpis = data ?? {
     countries: 0,
     highRisk: 0,
@@ -27,14 +28,19 @@ export function AMRHeroBanner() {
     lifeGainSampleCount: 0,
     fundingGap: 0,
     isolates: 0,
+    dataSource: "unavailable" as const,
   };
   const platformRisk = Math.round(kpis.avgRiskScore);
   const color =
-    platformRisk >= 80
-      ? "var(--status-alert)"
-      : platformRisk >= 65
-        ? "var(--status-warn)"
-        : "var(--status-ok)";
+    unavailable || isLoading
+      ? "var(--muted-foreground)"
+      : platformRisk >= 80
+        ? "var(--status-alert)"
+        : platformRisk >= 65
+          ? "var(--status-warn)"
+          : "var(--status-ok)";
+  const dash = (value: string | number) =>
+    isLoading || unavailable ? "—" : typeof value === "number" ? value.toLocaleString() : value;
 
   return (
     <section className="relative mb-4 overflow-hidden rounded-2xl border border-border bg-card/40 p-6 backdrop-blur-sm">
@@ -88,25 +94,25 @@ export function AMRHeroBanner() {
           <div className="mt-6 grid max-w-3xl grid-cols-2 gap-3 md:grid-cols-4">
             <HeroMini
               icon={Globe2}
-              value={kpis.countries.toLocaleString()}
+              value={dash(kpis.countries)}
               label="Countries monitored"
               color="var(--accent)"
             />
             <HeroMini
               icon={ShieldAlert}
-              value={String(kpis.highRisk)}
+              value={dash(kpis.highRisk)}
               label="High-risk countries"
               color="var(--status-alert)"
             />
             <HeroMini
               icon={Activity}
-              value={`${Math.round(kpis.avgResistance * 100)}%`}
+              value={isLoading || unavailable ? "—" : `${Math.round(kpis.avgResistance * 100)}%`}
               label="Mean resistance"
               color="var(--status-warn)"
             />
             <HeroMini
               icon={Database}
-              value={kpis.isolates.toLocaleString()}
+              value={dash(kpis.isolates)}
               label="Isolate signals"
               color="var(--status-info)"
             />
@@ -116,16 +122,18 @@ export function AMRHeroBanner() {
           <div className="text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             Composite AMR impact score
           </div>
-          <RiskRing value={platformRisk} color={color} />
+          <RiskRing value={unavailable || isLoading ? 0 : platformRisk} color={color} />
           <div
             className="text-center text-xs font-medium uppercase tracking-[0.18em]"
             style={{ color }}
           >
-            {platformRisk >= 80
-              ? "Critical attention"
-              : platformRisk >= 65
-                ? "Elevated"
-                : "Monitored"}
+            {unavailable || isLoading
+              ? "Awaiting pipeline"
+              : platformRisk >= 80
+                ? "Critical attention"
+                : platformRisk >= 65
+                  ? "Elevated"
+                  : "Monitored"}
           </div>
           <p className="mt-4 text-center text-xs leading-relaxed text-muted-foreground">
             Equal-weight average of resistance burden, evolutionary trajectory, and health-system

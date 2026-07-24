@@ -76,8 +76,10 @@ function MethodologyPage() {
             are not filtered pre-model; public ranks/scores are withheld post-hoc.
           </li>
           <li>
-            Country risk uses burden + trajectory + health expenditure (and ESAC consumption where
-            matched); vaccination omitted from ranking per Output 4 wording.
+            Country risk <code className="text-[10px]">risk_rank_core</code> uses burden +
+            trajectory + health capacity (beds/expenditure). ESAC consumption is a separate
+            supplementary score where matched — not part of the core public rank. Vaccination is
+            omitted from ranking per Output 4 wording.
           </li>
           <li>GBD LRI is joined for audit but not used in any regression or ranking model.</li>
           <li>

@@ -23,31 +23,31 @@ The app loads the bundle at runtime via `src/lib/published-data.ts` → `src/lib
 | `interventions` | Policy page (gated ranks; may be empty by integrity policy) |
 | `gatingComparison`, `identifiabilityLedger` | Methodology / transparency |
 
-**Fallback:** if the bundle fails to load, `amr-demo-data.ts` supplies a single demo country row (dev only).
+**Fallback:** if the bundle fails to load, charts and KPIs show empty / "—" values — there is no demo-country invent path.
 
 ## Routes using published pipeline data
 
 | Route | Module |
 |-------|--------|
 | `/` | Executive overview — map, risk ranking, signals, funding |
-| `/alerts` | Global AMR risk map |
+| `/alerts` | Global AMR risk map (static published bundle; refetches every 60s) |
 | `/countries` | Country explorer |
 | `/pathogens` | Resistance explorer |
-| `/lineages` | Evolution explorer (signals from bundle; time series partly synthetic) |
-| `/epidemiology` | Life expectancy explorer (real LE from the gated country-year panel) |
+| `/lineages` | Evolution explorer (signals + country–year series from bundle) |
+| `/epidemiology` | Life expectancy explorer (gated country-year panel) |
 | `/policy` | Intervention table from gated CSV |
 | `/marketplace` | Funding gap explorer |
 | `/forecasting` | Cluster typology insights |
 | `/methodology` | Methods and provenance |
+| `/search` | Search over published countries / signals / funding |
 
 ## Legacy / optional routes (not pipeline-backed)
 
-These optional routes use **Supabase** and/or static demo content:
+These optional routes use **Supabase** and/or static demo content and show a **Legacy demo** banner:
 
-`/genomics`, `/lab-network`, `/environment`, `/search`, `/alerts` (viral), admin pages, `/assistant`, etc.
+`/genomics`, `/lab-network`, `/environment`, `/biosecurity`, `/variants`, `/emergency`, `/forecast-compare`, `/intel/$signal`, `/phylogeny`, `/academy`, admin pages, etc.
 
-Supabase is optional for the AMR competition demo path if the published bundle is present.
-
+Supabase is optional for the AMR competition path if the published bundle is present.
 ## Run locally
 
 ```bash

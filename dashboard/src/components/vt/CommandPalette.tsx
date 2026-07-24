@@ -36,14 +36,14 @@ type Item = {
 
 const ITEMS: Item[] = [
   { label: "Executive Overview", to: "/", icon: Home, group: "Command" },
-  { label: "Live Global Risk Map", to: "/alerts", icon: Map, group: "Command", hint: "WFP-style" },
+  { label: "Live Global Risk Map", to: "/alerts", icon: Map, group: "Command" },
   { label: "Country Explorer", to: "/countries", icon: Globe2, group: "Explore" },
   { label: "Resistance Explorer", to: "/pathogens", icon: FlaskConical, group: "Explore" },
   { label: "Evolution Explorer", to: "/lineages", icon: Activity, group: "Explore" },
   { label: "Life Expectancy Explorer", to: "/epidemiology", icon: HeartPulse, group: "Explore" },
   { label: "Intervention Policy", to: "/policy", icon: GitCompare, group: "Policy" },
   { label: "Funding Gap Explorer", to: "/marketplace", icon: Landmark, group: "Policy" },
-  { label: "Machine Learning Insights", to: "/forecasting", icon: Brain, group: "Modeling" },
+  { label: "Cluster Typology", to: "/forecasting", icon: Brain, group: "Modeling" },
   { label: "Reports and Downloads", to: "/reports", icon: FileText, group: "Workflow" },
   { label: "Methodology", to: "/methodology", icon: Database, group: "Workflow" },
   { label: "AI Assistant", to: "/assistant", icon: Bot, group: "Workflow" },

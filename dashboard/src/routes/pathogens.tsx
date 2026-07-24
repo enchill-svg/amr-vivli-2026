@@ -72,7 +72,7 @@ function ResistancePage() {
           subtitle={
             isUsingPublishedData()
               ? "Current classified resistance rate from the published pipeline bundle."
-              : "Published pipeline bundle unavailable — no demo fallback for this view."
+              : "Published pipeline bundle unavailable — no fabricated signals shown."
           }
         >
           <div className="h-80">

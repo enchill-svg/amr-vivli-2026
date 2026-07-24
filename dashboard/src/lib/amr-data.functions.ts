@@ -1,12 +1,8 @@
 import geocodes from "./iso3-geocodes.json";
-import {
-  demoCountryTrends,
-  type AMRCountryTrend,
-  type CountryYearRow,
-  type PathogenType,
-} from "./amr-demo-data";
+import type { AMRCountryTrend, CountryYearRow, PathogenType } from "./amr-types";
 import {
   getInterventionGainSummary,
+  getPublishedLoadError,
   isUsingPublishedData,
   loadDashboardBundle,
   mapClusterRows,
@@ -19,8 +15,14 @@ import {
   mapPathogenSignals,
 } from "./published-data";
 
-export type { AMRCountryTrend, PathogenType } from "./amr-demo-data";
-export { mapFundingRows, mapInterventions, mapClusterRows, isUsingPublishedData };
+export type { AMRCountryTrend, PathogenType } from "./amr-types";
+export {
+  mapFundingRows,
+  mapInterventions,
+  mapClusterRows,
+  isUsingPublishedData,
+  getPublishedLoadError,
+};
 
 export type FundingByYearPoint = { year: number; bacterial: number; fungal: number };
 
@@ -41,13 +43,14 @@ export function lifeGainDisplay(value: number | null, sampleCount: number): stri
   return `${formatLifeGain(value)} (average across ${sampleCount} measured intervention${sampleCount === 1 ? "" : "s"})`;
 }
 
+/** Pipeline-only country trends. Empty when the published bundle is unavailable —
+ * never invents demo rows. */
 export async function getLiveCountryTrends(
   pathogenType: PathogenType = "all",
 ): Promise<AMRCountryTrend[]> {
-  const published = await mapCountryTrends(
+  const rows = await mapCountryTrends(
     geocodes as Record<string, { country: string; latitude: number; longitude: number }>,
   );
-  const rows = published.length ? published : demoCountryTrends;
   if (pathogenType === "all") return rows;
   return rows.filter((r) => r.pathogenType === pathogenType);
 }
@@ -86,6 +89,7 @@ export async function getResistanceSeries() {
   const rows = await mapCountryYearPanel();
   const byYear = new Map<number, { bacterial: number[]; fungal: number[]; life: number[] }>();
   for (const r of rows) {
+    if (r.qualityGate !== "pass") continue;
     if (!byYear.has(r.year)) byYear.set(r.year, { bacterial: [], fungal: [], life: [] });
     const bucket = byYear.get(r.year)!;
     if (r.lifeExpectancy != null) bucket.life.push(r.lifeExpectancy);
@@ -201,18 +205,49 @@ export async function getPathogenComparisonStats(
   };
 }
 
+/** Collapse bacterial + fungal rows to one score per ISO3 (max risk / any rising). */
+function uniqueCountryMetrics(rows: AMRCountryTrend[]) {
+  const byIso = new Map<
+    string,
+    { riskScore: number | null; resistanceRate: number; rising: boolean }
+  >();
+  for (const row of rows) {
+    const prev = byIso.get(row.iso3);
+    const rising = row.trendLabel === "rising" || row.trendLabel === "surging";
+    if (!prev) {
+      byIso.set(row.iso3, {
+        riskScore: row.riskScore,
+        resistanceRate: row.resistanceRate,
+        rising,
+      });
+      continue;
+    }
+    const nextRisk =
+      row.riskScore == null
+        ? prev.riskScore
+        : prev.riskScore == null
+          ? row.riskScore
+          : Math.max(prev.riskScore, row.riskScore);
+    byIso.set(row.iso3, {
+      riskScore: nextRisk,
+      resistanceRate: Math.max(prev.resistanceRate, row.resistanceRate),
+      rising: prev.rising || rising,
+    });
+  }
+  return byIso;
+}
+
 export async function getExecutiveKpis() {
   const countries = await getLiveCountryTrends("all");
   const bundle = await loadDashboardBundle();
-  const highRisk = countries.filter((c) => c.riskScore != null && c.riskScore >= 80).length;
-  const rising = countries.filter(
-    (c) => c.trendLabel === "rising" || c.trendLabel === "surging",
-  ).length;
+  const byIso = uniqueCountryMetrics(countries);
+  const unique = [...byIso.values()];
+
+  const highRisk = unique.filter((c) => c.riskScore != null && c.riskScore >= 80).length;
+  const rising = unique.filter((c) => c.rising).length;
   const avgResistance =
-    countries.length > 0
-      ? countries.reduce((s, c) => s + c.resistanceRate, 0) / countries.length
-      : 0;
-  const scoredRiskScores = countries.map((c) => c.riskScore).filter((v): v is number => v != null);
+    unique.length > 0 ? unique.reduce((s, c) => s + c.resistanceRate, 0) / unique.length : 0;
+  const scoredRiskScores = unique.map((c) => c.riskScore).filter((v): v is number => v != null);
   const avgRiskScore =
     scoredRiskScores.length > 0
       ? scoredRiskScores.reduce((s, n) => s + n, 0) / scoredRiskScores.length
@@ -220,7 +255,8 @@ export async function getExecutiveKpis() {
   const funding = await mapFundingRows();
   const maxGap = funding.length ? Math.max(...funding.map((f) => Math.abs(f.gap))) : 0;
   const summary = bundle?.pipelineSummary;
-  const isolates = summary?.master_isolate_count ?? summary?.raw_isolate_count ?? (bundle ? 0 : 0);
+  // Prefer master isolate count from the pipeline publish; never invent a number.
+  const isolates = summary?.master_isolate_count ?? summary?.raw_isolate_count ?? 0;
 
   // Same gate as mapCountryTrends: quality_gate==pass + MIN_INTERVENTION_SAMPLES.
   // Never average withheld/positive-only rows into a homepage "Predicted gain".
@@ -239,7 +275,7 @@ export async function getExecutiveKpis() {
   }
 
   return {
-    countries: new Set(countries.map((c) => c.iso3)).size,
+    countries: byIso.size,
     highRisk,
     rising,
     avgResistance,
@@ -248,6 +284,7 @@ export async function getExecutiveKpis() {
     lifeGainSampleCount,
     fundingGap: Math.round(maxGap * 100),
     isolates,
-    dataSource: isUsingPublishedData() ? "published" : "demo",
+    dataSource: isUsingPublishedData() ? ("published" as const) : ("unavailable" as const),
+    loadError: getPublishedLoadError(),
   };
 }

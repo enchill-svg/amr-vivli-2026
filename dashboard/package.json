@@ -14,6 +14,7 @@
     "check": "npm run typecheck && npm run lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "3.0.101",
     "@ai-sdk/openai-compatible": "^2.0.48",
     "@ai-sdk/react": "^3.0.193",
     "@cloudflare/vite-plugin": "^1.25.5",

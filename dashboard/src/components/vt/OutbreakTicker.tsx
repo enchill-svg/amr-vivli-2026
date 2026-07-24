@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Radio } from "lucide-react";
 import { getLiveCountryTrends } from "@/lib/amr-data.functions";
-import type { AMRCountryTrend } from "@/lib/amr-demo-data";
+import type { AMRCountryTrend } from "@/lib/amr-types";
 
 const colorFor = (score: number) =>
   score >= 85 ? "var(--status-alert)" : score >= 72 ? "var(--status-warn)" : "var(--status-info)";
@@ -29,8 +29,8 @@ export function OutbreakTicker() {
   const badge = isError
     ? { label: "OFFLINE", color: "var(--status-alert)", pulse: false }
     : isLoading
-      ? { label: "CONNECTING", color: "var(--muted-foreground)", pulse: false }
-      : { label: "LIVE AMR", color: "var(--accent)", pulse: true };
+      ? { label: "LOADING", color: "var(--muted-foreground)", pulse: false }
+      : { label: "PUBLISHED", color: "var(--accent)", pulse: true };
 
   return (
     <div className="overflow-hidden border-y border-border/60 bg-card/40 backdrop-blur-sm">
@@ -46,7 +46,16 @@ export function OutbreakTicker() {
         </div>
         <div className="relative flex-1 overflow-hidden">
           <div className="flex animate-[ticker_70s_linear_infinite] items-center gap-8 whitespace-nowrap py-2 hover:[animation-play-state:paused]">
-            {loop.map((t, i) => {
+            {items.length === 0 ? (
+              <div className="px-4 text-xs text-muted-foreground">
+                {isLoading
+                  ? "Loading published country risk…"
+                  : isError
+                    ? "Published pipeline bundle unavailable"
+                    : "No high-risk countries in the published bundle"}
+              </div>
+            ) : (
+              loop.map((t, i) => {
               const c = colorFor(t.riskScore);
               return (
                 <div
@@ -72,7 +81,8 @@ export function OutbreakTicker() {
                   </span>
                 </div>
               );
-            })}
+            })
+            )}
           </div>
         </div>
       </div>

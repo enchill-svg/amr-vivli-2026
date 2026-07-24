@@ -86,9 +86,33 @@ def _assert_publish_policy() -> None:
 
 def _read_csv(path: Path) -> list[dict]:
     if not path.exists():
-        return []
+        raise FileNotFoundError(f"Required published CSV missing: {path}")
     # to_json emits null for NaN — valid RFC 8259 JSON (browser-safe)
     return json.loads(pd.read_csv(path).to_json(orient="records"))
+
+
+REQUIRED_BUNDLE_CSVS = (
+    "country_risk_ranking_bacterial_gated_v1.csv",
+    "country_risk_ranking_fungal_gated_v1.csv",
+    "cluster_typology_bacterial_gated_v1.csv",
+    "cluster_typology_fungal_gated_v1.csv",
+    "intervention_recommendations_ranked_gated_v1.csv",
+    "funding_gap_summary_v1.csv",
+    "hub_funding_composition_summary_v1.csv",
+    "gating_comparison_v1.csv",
+    "country_year_panel_bacterial_gated_v1.csv",
+    "country_year_panel_fungal_gated_v1.csv",
+    "funding_by_year_summary_v1.csv",
+)
+
+
+def _assert_required_bundle_inputs() -> None:
+    missing = [name for name in REQUIRED_BUNDLE_CSVS if not (PUBLISHED / name).exists()]
+    if missing:
+        raise RuntimeError(
+            "Cannot build dashboard bundle — missing gated/published CSV(s): "
+            + ", ".join(missing)
+        )
 
 
 def _sanitize_for_json(value: object) -> object:
@@ -240,6 +264,7 @@ def main() -> int:
     # behind, the RuntimeError only fired after the bundle had already been
     # synced to the dashboard-facing copy - too late to have prevented it.
     _assert_publish_policy()
+    _assert_required_bundle_inputs()
 
     sens = BOUNDS / "association_sensitivity_manifest_v1.csv"
     if sens.exists():

@@ -467,7 +467,7 @@ See also [`docs/appendix_5_identifiability_bounds_methodology.md`](docs/appendix
 
 ## 15. Section 6 Stage 1 — Descriptive Profiling (`step11_descriptive.py`)
 
-Sections 1–14 above document the **Section 5 preprocessing pipeline** (Steps 1–10, run automatically by `run_pipeline.py`). This section documents a separate, later addition: the first stage of **Section 6, "Analytic Methodology"** — a distinct analytic layer that consumes the finished master table rather than building it. Per `docs/SECTION_6_ANALYTIC_METHODOLOGY_PLAN.md`, Section 6 stages "run once the Section 5 preprocessing pipeline has produced the master isolate-drug table." Accordingly, `step11_descriptive.py` is **not** wired into `run_pipeline.py`'s Tier A–D sequence — it is run manually, after a successful full pipeline run:
+Sections 1–14 above document the **Section 5 preprocessing pipeline** (Steps 1–10, run automatically by `run_pipeline.py`). This section documents a separate, later addition: the first stage of **Section 6, "Analytic Methodology"** — a distinct analytic layer that consumes the finished master table rather than building it. Per `docs/SECTION_6_ANALYTIC_METHODOLOGY_PLAN.md`, Section 6 stages "run once the Section 5 preprocessing pipeline has produced the master isolate-drug table." Accordingly, `step11_descriptive.py` is **not** wired into `run_pipeline.py`'s Tier A–D sequence. Prefer **`python run_all.py`**, which runs Section 5 → integrity → analytics (11–18) → gated deliverables. To run Stage 1 alone after a successful pipeline:
 
 ```bash
 cd analysis
@@ -541,7 +541,7 @@ Beyond the step's own Checks, two independent from-scratch recomputations — no
 
 ## 16. Section 6 Stage 2 — Evolutionary Layer (`step12_evolutionary.py`)
 
-Like Stage 1, this is part of the separate **Section 6 analytic layer** (§15's opening paragraph), not the automatic Section 5 pipeline. It is run manually, after Stage 1 (it does not depend on Stage 1's output, but follows the same numbering convention):
+Like Stage 1, this is part of the separate **Section 6 analytic layer** (§15's opening paragraph), not `run_pipeline.py`. It is included in **`run_all.py`**, or can be run alone after Stage 1 (it does not depend on Stage 1's output, but follows the same numbering convention):
 
 ```bash
 cd analysis
@@ -719,11 +719,11 @@ Packages the project brief's six Section 7 deliverables from Section 5 artifacts
 Index mapping all six outputs: `deliverables/section7_deliverables_index_v1.csv`.
 
 **Methodology notes (no hallucinated data):**
-- Country risk ranking uses burden, evolutionary trajectory, and health expenditure only — **consumption omitted** (no numeric ESAC-Net series locally) and **vaccination omitted** (not named in the project brief's Output 4).
+- Country risk ranking uses burden, evolutionary trajectory, and health capacity for the public **`risk_rank_core`** score. ESAC-Net consumption is joined where matched (Europe partial coverage) as a **supplementary** score — not required for the core rank. Vaccination is omitted from ranking (not named in the project brief's Output 4).
 - Cluster typology labels combinations in the top quartile of static burden and/or negative fitness-slope risk.
 - Intervention ranking covers only measured vaccination scenarios; stewardship/diagnostics/WASH/IPC gaps carry null rank.
 
-**Full Section 6 + 7 manual run order** (after a successful `run_pipeline.py`):
+**Preferred:** `python run_all.py` (includes analytics 11–18 + gated 18b). Step-by-step after `run_pipeline.py` only:
 
 ```bash
 cd analysis

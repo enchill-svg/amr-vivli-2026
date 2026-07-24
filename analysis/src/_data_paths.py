@@ -1,4 +1,4 @@
-"""Central paths for pipeline raw inputs under preprocessing_pipeline/raw_inputs/."""
+"""Central paths for pipeline raw inputs under analysis/raw_inputs/."""
 from pathlib import Path
 
 PIPELINE_ROOT = Path(__file__).resolve().parents[1]

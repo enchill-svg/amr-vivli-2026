@@ -66,7 +66,9 @@ function InterventionPage() {
                   <td className="py-2 pr-3">{r.qualityGate}</td>
                   <td className="py-2 pr-3 font-mono">{r.priorityRank ?? "—"}</td>
                   <td className="py-2 font-mono">
-                    {r.estimatedLeGainYears == null ? "—" : r.estimatedLeGainYears.toFixed(4)}
+                    {r.qualityGate !== "pass" || r.estimatedLeGainYears == null
+                      ? "—"
+                      : r.estimatedLeGainYears.toFixed(4)}
                   </td>
                 </tr>
               ))}

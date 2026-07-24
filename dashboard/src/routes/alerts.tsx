@@ -7,7 +7,7 @@ export const Route = createFileRoute("/alerts")({
   component: RiskMapPage,
   head: () => ({
     meta: [
-      { title: "Live Global AMR Risk Map — AMR LifeIntel" },
+      { title: "Global AMR Risk Map — AMR LifeIntel" },
       {
         name: "description",
         content:
@@ -21,9 +21,9 @@ function RiskMapPage() {
   return (
     <CommandPage
       icon={Globe2}
-      eyebrow="Live Global Risk Map"
+      eyebrow="Published Global Risk Map"
       title="World AMR situation map"
-      subtitle="Interactive country-level AMR risk, resistance prevalence, evolutionary trajectory, life-expectancy signal, funding mismatch, and intervention priority. The map refreshes from the published pipeline bundle every 60 seconds."
+      subtitle="Interactive country-level AMR risk, resistance prevalence, evolutionary trajectory, life-expectancy signal, funding mismatch, and intervention priority from the published pipeline bundle (refreshed in-browser every 60 seconds)."
       kpis={[
         {
           label: "Live layers",

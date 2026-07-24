@@ -15,6 +15,7 @@ import {
   Globe2,
 } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import {
   AreaChart,
   Area,
@@ -165,6 +166,7 @@ function IntelDetail() {
         },
       ]}
     >
+      <LegacyDemoBanner detail="Signal KPIs, outbreak lists, and charts below are hardcoded sample payloads — not pipeline outputs." />
       <Link
         to="/"
         className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"

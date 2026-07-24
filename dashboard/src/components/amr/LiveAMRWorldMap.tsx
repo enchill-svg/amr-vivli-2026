@@ -23,9 +23,8 @@ import {
 import {
   getCountryYearPanel,
   getLiveCountryTrends,
-  lifeGainDisplay,
 } from "@/lib/amr-data.functions";
-import type { AMRCountryTrend, CountryYearRow, PathogenType } from "@/lib/amr-demo-data";
+import type { AMRCountryTrend, CountryYearRow, PathogenType } from "@/lib/amr-types";
 
 type MapMetric =
   | "riskScore"
@@ -230,10 +229,16 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
     [data, metric, yearCtx],
   );
   const hotspots = sorted.slice(0, 5);
-  const rising = data.filter(
-    (row) => row.trendLabel === "surging" || row.trendLabel === "rising",
-  ).length;
-  const highRisk = data.filter((row) => row.riskScore != null && row.riskScore >= 80).length;
+  const rising = new Set(
+    data
+      .filter((row) => row.trendLabel === "surging" || row.trendLabel === "rising")
+      .map((row) => row.iso3),
+  ).size;
+  const highRisk = new Set(
+    data
+      .filter((row) => row.riskScore != null && row.riskScore >= 80)
+      .map((row) => row.iso3),
+  ).size;
   const heatPoints = data
     .map((row) => {
       const value = metricValue(row, metric, yearCtx);
@@ -518,8 +523,8 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
                     <div className="font-medium">Recommended intervention</div>
                     <div className="mt-1 opacity-75">{row.recommendedIntervention}</div>
                     <div className="mt-1 text-[11px] opacity-75">
-                      Predicted gain:{" "}
-                      {lifeGainDisplay(row.predictedLifeGain, row.predictedLifeGainSampleCount)}
+                      Pathogen-arm LE scenarios are on the Policy page — not country-specific
+                      estimates.
                     </div>
                   </div>
                   {gated && row.gateReason && (
@@ -625,11 +630,9 @@ export function LiveAMRWorldMap({ compact = false }: { compact?: boolean }) {
           </div>
           <div className="mt-3 rounded-xl border border-[color:var(--accent)]/25 bg-[color:var(--accent)]/10 p-3 text-xs leading-relaxed">
             <span className="font-medium text-[color:var(--accent)]">Policy recommendation:</span>{" "}
-            {selected.recommendedIntervention}. Expected life expectancy gain is{" "}
-            <b>
-              {lifeGainDisplay(selected.predictedLifeGain, selected.predictedLifeGainSampleCount)}
-            </b>
-            , evidence level <b>{selected.evidenceLevel}</b>.
+            {selected.recommendedIntervention}. Country-specific LE-gain scenarios are not published
+            for this row — see the Policy page for gated pathogen-arm intervention tables. Evidence
+            level <b>{selected.evidenceLevel}</b>.
           </div>
         </div>
       )}

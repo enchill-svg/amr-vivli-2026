@@ -54,7 +54,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { data: kpis } = useQuery({
+  const { data: kpis, isFetched: kpisFetched } = useQuery({
     queryKey: ["home-kpis"],
     queryFn: getExecutiveKpis,
     refetchInterval: 60_000,
@@ -78,14 +78,16 @@ function Index() {
     queryFn: getFundingGapRows,
   });
 
-  const highRisk = [...countries]
-    .sort((a, b) => {
-      if (a.riskScore == null && b.riskScore == null) return 0;
-      if (a.riskScore == null) return 1;
-      if (b.riskScore == null) return -1;
-      return b.riskScore - a.riskScore;
-    })
-    .slice(0, 6);
+  const unavailable = kpisFetched && kpis?.dataSource === "unavailable";
+  const highRisk = (() => {
+    const best = new Map<string, (typeof countries)[number]>();
+    for (const row of countries) {
+      if (row.riskScore == null) continue;
+      const prev = best.get(row.iso3);
+      if (!prev || (prev.riskScore ?? -Infinity) < row.riskScore) best.set(row.iso3, row);
+    }
+    return [...best.values()].sort((a, b) => (b.riskScore ?? 0) - (a.riskScore ?? 0)).slice(0, 6);
+  })();
   const topSignals = [...signals]
     .sort((a, b) => b.evolutionaryFitness - a.evolutionaryFitness)
     .slice(0, 5);
@@ -98,7 +100,9 @@ function Index() {
     lifeGainSampleCount: 0,
     fundingGap: 0,
     isolates: 0,
+    dataSource: "unavailable" as const,
   };
+  const kpiValue = (n: number) => (unavailable ? "—" : n.toLocaleString());
 
   return (
     <PageShell>
@@ -108,35 +112,35 @@ function Index() {
         <StatCard
           icon={Globe2}
           label="Countries monitored"
-          value={summary.countries.toLocaleString()}
+          value={kpiValue(summary.countries)}
           sub="Bacterial + fungal"
           color="var(--accent)"
         />
         <StatCard
           icon={AlertTriangle}
           label="High-risk countries"
-          value={String(summary.highRisk)}
+          value={unavailable ? "—" : String(summary.highRisk)}
           sub="Risk score ≥ 80"
           color="var(--status-alert)"
         />
         <StatCard
           icon={TrendingUp}
           label="Rising trajectories"
-          value={String(summary.rising)}
+          value={unavailable ? "—" : String(summary.rising)}
           sub="MIC drift or rate growth"
           color="var(--status-warn)"
         />
         <StatCard
           icon={FlaskConical}
           label="Mean resistance"
-          value={`${Math.round(summary.avgResistance * 100)}%`}
-          sub="Current analytical set"
+          value={unavailable ? "—" : `${Math.round(summary.avgResistance * 100)}%`}
+          sub="Country max burden"
           color="var(--status-info)"
         />
         <StatCard
           icon={HeartPulse}
           label="Predicted gain"
-          value={formatLifeGain(summary.avgLifeGain)}
+          value={unavailable ? "—" : formatLifeGain(summary.avgLifeGain)}
           sub={
             summary.avgLifeGain == null
               ? lifeGainDisplay(null, summary.lifeGainSampleCount)
@@ -147,8 +151,8 @@ function Index() {
         <StatCard
           icon={Database}
           label="Isolate signals"
-          value={summary.isolates.toLocaleString()}
-          sub="Live analytical rows"
+          value={kpiValue(summary.isolates)}
+          sub="Pipeline master count"
           color="var(--status-purple)"
         />
       </div>
@@ -171,9 +175,16 @@ function Index() {
             }
           >
             <div className="space-y-3">
-              {highRisk.map((row) => (
+              {highRisk.length === 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  {unavailable
+                    ? "Published pipeline bundle unavailable."
+                    : "No scored countries in the published risk tables."}
+                </p>
+              ) : (
+                highRisk.map((row) => (
                 <div
-                  key={`${row.iso3}-${row.pathogenType}`}
+                  key={row.iso3}
                   className="rounded-xl border border-border/60 bg-card/45 p-3"
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -204,7 +215,8 @@ function Index() {
                     </span>
                   </div>
                 </div>
-              ))}
+              ))
+              )}
             </div>
           </Panel>
 

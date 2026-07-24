@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import {
-  AlertTriangle,
   BarChart3,
   Brain,
   Database,
@@ -21,8 +20,8 @@ const tabs = [
   { to: "/lineages", icon: Dna, label: "Evolution" },
   { to: "/epidemiology", icon: HeartPulse, label: "Life Exp." },
   { to: "/marketplace", icon: LineChart, label: "Funding" },
-  { to: "/forecasting", icon: Brain, label: "ML" },
-  { to: "/reports", icon: FileText, label: "Reports" },
+  { to: "/forecasting", icon: Brain, label: "Typology" },
+  { to: "/policy", icon: FileText, label: "Policy" },
   { to: "/methodology", icon: Database, label: "Methods" },
 ] as const;
 

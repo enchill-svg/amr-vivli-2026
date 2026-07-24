@@ -3,7 +3,7 @@ import { AppHeader } from "./AppHeader";
 import { TabNav } from "./TabNav";
 import { OutbreakTicker } from "./OutbreakTicker";
 import { Info } from "lucide-react";
-import { loadDashboardBundle } from "@/lib/published-data";
+import { loadDashboardBundle, getPublishedLoadError } from "@/lib/published-data";
 
 export function PageShell({
   children,
@@ -12,12 +12,14 @@ export function PageShell({
   children: React.ReactNode;
   showTabs?: boolean;
 }) {
-  const { data: bundle } = useQuery({
+  const { data: bundle, isError, isFetched } = useQuery({
     queryKey: ["dashboard-bundle"],
     queryFn: loadDashboardBundle,
   });
   const runId = bundle?.pipeline_run?.run_id;
   const generated = bundle?.generated_at;
+  const loadError = getPublishedLoadError();
+  const bundleMissing = isFetched && (!bundle || isError);
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
@@ -32,6 +34,14 @@ export function PageShell({
         <AppHeader />
         <OutbreakTicker />
         {showTabs && <TabNav />}
+        {bundleMissing && (
+          <div className="border-b border-[color:var(--status-alert)]/40 bg-[color:var(--status-alert)]/10 px-6 py-2 text-xs text-[color:var(--status-alert)]">
+            Published pipeline bundle unavailable
+            {loadError ? ` (${loadError})` : ""}. Charts show empty until{" "}
+            <code className="text-[10px]">/data/published/dashboard_bundle_v1.json</code> loads —
+            no fabricated demo values are used.
+          </div>
+        )}
         <main className="px-6 py-5">{children}</main>
         <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 px-6 py-3 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
@@ -39,8 +49,12 @@ export function PageShell({
           </div>
           <div>Publication-grade decision support · transparent assumptions</div>
           <div>
-            {runId ? `Pipeline ${runId}` : "Pipeline —"}
-            {generated ? ` · bundle ${generated.slice(0, 10)}` : ""}
+            {bundleMissing
+              ? "Pipeline data unavailable"
+              : runId
+                ? `Pipeline ${runId}`
+                : "Pipeline —"}
+            {!bundleMissing && generated ? ` · bundle ${generated.slice(0, 10)}` : ""}
           </div>
         </footer>
       </div>

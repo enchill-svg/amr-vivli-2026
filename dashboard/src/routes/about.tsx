@@ -41,10 +41,10 @@ function AboutPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            ["57", "Countries represented"],
-            ["34,174", "Isolates analyzed"],
+            ["59", "Countries in crosswalk"],
+            ["34,787", "Registry isolates"],
             ["343,236", "Master analytical rows"],
-            ["4", "Surveillance cohorts"],
+            ["4", "Primary cohorts"],
           ].map(([v, l]) => (
             <div key={l} className="rounded-xl border border-border bg-card/60 p-4 text-center">
               <div className="text-3xl font-light text-[color:var(--accent)]">{v}</div>
@@ -54,6 +54,10 @@ function AboutPage() {
             </div>
           ))}
         </div>
+        <p className="text-xs text-muted-foreground">
+          Analytical master holds 34,174 distinct isolate IDs after evaluability exclusions. Public
+          country-risk maps show 57 unique ISO3s with risk rows (30 bacterial + 43 fungal tables).
+        </p>
 
         <SectionCard title="What the pipeline delivers">
           <div className="grid sm:grid-cols-2 gap-4 text-sm text-foreground/85">
@@ -76,7 +80,7 @@ function AboutPage() {
               ],
               [
                 "External data joins",
-                "World Bank WDI, WHO/UNICEF immunization coverage, GBD 2021 SDI, and ESAC-Net consumption joined per country-year.",
+                "World Bank WDI, WHO/UNICEF immunization coverage, GBD 2023 SDI, and ESAC-Net consumption joined per country-year.",
               ],
               [
                 "Association analysis",
@@ -93,18 +97,19 @@ function AboutPage() {
 
         <SectionCard title="Data sources">
           <p className="text-sm text-foreground/85 mb-3">
-            Every figure in this dashboard traces back to one of these inputs:
+            Primary master-table cohorts vs integrity-only calibration inputs:
           </p>
           <div className="flex flex-wrap gap-2 text-xs">
             {[
-              "ATLAS",
-              "PLEA",
-              "SOAR",
-              "SENTRY",
-              "GBD 2021 / 2023",
+              "SOAR (primary bacterial)",
+              "SENTRY antifungals (primary fungal)",
+              "ATLAS Antibiotics (integrity only)",
+              "PLEA Study I (integrity only)",
+              "GBD 2023 SDI",
               "World Bank WDI",
               "WHO/UNICEF WUENIC",
               "ESAC-Net",
+              "Global AMR R&D Hub",
               "EUCAST",
               "CLSI",
             ].map((s) => (

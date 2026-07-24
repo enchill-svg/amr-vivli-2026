@@ -102,17 +102,16 @@ The app reads `dashboard/public/data/published/dashboard_bundle_v1.json`, which 
 | `/alerts` | Full screen risk map |
 | `/countries` | Country explorer |
 | `/pathogens` | Organism and drug signals |
-| `/lineages` | Evolutionary trajectory explorer (signal data is real; some time series are illustrative, not measured) |
+| `/lineages` | Evolutionary trajectory explorer (published country–year series + organism–drug signals) |
 | `/epidemiology` | Life expectancy explorer, by country and year |
 | `/marketplace` | Funding gap by pathogen |
 | `/forecasting` | Cluster typology insights |
 | `/policy` | Gated intervention table |
 | `/methodology` | Methods and provenance |
 
-The app also has additional routes left over from an earlier, unrelated product direction (viral genomic surveillance). They aren't part of this submission's data pipeline. If you land on one while exploring, the routes above are the ones this challenge is about.
+The app also has additional routes left over from an earlier, unrelated product direction (viral genomic surveillance). They aren't part of this submission's data pipeline and show a **Legacy demo** banner when opened. If you land on one while exploring, the routes above are the ones this challenge is about.
 
-If the bundle fails to load, the app falls back to a single demo country. That should not happen in a normal clone of this repo after a successful publish.
-
+If the published bundle fails to load, charts and KPIs show empty / "—" values rather than invented demo numbers.
 ### Reproduce the analysis
 
 You need Python 3 with `pandas`, `numpy`, `scipy`, `statsmodels`, and `scikit-learn`, plus the six raw input files described in [`analysis/raw_inputs/README.md`](analysis/raw_inputs/README.md).
@@ -150,15 +149,17 @@ You can reproduce our tables from `data/published/` and our code without the raw
 
 ## Team
 
-2026 Vivli AMR Surveillance Data Challenge submission team:
+2026 Vivli AMR Surveillance Data Challenge submission team (Data Request **00013346**):
 
-| Name | Affiliation | Contact |
-|------|-------------|---------|
-| Erica Akanko | WACCBIP | eakanko15@gmail.com |
-| Yewku Enchill-Yawson | NMIMR | enchillyawson@gmail.com |
-| William Boateng | NMIMR | boatengwilliam72@gmail.com |
-| Justice Ohene Amofa | NMIMR | justiceoheneamofa@gmail.com |
-| Humphrey P. K. Addy | KNUST | addy.p.humphrey@gmail.com |
+| Name | Affiliation | Contact | Role |
+|------|-------------|---------|------|
+| Justice Ohene Amofa | Noguchi Memorial Institute for Medical Research (NMIMR) | justiceoheneamofa@gmail.com | Lead Applicant |
+| Erica Akanko | West African Centre for Cell Biology of Infectious Pathogens (WACCBIP) | eakanko15@gmail.com | Team member |
+| Yewku Enchill-Yawson | Noguchi Memorial Institute for Medical Research (NMIMR) | enchillyawson@gmail.com | Team member |
+| William Boateng | Noguchi Memorial Institute for Medical Research (NMIMR) | boatengwilliam72@gmail.com | Team member |
+| Humphrey P. K. Addy | Kwame Nkrumah University of Science and Technology (KNUST) | addy.p.humphrey@gmail.com | Team member |
+
+**Open outputs:** [GitHub repository](https://github.com/enchill-svg/amr-vivli-2026) · [Live dashboard](https://tanstack-start-app.amrlifeintel.workers.dev)
 
 ## Citation
 
@@ -168,6 +169,7 @@ If you reuse this work, please cite:
 Akanko, E., Enchill-Yawson, Y., Boateng, W., Ohene Amofa, J., & Addy, H. P. K. (2026).
 AMR, Life Expectancy, and Intervention Impact. 2026 Vivli AMR Surveillance Data Challenge.
 GitHub: https://github.com/enchill-svg/amr-vivli-2026
+Live dashboard: https://tanstack-start-app.amrlifeintel.workers.dev
 ```
 
 ## License

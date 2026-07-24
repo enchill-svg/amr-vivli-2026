@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { GitCompare, TrendingUp, TrendingDown, Layers, Zap, Brain } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { LegacyDemoBanner } from "@/components/vt/LegacyDemoBanner";
 import {
   LineChart,
   Line,
@@ -90,6 +91,7 @@ function ForecastComparePage() {
         },
       ]}
     >
+      <LegacyDemoBanner detail="Country series, deltas, and confidence percentages below are synthetic sample data." />
       <GlassCard
         title={`${ca.name} vs ${cb.name} · ${pathogen}`}
         subtitle={`Bayesian SEIR + wastewater + mobility · next ${h} days`}
