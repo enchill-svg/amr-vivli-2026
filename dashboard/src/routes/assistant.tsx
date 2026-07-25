@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Bot, Brain, Send } from "lucide-react";
 import { CommandPage, GlassCard } from "@/components/vt/CommandPage";
+import { ChatMarkdown } from "@/components/vt/ChatMarkdown";
 
 export const Route = createFileRoute("/assistant")({
   component: AssistantPage,
@@ -49,16 +50,21 @@ function AssistantPage() {
                   and return citations, assumptions and recommendation logic.
                 </div>
               )}
-              {messages.map((m) => (
-                <div key={m.id} className="flex gap-3">
-                  <div className="mt-1 grid h-7 w-7 place-items-center rounded-full bg-secondary">
-                    <Bot className="h-4 w-4 text-[color:var(--accent)]" />
+              {messages.map((m) => {
+                const text = m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
+                return (
+                  <div key={m.id} className="flex gap-3">
+                    <div className="mt-1 grid h-7 w-7 place-items-center rounded-full bg-secondary">
+                      <Bot className="h-4 w-4 text-[color:var(--accent)]" />
+                    </div>
+                    {m.role === "user" ? (
+                      <div className="whitespace-pre-wrap text-sm leading-relaxed">{text}</div>
+                    ) : (
+                      <ChatMarkdown className="min-w-0 flex-1">{text}</ChatMarkdown>
+                    )}
                   </div>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {m.parts.map((p) => (p.type === "text" ? p.text : "")).join("")}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
               {busy && (
                 <div className="animate-pulse text-xs text-muted-foreground">
                   Thinking through AMR evidence…

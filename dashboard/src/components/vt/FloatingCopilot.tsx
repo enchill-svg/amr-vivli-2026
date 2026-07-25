@@ -3,6 +3,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Bot, Send, Sparkles, User as UserIcon, X } from "lucide-react";
 import { toast } from "sonner";
+import { ChatMarkdown } from "@/components/vt/ChatMarkdown";
 
 export function FloatingCopilot() {
   const [open, setOpen] = useState(false);
@@ -88,7 +89,11 @@ export function FloatingCopilot() {
                       <Bot className="h-3 w-3 text-[color:var(--accent)]" />
                     )}
                   </div>
-                  <div className="flex-1 whitespace-pre-wrap leading-relaxed">{text}</div>
+                  {m.role === "user" ? (
+                    <div className="flex-1 whitespace-pre-wrap leading-relaxed">{text}</div>
+                  ) : (
+                    <ChatMarkdown className="flex-1 min-w-0">{text}</ChatMarkdown>
+                  )}
                 </div>
               );
             })}
